@@ -1,0 +1,280 @@
+# select * from T1 natural       inner join T2 order by 付き
+# select * from T1               inner join T2 on <条件, 列1個> order by 付き
+# select * from T1               inner join T2 using <条件, 列1個> order by 付き
+#                           left outer
+#                          right outer
+# order by付きjoinテスト (joinで使用される列が含まない/一部含む/すべて含む)
+# 単索引
+# --T1索引有り, T2索引有り
+# --同種テスト 11[1-4]90
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "create index I1_1 on T1(C1)";
+Command  "create index I1_2 on T1(C2)";
+Command  "create index I1_3 on T1(C3)";
+Command  "create index I1_4 on T1(C4)";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  null, "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", null                                 ];
+
+
+# natural join .. order by
+# テーブルT2
+Command  "create table T2(C1 int, C2 varchar(2))";
+Command  "create index I2_1 on T2(C1)";
+Command  "create index I2_2 on T2(C2)";
+Command  "insert into T2 (C1, C2) values (?, ?)" [111,  "1" ];
+Command  "insert into T2 (C1, C2) values (?, ?)" [null, "2" ];
+Command  "insert into T2 (C1, C2) values (?, ?)" [333,  null];
+Command  "insert into T2 (C1, C2) values (?, ?)" [444,  "3" ];
+
+
+# inner
+# --joinに使われる列が含まれる
+Command  "select * from T1 natural inner join T2 order by C1";
+Command  "select * from T1 natural inner join T2 order by C2";
+Command  "select * from T1 natural inner join T2 order by C3";
+Command  "select * from T1 natural inner join T2 order by C4";
+
+# --joinに使われる列が一部含まれる
+Command  "select * from T1 natural inner join T2 order by C1, C2";
+Command  "select * from T1 natural inner join T2 order by C2, C3";
+Command  "select * from T1 natural inner join T2 order by C3, C4";
+Command  "select * from T1 natural inner join T2 order by C4, C1";
+
+# joinに使われる列が一部含まれない
+Command  "select * from T1 natural inner join T2 order by C3";
+Command  "select * from T1 natural inner join T2 order by C4";
+
+# left outer
+# --joinに使われる列が含まれる
+Command  "select * from T1 natural left outer join T2 order by C1";
+Command  "select * from T1 natural left outer join T2 order by C2";
+Command  "select * from T1 natural left outer join T2 order by C3";
+Command  "select * from T1 natural left outer join T2 order by C4";
+
+# --joinに使われる列が一部含まれる
+Command  "select * from T1 natural left outer join T2 order by C1, C2";
+Command  "select * from T1 natural left outer join T2 order by C2, C3";
+Command  "select * from T1 natural left outer join T2 order by C3, C4";
+Command  "select * from T1 natural left outer join T2 order by C4, C1";
+
+# --joinに使われる列が一部含まれない
+Command  "select * from T1 natural left outer join T2 order by C3";
+Command  "select * from T1 natural left outer join T2 order by C4";
+
+# right outer
+# --joinに使われる列が含まれる
+Command  "select * from T1 natural right outer join T2 order by C1";
+Command  "select * from T1 natural right outer join T2 order by C2";
+Command  "select * from T1 natural right outer join T2 order by C3";
+
+# --joinに使われる列が一部含まれる
+Command  "select * from T1 natural right outer join T2 order by C1, C2";
+Command  "select * from T1 natural right outer join T2 order by C2, C3";
+Command  "select * from T1 natural right outer join T2 order by C3, C4";
+Command  "select * from T1 natural right outer join T2 order by C4, C1";
+
+# --joinに使われる列が一部含まれない
+Command  "select * from T1 natural right outer join T2 order by C3";
+Command  "select * from T1 natural right outer join T2 order by C4";
+
+Command  "drop table T2";
+
+
+# join .. using .. order by
+# テーブルT2
+Command  "create table T2(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "create index I2_1 on T2(C1)";
+Command  "create index I2_2 on T2(C2)";
+Command  "create index I2_3 on T2(C3)";
+Command  "create index I2_4 on T2(C4)";
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "3",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  null, "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",  "ぷう", null                                 ];
+
+
+# inner
+# --joinに使われる列が含まれる
+Command  "select * from T1 inner join T2 using (C1) order by C1";
+Command  "select * from T1 inner join T2 using (C2) order by C2";
+Command  "select * from T1 inner join T2 using (C3) order by C3";
+Command  "select * from T1 inner join T2 using (C4) order by C4";
+
+# --joinに使われる列が一部含まれる
+Command  "select * from T1 inner join T2 using (C1) order by C1, T1.C2";
+Command  "select * from T1 inner join T2 using (C2) order by C2, T1.C3";
+Command  "select * from T1 inner join T2 using (C3) order by C3, T1.C4";
+Command  "select * from T1 inner join T2 using (C4) order by C4, T1.C1";
+
+Command  "select * from T1 inner join T2 using (C1) order by C1, T2.C2";
+Command  "select * from T1 inner join T2 using (C2) order by C2, T2.C3";
+Command  "select * from T1 inner join T2 using (C3) order by C3, T2.C4";
+Command  "select * from T1 inner join T2 using (C4) order by C4, T2.C1";
+
+# --joinに使われる列が一部含まれない
+Command  "select * from T1 inner join T2 using (C1) order by T1.C2";
+Command  "select * from T1 inner join T2 using (C1) order by T1.C3";
+Command  "select * from T1 inner join T2 using (C1) order by T1.C4";
+
+Command  "select * from T1 inner join T2 using (C1) order by T2.C2";
+Command  "select * from T1 inner join T2 using (C1) order by T2.C3";
+Command  "select * from T1 inner join T2 using (C1) order by T2.C4";
+
+
+# left outer
+# --joinに使われる列が含まれる
+Command  "select * from T1 left outer join T2 using (C1) order by C1";
+Command  "select * from T1 left outer join T2 using (C2) order by C2";
+Command  "select * from T1 left outer join T2 using (C3) order by C3";
+Command  "select * from T1 left outer join T2 using (C4) order by C4";
+
+# --joinに使われる列が一部含まれる
+Command  "select * from T1 left outer join T2 using (C1) order by C1, T1.C2";
+Command  "select * from T1 left outer join T2 using (C2) order by C2, T1.C3";
+Command  "select * from T1 left outer join T2 using (C3) order by C3, T1.C4";
+Command  "select * from T1 left outer join T2 using (C4) order by C4, T1.C1";
+
+Command  "select * from T1 left outer join T2 using (C1) order by C1, T2.C2";
+Command  "select * from T1 left outer join T2 using (C2) order by C2, T2.C3";
+Command  "select * from T1 left outer join T2 using (C3) order by C3, T2.C4";
+Command  "select * from T1 left outer join T2 using (C4) order by C4, T2.C1";
+
+# --joinに使われる列が一部含まれない
+Command  "select * from T1 left outer join T2 using (C1) order by T1.C2";
+Command  "select * from T1 left outer join T2 using (C1) order by T1.C3";
+Command  "select * from T1 left outer join T2 using (C1) order by T1.C4";
+
+Command  "select * from T1 left outer join T2 using (C1) order by T2.C2";
+Command  "select * from T1 left outer join T2 using (C1) order by T2.C3";
+Command  "select * from T1 left outer join T2 using (C1) order by T2.C4";
+
+# right outer
+# --joinに使われる列が含まれる
+Command  "select * from T1 right outer join T2 using (C1) order by C1";
+Command  "select * from T1 right outer join T2 using (C2) order by C2";
+Command  "select * from T1 right outer join T2 using (C3) order by C3";
+Command  "select * from T1 right outer join T2 using (C4) order by C4";
+
+# --joinに使われる列が一部含まれる
+Command  "select * from T1 right outer join T2 using (C1) order by C1, T1.C2";
+Command  "select * from T1 right outer join T2 using (C2) order by C2, T1.C3";
+Command  "select * from T1 right outer join T2 using (C3) order by C3, T1.C4";
+Command  "select * from T1 right outer join T2 using (C4) order by C4, T1.C1";
+
+Command  "select * from T1 right outer join T2 using (C1) order by C1, T2.C2";
+Command  "select * from T1 right outer join T2 using (C2) order by C2, T2.C3";
+Command  "select * from T1 right outer join T2 using (C3) order by C3, T2.C4";
+Command  "select * from T1 right outer join T2 using (C4) order by C4, T2.C1";
+
+# --joinに使われる列が一部含まれない
+Command  "select * from T1 right outer join T2 using (C1) order by T1.C2";
+Command  "select * from T1 right outer join T2 using (C1) order by T1.C3";
+Command  "select * from T1 right outer join T2 using (C1) order by T1.C4";
+
+Command  "select * from T1 right outer join T2 using (C1) order by T2.C2";
+Command  "select * from T1 right outer join T2 using (C1) order by T2.C3";
+Command  "select * from T1 right outer join T2 using (C1) order by T2.C4";
+
+Command  "drop table T2";
+
+
+# join .. on .. order by
+# テーブルT2
+Command  "create table T2(C5 int, C6 varchar(2), C7 nvarchar(4), C8 nvarchar(448))";
+Command  "create index I2_1 on T2(C5)";
+Command  "create index I2_2 on T2(C6)";
+Command  "create index I2_3 on T2(C7)";
+Command  "create index I2_4 on T2(C8)";
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null, "3",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  null, "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "3",  "ぷう", null                                 ];
+
+
+# inner
+# --joinに使われる列が含まれる
+Command  "select * from T1 inner join T2 on C1 = C5 order by C1";
+Command  "select * from T1 inner join T2 on C2 = C6 order by C2";
+Command  "select * from T1 inner join T2 on C3 = C7 order by C3";
+Command  "select * from T1 inner join T2 on C4 = C8 order by C4";
+
+# --joinに使われる列が一部含まれる
+Command  "select * from T1 inner join T2 on C1 = C5 order by C1, C2";
+Command  "select * from T1 inner join T2 on C2 = C6 order by C2, C3";
+Command  "select * from T1 inner join T2 on C3 = C7 order by C3, C4";
+Command  "select * from T1 inner join T2 on C4 = C8 order by C4, C1";
+
+# --joinに使われる列が一部含まれない
+Command  "select * from T1 inner join T2 on C1 = C5 order by C2";
+Command  "select * from T1 inner join T2 on C1 = C5 order by C3";
+Command  "select * from T1 inner join T2 on C1 = C5 order by C4";
+
+
+# left outer
+# --joinに使われる列が含まれる
+Command  "select * from T1 left outer join T2 on C1 = C5 order by C1";
+Command  "select * from T1 left outer join T2 on C2 = C6 order by C2";
+Command  "select * from T1 left outer join T2 on C3 = C7 order by C3";
+Command  "select * from T1 left outer join T2 on C4 = C8 order by C4";
+
+# --joinに使われる列が一部含まれる
+Command  "select * from T1 left outer join T2 on C1 = C5 order by C1, C2";
+Command  "select * from T1 left outer join T2 on C2 = C6 order by C2, C3";
+Command  "select * from T1 left outer join T2 on C3 = C7 order by C3, C4";
+Command  "select * from T1 left outer join T2 on C4 = C8 order by C4, C1";
+
+# --joinに使われる列が一部含まれない
+Command  "select * from T1 left outer join T2 on C1 = C5 order by C2";
+Command  "select * from T1 left outer join T2 on C1 = C5 order by C3";
+Command  "select * from T1 left outer join T2 on C1 = C5 order by C4";
+
+
+# right outer
+# --joinに使われる列が含まれる
+Command  "select * from T1 right outer join T2 on C1 = C5 order by C1";
+Command  "select * from T1 right outer join T2 on C2 = C6 order by C2";
+Command  "select * from T1 right outer join T2 on C3 = C7 order by C3";
+Command  "select * from T1 right outer join T2 on C4 = C8 order by C4";
+
+# --joinに使われる列が一部含まれる
+Command  "select * from T1 right outer join T2 on C1 = C5 order by C1, C2";
+Command  "select * from T1 right outer join T2 on C2 = C6 order by C2, C3";
+Command  "select * from T1 right outer join T2 on C3 = C7 order by C3, C4";
+Command  "select * from T1 right outer join T2 on C4 = C8 order by C4, C1";
+
+# --joinに使われる列が一部含まれない
+Command  "select * from T1 right outer join T2 on C1 = C5 order by C2";
+Command  "select * from T1 right outer join T2 on C1 = C5 order by C3";
+Command  "select * from T1 right outer join T2 on C1 = C5 order by C4";
+
+Command  "drop table T2";
+
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

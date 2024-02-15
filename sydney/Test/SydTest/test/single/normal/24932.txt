@@ -1,0 +1,42 @@
+# Bug report 1729
+# 結合演算子などの両辺に？を置いて互換性のない値を指定する
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+
+Command  "create table T1(C1 nvarchar(2497) hint heap, C2 int array[no limit] hint heap)";
+Command  "create index I1_1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(2497), C2 int array[no limit])";
+Command  "create index I2_1 on T2(C1)";
+
+Command  "insert into T1 (C1, C2) values (?, ?)" ["foo", [777]];
+Command  "insert into T1 (C1, C2) values (?, ?)" ["bar", [777]];
+Command  "insert into T1 (C1, C2) values (?, ?)" ["boo", [555]];
+
+Command  "insert into T2 (C1, C2) values (?, ?)" ["foo", [333]];
+
+Command "select C1 || 'hoge' from T1";
+Command "select C1 || array['hoge'] from T1";
+Command "select C1 || C2 from T1";
+Command "select C2 || C1 from T1";
+Command "select C2 || array[C1] from T1";
+Command "select ? || array[C1] from T1" [["hoge"]];
+Command "select C1 || ? from T1" [["hoge"]];
+Command "select ? || ? from T1" ["foo", "bar"];
+Command "select ? || ? from T1" [["foo"], ["bar"]];
+
+CreatePreparedCommand "sel" "select ? || ? from T1";
+PreparedCommand "sel" ["foo", "bar"];
+PreparedCommand "sel" [["foo"], ["bar"]];
+PreparedCommand "sel" ["foo", ["bar"]];
+PreparedCommand "sel" [["foo"], "bar"];
+ErasePreparedCommand "sel";
+
+Command  "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

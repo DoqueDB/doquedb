@@ -1,0 +1,51 @@
+# 障害表#0735に対応
+# update T set C1=C1*-1（update T set C1=C2*-1も）を実行するとunexpected errorとなる
+# intでのみ発生
+#
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command  "create table T1(C1 int,C2 int)";
+Command  "insert into T1 (C1, C2) values (?, ?)" [-5000,-12345670];
+Command  "insert into T1 (C1, C2) values (?, ?)" [12000,-5];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null,500];
+Command  "insert into T1 (C1, C2) values (?, ?)" [0,1000];
+
+Command  "select * from T1";
+
+Command  "select C1 / ? from T1 " [1];
+Command  "select C1 / ? from T1 " [-1];
+Command  "select C1 / ? from T1 " [10];
+Command  "select C1 / ? from T1 " [-10];
+Command  "select C1 * ? from T1 " [1];
+Command  "select C1 * ? from T1 " [-1];
+Command  "select C1 * ? from T1 " [10];
+Command  "select C1 * ? from T1 " [-10];
+
+
+Command  "select ? / C1 from T1 " [600000];
+Command  "select ? / C1 from T1 " [-600000];
+
+Command  "select ? * C1 from T1 " [1];
+Command  "select ? * C1 from T1 " [-1];
+Command  "select ? * C1 from T1 " [100];
+Command  "select ? * C1 from T1 " [-100];
+
+
+
+Command  "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

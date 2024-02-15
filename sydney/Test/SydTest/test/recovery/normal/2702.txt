@@ -1,0 +1,101 @@
+#
+# 50文字(MAX)の表名、索引名、列名が作成できることを確認するテスト
+# 障害票 0508に対応
+# 2006.03.23 as | to 追加
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#
+#表名に50文字作成
+#
+Command "create table t1234567890123456789012345678901234567890123456789(i int)";
+Command "insert into t1234567890123456789012345678901234567890123456789 values (1000)";
+Command "select * from t1234567890123456789012345678901234567890123456789";
+
+
+#
+#インデックス名に50文字作成
+#
+Command "create table IdxTest(i int,C1 nvarchar(32))";
+Command "create INDEX I1234567890123456789012345678901234567890123456789 on IdxTest(i,C1)";
+Command "insert into IdxTest(i,C1) values (2000,'あいうえお')";
+Command "select * from IdxTest";
+
+
+#
+#インデックス名に50文字作成 rename
+#
+Command "create table IdxTest1(i int,C1 nvarchar(32))";
+Command "create INDEX I_dx1 on IdxTest1(i,C1)";
+Command "insert into IdxTest1(i,C1) values (2000,'インデックス名が長い')";
+
+Command "ALTER INDEX \"I_dx1\" RENAME \"t1\"";
+Command "select * from IdxTest1";
+
+#to使用
+Command "ALTER INDEX \"t1\" RENAME to \"to_t\"";
+
+Command "ALTER INDEX \"I_dx1\" RENAME \"t1\"";
+Command "select * from IdxTest1";
+
+#to使用
+Command "ALTER INDEX \"t1\" RENAME to \"to_t\"";
+Command "select * from IdxTest1";
+
+#as使用
+Command "ALTER INDEX \"to_t\" RENAME as \"t1234567890123456789012345678901234567890123456789\"";
+
+Command "select * from IdxTest1";
+
+#as使用
+Command "ALTER INDEX \"to_t\" RENAME as \"t1234567890123456789012345678901234567890123456789\"";
+
+Command "select * from IdxTest1";
+
+
+
+
+
+
+#
+#列名に50文字作成
+#
+Command "create table Coltest(i int,t1234567890123456789012345678901234567890123456789 nvarchar(32))";
+Command "insert into Coltest(i,t1234567890123456789012345678901234567890123456789) values (1,'列名が長い')";
+Command "select t1234567890123456789012345678901234567890123456789 from Coltest";
+
+
+#
+#表名に50文字作成 rename
+#
+
+Command "create table t(i int)";
+Command "insert into t values (1)";
+
+Command "ALTER TABLE \"t\" RENAME \"d1\"";
+Command "select * from d1";
+
+#to使用
+Command "ALTER TABLE \"d1\" RENAME to \"r1\"";
+Command "select * from r1";
+
+#as使用
+Command "ALTER TABLE \"r1\" RENAME as  \"r1234567890123456789012345678901234567890123456789\"";
+
+Command "select * from r1234567890123456789012345678901234567890123456789";
+
+
+TerminateSession;
+
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;

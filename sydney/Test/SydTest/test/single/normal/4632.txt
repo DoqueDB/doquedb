@@ -1,0 +1,56 @@
+# テスト追加: FileAccess_Lock.cpp
+#              LockForFetch::abandon
+#             トランザクションの中で件数が1件の表と10件の表(B+木索引あり)を用意し、10件の表のB+木索引を使ったJoin条件と、
+#             一部の行がヒットしない(索引を使わない)条件をANDで指定する
+# 2005.07.25 Tajima
+Begin;
+
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession "";
+
+InitializeSession "TESTDB";
+
+# 表を作成
+Command "create table T(N int,Sno int, Name nvarchar(32),Memo ntext)";
+Command "create table T1(N1 int, Sno1 int,Name1 nvarchar(32),Memo1 ntext)";
+
+# 索引作成
+Command "create index T_IDX on T(N,Sno,Name)";
+Command "create index T_IDX1 on T1(N1,Sno1,Name1)";
+
+
+#トランザクション開始
+Command  "start transaction read write";
+#データセット
+Command "insert into T(N,Sno,Name,Memo) values(1,10,'Takeda',null)";
+Command "insert into T(N,Sno,Name,Memo) values(1,10,'Takasaki','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')";
+Command "insert into T(N,Sno,Name,Memo) values(1,12,'buta',null)";
+Command "insert into T(N,Sno,Name,Memo) values(1,13,'Panda','bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')";
+Command "insert into T(N,Sno,Name,Memo) values(5,14,'Kirin',null)";
+Command "insert into T(N,Sno,Name,Memo) values(6,10,'Takeda',null)";
+Command "insert into T(N,Sno,Name,Memo) values(7,10,'Aoki','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')";
+Command "insert into T(N,Sno,Name,Memo) values(8,12,'buta','')";
+Command "insert into T(N,Sno,Name,Memo) values(9,13,'Panda','bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')";
+Command "insert into T(N,Sno,Name,Memo) values(10,14,'Kirin',null)";
+
+Command "insert into T1(N1,Sno1,Name1,Memo1) values(1,10,'Tadano','ccccccccccccccccccccccccccccc')";
+
+Command  "select * from T inner join T1 on T.N = T1.N1 where N=1 and Sno=10 and Name like ? and memo is not null" ["%Ta%"];
+
+Command  "select T.N,T.Sno,T.Name from T inner join T1 on T.N = T1.N1 where N=1 and Sno1=10 and Name like ? and memo is not null order by T.N" ["%Ta%"];
+
+
+Command "commit";
+# テスト用の表を消去
+Command "drop table T";
+Command "drop table T1";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

@@ -1,0 +1,625 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 int, C2 int, primary key (C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_1 on T1(C1, C2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {111,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {222,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {333,2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {444,3}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {666,4}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C1 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {111}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {333}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {555}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural inner join T2
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural left outer join T2
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {222,(null)}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] {444,3}
+SydTest::Executor: [INFO] {666,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural right outer join T2
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] {555,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 inner join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {111,1,111}
+SydTest::Executor: [INFO] {333,2,333}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 left outer join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {111,1,111}
+SydTest::Executor: [INFO] {222,(null),(null)}
+SydTest::Executor: [INFO] {333,2,333}
+SydTest::Executor: [INFO] {444,3,(null)}
+SydTest::Executor: [INFO] {666,4,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 right outer join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {111,1,111}
+SydTest::Executor: [INFO] {(null),(null),(null)}
+SydTest::Executor: [INFO] {333,2,333}
+SydTest::Executor: [INFO] {(null),(null),555}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 inner join T2 using (C1)
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 left outer join T2 using (C1)
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {222,(null)}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] {444,3}
+SydTest::Executor: [INFO] {666,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 right outer join T2 using (C1)
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] {555,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 char(10), C2 int, primary key (C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_1 on T1(C1, C2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {111,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {222,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {333,2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {444,3}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {666,4}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C1 char(10))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {111}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {333}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {555}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural inner join T2
+SydTest::Executor: [INFO] {111       ,1}
+SydTest::Executor: [INFO] {333       ,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural left outer join T2
+SydTest::Executor: [INFO] {111       ,1}
+SydTest::Executor: [INFO] {222       ,(null)}
+SydTest::Executor: [INFO] {333       ,2}
+SydTest::Executor: [INFO] {444       ,3}
+SydTest::Executor: [INFO] {666       ,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural right outer join T2
+SydTest::Executor: [INFO] {111       ,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {333       ,2}
+SydTest::Executor: [INFO] {555       ,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 inner join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {111       ,1,111       }
+SydTest::Executor: [INFO] {333       ,2,333       }
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 left outer join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {111       ,1,111       }
+SydTest::Executor: [INFO] {222       ,(null),(null)}
+SydTest::Executor: [INFO] {333       ,2,333       }
+SydTest::Executor: [INFO] {444       ,3,(null)}
+SydTest::Executor: [INFO] {666       ,4,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 right outer join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {111       ,1,111       }
+SydTest::Executor: [INFO] {(null),(null),(null)}
+SydTest::Executor: [INFO] {333       ,2,333       }
+SydTest::Executor: [INFO] {(null),(null),555       }
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 inner join T2 using (C1)
+SydTest::Executor: [INFO] {111       ,1}
+SydTest::Executor: [INFO] {333       ,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 left outer join T2 using (C1)
+SydTest::Executor: [INFO] {111       ,1}
+SydTest::Executor: [INFO] {222       ,(null)}
+SydTest::Executor: [INFO] {333       ,2}
+SydTest::Executor: [INFO] {444       ,3}
+SydTest::Executor: [INFO] {666       ,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 right outer join T2 using (C1)
+SydTest::Executor: [INFO] {111       ,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {333       ,2}
+SydTest::Executor: [INFO] {555       ,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nchar(10), C2 int, primary key (C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_1 on T1(C1, C2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ぴよ,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ぷう,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ,2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ピヨ,3}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ホゲ,4}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C1 nchar(10))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ぴよ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {プウ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural inner join T2
+SydTest::Executor: [INFO] {ぴよ        ,1}
+SydTest::Executor: [INFO] {ほげ        ,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural left outer join T2
+SydTest::Executor: [INFO] {ぴよ        ,1}
+SydTest::Executor: [INFO] {ぷう        ,(null)}
+SydTest::Executor: [INFO] {ほげ        ,2}
+SydTest::Executor: [INFO] {ピヨ        ,3}
+SydTest::Executor: [INFO] {ホゲ        ,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural right outer join T2
+SydTest::Executor: [INFO] {ぴよ        ,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {ほげ        ,2}
+SydTest::Executor: [INFO] {プウ        ,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 inner join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {ぴよ        ,1,ぴよ        }
+SydTest::Executor: [INFO] {ほげ        ,2,ほげ        }
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 left outer join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {ぴよ        ,1,ぴよ        }
+SydTest::Executor: [INFO] {ぷう        ,(null),(null)}
+SydTest::Executor: [INFO] {ほげ        ,2,ほげ        }
+SydTest::Executor: [INFO] {ピヨ        ,3,(null)}
+SydTest::Executor: [INFO] {ホゲ        ,4,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 right outer join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {ぴよ        ,1,ぴよ        }
+SydTest::Executor: [INFO] {(null),(null),(null)}
+SydTest::Executor: [INFO] {ほげ        ,2,ほげ        }
+SydTest::Executor: [INFO] {(null),(null),プウ        }
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 inner join T2 using (C1)
+SydTest::Executor: [INFO] {ぴよ        ,1}
+SydTest::Executor: [INFO] {ほげ        ,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 left outer join T2 using (C1)
+SydTest::Executor: [INFO] {ぴよ        ,1}
+SydTest::Executor: [INFO] {ぷう        ,(null)}
+SydTest::Executor: [INFO] {ほげ        ,2}
+SydTest::Executor: [INFO] {ピヨ        ,3}
+SydTest::Executor: [INFO] {ホゲ        ,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 right outer join T2 using (C1)
+SydTest::Executor: [INFO] {ぴよ        ,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {ほげ        ,2}
+SydTest::Executor: [INFO] {プウ        ,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 varchar(10), C2 int, primary key (C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_1 on T1(C1, C2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {111,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {222,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {333,2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {444,3}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {666,4}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C1 varchar(10))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {111}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {333}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {555}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural inner join T2
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural left outer join T2
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {222,(null)}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] {444,3}
+SydTest::Executor: [INFO] {666,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural right outer join T2
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] {555,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 inner join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {111,1,111}
+SydTest::Executor: [INFO] {333,2,333}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 left outer join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {111,1,111}
+SydTest::Executor: [INFO] {222,(null),(null)}
+SydTest::Executor: [INFO] {333,2,333}
+SydTest::Executor: [INFO] {444,3,(null)}
+SydTest::Executor: [INFO] {666,4,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 right outer join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {111,1,111}
+SydTest::Executor: [INFO] {(null),(null),(null)}
+SydTest::Executor: [INFO] {333,2,333}
+SydTest::Executor: [INFO] {(null),(null),555}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 inner join T2 using (C1)
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 left outer join T2 using (C1)
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {222,(null)}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] {444,3}
+SydTest::Executor: [INFO] {666,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 right outer join T2 using (C1)
+SydTest::Executor: [INFO] {111,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {333,2}
+SydTest::Executor: [INFO] {555,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nvarchar(10), C2 int, primary key (C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_1 on T1(C1, C2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ぴよ,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ぷう,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ,2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ピヨ,3}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ホゲ,4}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C1 nvarchar(10))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ぴよ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {プウ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural inner join T2
+SydTest::Executor: [INFO] {ぴよ,1}
+SydTest::Executor: [INFO] {ほげ,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural left outer join T2
+SydTest::Executor: [INFO] {ぴよ,1}
+SydTest::Executor: [INFO] {ぷう,(null)}
+SydTest::Executor: [INFO] {ほげ,2}
+SydTest::Executor: [INFO] {ピヨ,3}
+SydTest::Executor: [INFO] {ホゲ,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural right outer join T2
+SydTest::Executor: [INFO] {ぴよ,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {ほげ,2}
+SydTest::Executor: [INFO] {プウ,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 inner join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {ぴよ,1,ぴよ}
+SydTest::Executor: [INFO] {ほげ,2,ほげ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 left outer join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {ぴよ,1,ぴよ}
+SydTest::Executor: [INFO] {ぷう,(null),(null)}
+SydTest::Executor: [INFO] {ほげ,2,ほげ}
+SydTest::Executor: [INFO] {ピヨ,3,(null)}
+SydTest::Executor: [INFO] {ホゲ,4,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 right outer join T2 on T1.C1 = T2.C1
+SydTest::Executor: [INFO] {ぴよ,1,ぴよ}
+SydTest::Executor: [INFO] {(null),(null),(null)}
+SydTest::Executor: [INFO] {ほげ,2,ほげ}
+SydTest::Executor: [INFO] {(null),(null),プウ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 inner join T2 using (C1)
+SydTest::Executor: [INFO] {ぴよ,1}
+SydTest::Executor: [INFO] {ほげ,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 left outer join T2 using (C1)
+SydTest::Executor: [INFO] {ぴよ,1}
+SydTest::Executor: [INFO] {ぷう,(null)}
+SydTest::Executor: [INFO] {ほげ,2}
+SydTest::Executor: [INFO] {ピヨ,3}
+SydTest::Executor: [INFO] {ホゲ,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 right outer join T2 using (C1)
+SydTest::Executor: [INFO] {ぴよ,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {ほげ,2}
+SydTest::Executor: [INFO] {プウ,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,66 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+CreatePreparedCommand "checkmeta" "select Name, MetaData from System_Column where
+		exists (select * from System_Table where Name = ? and rowid = System_Column.ParentID)";
+Command "create table T_1 (dec1 numeric,dec2 decimal,dec3 dec)";
+PreparedCommand "checkmeta" ["T_1"];
+Command "drop table T_1";
+Command "create table T_2 (dec1 numeric(1),dec2 decimal(10),dec3 dec(36),dec4 numeric(10),dec5 decimal(1),dec6 dec(1),dec7 numeric(36),dec8 decimal(36),dec9 dec(10))";
+PreparedCommand "checkmeta" ["T_2"];
+Command "drop table T_2";
+Command "create table T_3 (dec1 numeric(1,0),dec2 numeric(10,5),dec3 numeric(36,36),dec4 decimal(1,0),dec5 decimal(10,0),dec6 decimal(36,0),dec7 dec(1,1),dec8 dec(10,0),dec9 dec(36,18),dec10 decimal(10,10))";
+PreparedCommand "checkmeta" ["T_3"];
+ErasePreparedCommand "checkmeta";
+Command "drop table T_3";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec1 numeric(0))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec2 numeric(-1,-1))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec3 decimal(0,0))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec4 decimal(-1))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec5 dec(0))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec6 dec(-1,-1))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec1 numeric(1,2))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec2 decimal(10,20))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec3 dec(36,72))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec4 numeric(10,20))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec5 decimal(1,2))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec6 dec(1,2))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec7 numeric(36,72))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec8 decimal(36,72))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec9 dec(10,20))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec1 numeric(37))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec2 numeric(72,72))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec3 decimal(37,37))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec4 decimal(72))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec5 dec(37))";
+# error Column{Precision|Scale}OutOfRange is expected
+Command "create table T_x (dec6 dec(72,72))";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,288 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DefaultDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area area1 array ['d:\dm\area\1', 'd:\dm\area\2']
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f1 int, f2 ntext array [no limit]) area area1 index area1 fulltext area1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (1, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{hoge}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T\ROWID
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f1 on T(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T\FTS_T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2\T\FTS_T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T\FTS_T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2\T\FTS_T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area area1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area area1 array ['d:\dm\area\1', 'd:\dm\area\2']
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f1 int, f2 ntext array [no limit]) area area1 index area1 fulltext area1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (1, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{hoge}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f1 on T(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area area1 modify array ['d:\dm\area\alter1', 'd:\dm\area\alter2']
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter1\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter2\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter1\T\FTS_T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter2\T\FTS_T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter1\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter2\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter1\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter2\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area area1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area area1 array ['d:\dm\area\1', 'd:\dm\area\2']
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f1 int, f2 ntext array [no limit]) area area1 index area1 fulltext area1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (1, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{hoge}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f1 on T(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area area1 modify [0] 'd:\dm\area\alter1'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter1\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter1\T\FTS_T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T\FTS_T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter1\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter1\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area area1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area area2 array ['d:\dm\area\1', 'd:\dm\area\2']
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f1 int, f2 ntext array [no limit]) area area2 index area2 fulltext area2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (1, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{hoge}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f1 on T(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area area2 modify [1] 'd:\dm\area\alter2'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter2\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T\FTS_T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter2\T\FTS_T_f2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter2\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter2\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area area2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\area\alter1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

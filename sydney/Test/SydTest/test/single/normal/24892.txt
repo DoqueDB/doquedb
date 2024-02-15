@@ -1,0 +1,34 @@
+# 障害票 1996
+# EXISTSの中のORがUNIONに展開された場合のテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+Command "create table T1(f int, g int, primary key(f))";
+Command "create table T2(x int, y int)";
+Command "create index T2_x on T2(x)";
+Command "create table T3(a int, b int)";
+Command "create index T3_a on T3(a)";
+
+Command "insert T1 values (1,2)";
+Command "insert T1 values (2,4)";
+Command "insert T1 values (3,6)";
+
+Command "insert T2 values (1,1)";
+Command "insert T2 values (2,2)";
+
+Command "insert T3 values (1,1)";
+
+#すべて2件ずつ
+Command "select * from T1 where exists (select * from T2 where f = x and (f != 5 or exists (select * from T3 where a = x and b = 2)))";
+Command "select * from T1, T2 where f = x and (f != 5 or exists (select * from T3 where a = x and b = 2))";
+Command "select * from T1 where exists (select * from T2 where f = x and (f != 5 or g = y))";
+Command "select * from T1, T2 where f = x and (f != 5 or g = y)";
+Command "select * from T1, T2 where f = x and (f != 5 or exists (select * from T3 where a = x and b = 2))";
+
+TerminateSession "TESTDB";
+Terminate;
+End;

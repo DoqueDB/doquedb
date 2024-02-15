@@ -1,0 +1,63 @@
+# 4306: create/drop DB/Table/Indexのcancel
+
+Begin;
+
+SetSystemParameter "Exception_FakeError" "Schema::Manager_checkCanceled count=(1 5 11 16 18 23 25 27)";
+
+Initialize;
+InitializeSession "";
+
+# create DB
+AsyncCommand "C" "create database DB";
+#CancelAsync "C"; # count==1
+GetAsyncResult "C";
+Command "create database DB";
+
+# create table
+AsyncCommand "C" "create table T1(C1 ntext array [no limit] hint heap, C2 int)";
+#CancelAsync "C"; # count==5
+GetAsyncResult "C";
+Command "create table T1(C1 ntext array [no limit] hint heap, C2 int)";
+
+# create 全文でない索引
+AsyncCommand "C" "create index I1 on T1(C2)";
+#CancelAsync "C"; # count==11
+GetAsyncResult "C";
+Command "create index I1 on T1(C2)";
+
+# drop 全文でない索引
+AsyncCommand "D" "drop index I1"; # "drop fulltext index .."はsyntax error
+#CancelAsync "D"; # count==16
+GetAsyncResult "D";
+Command "drop index I1";
+
+# create 全文索引
+AsyncCommand "C" "create fulltext index F1 on T1(C1) hint 'inverted=(nolocation=true, notf=true)'";
+#CancelAsync "C"; # count==18
+GetAsyncResult "C";
+Command "create fulltext index F1 on T1(C1) hint 'inverted=(nolocation=true, notf=true)'";
+
+# drop 全文索引
+AsyncCommand "D" "drop index F1"; # "drop fulltext index .."はsyntax error
+#CancelAsync "D"; # count==23
+GetAsyncResult "D";
+Command "drop index F1";
+
+# drop table
+AsyncCommand "D" "drop table T1";
+#CancelAsync "D";  # count==25
+GetAsyncResult "D";
+Command "drop table T1";
+
+# drop DB
+AsyncCommand "D" "drop database DB";
+#CancelAsync "D";  # count==27
+GetAsyncResult "D";
+Command "drop database DB";
+
+TerminateSession;
+Terminate;
+
+SetSystemParameter "Exception_FakeError" "";
+
+End;

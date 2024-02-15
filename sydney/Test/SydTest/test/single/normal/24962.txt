@@ -1,0 +1,17 @@
+# Bug report 1814
+# ACCEPTEDのときのSyntax Errorを確認
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+#success
+Command "";
+#success
+Command ";";
+#syntax error
+Command ";a";
+#syntax error
+Command "a;";
+TerminateSession;
+Terminate;
+End;

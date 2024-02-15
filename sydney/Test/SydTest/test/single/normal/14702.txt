@@ -1,0 +1,59 @@
+# 障害票 0991
+# ALL ROWS 索引の複合索引のテスト
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+Command "create database TEST";
+
+Command "create table T(C1 char(4), C2 char(4))";
+Command "insert T values ('abc', 'xyz')";		# 非NULL、非NULL要素を入れた場合
+Command "insert T values ('abc', (null))";		# 非NULL、NULL要素を入れた場合
+Command "insert T values ((null), 'xyz')";		# NULL、非NULL要素を入れた場合
+Command "insert T values ((null), (null))";		# NULL、NULL要素を入れた場合
+Command "create all rows index I on T(C1, C2)";
+Command "delete from T where C1 = 'abc'";		# 先頭列の非NULLを削除してverifyする場合
+Command "delete from T where C1 is null";		# 先頭列のNULLを削除してverifyする場合
+Command "verify index I cascade continue";		# verify時の先頭列の状態は空
+Command "drop table T";
+
+Command "create table T(C1 char(4), C2 char(4))";
+Command "insert T values ('abc', 'xyz')";		# 非NULL、非NULL要素を入れた場合
+Command "insert T values ('abc', (null))";		# 非NULL、NULL要素を入れた場合
+Command "insert T values ((null), 'xyz')";		# NULL、非NULL要素を入れた場合
+Command "insert T values ((null), (null))";		# NULL、NULL要素を入れた場合
+Command "create all rows index I on T(C1, C2)";
+Command "delete from T where C1 = 'abc'";		# 先頭列の非NULLを削除してverifyする場合
+Command "verify index I cascade continue";		#　NULL、非NULL要素, NULL、NULL要素
+Command "drop table T";
+
+Command "create table T(C1 char(4), C2 char(4))";
+Command "insert T values ('abc', 'xyz')";		# 非NULL、非NULL要素を入れた場合
+Command "insert T values ('abc', (null))";		# 非NULL、NULL要素を入れた場合
+Command "insert T values ((null), 'xyz')";		# NULL、非NULL要素を入れた場合
+Command "insert T values ((null), (null))";		# NULL、NULL要素を入れた場合
+Command "create all rows index I on T(C1, C2)";
+Command "delete from T where C1 is null";		# 先頭列のNULLを削除してverifyする場合
+Command "verify index I cascade continue";		# 非NULL、非NULL要素, 非NULL、NULL要素
+Command "drop table T";
+
+Command "create table T(C1 char(4), C2 char(4))";
+Command "insert T values ('abc', 'xyz')";		# 非NULL、非NULL要素を入れた場合
+Command "insert T values ('abc', (null))";		# 非NULL、NULL要素を入れた場合
+Command "create all rows index I on T(C1, C2)";
+Command "delete from T where C1 = 'abc'";		# 先頭列の非NULLを削除してverifyする場合
+Command "verify index I cascade continue";		# verify時の先頭列の状態は空
+Command "drop table T";
+
+Command "create table T(C1 char(4), C2 char(4))";
+Command "insert T values ((null), 'xyz')";		# NULL、非NULL要素を入れた場合
+Command "insert T values ((null), (null))";		# NULL、NULL要素を入れた場合
+Command "create all rows index I on T(C1, C2)";
+Command "delete from T where C1 is null";		# 先頭列のNULLを削除してverifyする場合
+Command "verify index I cascade continue";		# verify時の先頭列の状態は空
+Command "drop table T";
+
+Command "drop database TEST";
+TerminateSession;
+Terminate;
+End;

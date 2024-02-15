@@ -1,0 +1,27 @@
+# Compressした文字列が正しく復元されるかどうかを調べるテスト
+Begin;
+
+# Parameterの調整
+SetSystemParameter "SydTest_MessageDisplayThreshold" 5000;
+
+Initialize;
+InitializeSession "";
+
+# 単純なcompressed列を持つ表を作成
+Command "create table T (N int, C ntext hint heap 'compressed')";
+
+# 全文ファイルに挿入→読み出し
+Command "insert into T (N, C) values (1, ?)" [textsjisfile "..\\..\\doc\\MoonlitNight.txt"];
+Command "select C from T where N=1";
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+
+# Parameterをデフォルト値に戻す
+SetSystemParameter "SydTest_MessageDisplayThreshold" 500;
+
+End;
+

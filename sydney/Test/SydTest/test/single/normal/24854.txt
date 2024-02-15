@@ -1,0 +1,19 @@
+# 障害票 No.1871 用のテスト
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T ( F nvarchar(256) )";
+Command "create fulltext index T_F on T(F) hint 'inverted=(tokenizer=DUAL:JAP:ALL:2 KAT:3)'";
+
+Command "insert into T values ('アイウエオ')";
+
+# 障害があるとここで無限ループ
+Command "select F from T where F contains '。'";
+
+Command "drop database TEST";
+TerminateSession;
+Terminate;
+End;

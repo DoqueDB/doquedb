@@ -1,0 +1,145 @@
+#障害票#0438対策(descつきでソート指定しているのに昇順に返ってくる) 
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# selectの対象となるタプルをinsertする primary key  single/normal/1606でテスト
+#Command "create table T(i int, f float, c varchar(32),primary key (i))";
+
+#Command "insert into T values(100, 5.67,'poi')";
+#Command "insert into T values(35, 0.81,'bnm')";
+#Command "insert into T values(11, 0.98,'asd')";
+#Command "insert into T values(3, 1.73,'ert')";
+#Command "insert into T values(1, 1,'qwe')";
+#Command "insert into T values(2, 0.99,'wer')";
+#Command "insert into T values(-8, 0.13,'iea')";
+#Command "insert into T values(8, 0.13,'iea')";
+#Command "insert into T values(26, 0.89,'ghj')";
+#Command "insert into T values(88, 28.6,'kjh')";
+
+#Command "select * from T order by i";
+#Command "select * from T order by f";
+#Command "select * from T order by i desc";
+#Command "select * from T order by f desc";
+#Command "select * from T where i >0 order by i";
+#Command "select * from T where i >0 order by f";
+#Command "select * from T where i >0 order by i desc";
+#Command "select * from T where i >0 order by f desc";
+
+# tableの後始末
+#Command  "drop table T";
+
+# selectの対象となるタプルをinsertする
+Command "create table T(i int, f float, c varchar(32))";
+
+Command "insert into T values(88, 28.6,'kjh')";
+Command "insert into T values(8, 0.98,'asd')";
+Command "insert into T values(8, 0.89,'ghj')";
+Command "insert into T values(11, 0.98,'asd')";
+Command "insert into T values(8, 1,'qwe')";
+Command "insert into T values(8, 0.99,'wer')";
+Command "insert into T values(3, 1.73,'ert')";
+Command "insert into T values(-8, 0.13,'iea')";
+Command "insert into T values(8, 0.13,'iea')";
+Command "insert into T values(8, 0.13,'bnm')";
+Command "insert into T values(2, 0.99,'wer')";
+Command "insert into T values(26, 0.89,'ghj')";
+Command "insert into T values(8, 5.67,'poi')";
+Command "insert into T values(35, 0.81,'bnm')";
+Command "insert into T values(8, 28.6,'kjh')";
+Command "insert into T values(100, 5.67,'poi')";
+Command "insert into T values(1, 1,'qwe')";
+
+Command "create index I on T(i,f,c)";
+
+# single/normal/1606でテストする項目をコメントアウトする。
+#Command "select * from T where i > 0 order by i";
+Command "select * from T where i > 0 order by f";
+Command "select * from T where i > 0 order by c";
+#Command "select * from T where i = 8 order by i";
+#Command "select * from T where i = 8 order by f";
+#Command "select * from T where i = 8 order by c";
+#Command "select * from T where i > 0 and f = 0.13 order by i";
+#Command "select * from T where i > 0 and f = 0.13 order by f";
+#Command "select * from T where i > 0 and f = 0.13 order by c";
+#Command "select * from T where i = 8 and f = 0.13 order by i";
+Command "select * from T where i = 8 and f = 0.13 order by f";
+Command "select * from T where i = 8 and f = 0.13 order by c";
+Command "select * from T where i < 0 or f > 1 order by i";
+Command "select * from T where i < 0 or f > 1 order by f";
+Command "select * from T where i < 0 or f > 1 order by c";
+Command "select * from T where i = 8 or f > 1 order by i";
+Command "select * from T where i = 8 or f > 1 order by f";
+Command "select * from T where i = 8 or f > 1 order by c";
+#Command "select * from T where i > 0 order by i desc";
+Command "select * from T where i > 0 order by f desc";
+Command "select * from T where i > 0 order by c desc";
+#Command "select * from T where i = 8 order by i desc";
+#Command "select * from T where i = 8 order by f desc";
+#Command "select * from T where i = 8 order by c desc";
+#Command "select * from T where i > 0 and f = 0.13 order by i desc";
+Command "select * from T where i > 0 and f = 0.13 order by f desc";
+Command "select * from T where i > 0 and f = 0.13 order by c desc";
+Command "select * from T where i = 8 and f = 0.13 order by i desc";
+Command "select * from T where i = 8 and f = 0.13 order by f desc";
+Command "select * from T where i = 8 and f = 0.13 order by c desc";
+Command "select * from T where i > 0 or f > 1 order by i desc";
+Command "select * from T where i > 0 or f > 1 order by f desc";
+Command "select * from T where i > 0 or f > 1 order by c desc";
+Command "select * from T where i = 8 or f > 1 order by i desc";
+Command "select * from T where i = 8 or f > 1 order by f desc";
+Command "select * from T where i = 8 or f > 1 order by c desc";
+
+#Command "select * from T where i > 0 and c = 'asd' order by i";
+#Command "select * from T where i > 0 and c = 'asd' order by f";
+#Command "select * from T where i > 0 and c = 'asd' order by c";
+#Command "select * from T where i = 8 and c = 'asd' order by i";
+#Command "select * from T where i = 8 and c = 'asd' order by f";
+#Command "select * from T where i = 8 and c = 'asd' order by c";
+Command "select * from T where i < 0 or c > 'kjh' order by i";
+Command "select * from T where i < 0 or c > 'kjh' order by f";
+Command "select * from T where i < 0 or c > 'kjh' order by c";
+Command "select * from T where i = 8 or c > 'kjh' order by i";
+Command "select * from T where i = 8 or c > 'kjh' order by f";
+Command "select * from T where i = 8 or c > 'kjh' order by c";
+Command "select * from T where i > 0 and c = 'asd' order by i desc";
+Command "select * from T where i > 0 and c = 'asd' order by f desc";
+Command "select * from T where i > 0 and c = 'asd' order by c desc";
+Command "select * from T where i = 8 and c = 'asd' order by i desc";
+Command "select * from T where i = 8 and c = 'asd' order by f desc";
+Command "select * from T where i = 8 and c = 'asd' order by c desc";
+Command "select * from T where i < 0 or c > 'kjh' order by i desc";
+Command "select * from T where i < 0 or c > 'kjh' order by f desc";
+Command "select * from T where i < 0 or c > 'kjh' order by c desc";
+Command "select * from T where i = 8 or c > 'kjh' order by i desc";
+Command "select * from T where i = 8 or c > 'kjh' order by f desc";
+Command "select * from T where i = 8 or c > 'kjh' order by c desc";
+#Command "select * from T where i < 0 or f > 1 and c = 'kjh' order by i";
+#Command "select * from T where i < 0 or f > 1 and c = 'kjh' order by f";
+#Command "select * from T where i < 0 or f > 1 and c = 'kjh' order by c";
+#Command "select * from T where i = 8 or f > 1 and c = 'kjh' order by i";
+#Command "select * from T where i = 8 or f > 1 and c = 'kjh' order by f";
+#Command "select * from T where i = 8 or f > 1 and c = 'kjh' order by c";
+#Command "select * from T where i < 0 or f > 1 and c = 'iea' order by i";
+#Command "select * from T where i < 0 or f > 1 and c = 'iea' order by f";
+#Command "select * from T where i < 0 or f > 1 and c = 'iea' order by c";
+#Command "select * from T where i = 8 or f > 1 and c = 'iea' order by i";
+#Command "select * from T where i = 8 or f > 1 and c = 'iea' order by f";
+#Command "select * from T where i = 8 or f > 1 and c = 'iea' order by c";
+
+# tableの後始末
+Command  "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,44 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DefaultDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (N int, C ntext array [no limit], L language array [no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C, L) values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 69307]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTL on T(C) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+OpenMP: [ERR] (Utility) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+Reorganize: [ERR] (Schema) create index failed.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set (C, L)=(?, ?) where N=?
+SydTest::Executor: [INFO] [[SQL Parameter: length = 138582]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTL2 on T(C) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+OpenMP: [ERR] (Utility) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+Reorganize: [ERR] (Schema) create index failed.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C) where C like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ページ%}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error ' near token XXX at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set (C, L)=(?, ?) where N=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),{ja,en},1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTL3 on T(C) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

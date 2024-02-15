@@ -1,0 +1,136 @@
+Begin;
+Initialize;
+InitializeSession "";
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+
+Command "create table T(
+	F_year int not null, 
+	F_num int,
+	F_text char(10),
+	F_array varchar(32) array[no limit])";
+
+CreateThread "InsertData";
+JoinThread "InsertData";
+Command "insert into T select * from T";
+Command "insert into T select * from T";
+
+Command "select rowid  into val from T where F_num = 1 ";
+Command "declare val bitmap";
+Command "declare val bitmap";
+CreatePreparedCommand "dec" "declare val1 bitmap";
+PreparedCommand "dec";
+PreparedCommand "dec";
+ErasePreparedCommand "dec";
+
+CreateThread "TestGroupBy";
+JoinThread "TestGroupBy";
+
+Command "create bitmap index I1 on T(F_year)";
+CreateThread "TestGroupBy";
+JoinThread "TestGroupBy";
+
+Command "create index I2 on T(F_num)";
+Command "create index I3 on T(F_text)";
+CreateThread "TestGroupBy";
+JoinThread "TestGroupBy";
+
+
+Command "drop index I1";
+Command "drop index I2";
+Command "drop index I3";
+
+Command "drop database TESTDB if exists";
+
+TerminateSession;
+Terminate;
+End;
+
+
+TestGroupBy
+{
+
+Command "select rowid  into val from T where F_num = 1 ";
+Command "select grouping_element(), count(*) from T where rowid in val group by F_year order by count(*) desc";
+Command "select grouping_element(), count(*) from T where rowid in val AND F_text = 'aaa' group by F_array order by count(*) desc";
+Command "select grouping_element(), count(*) from T where rowid in val OR F_text = 'aaa' group by F_array order by count(*) desc";
+Command "select rowid  into val from T where F_num = 1 AND F_text = 'aaa' ";
+Command "select grouping_element(), count(*) from T where rowid in val group by F_year order by count(*) desc";
+Command "select grouping_element(), count(*) from T where rowid in val group by F_array order by count(*) desc";
+
+}
+
+InsertData
+{
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2001', 1, 'aaa', array['hoge1'])";
+
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2002', 1, 'bbb', array['hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2002', 2, 'aaa', array['hoge1'])";
+
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2003', 1, 'ccc', array['hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2003', 2, 'bbb', array['hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2003', 3, 'aaa', array['hoge1'])";
+
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2004', 1, 'ddd', array['hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2004', 2, 'ccc', array['hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2004', 3, 'bbb', array['hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2004', 4, 'aaa', array['hoge1'])";
+
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2005', 1, 'eee', array['hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2005', 2, 'ddd', array['hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2005', 3, 'ccc', array['hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2005', 4, 'bbb', array['hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2005', 5, 'aaa', array['hoge1'])";
+
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2006', 1, 'fff', array['hoge6', 'hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2006', 2, 'eee', array['hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2006', 3, 'ddd', array['hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2006', 4, 'ccc', array['hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2006', 5, 'bbb', array['hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2006', 6, 'aaa', array['hoge1'])";
+
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2007', 1, 'ggg', array['hoge7', 'hoge6', 'hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2007', 2, 'fff', array['hoge6', 'hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2007', 3, 'eee', array['hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2007', 4, 'ddd', array['hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2007', 5, 'ccc', array['hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2007', 6, 'bbb', array['hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2007', 7, 'aaa', array['hoge1'])";
+
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2008', 1, 'hhh', array['hoge8', 'hoge7', 'hoge6', 'hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2008', 2, 'ggg', array['hoge7', 'hoge6', 'hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2008', 3, 'fff', array['hoge6', 'hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2008', 4, 'eee', array['hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2008', 5, 'ddd', array['hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2008', 6, 'ccc', array['hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2008', 7, 'bbb', array['hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2008', 8, 'aaa', array['hoge1'])";
+
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2009', 1, 'iii', array['hoge9', 'hoge8', 'hoge7', 'hoge6', 'hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2009', 2, 'hhh', array['hoge8', 'hoge7', 'hoge6', 'hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2009', 3, 'ggg', array['hoge7', 'hoge6', 'hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2009', 4, 'fff', array['hoge6', 'hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2009', 5, 'eee', array['hoge5', 'hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2009', 6, 'ddd', array['hoge4', 'hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2009', 7, 'ccc', array['hoge3', 'hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2009', 8, 'bbb', array['hoge2', 'hoge1'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2009', 9, 'aaa', array['hoge1'])";
+
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2010', 1, 'aaa', array['hoge10'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2010', null, 'aaa', array['hoge10'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2010', null, 'aaa', array['hoge10'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2010', 1, 'aaa', array['hoge10'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2010', 1, 'aaa', array['hoge10'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2010', 1, 'aaa', array['hoge10'])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2010', 1, 'aaa', array[null])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2010', 1, 'aaa', array['hoge10', null])";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2010', 1, 'aaa', null)";
+Command "insert into T (F_year, F_num, F_text, F_array) values ('2010', 1, null, array['hoge10'])";
+
+
+}
+

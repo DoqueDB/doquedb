@@ -1,0 +1,28 @@
+# 障害票1315
+# INに使用しORDER BYを含んだ副問い合わせ
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+Command "create table TBL(f int, g int, h ntext, primary key(f))";
+Command "create index IDX on TBL(g)";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "insert TBL values (1, 10, 'abc')";
+Command "select * from TBL where f in (select f from TBL where g > 1 order by h limit 5) order by g, h";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "insert TBL values (2, 20, 'xyz')";
+Command "insert TBL values (3, 30, 'lmn')";
+Command "select * from TBL where f in (select f from TBL where g > 1 order by h limit 5) order by g, h";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+End;

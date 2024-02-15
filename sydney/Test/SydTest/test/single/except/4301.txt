@@ -1,0 +1,30 @@
+#コマンドの中断のテスト(single版、異常系)
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#まず表を作る
+Command "create table T(C int)";
+
+AsyncCommand "ins" "insert into T values (1), (2), (3), (4), (5)";
+#コマンド実行のために十分な時間
+Sleep 1500;
+CancelAsync "ins";
+#usage: GetAsyncResultも必要
+GetAsyncResult "ins";
+#{1}..{5}が取得できなければ成功
+Command "select * from T";
+
+#表の後始末
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,54 @@
+# 障害票 1066
+
+Begin;
+Initialize;
+InitializeSession "";
+
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# 基本形
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true, notf=true)'";
+Command "insert T values 'あいう', '%う'";
+
+CreatePreparedCommand "sel" "select * from T where c like ?";
+PreparedCommand "sel" ["%い%"];
+ErasePreparedCommand "sel";
+
+CreatePreparedCommand "sel" "select * from T where c like ? language ?";
+PreparedCommand "sel" ["あ%う%", "ja"];
+PreparedCommand "sel" ["あ%う%", "fr"];
+PreparedCommand "sel" ["あ%う%", ""];
+ErasePreparedCommand "sel";
+
+CreatePreparedCommand "sel" "select * from T where c like ? language ? escape ?";
+PreparedCommand "sel" ["あ%う%", "fr", ""];
+PreparedCommand "sel" ["あ%う%", "fr", "あ"];
+PreparedCommand "sel" ["あ%う%", "", ""];
+PreparedCommand "sel" ["あ%う%", "", "あ"];
+ErasePreparedCommand "sel";
+
+
+CreatePreparedCommand "sel" "select * from T where c like ? escape ?";
+PreparedCommand "sel" ["あ%う%", "あ"];
+PreparedCommand "sel" ["あ%う%", ""];
+ErasePreparedCommand "sel";
+
+CreatePreparedCommand "sel" "select * from T where c like ? escape ? language ?";
+PreparedCommand "sel" ["あ%う%", "あ", ""];
+PreparedCommand "sel" ["あ%う%", "あ", "fr"];
+PreparedCommand "sel" ["あ%う%", "", ""];
+PreparedCommand "sel" ["あ%う%", "", "fr"];
+ErasePreparedCommand "sel";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

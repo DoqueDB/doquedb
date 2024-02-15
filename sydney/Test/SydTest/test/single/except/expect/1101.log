@@ -1,0 +1,468 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] SydTest_ShowBinary
+SydTest::Executor: [INFO] [SydTest Parameter and Value] SydTest_ShowBinary, True
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(N int, C1 nclob)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (N) values 1, 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C1) from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {株式会社リコー
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C1) from T1
+SydTest::Executor: [INFO] {26}
+SydTest::Executor: [INFO] {9}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from        0 for   0) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from      -99 for 200) from T1
+SydTest::Executor: [INFO] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {株式会社リコー
+}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       71 for  80) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       -4 for  25) from T1
+SydTest::Executor: [INFO] {hello world
+konnnit}
+SydTest::Executor: [INFO] {株式会社リコー
+}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       -1 for   1) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       -5 for   1) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from 99999999 for   1) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from        1 for  -1) from T1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from      -99) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from      101) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from       -1) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from 99999999) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from      -99) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from      101) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from       -1) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from 99999999) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {株式会社リコー
+}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from 21) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {hogehogefugafuga}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from  5) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {リコーでございます}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {株式会社リコー
+}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(N int, C1 nvarchar(32))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (N) values 1, 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C1) from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {株式会社リコー
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C1) from T1
+SydTest::Executor: [INFO] {26}
+SydTest::Executor: [INFO] {9}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from        0 for   0) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from      -99 for 200) from T1
+SydTest::Executor: [INFO] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {株式会社リコー
+}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       71 for  80) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       -4 for  25) from T1
+SydTest::Executor: [INFO] {hello world
+konnnit}
+SydTest::Executor: [INFO] {株式会社リコー
+}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       -1 for   1) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       -5 for   1) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from 99999999 for   1) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from        1 for  -1) from T1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from          -99) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from          101) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from           -1) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from     99999999) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from     4 for -2) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from 4 for -99999) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from          -99) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from          101) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from           -1) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from     99999999) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from     4 for -2) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from 4 for -99999) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from 21) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {hogehogefugafuga}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from  5) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {リコーでございます}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] {helHELLOhelHELLOello world
+konn}
+SydTest::Executor: [INFO] {株式会理リコーでございます会社リコー
+hogehogefuga}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(N int, C1 image)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (N) values 1, 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C1) from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {株式会社リコー
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C1) from T1
+SydTest::Executor: [INFO] {52}
+SydTest::Executor: [INFO] {18}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from        0 for   0) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from      -99 for 200) from T1
+SydTest::Executor: [INFO] {680065006c006c006f00200077006f0072006c0064000d000a006b006f006e006e006e00690074006900680061002e000d000a00}
+SydTest::Executor: [INFO] {2a680f5f1a4f3e79ea30b330fc300d000a00}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       71 for  80) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       -4 for  25) from T1
+SydTest::Executor: [INFO] {680065006c006c006f00200077006f0072006c00}
+SydTest::Executor: [INFO] {2a680f5f1a4f3e79ea30b330fc300d000a00}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       -1 for   1) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from       -5 for   1) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from 99999999 for   1) from T1
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] {}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from        1 for  -1) from T1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from          -99) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from          101) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from           -1) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from     99999999) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from     4 for -2) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from 4 for -99999) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {HELLO}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from          -99) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from          101) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from           -1) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - substring error.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from     99999999) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from     4 for -2) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from 4 for -99999) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {理光。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from 21) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {hogehogefugafuga}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=overlay(C1 placing ? from  5) where N=2
+SydTest::Executor: [INFO] [[SQL Parameter]] {リコーでございます}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] {680065480045004c004c004f00680065480045004c004c004f000065006c006c006f00200077006f0072006c0064000d000a006b006f006e006e006e00690074006900680061002e000d000a00480045004c004c004f00480045004c004c004f00}
+SydTest::Executor: [INFO] {2a680f06ea30b330fc3067305430563044307e3059306f006700650068006f006700650066007500670061006600750067006100}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] SydTest_ShowBinary
+SydTest::Executor: [INFO] [SydTest Parameter and Value] SydTest_ShowBinary, False
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,61 @@
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T(C ntext)";
+Command "create fulltext index I on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=10))'";
+
+Command "insert into T (C) values ('strcpy()関数は src（終端文字を含む）をポインタとする文字列を destをポインタとする配列にコピーする。')";
+Command "insert into T (C) values ('strcpy()関数は src（終端文字を含む）をポインタとする文字列を destをポインタとする配列にコピーする。')";
+Command "insert into T (C) values ('自民党総裁選に出馬した福田康夫元官房長官と麻生太郎幹事長は21日午前、党本部で党青年局主催の公開討論会に臨んだ。両氏は参院選惨敗を踏まえ、地方対策を重視する考えを改めて表明。福田氏は「地方の問題を解決するための構造改革を提案したい」と述べ、都市との格差是正に取り組む姿勢を強調した。麻生氏は地方交付税の改革に意欲をみせた。')";
+Command "insert into T (C) values ('党本部で党青年局主催の公開討論会に臨んだ。両氏は参院選惨敗を踏まえ、地方対策を重視する考えを改めて表明。「地方の問題を解決するための構造改革を提案したい」')";
+Command "insert into T (C) values ('党本部で党青年局主催の公開討論会に臨んだ。参院選惨敗を踏まえ、地方対策を重視する考えを改めて表明。「地方の問題を解決するための構造改革を提案したい」')";
+Command "insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。')";
+Command "insert into T (C) values ('京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+
+Command "select rowid,score(C) from T where C contains 'ロハス' order by score(C) asc";
+Command "select rowid,score(C) from T where C contains 'ロハス' order by score(C) desc";
+
+Command "select rowid,score(C),cluster(C).id from T where C contains 'ロハス' limit 5";
+
+Command "select rowid,score(C),TF(C) from T where C contains wordlist('ロハス')";
+
+Command "select rowid,score(C),cluster(C).id from T where C contains 'ロハス' clustered limit 0.5";
+Command "select rowid,score(C),cluster(C).id from T where C contains 'ロハス' clustered limit 0.98";
+
+Command "select rowid,cluster(C).id from T where C contains 'ロハス' limit 5";
+
+Command "select rowid,cluster(C).id from T where C contains 'ロハス' limit 1";
+Command "select rowid,cluster(C).id from T where C contains 'ロハス' limit 2";
+Command "select rowid,cluster(C).id from T where C contains 'ロハス' limit 3";
+Command "select rowid,cluster(C).id from T where C contains 'ロハス' limit 4";
+
+Command "select rowid,cluster(C).id from T where C contains 'ロハス' limit 1 offset 1";
+Command "select rowid,cluster(C).id from T where C contains 'ロハス' limit 2 offset 1";
+Command "select rowid,cluster(C).id from T where C contains 'ロハス' limit 3 offset 2";
+Command "select rowid,cluster(C).id from T where C contains 'ロハス' limit 2 offset 3";
+
+Command "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

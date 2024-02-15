@@ -1,0 +1,32 @@
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+SetSystemParameter "Schema_NoEncodingForm" "true";
+
+InitializeSession "TESTDB";
+
+Command  "create table T1(C1 char(5), C2 nchar(5))";
+Command  "create index I1 on T1(C1, C2)";
+Command  "create index I1_1 on T1(C1)";
+Command  "create index I1_2 on T1(C2)";
+Command  "select C1, C2 from T1";
+Command  "insert into T1 (C1, C2) values (?, ?)" ["abc", "ＡＢＣ"];
+Command  "insert into T1 (C1, C2) values (?, ?)" ["def", "ＤＥＦ"];
+Command  "select C1, C2 from T1 where C1 = 'abc'";
+Command  "drop table T1";
+
+TerminateSession;
+
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+
+SetSystemParameter "Schema_NoEncodingForm" "false";
+
+Terminate;
+End;

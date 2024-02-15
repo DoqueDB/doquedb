@@ -1,0 +1,22 @@
+# contains述語にsynonym関数
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+Command "create database TEST";
+Command "create table T (ID int, F nvarchar(256))";
+Command "create fulltext index T_F on T(F) hint 'inverted=(indexing=dual, tokenizer=DUAL:JAP:ALL:1 @UNARSCID:1 @NORMRSCID:1)'";
+
+Command "insert into T values (1, '文書管理方法')";
+Command "insert into T values (2, '文献管理方法')";
+Command "insert into T values (3, '文書管理装置')";
+Command "insert into T values (4, '文献管理装置')";
+
+
+Command "select ID from T where F contains within(synonym('文書' '文献') '管理' synonym('方法' '装置') symmetric upper 3)";
+
+Command "drop table T";
+Command "drop database TEST";
+TerminateSession;
+Terminate;
+End;

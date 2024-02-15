@@ -1,0 +1,92 @@
+# 
+#配列にマイナスの数値をセットできない
+#障害番号 0645,0646に対応
+#2005.12.14 tajima
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+#
+#int
+#
+Command "create table IntArrayTable (NUM int, ARRAYVALUE int array[8])";
+Command "insert into IntArrayTable values (1, array[NULL, 2, 5000, 200])";
+Command "insert into IntArrayTable values (2, array[NULL, NULL, 89, 300])";
+Command "insert into IntArrayTable values (3, array[NULL, NULL, NULL, -1234567,NULL,-765432])";
+Command "insert into IntArrayTable values (4, array[0, 200, -3566, 9876])";
+Command "insert into IntArrayTable values (5, array[-1, 2, 2147483647, 300])";
+Command "insert into IntArrayTable values (6, array[2, -50, -2147483648, 500])";
+Command "insert into IntArrayTable values (7, array[3, 12345, -2147483649, -400])";
+Command "insert into IntArrayTable values (8, array[4, 12345, 2147483648, null])";
+
+Command "select * from IntArrayTable order by NUM";
+
+#
+#float
+#
+Command "create table floatArrayTable (NUM int, ARRAYVALUE float array[8])";
+Command "insert into floatArrayTable values (1, array[null, 2.3987, 100.0, 1])";
+Command "insert into floatArrayTable values (2, array[null, 2.3987, 2])";
+Command "insert into floatArrayTable values (3, array[null, 3.141592, 2])";
+Command "insert into floatArrayTable values (4, array[null, 3.141592, 2.0])";
+Command "insert into floatArrayTable values (5, array[null, 50.5687, 2])";
+Command "insert into floatArrayTable values (6, array[null, 50.5687, 2.0])";
+Command "insert into floatArrayTable values (7, array[3.141592, 1,1, 2])";
+Command "insert into floatArrayTable values (8, array[50.5687, 2, 2,1])";
+
+Command "insert into floatArrayTable values (9, array[-1.0, 100.4877, -0.789878, 3])";
+Command "insert into floatArrayTable values (10, array[null, 100.4877, 1, 3])";
+Command "insert into floatArrayTable values (11, array[2.0, -9803.123, null, 3])";
+Command "insert into floatArrayTable values (12, array[null, -9803.123, 2, 3])";
+Command "insert into floatArrayTable values (13, array[3.0, 999.1234, -100, -3])";
+Command "insert into floatArrayTable values (14, array[null, 999.1234, 3, -3])";
+Command "insert into floatArrayTable values (15, array[4.0, 100.4444, -8349506.01, null])";
+
+Command "select * from floatArrayTable order by NUM";
+
+#
+#bigint
+#
+Command "create table bigintArrayTable (NUM int, ARRAYVALUE bigint array[8])";
+Command "insert into bigintArrayTable values (1, array[null, 3, 100, 1])";
+Command "insert into bigintArrayTable values (2, array[null, null, 100, 2867940])";
+Command "insert into bigintArrayTable values (3, array[null, null, null, -123940567])";
+Command "insert into bigintArrayTable values (4, array[null, null, null, -123940567,null,9238475637,null])";
+Command "insert into bigintArrayTable values (5, array[100, 45000, 5555, -1])";
+Command "insert into bigintArrayTable values (6, array[1, -10, 9223372036854775807, 2])";
+Command "insert into bigintArrayTable values (7, array[-2, 100, -9223372036854775808, 3])";
+Command "insert into bigintArrayTable values (8, array[3, 100, -9223372036854775809, -4])";
+Command "insert into bigintArrayTable values (9, array[4, 10, 9223372036854775808, -5])";
+
+
+Command "select * from bigintArrayTable order by NUM";
+
+
+#固定長文字列が要素の配列型の列の場合、先頭要素を null にすると
+#それ以降に続く要素に空白文字を付加してくれない
+
+Command "create table c8at (c char(8) array[no limit])";
+Command "insert into c8at values (array['abcd', 'xyz'])";
+Command "insert into c8at values (array['XYXYX', null, 'ABAB'])";
+Command "insert into c8at values (array['B', 'OPQ', null])";
+Command "insert into c8at values (array[null, 'abcdef', 'ABC'])";
+Command "select * from c8at";
+
+
+Command "drop table IntArrayTable";
+Command "drop table floatArrayTable";
+Command "drop table bigintArrayTable";
+Command "drop table c8at";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

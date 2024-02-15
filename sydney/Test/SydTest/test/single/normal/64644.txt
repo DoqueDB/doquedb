@@ -1,0 +1,27 @@
+# delayed の全文に対して select avg(char_length(F)) from T を実行する
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(F ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(F) hint 'sectionized, delayed ,inverted=(nolocation=true, notf=true)'";
+
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (F) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (F) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"]];
+
+Command  "select avg(char_length(F)) from T1";
+
+Command  "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

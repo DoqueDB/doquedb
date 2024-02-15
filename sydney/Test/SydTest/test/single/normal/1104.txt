@@ -1,0 +1,176 @@
+# blob/nvarchar/imageファイルのテスト
+
+Begin;
+SetSystemParameter "SydTest_ShowBinary" "True";
+SetSystemParameter "SydTest_MessageDisplayThreshold" "0";
+Initialize;
+
+
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#blobのテスト
+Command "create table T1(C1 blob)";
+Command "select C1 from T1";
+Command "insert into T1 (C1) values (?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from        1 for 1000) from T1";
+Command "select substring(C1 from 14999501 for 1000) from T1";
+Command "select substring(C1 from 29999001 for 1000) from T1";
+Command "update T1 set C1 = overlay(C1 placing ? from        1)" [binaryfile "..\\..\\doc\\rnd1k-a"]; 
+Command "update T1 set C1 = overlay(C1 placing ? from 14999501)" [binaryfile "..\\..\\doc\\rnd1k-b"];
+Command "update T1 set C1 = overlay(C1 placing ? from 29999001)" [binaryfile "..\\..\\doc\\rnd1k-c"];
+Command "select substring(C1 from        1 for 1000) from T1";
+Command "select substring(C1 from 14999501 for 1000) from T1";
+Command "select substring(C1 from 29999001 for 1000) from T1";
+
+Command "select substring(C1 from        1 for 5000) from T1";
+Command "select substring(C1 from 14997501 for 5000) from T1";
+Command "select substring(C1 from 29995001 for 5000) from T1";
+Command "update T1 set C1 = overlay(C1 placing ? from        1)" [binaryfile "..\\..\\doc\\rnd5k-a"]; 
+Command "update T1 set C1 = overlay(C1 placing ? from 14997501)" [binaryfile "..\\..\\doc\\rnd5k-b"];
+Command "update T1 set C1 = overlay(C1 placing ? from 29995001)" [binaryfile "..\\..\\doc\\rnd5k-c"];
+Command "select substring(C1 from        1 for 5000) from T1";
+Command "select substring(C1 from 14997501 for 5000) from T1";
+Command "select substring(C1 from 29995001 for 5000) from T1";
+Command  "drop table T1";
+
+
+#nvarcharのテスト
+Command "create table T1(C1 nvarchar(900))";
+Command "select C1 from T1";
+Command "insert into T1 (C1) values (?)" ["あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん"];
+Command "update T1 set C1 = C1||?" ["アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワヲン"];
+Command "update T1 set C1 = C1||?" ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+Command "update T1 set C1 = C1||?" ["あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん"];
+Command "update T1 set C1 = C1||?" ["アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワヲン"];
+Command "update T1 set C1 = C1||?" ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+Command "update T1 set C1 = C1||?" ["あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん"];
+Command "update T1 set C1 = C1||?" ["アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワヲン"];
+Command "update T1 set C1 = C1||?" ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+Command "update T1 set C1 = C1||?" ["あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん"];
+Command "update T1 set C1 = C1||?" ["アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワヲン"];
+Command "update T1 set C1 = C1||?" ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+Command "update T1 set C1 = C1||?" ["あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん"];
+Command "update T1 set C1 = C1||?" ["アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワヲン"];
+Command "update T1 set C1 = C1||?" ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+Command "update T1 set C1 = C1||?" ["あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん"];
+Command "update T1 set C1 = C1||?" ["アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワヲン"];
+Command "update T1 set C1 = C1||?" ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+Command "update T1 set C1 = C1||?" ["あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん"];
+Command "update T1 set C1 = C1||?" ["アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワヲン"];
+Command "update T1 set C1 = C1||?" ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+Command "update T1 set C1 = C1||?" ["あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん"];
+Command "update T1 set C1 = C1||?" ["アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワヲン"];
+Command "update T1 set C1 = C1||?" ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+Command "update T1 set C1 = C1||?" ["あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん"];
+Command "update T1 set C1 = C1||?" ["アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワヲン"];
+Command "update T1 set C1 = C1||?" ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+Command "update T1 set C1 = C1||?" ["あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん"];
+Command "update T1 set C1 = C1||?" ["アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワヲン"];
+Command "update T1 set C1 = C1||?" ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from  1 for 100) from T1";
+Command "select substring(C1 from 50 for 100) from T1";
+Command "select substring(C1 from 70 for 100) from T1";
+Command "update T1 set C1 = overlay(C1 placing ? from        1)" ["がぎぐげござじずぜぞだぢづでどばびぶべぼ"];
+Command "update T1 set C1 = overlay(C1 placing ? from       50)" ["ガギグゲゴザジズゼゾダヂヅデドバビブベボ"];
+Command "update T1 set C1 = overlay(C1 placing ? from       70)" ["abcdefghijklmnopqrstuvwxyz"];
+Command "update T1 set C1 = overlay(C1 placing ? from 4 for 19)" ["ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"];
+Command "select substring(C1 from  1 for 100) from T1";
+Command "select substring(C1 from 50 for 100) from T1";
+Command "select substring(C1 from 70 for 100) from T1";
+
+Command "select substring(C1 from  1 for 500) from T1";
+Command "select substring(C1 from 50 for 500) from T1";
+Command "select substring(C1 from 70 for 500) from T1";
+Command "update T1 set C1 = overlay(C1 placing ? from        1)" ["がぎぐげござじずぜぞだぢづでどばびぶべぼ"];
+Command "update T1 set C1 = overlay(C1 placing ? from       50)" ["ガギグゲゴザジズゼゾダヂヅデドバビブベボ"];
+Command "update T1 set C1 = overlay(C1 placing ? from       70)" ["abcdefghijklmnopqrstuvwxyz"];
+Command "update T1 set C1 = overlay(C1 placing ? from 4 for 19)" ["ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"];
+Command "select substring(C1 from  1 for 500) from T1";
+Command "select substring(C1 from 50 for 500) from T1";
+Command "select substring(C1 from 70 for 500) from T1";
+Command  "drop table T1";
+
+
+#imageのテスト
+Command "create table T1(C1 image)";
+Command "select C1 from T1";
+Command "insert into T1 (C1) values (?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from       1 for 1000) from T1";
+Command "select substring(C1 from 1499951 for 1000) from T1";
+Command "select substring(C1 from 2999901 for 1000) from T1";
+Command "update T1 set C1 = overlay(C1 placing ? from       1)" [binaryfile "..\\..\\doc\\rnd1k-a"]; 
+Command "update T1 set C1 = overlay(C1 placing ? from 1499951)" [binaryfile "..\\..\\doc\\rnd1k-b"];
+Command "update T1 set C1 = overlay(C1 placing ? from 2999901)" [binaryfile "..\\..\\doc\\rnd1k-c"];
+Command "update T1 set C1 = overlay(C1 placing ? from 1000 for 499951)" [binaryfile "..\\..\\doc\\rnd100k"];
+Command "select substring(C1 from       1 for 1000) from T1";
+Command "select substring(C1 from 1499751 for 1000) from T1";
+Command "select substring(C1 from 2999901 for 1000) from T1";
+
+Command "select substring(C1 from       1 for 5000) from T1";
+Command "select substring(C1 from 1499751 for 5000) from T1";
+Command "select substring(C1 from 2999501 for 5000) from T1";
+Command "update T1 set C1 = overlay(C1 placing ? from       1)" [binaryfile "..\\..\\doc\\rnd5k-a"]; 
+Command "update T1 set C1 = overlay(C1 placing ? from 1499751)" [binaryfile "..\\..\\doc\\rnd5k-b"];
+Command "update T1 set C1 = overlay(C1 placing ? from 2999501)" [binaryfile "..\\..\\doc\\rnd5k-c"];
+Command "update T1 set C1 = overlay(C1 placing ? from 1000 for 499951)" [binaryfile "..\\..\\doc\\rnd100k"];
+Command "select substring(C1 from       1 for 5000) from T1";
+Command "select substring(C1 from 1499751 for 5000) from T1";
+Command "select substring(C1 from 2999501 for 5000) from T1";
+Command  "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+SetSystemParameter "SydTest_MessageDisplayThreshold" "500";
+SetSystemParameter "SydTest_ShowBinary" "False";
+End;
+

@@ -1,0 +1,126 @@
+Begin;
+
+SetSystemParameter "Execution_LikeNormalizedString" 1;
+
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table #1 ( c0 ntext, c1 ntext hint heap 'compressed' )";
+
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"abcdefghijklmnopqrstuvwxyz",
+"abcdefghijklmnopqrstuvwxyz"
+];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"0123456789",
+"0123456789"
+];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"~!@#$%&*()-_=+[{]};:|,<.>/?",
+"~!@#$%&*()-_=+[{]};:|,<.>/?"
+];
+#濁点、半濁点なし
+#Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+#"ｧｱｨｲｩｳｪｴｫｵｶｷｸｹｺｻｼｽｾｿﾀﾁｯﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓｬﾔｭﾕｮﾖﾗﾘﾙﾚﾛﾜｦﾝｰ｡｢｣､･",
+#"ｧｱｨｲｩｳｪｴｫｵｶｷｸｹｺｻｼｽｾｿﾀﾁｯﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓｬﾔｭﾕｮﾖﾗﾘﾙﾚﾛﾜｦﾝｰ｡｢｣､･"
+#];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"ｧｱｨｲｩｳｪｴｫｵｶｶﾞｷｷﾞｸｸﾞｹｹﾞｺｺﾞｻｻﾞｼｼﾞｽｽﾞｾｾﾞｿｿﾞﾀﾀﾞﾁﾁﾞｯﾂﾂﾞﾃﾃﾞﾄﾄﾞﾅﾆﾇﾈﾉﾊﾊﾞﾊﾟﾋﾋﾞﾋﾟﾌﾌﾞﾌﾟﾍﾍﾞﾍﾟﾎﾎﾞﾎﾟﾏﾐﾑﾒﾓｬﾔｭﾕｮﾖﾗﾘﾙﾚﾛﾜｦﾝｰ｡｢｣､･ﾞﾟ",
+"ｧｱｨｲｩｳｪｴｫｵｶｶﾞｷｷﾞｸｸﾞｹｹﾞｺｺﾞｻｻﾞｼｼﾞｽｽﾞｾｾﾞｿｿﾞﾀﾀﾞﾁﾁﾞｯﾂﾂﾞﾃﾃﾞﾄﾄﾞﾅﾆﾇﾈﾉﾊﾊﾞﾊﾟﾋﾋﾞﾋﾟﾌﾌﾞﾌﾟﾍﾍﾞﾍﾟﾎﾎﾞﾎﾟﾏﾐﾑﾒﾓｬﾔｭﾕｮﾖﾗﾘﾙﾚﾛﾜｦﾝｰ｡｢｣､･ﾞﾟ"
+];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ",
+"ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ"
+];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ",
+"ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
+];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"０１２３４５６７８９",
+"０１２３４５６７８９"
+];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"～！＠＃＄％＆＊（）－＿＝＋［｛］｝；：｜，＜．＞／？",
+"～！＠＃＄％＆＊（）－＿＝＋［｛］｝；：｜，＜．＞／？"
+];
+#濁点、半濁点なし
+#Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+#"ァアィイゥウェエォオカキクケコサシスセソタチッツテトナニヌネノハヒフヘホマミムメモャヤュユョヨラリルレロワヲンー。「」、・",
+#"ァアィイゥウェエォオカキクケコサシスセソタチッツテトナニヌネノハヒフヘホマミムメモャヤュユョヨラリルレロワヲンー。「」、・"
+#];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロワヲンー。「」、・゛゜",
+"ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロワヲンー。「」、・゛゜"
+];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"ァアィイゥウェエォオカカ゛キキ゛クク゛ケケ゛ココ゛ササ゛シシ゛スス゛セセ゛ソソ゛タタ゛チチ゛ッツツ゛テテ゛トト゛ナニヌネノハハ゛ハ゜ヒヒ゛ヒ゜フフ゛フ゜ヘヘ゛ヘ゜ホホ゛ホ゜マミムメモャヤュユョヨラリルレロワヲンー。「」、・゛゜",
+"ァアィイゥウェエォオカカ゛キキ゛クク゛ケケ゛ココ゛ササ゛シシ゛スス゛セセ゛ソソ゛タタ゛チチ゛ッツツ゛テテ゛トト゛ナニヌネノハハ゛ハ゜ヒヒ゛ヒ゜フフ゛フ゜ヘヘ゛ヘ゜ホホ゛ホ゜マミムメモャヤュユョヨラリルレロワヲンー。「」、・゛゜"
+];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろわをんー。「」、・゛゜",
+"ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろわをんー。「」、・゛゜"
+];
+Command "insert into #1 ( c0, c1 ) values ( ?, ? )" [
+"ぁあぃいぅうぇえぉおかか゛きき゛くく゛けけ゛ここ゛ささ゛しし゛すす゛せせ゛そそ゛たた゛ちち゛っつつ゛てて゛とと゛なにぬねのはは゛は゜ひひ゛ひ゜ふふ゛ふ゜へへ゛へ゜ほほ゛ほ゜まみむめもゃやゅゆょよらりるれろわをんー。「」、・゛゜",
+"ぁあぃいぅうぇえぉおかか゛きき゛くく゛けけ゛ここ゛ささ゛しし゛すす゛せせ゛そそ゛たた゛ちち゛っつつ゛てて゛とと゛なにぬねのはは゛は゜ひひ゛ひ゜ふふ゛ふ゜へへ゛へ゜ほほ゛ほ゜まみむめもゃやゅゆょよらりるれろわをんー。「」、・゛゜"
+];
+
+Command "select ROWID, c0, c1 from #1";
+
+Command "select ROWID, c0 from #1 where c0 like ?" [ "abcdefghijklmnopqrstuvwxyz" ];
+Command "select ROWID, c0 from #1 where c0 like ?" [ "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ];
+Command "select ROWID, c0 from #1 where c0 like ?" [ "0123456789" ];
+Command "select ROWID, c0 from #1 where c0 like ?" [ "%~!@#$\%&*()-\_=+[{]};:|,<.>/?" ];
+#濁点、半濁点なし
+#Command "select ROWID, c0 from #1 where c0 like ?" [ "ｧｱｨｲｩｳｪｴｫｵｶｷｸｹｺｻｼｽｾｿﾀﾁｯﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓｬﾔｭﾕｮﾖﾗﾘﾙﾚﾛﾜｦﾝｰ｡｢｣､･" ];
+Command "select ROWID, c0 from #1 where c0 like ?" [ "ｧｱｨｲｩｳｪｴｫｵｶｶﾞｷｷﾞｸｸﾞｹｹﾞｺｺﾞｻｻﾞｼｼﾞｽｽﾞｾｾﾞｿｿﾞﾀﾀﾞﾁﾁﾞｯﾂﾂﾞﾃﾃﾞﾄﾄﾞﾅﾆﾇﾈﾉﾊﾊﾞﾊﾟﾋﾋﾞﾋﾟﾌﾌﾞﾌﾟﾍﾍﾞﾍﾟﾎﾎﾞﾎﾟﾏﾐﾑﾒﾓｬﾔｭﾕｮﾖﾗﾘﾙﾚﾛﾜｦﾝｰ｡｢｣､･ﾞﾟ" ];
+#濁点、半濁点なし
+#Command "select ROWID, c0 from #1 where c0 like ?" [ "ァアィイゥウェエォオカキクケコサシスセソタチッツテトナニヌネノハヒフヘホマミムメモャヤュユョヨラリルレロワヲンー。「」、・" ];
+Command "select ROWID, c0 from #1 where c0 like ?" [ "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロワヲンー。「」、・゛゜" ];
+Command "select ROWID, c0 from #1 where c0 like ?" [ "ァアィイゥウェエォオカカ゛キキ゛クク゛ケケ゛ココ゛ササ゛シシ゛スス゛セセ゛ソソ゛タタ゛チチ゛ッツツ゛テテ゛トト゛ナニヌネノハハ゛ハ゜ヒヒ゛ヒ゜フフ゛フ゜ヘヘ゛ヘ゜ホホ゛ホ゜マミムメモャヤュユョヨラリルレロワヲンー。「」、・゛゜" ];
+Command "select ROWID, c0 from #1 where c0 like ?" [ "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろわをんー。「」、・゛゜" ];
+Command "select ROWID, c0 from #1 where c0 like ?" [ "ぁあぃいぅうぇえぉおかか゛きき゛くく゛けけ゛ここ゛ささ゛しし゛すす゛せせ゛そそ゛たた゛ちち゛っつつ゛てて゛とと゛なにぬねのはは゛は゜ひひ゛ひ゜ふふ゛ふ゜へへ゛へ゜ほほ゛ほ゜まみむめもゃやゅゆょよらりるれろわをんー。「」、・゛゜" ];
+
+Command "select ROWID, c0 from #1 where c0 like ?" [ "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ" ];
+Command "select ROWID, c0 from #1 where c0 like ?" [ "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ" ];
+Command "select ROWID, c0 from #1 where c0 like ?" [ "０１２３４５６７８９" ];
+Command "select ROWID, c0 from #1 where c0 like ?" [ "～！＠＃＄％＆＊（）－＿＝＋［｛］｝；：｜，＜．＞／？" ];
+
+Command "select ROWID, c1 from #1 where c1 like ?" [ "abcdefghijklmnopqrstuvwxyz" ];
+Command "select ROWID, c1 from #1 where c1 like ?" [ "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ];
+Command "select ROWID, c1 from #1 where c1 like ?" [ "0123456789" ];
+Command "select ROWID, c1 from #1 where c1 like ?" [ "%~!@#$\%&*()-\_=+[{]};:|,<.>/?" ];
+#濁点、半濁点なし
+#Command "select ROWID, c1 from #1 where c1 like ?" [ "ｧｱｨｲｩｳｪｴｫｵｶｷｸｹｺｻｼｽｾｿﾀﾁｯﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓｬﾔｭﾕｮﾖﾗﾘﾙﾚﾛﾜｦﾝｰ｡｢｣､･" ];
+Command "select ROWID, c1 from #1 where c1 like ?" [ "ｧｱｨｲｩｳｪｴｫｵｶｶﾞｷｷﾞｸｸﾞｹｹﾞｺｺﾞｻｻﾞｼｼﾞｽｽﾞｾｾﾞｿｿﾞﾀﾀﾞﾁﾁﾞｯﾂﾂﾞﾃﾃﾞﾄﾄﾞﾅﾆﾇﾈﾉﾊﾊﾞﾊﾟﾋﾋﾞﾋﾟﾌﾌﾞﾌﾟﾍﾍﾞﾍﾟﾎﾎﾞﾎﾟﾏﾐﾑﾒﾓｬﾔｭﾕｮﾖﾗﾘﾙﾚﾛﾜｦﾝｰ｡｢｣､･ﾞﾟ" ];
+#濁点、半濁点なし
+#Command "select ROWID, c1 from #1 where c1 like ?" [ "ァアィイゥウェエォオカキクケコサシスセソタチッツテトナニヌネノハヒフヘホマミムメモャヤュユョヨラリルレロワヲンー。「」、・" ];
+Command "select ROWID, c1 from #1 where c1 like ?" [ "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロワヲンー。「」、・゛゜" ];
+Command "select ROWID, c1 from #1 where c1 like ?" [ "ァアィイゥウェエォオカカ゛キキ゛クク゛ケケ゛ココ゛ササ゛シシ゛スス゛セセ゛ソソ゛タタ゛チチ゛ッツツ゛テテ゛トト゛ナニヌネノハハ゛ハ゜ヒヒ゛ヒ゜フフ゛フ゜ヘヘ゛ヘ゜ホホ゛ホ゜マミムメモャヤュユョヨラリルレロワヲンー。「」、・゛゜" ];
+Command "select ROWID, c1 from #1 where c1 like ?" [ "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろわをんー。「」、・゛゜" ];
+Command "select ROWID, c1 from #1 where c1 like ?" [ "ぁあぃいぅうぇえぉおかか゛きき゛くく゛けけ゛ここ゛ささ゛しし゛すす゛せせ゛そそ゛たた゛ちち゛っつつ゛てて゛とと゛なにぬねのはは゛は゜ひひ゛ひ゜ふふ゛ふ゜へへ゛へ゜ほほ゛ほ゜まみむめもゃやゅゆょよらりるれろわをんー。「」、・゛゜" ];
+
+Command "select ROWID, c1 from #1 where c1 like ?" [ "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ" ];
+Command "select ROWID, c1 from #1 where c1 like ?" [ "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ" ];
+Command "select ROWID, c1 from #1 where c1 like ?" [ "０１２３４５６７８９" ];
+Command "select ROWID, c1 from #1 where c1 like ?" [ "～！＠＃＄％＆＊（）－＿＝＋［｛］｝；：｜，＜．＞／？" ];
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+
+#SetSystemParameter "Execution_LikeNormalizedString" 0;
+
+End;

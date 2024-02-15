@@ -1,0 +1,25 @@
+Begin;
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T (ID int, F1 int, F2 int, primary key(ID), unique(F1,F2))";
+Command "insert into T values (1,1,null),(2,1,null),(3,1,0),(4,1,1),(5,2,0),(6,2,null),(7,2,1),(8,2,null),(9,2,null),(10,2,2)";
+
+Command "delete from T where ID = 3";
+Command "select * from T where ID = 3";
+
+Command "insert into T values (3,1,0)";
+Command "select * from T where ID = 3";
+
+Command "delete from T where ID = 6";
+Command "select * from T where ID = 6";
+
+Command "insert into T values (6,2,null)";
+Command "select * from T where ID = 6";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

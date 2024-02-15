@@ -1,0 +1,51 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2( C1 ntext , L language )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTIndex on T2(C1) language column L
+	hint 'delayed, inverted=(normalized=true, indexing=ngram,
+	tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {abc,cdf}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,2,3}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello,world,C,is,a beautiful language}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {English,is,easy,to,learn}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,TF(C1) from T2 where C1 contains wordlist('a','c','e','n','d','l')
+SydTest::Executor: [INFO] {0,{1,2,0,0,1,0}}
+SydTest::Executor: [INFO] {2,{4,1,3,1,1,5}}
+SydTest::Executor: [INFO] {3,{2,0,3,2,0,2}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

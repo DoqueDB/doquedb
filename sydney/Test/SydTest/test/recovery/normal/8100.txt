@@ -1,0 +1,77 @@
+## -*-Mode: text; tab-width: 4; c-basic-offset: 4;-*-
+## vi:set ts=4 sw=4:
+##
+## 8100.txt -- index 作成のテスト
+##
+##	TEST CONTENTS
+##		index の作成、移動、削除に関係なく table が参照できる
+##
+##	START CONDITIONS
+##		特に無し
+##		
+##	END CONDITIONS
+##		start 前と同じ状態である
+##
+##	CHECK
+##		select 文の結果が正しいか
+##
+##	NOTE
+##		シングルスレッド
+##		正常系
+##		Schema の単体テストも兼ねる
+##
+## Copyright (c) 2001, 2002, 2003 Ricoh Company, Ltd.
+## All rights reserved.
+##
+##		$Author$
+##		$Date$
+##		$Revision$
+##
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+# 準備
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create area IDX_AREA 'd:\\dm\\area\\idx'";
+Command "create table T(A int)";
+Command "insert into T(A) values(1)";
+Command "insert into T(A) values(2)";
+TerminateSession;
+
+# select 用のセッションと index 作成用のセッションを作成
+InitializeSession 1 "TESTDB";
+InitializeSession 2 "TESTDB";
+
+Command 1 "select * from T";
+
+# index 作成後も結果は変わらない
+Command 2 "create index IDX1 on T(A)";
+Command 1 "select * from T";
+
+# index 移動後も結果は変わらない
+Command 2 "alter index IDX1 set area IDX_AREA";
+Command 1 "select * from T";
+
+# index 削除後も結果は変わらない
+Command 2 "drop index IDX1";
+Command 1 "select * from T";
+
+TerminateSession 1;
+TerminateSession 2;
+
+# 後片付け
+#InitializeSession "TESTDB";
+#Command "drop database TESTDB";
+#TerminateSession;
+
+#System "rm -rf d:\\dm\\area";
+
+# (障害回復を試すためTerminateしない)
+End;

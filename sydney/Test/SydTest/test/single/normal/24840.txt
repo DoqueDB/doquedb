@@ -1,0 +1,28 @@
+# 先頭キーにnullのデータがある索引のテスト
+# 障害票 2508
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+Command "create database TEST";
+
+Command "create table T(F nvarchar(128))";
+Command "create all rows index T_F on T(F)";
+
+Command "insert into T values (null),('aaa'),('xyz')";
+
+Command "verify database TEST cascade continue value";
+
+Command "drop table T";
+
+Command "create table T(F1 int, F2 nvarchar(128))";
+Command "create index T_F on T(F1,F2)";
+
+Command "insert into T values (1,null),(2,'aaa'),(3,'xyz')";
+
+Command "verify database TEST cascade continue value";
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,117 @@
+#Containsに空文字列を渡したときの例外確認
+# 障害票2529
+####################################################
+####################################################
+# Contains x Containsでないもの
+####################################################
+####################################################
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+
+# Containsに対するAND OR NOTの組み合わせで正しく動作することを確認する
+
+####################################################
+# 準備
+####################################################
+Command "create table t (f ntext, g ntext, h ntext)";
+Command "insert t values (?, ?, ?)" ["abc", "あいうえお", "123"];
+Command "insert t values (?, ?, ?)" ["bcd", "あかさたな", "135"];
+Command "insert t values (?, ?, ?)" [null,  "かきくけこ", "246"];
+Command "insert t values (?, ?, ?)" ["cde", null,         "139"];
+Command "insert t values (?, ?, ?)" ["def", "なにぬねの", null];
+
+Command "create fulltext index i on t(f)";
+Command "create fulltext index j on t(g)";
+Command "create fulltext index k on t(h)";
+
+####################################################
+# AND, OR, NOTの単体
+####################################################
+
+######
+# AND
+######
+Command "select * from t where (f contains '' and g is null)";
+Command "select count(*) from t where (f contains string('') and g is null)";
+
+######
+# OR
+######
+Command "select * from t where (f contains '' or h is null)";
+Command "select count(*) from t where (f contains('') or h is null)";
+
+#########
+# ANDのOR
+#########
+# 同じ列
+Command "select * from t where f contains '' or (f contains '' and f is null)";
+Command "select count(*) from t where f contains string('') or (f contains string('') and f is null)";
+
+# 2つの列
+Command "select * from t where f contains '' or (g contains '' and g is null)";
+Command "select count(*) from t where f contains string('') or (g contains string('') and g is null)";
+
+# 3つの列
+Command "select * from t where f contains '' or (g contains '' and h is null)";
+Command "select count(*) from t where f contains string('') or (g contains string('') and h is null)";
+
+#########
+# ORのAND
+#########
+# 同じ列
+Command "select * from t where f contains '' and (f contains '' or f is null)";
+Command "select count(*) from t where f contains string('') and (f contains string('') or f is null)";
+
+# 2つの列
+Command "select * from t where f contains '' and (g contains '' or g is null)";
+Command "select count(*) from t where f contains string('') and (g contains string('') or g is null)";
+
+
+# 3つの列
+Command "select * from t where f contains '' and (g contains '' or h is null)";
+Command "select count(*) from t where f contains string('') and (g contains string('') or h is null)";
+
+#########
+# ANDのNOT
+#########
+# 同じ列
+Command "select * from t where not (f contains '' and f is null)";
+Command "select count(*) from t where not (f contains string('') and f is null)";
+
+# 2つの列
+Command "select * from t where not (f contains '' and g is null)";
+Command "select count(*) from t where not (f contains string('') and g is null)";
+
+#########
+# NOTのAND
+#########
+# 同じ列
+Command "select * from t where not (f contains '') and not (f is null)";
+Command "select count(*) from t where not (f contains string('')) and not (f is null)";
+
+# 2つの列
+Command "select * from t where not (f contains '') and not (g is null)";
+Command "select count(*) from t where not (f contains string('')) and not (g is null)";
+
+#########
+# ORのNOT
+#########
+# 同じ列
+Command "select * from t where not (f contains '' or f is null)";
+Command "select count(*) from t where not (f contains string('') or f is null)";
+
+# 2つの列
+Command "select * from t where not (f contains '' or g is null)";
+Command "select count(*) from t where not (f contains string('') or g is null)";
+#########
+
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

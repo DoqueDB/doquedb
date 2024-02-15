@@ -1,0 +1,24 @@
+# 障害No.2240により追加
+Begin;
+Initialize;
+InitializeSession "";
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table dummy(I int, C nvarchar(64))";
+Command "insert into dummy(I, C) values(1, 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん')";
+Command "select null + null from dummy";
+Command "select null * null from dummy";
+Command "select null - null from dummy";
+Command "select null / null from dummy";
+Command "select abs(null) from dummy";
+Command "select null || null from dummy";
+Command "select overlay(null placing null from 2) from dummy";
+Command "select substring(C from ? for ?) from dummy" [null, null];
+Command "select substring(C from null for null) from dummy";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,81 @@
+#
+#型の制限を超える異常系のテスト
+#
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TestDB";
+TerminateSession;
+
+InitializeSession "TestDB";
+
+#固定長文字列型(char、nchar)は400文字まで
+Command "create table t(C char(401))";
+Command "create table t2(C nchar(401))";
+
+#binary型は400byteまで
+Command "create table tn3(b binary(401))";
+
+
+#型宣言を超えたデータセット
+Command "create table t(C varchar(20))";
+Command "insert into t values ('aaaaaaaaaabbbbbbbbbbcc')";
+Command "select * from t";
+
+Command "create table t3(C nvarchar(20))";
+Command "insert into t3 values ('aaaaaaaaaabbbbbbbbbbcc')";
+Command "select * from t3";
+
+
+#uniqeidentifierは36byteまで
+Command "create table tn4(ｎ  uniqueidentifier)";
+Command "insert into tn4 values ('aaaaaaaaaabbbbbbbbbbccccccccccddddddd')";
+Command "select * from tn4";
+
+
+#数値型の制限値を超えたデータセット
+Command "create table tn(f int)";
+Command "insert into tn values (2147483648)";
+Command "insert into tn values (-2147483649)";
+Command "select * from tn";
+
+
+Command "create table tn1(f bigint)";
+Command "insert into tn1 values (-9223372036854775809)";
+Command "insert into tn1 values (9223372036854775808)";
+Command "select * from tn1";
+
+Command "create table tn2(f float)";
+#範囲
+##負の値-1.79769313486231E308～-4.94065645841247E-324
+##正の値4.94065645841247E-324～1.79769313486232E308
+#define DBL_MAX         1.7976931348623158e+308
+#define DBL_MIN         2.2250738585072014e-308 
+
+#上記のMIN,MAX値をセット
+#Command "insert into tn2 values (-1.79769313486231E308)";
+#Command "insert into tn2 values (-4.94065645841247E-324)";
+#Command "insert into tn2 values (4.94065645841247E-324)";
+#Command "insert into tn2 values (1.79769313486232E308)";
+Command "insert into tn2 values (1.7976931348623158E308)";
+Command "insert into tn2 values (-1.7976931348623158E308)";
+Command "select * from tn2";
+#超える値
+#Command "insert into tn2 values (-1.79769313486232E308)";
+#Command "insert into tn2 values (-4.94065645841248E-324)";
+#Command "insert into tn2 values (4.94065645841246E-324)";
+#Command "insert into tn2 values (1.79769313486233E308)";
+Command "insert into tn2 values (1.7976931348623159E308)";
+Command "insert into tn2 values (-1.7976931348623159E308)";
+Command "select * from tn2";
+
+TerminateSession;
+
+InitializeSession "";
+
+Command "drop database TestDB";
+
+TerminateSession;
+Terminate;
+End;

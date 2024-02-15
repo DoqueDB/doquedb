@@ -1,0 +1,156 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Prepare begin.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 int array[no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index IDX1 on T1(C1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (array[1,2])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Prepare end.
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Test begin.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 select C1 || array[3] from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {{1,2}}
+SydTest::Executor: [INFO] {{1,2,3}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1 = C1 || array[4]
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {{1,2,4}}
+SydTest::Executor: [INFO] {{1,2,3,4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from 2) from T1
+SydTest::Executor: [INFO] {{2,4}}
+SydTest::Executor: [INFO] {{2,3,4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select substring(C1 from 2 for 2) from T1
+SydTest::Executor: [INFO] {{2,4}}
+SydTest::Executor: [INFO] {{2,3}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select overlay(C1 placing array[5] from 2) from T1
+SydTest::Executor: [INFO] {{1,5,4}}
+SydTest::Executor: [INFO] {{1,5,3,4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select overlay(C1 placing array[5] from 2 for 2) from T1
+SydTest::Executor: [INFO] {{1,5}}
+SydTest::Executor: [INFO] {{1,5,4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1 = C1 || array[5,6]
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {{1,2,4,5,6}}
+SydTest::Executor: [INFO] {{1,2,3,4,5,6}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1 = substring(C1 from 3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {{4,5,6}}
+SydTest::Executor: [INFO] {{3,4,5,6}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1 = overlay(C1 placing array[99] from 3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {{4,5,99}}
+SydTest::Executor: [INFO] {{3,4,99,6}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1 = C1 || substring(C1 from 2 for 1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {{4,5,99,5}}
+SydTest::Executor: [INFO] {{3,4,99,6,4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1 = C1 || overlay(C1 placing array[99] from 2 for 3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {{4,5,99,5,4,99}}
+SydTest::Executor: [INFO] {{3,4,99,6,4,3,99,4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1 = substring(overlay(C1 placing array[99] from 2 for 3) from 3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {{4,99}}
+SydTest::Executor: [INFO] {{4,3,99,4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1 = overlay(substring(C1 from 2) placing array[99] from 1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {{99}}
+SydTest::Executor: [INFO] {{99,99,4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1 = overlay(C1 || substring(C1 from 2) placing substring(C1 from 3) from 1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {{99}}
+SydTest::Executor: [INFO] {{4,99,4,99,4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Test end.
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Finish
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Finish begin.
+SydTest::Executor: [INFO] [Finish] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Finish end.
+SydTest::Executor: [INFO] [SydTest Option] Finish
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

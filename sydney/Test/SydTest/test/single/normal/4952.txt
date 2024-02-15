@@ -1,0 +1,30 @@
+# 障害票 1236
+
+Begin;
+SetSystemParameter "Plan_NoUnknown" "TRUE";
+
+Initialize;
+InitializeSession "TESTDB";
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+
+Command "create table TBL (f int, g ntext)";
+Command "create index IDX_f on TBL(f)";
+Command "create fulltext index IDX_g on TBL(g)";
+
+Command "insert TBL values (1, 'aa')";
+Command "insert TBL values (1, 'bb')";
+Command "insert TBL values (1, 'cc')";
+
+Command "insert TBL values (2, 'aa')";
+Command "insert TBL values (2, 'bb')";
+Command "insert TBL values (2, 'cc')";
+
+Command "select * from TBL where f != 1 and not (g like 'a%' or g like 'c%' or g like 'd%')";
+
+# AND NOTを含むWHERE句の処理 障害票 2376
+Command "select * from TBL where g like 'a%' and (f = 1 or (f = 2 and not g like 'c%'))";
+
+TerminateSession;
+Terminate;
+End; 

@@ -1,0 +1,61 @@
+# Insert, Select, Where構文未サポート, 異常系部分を追加
+# ある程度たまったら、別にした方がいいかも。
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#Insert構文
+#Exception::ArrayRightTruncationを起こす
+Command "create table T (f int ARRAY[2])";
+Command "insert T values (ARRAY[1])";
+Command "insert T values (ARRAY[1,2])";
+Command "insert T values (ARRAY[1,2,3])";
+Command "drop table T";
+
+#Select構文
+Command "create table T(N int, X ntext)";
+Command "insert into T values (1, ?)" ["A"];
+Command "insert into T values (2, ?)" ["A"];
+Command "insert into T values (3, ?)" ["A"];
+Command "insert into T values (4, ?)" ["A"];
+Command "insert into T values (5, ?)" ["B"];
+Command "insert into T values (6, ?)" ["B"];
+Command "insert into T values (7, ?)" ["B"];
+Command "insert into T values (8, ?)" ["B"];
+
+# 名前つきカーソル
+Command "declare cursor Cur for select * from T where X=?" ["A"];
+Command "open Cur";
+Command "fetch Cur into N";
+Command "close Cur";
+
+# all/any述語
+Command  "select * from T where N = all (select * from T1 where X=?)" ["B"];
+Command  "select * from T where N = any (select * from T1 where X=?)" ["A"];
+
+Command "drop table T";
+
+
+#Exception::InvalidEscape, Exception::InvalidEscapeSequenceを起こす
+Command "create table T (f nvarchar(32))";
+Command "insert T values ('ua%ua')";
+Command "select * from T where f like '%aaa%%' escape 'a'";
+Command "select * from T where f like '%aaa%%' escape 'aa'";
+Command "select * from T where f like '%aaa%%a' escape 'a'";
+
+#Command "drop table T";
+
+Command  "select * from T";
+
+TerminateSession;
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

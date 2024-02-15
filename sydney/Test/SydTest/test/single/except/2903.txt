@@ -1,0 +1,27 @@
+#verify table (異常系)
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#列の指定はなるべく複雑なものを選んでみた
+Command "create table T (F ntext array[no limit] hint heap 'compressed')";
+
+#read only transactionではcorrectできないのでエラー
+Command "start transaction read only, using snapshot";
+Command "verify table T correct";
+Command "verify table T cascade correct";
+Command "verify table T continue correct";
+Command "verify table T cascade continue correct";
+Command "commit";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

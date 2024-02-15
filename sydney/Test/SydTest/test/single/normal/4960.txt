@@ -1,0 +1,27 @@
+# 暗号テスト用
+# 暗号機能サポート環境で行う事
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 int, C2 ntext, C3 int)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1, C2, C3) values (1, ?, 10)" [textsjisfile "..\\..\\doc\\crypt_0001.txt"];
+Command  "insert into T1 (C1, C2, C3) values (2, ?, 20)" [textsjisfile "..\\..\\doc\\crypt_0002.txt"];
+Command  "insert into T1 (C1, C2, C3) values (3, ?, 30)" [textsjisfile "..\\..\\doc\\crypt_0003.txt"];
+Command  "select * from T1";
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

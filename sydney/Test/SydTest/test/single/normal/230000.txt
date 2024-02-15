@@ -1,0 +1,47 @@
+# パラメータ再読み込みテスト
+
+Begin;
+SetSystemParameter "Server_PrintSQLStatement" "1";
+SetSystemParameter "Server_PrintTime" "1";
+SetSystemParameter "Plan_TraceOptimizationOutput" "1";
+SetSystemParameter "FullText_IDBlockUnitSize" "16";
+SetSystemParameter "Buffer_NormalPoolSize" "1G";
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T(F int)";
+SetSystemParameter "Server_PrintSQLStatement" "0";
+Reload;
+Command "select * from T";
+SetSystemParameter "Server_PrintSQLStatement" "1";
+Reload;
+Command "select * from T";
+SetSystemParameter "Server_PrintTime" "0";
+Reload;
+Command "select * from T";
+SetSystemParameter "Server_PrintTime" "1";
+Reload;
+Command "select * from T";
+SetSystemParameter "Plan_TraceOptimizationOutput" "0";
+Reload;
+Command "select * from T";
+SetSystemParameter "Plan_TraceOptimizationOutput" "1";
+Reload;
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(F nvarchar(128))";
+Command "create fulltext index T_F on T(F)";
+Command "insert into T values ('複写機のリコー')";
+Command "select * from T where F contains 'リコー'";
+SetSystemParameter "FullText_IDBlockUnitSize" "1";
+SetSystemParameter "Buffer_NormalPoolSize" "1K";
+Command "insert into T values ('リコーの歩み')";
+Command "select * from T where F contains 'リコー'";
+Command "drop table T";
+
+Command "drop database TEST";
+TerminateSession;
+Terminate;
+End;

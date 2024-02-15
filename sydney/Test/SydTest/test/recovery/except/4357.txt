@@ -1,0 +1,46 @@
+# PreparedCommandのテスト(異常系、実行時にエラーになるPreparedCommand)
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command  "create table T1(C1 int, C2 nchar(20), primary key(C1))";
+CreatePreparedCommand "ins" "insert into T1 (C1, C2) values (?, ?)";
+PreparedCommand "ins" [1, "ほげ"];
+PreparedCommand "ins" [1, "ほげほげ"];
+ErasePreparedCommand "ins";
+Command "select * from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 int, C2 nchar(20), primary key(C2))";
+CreatePreparedCommand "ins" "insert into T1 (C1, C2) values (?, ?)";
+PreparedCommand "ins" [2, "げほげほ"];
+PreparedCommand "ins" [3, "げほげほ"];
+ErasePreparedCommand "ins";
+Command "select * from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 int, C2 nchar(20), primary key(C1, C2))";
+CreatePreparedCommand "ins" "insert into T1 (C1, C2) values (?, ?)";
+PreparedCommand "ins" [1, "ほげほげ"];
+PreparedCommand "ins" [1, "ほげほげ"];
+ErasePreparedCommand "ins";
+Command "select * from T1";
+#Command  "drop table T1";
+
+Command  "select * from T1";
+
+TerminateSession;
+
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

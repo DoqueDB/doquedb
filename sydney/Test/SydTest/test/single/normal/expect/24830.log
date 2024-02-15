@@ -1,0 +1,148 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB if exists
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL(btr int, ary int array[no limit], bmp char(2), text ntext, text2 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX_btr on TBL(btr)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index IDX_ary on TBL(ary)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index IDX_bmp on TBL(bmp)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index IDX_text on TBL(text, text2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (1, array[1,2,3], 'aa', 'foo bar', 'trmeister')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (2, array[2,3,4], 'ab', 'bar hoo', 'tr sydney')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (4, array[1,2,10], 'aa', 'foo bar', 'trmeister')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (5, array[2,3,4], 'ab', 'bar hoo', 'tr sydney')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (3, array[3,4,5], 'bc', 'hoge', 'sydney')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (6, array[3,4,10], 'dd', 'hoge', 'sydney')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (2, array[2,3,4], 'ab', 'ba hoo', 'sydney')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text, text2) from TBL where (btr = 3 or  (text, text2) contains 'r') order by score(text, text2) desc
+SydTest::Executor: [INFO] {1,2.544443205107E-1}
+SydTest::Executor: [INFO] {4,2.544443205107E-1}
+SydTest::Executor: [INFO] {2,2.253981652012E-1}
+SydTest::Executor: [INFO] {5,2.253981652012E-1}
+SydTest::Executor: [INFO] {3,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text, text2) from TBL where (btr = 2 or  (text, text2) contains 'r') order by score(text, text2) desc
+SydTest::Executor: [INFO] {1,2.544443205107E-1}
+SydTest::Executor: [INFO] {4,2.544443205107E-1}
+SydTest::Executor: [INFO] {2,2.253981652012E-1}
+SydTest::Executor: [INFO] {5,2.253981652012E-1}
+SydTest::Executor: [INFO] {2,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 10 or (text, text2) contains 'r') order by score(text, text2) desc
+SydTest::Executor: [INFO] {1,2.544443205107E-1}
+SydTest::Executor: [INFO] {4,2.544443205107E-1}
+SydTest::Executor: [INFO] {2,2.253981652012E-1}
+SydTest::Executor: [INFO] {5,2.253981652012E-1}
+SydTest::Executor: [INFO] {3,0E0}
+SydTest::Executor: [INFO] {6,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 100 and (text, text2) contains 'p') order by score(text, text2) desc
+SydTest::Executor: [INFO] {3,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 100 or (text, text2) contains 'p') order by score(text, text2) desc
+SydTest::Executor: [INFO] {3,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text) from TBL where (btr = 3 or  text contains 'r') order by score(text) desc
+SydTest::Executor: [INFO] {1,1.678986332621E-1}
+SydTest::Executor: [INFO] {2,1.678986332621E-1}
+SydTest::Executor: [INFO] {4,1.678986332621E-1}
+SydTest::Executor: [INFO] {5,1.678986332621E-1}
+SydTest::Executor: [INFO] {3,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index IDX_btr
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text, text2) from TBL where (btr = 3 or  (text, text2) contains 'r') order by score(text, text2) desc
+SydTest::Executor: [INFO] {1,2.544443205107E-1}
+SydTest::Executor: [INFO] {4,2.544443205107E-1}
+SydTest::Executor: [INFO] {2,2.253981652012E-1}
+SydTest::Executor: [INFO] {5,2.253981652012E-1}
+SydTest::Executor: [INFO] {3,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text, text2) from TBL where (btr = 2 or  (text, text2) contains 'r') order by score(text, text2) desc
+SydTest::Executor: [INFO] {1,2.544443205107E-1}
+SydTest::Executor: [INFO] {4,2.544443205107E-1}
+SydTest::Executor: [INFO] {2,2.253981652012E-1}
+SydTest::Executor: [INFO] {5,2.253981652012E-1}
+SydTest::Executor: [INFO] {2,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 10 or (text, text2) contains 'r') order by score(text, text2) desc
+SydTest::Executor: [INFO] {1,2.544443205107E-1}
+SydTest::Executor: [INFO] {4,2.544443205107E-1}
+SydTest::Executor: [INFO] {2,2.253981652012E-1}
+SydTest::Executor: [INFO] {5,2.253981652012E-1}
+SydTest::Executor: [INFO] {3,0E0}
+SydTest::Executor: [INFO] {6,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 100 and (text, text2) contains 'p') order by score(text, text2) desc
+SydTest::Executor: [INFO] {3,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 100 or (text, text2) contains 'p') order by score(text, text2) desc
+SydTest::Executor: [INFO] {3,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select btr, score(text) from TBL where (btr = 3 or  text contains 'r') order by score(text) desc
+SydTest::Executor: [INFO] {1,1.678986332621E-1}
+SydTest::Executor: [INFO] {2,1.678986332621E-1}
+SydTest::Executor: [INFO] {4,1.678986332621E-1}
+SydTest::Executor: [INFO] {5,1.678986332621E-1}
+SydTest::Executor: [INFO] {3,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,15 @@
+
+Begin;
+Initialize;
+BeginTimeSpan;
+InitializeSession "IndexTest";
+Command "verify database IndexTest cascade continue";
+
+Command "select * from T";
+
+Command "drop database IndexTest";
+TerminateSession;
+
+EndTimeSpan;
+Terminate;
+End;

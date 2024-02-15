@@ -1,0 +1,11 @@
+# わざと二重にDBを作ろうとする
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

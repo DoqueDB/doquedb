@@ -1,0 +1,139 @@
+# Bug report 1377
+
+Begin;
+
+# 正規化あり
+SetSystemParameter "Execution_LikeNormalizedString" "1";
+
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#
+# 索引なし
+#
+
+# NCHAR
+Command "create table T(C nchar(4))";
+Command "insert T values 'abcd', '％bcd', '＿bcd', 'abc％', 'abc＿', 'a％cd', 'a＿cd'";
+
+# 先頭が％or＿
+Command "select * from T where C like '％bc%'";
+Command "select * from T where C like '％b%d'";
+Command "select * from T where C like '＿bc_'";
+Command "select * from T where C like '＿b_d'";
+# 末尾が％or＿
+Command "select * from T where C like 'ab%％'";
+Command "select * from T where C like 'a%c％'";
+Command "select * from T where C like 'ab_＿'";
+Command "select * from T where C like 'a_c＿'";
+# 先頭と末尾以外が％or＿
+Command "select * from T where C like 'a％c%'";
+Command "select * from T where C like 'a％%d'";
+Command "select * from T where C like 'a＿c_'";
+Command "select * from T where C like 'a＿_d'";
+
+Command "drop table T";
+
+# NVARCHAR
+Command "create table T(C nvarchar(4))";
+Command "insert T values 'abcd', '％bcd', '＿bcd', 'abc％', 'abc＿', 'a％cd', 'a＿cd'";
+Command "select * from T where C like '％bc%'";
+Command "select * from T where C like '％b%d'";
+Command "select * from T where C like '＿bc_'";
+Command "select * from T where C like '＿b_d'";
+Command "select * from T where C like 'ab%％'";
+Command "select * from T where C like 'a%c％'";
+Command "select * from T where C like 'ab_＿'";
+Command "select * from T where C like 'a_c＿'";
+Command "select * from T where C like 'a％c%'";
+Command "select * from T where C like 'a％%d'";
+Command "select * from T where C like 'a＿c_'";
+Command "select * from T where C like 'a＿_d'";
+Command "drop table T";
+
+
+#
+# B+木索引
+#
+Command "create table T(C nchar(4))";
+Command "create index I on T(C) hint 'normalized'";
+Command "insert T values 'abcd', '％bcd', '＿bcd', 'abc％', 'abc＿', 'a％cd', 'a＿cd'";
+Command "select * from T where C like '％bc%'";
+Command "select * from T where C like '％b%d'";
+Command "select * from T where C like '＿bc_'";
+Command "select * from T where C like '＿b_d'";
+Command "select * from T where C like 'ab%％'";
+Command "select * from T where C like 'a%c％'";
+Command "select * from T where C like 'ab_＿'";
+Command "select * from T where C like 'a_c＿'";
+Command "select * from T where C like 'a％c%'";
+Command "select * from T where C like 'a％%d'";
+Command "select * from T where C like 'a＿c_'";
+Command "select * from T where C like 'a＿_d'";
+Command "drop table T";
+Command "create table T(C nvarchar(4))";
+Command "create index I on T(C) hint 'normalized'";
+Command "insert T values 'abcd', '％bcd', '＿bcd', 'abc％', 'abc＿', 'a％cd', 'a＿cd'";
+Command "select * from T where C like '％bc%'";
+Command "select * from T where C like '％b%d'";
+Command "select * from T where C like '＿bc_'";
+Command "select * from T where C like '＿b_d'";
+Command "select * from T where C like 'ab%％'";
+Command "select * from T where C like 'a%c％'";
+Command "select * from T where C like 'ab_＿'";
+Command "select * from T where C like 'a_c＿'";
+Command "select * from T where C like 'a％c%'";
+Command "select * from T where C like 'a％%d'";
+Command "select * from T where C like 'a＿c_'";
+Command "select * from T where C like 'a＿_d'";
+Command "drop table T";
+
+
+#
+# 全文索引
+#
+Command "create table T(C nchar(4))";
+Command "create fulltext index I on T(C) hint 'inverted=(normalized)'";
+Command "insert T values 'abcd', '％bcd', '＿bcd', 'abc％', 'abc＿', 'a％cd', 'a＿cd'";
+Command "select * from T where C like '％bc%'";
+Command "select * from T where C like '％b%d'";
+Command "select * from T where C like '＿bc_'";
+Command "select * from T where C like '＿b_d'";
+Command "select * from T where C like 'ab%％'";
+Command "select * from T where C like 'a%c％'";
+Command "select * from T where C like 'ab_＿'";
+Command "select * from T where C like 'a_c＿'";
+Command "select * from T where C like 'a％c%'";
+Command "select * from T where C like 'a％%d'";
+Command "select * from T where C like 'a＿c_'";
+Command "select * from T where C like 'a＿_d'";
+Command "drop table T";
+Command "create table T(C nvarchar(4))";
+Command "create fulltext index I on T(C) hint 'inverted=(normalized)'";
+Command "insert T values 'abcd', '％bcd', '＿bcd', 'abc％', 'abc＿', 'a％cd', 'a＿cd'";
+Command "select * from T where C like '％bc%'";
+Command "select * from T where C like '％b%d'";
+Command "select * from T where C like '＿bc_'";
+Command "select * from T where C like '＿b_d'";
+Command "select * from T where C like 'ab%％'";
+Command "select * from T where C like 'a%c％'";
+Command "select * from T where C like 'ab_＿'";
+Command "select * from T where C like 'a_c＿'";
+Command "select * from T where C like 'a％c%'";
+Command "select * from T where C like 'a％%d'";
+Command "select * from T where C like 'a＿c_'";
+Command "select * from T where C like 'a＿_d'";
+
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+
+SetSystemParameter "Execution_LikeNormalizedString" "0";
+
+End;

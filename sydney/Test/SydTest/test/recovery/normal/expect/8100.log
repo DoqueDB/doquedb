@@ -1,0 +1,69 @@
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create area IDX_AREA 'd:\dm\area\idx'
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create table T(A int)
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] insert into T(A) values(1)
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] insert into T(A) values(2)
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select * from T
+SydTest::Executor: [INFO] <<1>> {1}
+SydTest::Executor: [INFO] <<1>> {2}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select * from T
+SydTest::Executor: [INFO] <<1>> {1}
+SydTest::Executor: [INFO] <<1>> {2}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select * from T
+SydTest::Executor: [INFO] <<1>> {1}
+SydTest::Executor: [INFO] <<1>> {2}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select * from T
+SydTest::Executor: [INFO] <<1>> {1}
+SydTest::Executor: [INFO] <<1>> {2}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] create index IDX1 on T(A)
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] alter index IDX1 set area IDX_AREA
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] drop index IDX1
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] verify database TESTDB cascade continue
+SydTest::Executor: [INFO] <<0>> End Of Data.
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] select * from T1
+Executor: [ERR] (SydTest) <<0>> Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] select * from T2
+Executor: [ERR] (SydTest) <<0>> Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] select * from T
+SydTest::Executor: [INFO] <<0>> {1}
+SydTest::Executor: [INFO] <<0>> {2}
+SydTest::Executor: [INFO] <<0>> End Of Data.
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

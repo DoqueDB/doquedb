@@ -1,0 +1,39 @@
+# 障害表 1008
+# bitmap index
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T1(C char(5))";
+Command "create bitmap index I1 on T1(C) hint 'compressed'";
+Command "insert T1 values 'abc'";
+Command "insert T1 values ' abc'";
+Command "insert T1 values 'abc '";
+
+Command "create table T2(C nchar(5))";
+Command "create bitmap index I2 on T2(C) hint 'compressed'";
+Command "insert T2 values 'abc'";
+Command "insert T2 values ' abc'";
+Command "insert T2 values 'abc '";
+
+Command  "select * from T1";
+Command  "select * from T2";
+
+Command "select * from T1 where C like 'abc' escape ''";
+Command "select * from T2 where C like 'abc' escape ''";
+
+Command "drop table T1";
+Command "drop table T2";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

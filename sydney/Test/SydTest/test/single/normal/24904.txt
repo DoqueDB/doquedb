@@ -1,0 +1,21 @@
+# Bug report 1670
+
+# Vector2のテスト
+# rowid=nullで、rowid=0がヒットする
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+Command "create table T(c int)";
+Command "insert T values 0, 1";
+Command "select rowid from T where rowid = 0";
+# [BUG] rowid = 0 がヒットしてしまう
+Command "select rowid from T where rowid = null";
+Command "select rowid from T where rowid is null";
+
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

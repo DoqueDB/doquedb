@@ -1,0 +1,598 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] FullText_InsertMergeTupleSize
+SydTest::Executor: [INFO] [SydTest Parameter and Value] FullText_InsertMergeTupleSize, 1
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] FullText_ExpungeMergeTupleSize
+SydTest::Executor: [INFO] [SydTest Parameter and Value] FullText_ExpungeMergeTupleSize, 1
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database FullTextTest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] FullTextTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (N int, C ntext array [no limit] hint heap 'compressed')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTIndex on T(C) hint 'sectionized, delayed ,inverted=(nolocation=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] FullTextTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (1, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{良書紹介
+宮本百合子
+
+
+
+　China : The March Toward Unity, by Mao Tse-Tung & others.
+　Red Star over China, by E. Snow.
+後者には最近新しい章も追加され、今日の中国の現実を知るために極めて有益な本であると思います。丸善に折々入荷されます。そして忽ち売切れになります。
+〔一九三九年十二月〕
+
+
+
+
+底本：「宮本百合子全集　第十七巻」新日本出版社
+　　　1981（昭和56）年3月20日初版発行
+　　　1986（昭和61）年3月20日第4刷発行
+初出：「図書」
+　　　1939（昭和14）年12月号
+入力：柴田卓治
+校正：磐余彦
+2003年9月15日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。
+}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (2, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 1145]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (3, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 11444]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (4, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (5, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 6308]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (6, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {6}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (7, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 14481]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (8, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {8}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (9, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 46557]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {9}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (10, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 60955]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (11, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{良書紹介
+宮本百合子
+
+
+
+　China : The March Toward Unity, by Mao Tse-Tung & others.
+　Red Star over China, by E. Snow.
+後者には最近新しい章も追加され、今日の中国の現実を知るために極めて有益な本であると思います。丸善に折々入荷されます。そして忽ち売切れになります。
+〔一九三九年十二月〕
+
+
+
+
+底本：「宮本百合子全集　第十七巻」新日本出版社
+　　　1981（昭和56）年3月20日初版発行
+　　　1986（昭和61）年3月20日第4刷発行
+初出：「図書」
+　　　1939（昭和14）年12月号
+入力：柴田卓治
+校正：磐余彦
+2003年9月15日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。
+}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {11}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (12, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {12}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 4
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 5
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 6
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 7
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 8
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 9
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N=10
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N=11
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N=12
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] FullText_InsertMergeTupleSize
+SydTest::Executor: [INFO] [SydTest Parameter and Value] FullText_InsertMergeTupleSize, 3
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] FullText_ExpungeMergeTupleSize
+SydTest::Executor: [INFO] [SydTest Parameter and Value] FullText_ExpungeMergeTupleSize, 3
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] FullTextTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (1, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{良書紹介
+宮本百合子
+
+
+
+　China : The March Toward Unity, by Mao Tse-Tung & others.
+　Red Star over China, by E. Snow.
+後者には最近新しい章も追加され、今日の中国の現実を知るために極めて有益な本であると思います。丸善に折々入荷されます。そして忽ち売切れになります。
+〔一九三九年十二月〕
+
+
+
+
+底本：「宮本百合子全集　第十七巻」新日本出版社
+　　　1981（昭和56）年3月20日初版発行
+　　　1986（昭和61）年3月20日第4刷発行
+初出：「図書」
+　　　1939（昭和14）年12月号
+入力：柴田卓治
+校正：磐余彦
+2003年9月15日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。
+}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (2, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 1145]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (3, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 11444]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (4, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (5, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 6308]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (6, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {6}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (7, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 14481]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (8, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {8}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (9, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 46557]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {9}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (10, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 60955]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (11, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {11}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {11}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%内閣総理大臣%'
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%老婆%'
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%foo%'
+SydTest::Executor: [INFO] {11}
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] {7}
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%ls%'
+SydTest::Executor: [INFO] {11}
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] {8}
+SydTest::Executor: [INFO] {7}
+SydTest::Executor: [INFO] {6}
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%オプション%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%打者%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%cryptography%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%ディレクトリ%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%address%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%RFC%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 8
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 4
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N= 5
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N=11
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%内閣総理大臣%'
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%老婆%'
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%foo%'
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] {7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%ls%'
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] {7}
+SydTest::Executor: [INFO] {6}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%オプション%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%打者%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%cryptography%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%ディレクトリ%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%address%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%RFC%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C=? where N= 3
+SydTest::Executor: [INFO] [[SQL Parameter]] {{良書紹介
+宮本百合子
+
+
+
+　China : The March Toward Unity, by Mao Tse-Tung & others.
+　Red Star over China, by E. Snow.
+後者には最近新しい章も追加され、今日の中国の現実を知るために極めて有益な本であると思います。丸善に折々入荷されます。そして忽ち売切れになります。
+〔一九三九年十二月〕
+
+
+
+
+底本：「宮本百合子全集　第十七巻」新日本出版社
+　　　1981（昭和56）年3月20日初版発行
+　　　1986（昭和61）年3月20日第4刷発行
+初出：「図書」
+　　　1939（昭和14）年12月号
+入力：柴田卓治
+校正：磐余彦
+2003年9月15日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。
+}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C=? where N= 6
+SydTest::Executor: [INFO] [[SQL Parameter: length = 1145]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C=? where N= 7
+SydTest::Executor: [INFO] [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C=? where N= 9
+SydTest::Executor: [INFO] [[SQL Parameter: length = 6308]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C=? where N=10
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%内閣総理大臣%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%老婆%'
+SydTest::Executor: [INFO] {9}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%foo%'
+SydTest::Executor: [INFO] {7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%ls%'
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] {7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%オプション%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%打者%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%cryptography%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%ディレクトリ%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%address%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like '%RFC%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database FullTextTest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] FullText_InsertMergeTupleSize
+SydTest::Executor: [INFO] [SydTest Parameter and Value] FullText_InsertMergeTupleSize, 0
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] FullText_ExpungeMergeTupleSize
+SydTest::Executor: [INFO] [SydTest Parameter and Value] FullText_ExpungeMergeTupleSize, 0
+SydTest::Executor: [INFO] Main End.

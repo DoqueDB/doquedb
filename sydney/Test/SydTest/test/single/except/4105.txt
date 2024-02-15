@@ -1,0 +1,34 @@
+# langと本文とでarrayの個数が違う
+
+Begin;
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (N int, C ntext array [no limit], L language array [no limit])";
+
+Command "insert into T (N, C, L) values (?, ?, ?)"
+	[1, [null, textucsfile "..\\..\\doc\\takekurabe.txt"],
+	    ["ja", "en", "ja+en"]];
+
+# 索引作成に失敗すること
+Command "create fulltext index FTL on T(C) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+Command "update T set (C, L)=(?, ?) where N=?" 
+	[[null, textucsfile "..\\..\\doc\\takekurabe.txt",
+	  textucsfile "..\\..\\doc\\takekurabe.txt"], ["ja", "en"], 1];
+# 索引作成に失敗すること
+Command "create fulltext index FTL2 on T(C) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+Command "select N, sectionized(C) where C like ?" ["%ページ%"];
+
+Command "update T set (C, L)=(?, ?) where N=?" [null, ["ja", "en"], 1];
+# 索引作成に失敗しない(本文sectionの全消去とみなされる)
+Command "create fulltext index FTL3 on T(C) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;
+

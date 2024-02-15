@@ -1,0 +1,74 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] perl ..\..\makepadding.pl XXX > h:\padding1
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database DISKFULLTEST
+	path 'h:\diskfulltest\data'
+	logicallog 'h:\diskfulltest\log'
+	system 'h:\diskfulltest\system'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DISKFULLTEST
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dir h:|tail -1
+               1 個のディレクトリ          XXX バイトの空き領域
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 ntext array [no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I1_1 on T1(C1) hint 'sectionized, delayed, inverted=(nolocation=true, notf=true, normalized=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dir h:|tail -1
+               1 個のディレクトリ          XXX バイトの空き領域
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 values (?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 30028]] 
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not enough space on the disk
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dir h:|tail -1
+               1 個のディレクトリ          XXX バイトの空き領域
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm h:\padding1
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DISKFULLTEST
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 values (?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 30028]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] <length = 30028>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database DISKFULLTEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

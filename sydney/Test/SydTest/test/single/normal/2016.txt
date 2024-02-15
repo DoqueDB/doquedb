@@ -1,0 +1,73 @@
+## -*-Mode: text; tab-width: 4; c-basic-offset: 4;-*-
+## vi:set ts=4 sw=4:
+##
+## xxxx.txt -- table 作成のテスト
+##
+##	TEST CONTENTS
+##		table の構築、変更、破棄を行う
+##
+##	START CONDITIONS
+##		特に無し
+##		
+##	END CONDITIONS
+##		satart 前と同じ状態である
+##
+##	CHECK
+##		Exists、NotExists が正しいか
+##
+##	NOTE
+##		シングルスレッド
+##		正常系
+##		Schema の単体テストも兼ねる
+##
+## Copyright (c) 2001 Ricoh Company, Ltd.
+## All rights reserved.
+##
+##		$Author$
+##		$Date$
+##		$Revision$
+##
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database DB_xxxx";
+TerminateSession;
+
+InitializeSession "DB_xxxx";
+
+Command "create area TBL_AREA 'd:\\dm\\test_area'";
+
+# 作成
+Command "create table TBL_1 ( A int )";
+Command "insert into TBL_1 values (1)"; #030122追加
+
+Exists "d:\\dm\\data\\DB_xxxx\\TBL_1";
+
+Command "create table TBL_2 ( A int ) area TBL_AREA";
+Command "insert into TBL_2 values (2)"; #030122追加
+Exists "d:\\dm\\test_area\\TBL_2";
+
+# 変更
+Command "alter table TBL_1 set area TBL_AREA";
+#*↓残っている(2001-06-22)
+NotExists "d:\\dm\\data\\DB_xxxx\\TBL_1";
+Exists "d:\\dm\\test_area\\TBL_1";
+
+# 削除
+Command "drop table TBL_1";
+Command "drop table TBL_2";
+
+NotExists "d:\\dm\\test_area\\TBL_1";
+NotExists "d:\\dm\\test_area\\TBL_2";
+
+#Command "drop database";
+
+TerminateSession;
+
+#下三行は伊戸川が追加
+InitializeSession "";
+Command "drop database DB_xxxx";
+TerminateSession;
+Terminate;
+End;

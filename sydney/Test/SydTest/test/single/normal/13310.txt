@@ -1,0 +1,24 @@
+# 障害票 1974
+# DatabaseやAreaに相対パスを指定した時の仕様変更にともなったテスト
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database DBDatabaseTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+Exists "d:\\dm\\data\\logtest\\LOGICALLOG.SYD";
+#作成遅延 -> privilegeが作られるのである
+NotExists "d:\\dm\\data\\databasetest";
+Exists "d:\\dm\\system\\systemtest\\OBJECTID";
+Exists "d:\\dm\\system\\systemtest\\SCHEMA";
+TerminateSession;
+InitializeSession "DBDatabaseTest";
+Command "create table T (f1 int)";
+NotExists "d:\\dm\\data\\databasetest\\T";
+Exists "d:\\dm\\system\\systemtest\\OBJECTID";
+Exists "d:\\dm\\system\\systemtest\\SCHEMA";
+Command "insert T values (1)";
+Exists "d:\\dm\\data\\databasetest\\T";
+#------------------------------------
+TerminateSession;
+#Terminate;
+End;

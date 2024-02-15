@@ -1,0 +1,64 @@
+#1要素のINと配列任意要素指定を組み合わせ
+##障害票795
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#--テーブル作成
+Command "create table T (num int,data UNIQUEIDENTIFIER array[no limit])";
+
+#--4つのデータを追加
+Command "insert into T values (0,ARRAY['00000000-0000-0ba3-3cc1-8fe400050000','00000000-0000-0ba3-3cc1-8fe400050001','00000000-0000-0ba3-3cc1-8fe400050002'])";
+Command "insert into T values (1,null)";
+Command "insert into T values (2,ARRAY['99999999-0000-0ba3-3cc1-8fe400050000','99999999-0000-0ba3-3cc1-8fe400050001','99999999-0000-0ba3-3cc1-8fe400050002'])";
+Command "insert into T values (3,ARRAY['00000000-0000-0ba3-3cc1-8fe400050000','99999999-0000-0ba3-3cc1-8fe400050000'])";
+
+#--BITMAPインデックス作成
+Command "create bitmap index test_T_index on T(data) hint 'compressed'";
+
+#--検索 OK
+Command "select * from T where num in(2,3) AND data[] = '00000000-0000-0ba3-3cc1-8fe400050000'";
+
+#--検索 NG
+Command "select * from T where num in(2) AND data[] = '00000000-0000-0ba3-3cc1-8fe400050000'";
+
+#--検索 OK
+Command "select * from T where num in(2) AND data[] = '99999999-0000-0ba3-3cc1-8fe400050000'";
+Command "select * from T where num in(2)";
+
+Command "drop table T";
+
+
+#--テーブル作成
+Command "create table T (f int,g int array[no limit])";
+
+#--4つのデータを追加
+Command "insert into T values (0,ARRAY['1','2','3'])";
+Command "insert into T values (1,null)";
+Command "insert into T values (2,ARRAY['1','2','3'])";
+Command "insert into T values (3,ARRAY['1','2','3'])";
+
+#--検索 OK
+Command "select * from T where f in(2,3) AND g[] = '1'";
+Command "select * from T where f in(2,3) AND g[] = '4'";
+
+#--検索 
+Command "select * from T where f in(2) AND g[] = '1'";
+Command "select * from T where f in(2) AND g[] = '4'";
+
+#--検索 OK
+Command "select * from T where f in(2)";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

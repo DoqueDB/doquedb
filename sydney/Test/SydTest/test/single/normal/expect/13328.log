@@ -1,0 +1,87 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DBMountTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 < 5
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area area1 'area1'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area area2 'area2'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area area3 'area3'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DBMountTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table T set area area1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter index T_f1 set area area2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area area1 modify 'area1'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area area2 modify 'area2'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] unmount DBMountTest
+SydTest::Executor: [INFO] {d:\dm\data\databasetest}
+SydTest::Executor: [INFO] {d:\dm\data\logtest}
+SydTest::Executor: [INFO] {d:\dm\system\systemtest}
+SydTest::Executor: [INFO] {d:\dm\data\area1}
+SydTest::Executor: [INFO] {d:\dm\data\area2}
+SydTest::Executor: [INFO] {d:\dm\data\area3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\area1 d:\dm\data\altermountarea1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\area2 d:\dm\data\altermountarea2
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\altermountarea1\T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\altermountarea2\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest' alter area area1 modify 'altermountarea1' alter area area2 modify 'altermountarea2' drop area area3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DBMountTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 < 5
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] Main End.

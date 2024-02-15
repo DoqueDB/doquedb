@@ -1,0 +1,78 @@
+# transaction read write repeatable read commit null
+# commitあるいはrollbackの動作確認をする。
+# 各々のスクリプトごとに各種の論理ファイルを試す。
+Begin;
+Initialize;
+InitializeSession "DefaultDB";
+
+Command  "create table T1(C1 ntext array [no limit])";
+# 空のトランザクションの動作確認
+Command  "start transaction read write, isolation level repeatable read";
+Command  "commit";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+# 空のトランザクションの動作確認
+Command  "start transaction read write, isolation level repeatable read";
+Command  "commit";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true, notf=true)'";
+# 空のトランザクションの動作確認
+Command  "start transaction read write, isolation level repeatable read";
+Command  "commit";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true, notf=true)'";
+# 空のトランザクションの動作確認
+Command  "start transaction read write, isolation level repeatable read";
+Command  "commit";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'sectionized ,inverted=(nolocation=true, notf=true)'";
+# 空のトランザクションの動作確認
+Command  "start transaction read write, isolation level repeatable read";
+Command  "commit";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'sectionized ,inverted=(nolocation=true, notf=true)'";
+# 空のトランザクションの動作確認
+Command  "start transaction read write, isolation level repeatable read";
+Command  "commit";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'delayed ,inverted=(nolocation=true, notf=true)'";
+# 空のトランザクションの動作確認
+Command  "start transaction read write, isolation level repeatable read";
+Command  "commit";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'delayed ,inverted=(nolocation=true, notf=true)'";
+# 空のトランザクションの動作確認
+Command  "start transaction read write, isolation level repeatable read";
+Command  "commit";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true, notf=true, normalized=true)'";
+# 空のトランザクションの動作確認
+Command  "start transaction read write, isolation level repeatable read";
+Command  "commit";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true, notf=true, normalized=true)'";
+# 空のトランザクションの動作確認
+Command  "start transaction read write, isolation level repeatable read";
+Command  "commit";
+Command  "drop table T1";
+
+TerminateSession "DefaultDB";
+Terminate;
+End;

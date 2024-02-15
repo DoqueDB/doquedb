@@ -1,0 +1,69 @@
+# blob/nvarchar/imageファイルの予備テスト
+
+Begin;
+Initialize;
+
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#blob
+Command "create table T1(N int, C1 blob, C2 blob)";
+Command "update T1 set C1=C1||? where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "update T1 set C2=C2||? where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "select char_length(C1) from T1";
+Command "select char_length(C2) from T1";
+
+# C1とC2を混ぜたら
+Command "update T1 set C1=C2||? where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "update T1 set C2=overlay(C1 placing ? from       5001) where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "update T1 set C2=overlay(C1 placing ? from         -1) where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "update T1 set C2=overlay(C1 placing ? from 9999999999) where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command  "drop table T1";
+
+
+#nvarchar
+Command "create table T1(N int, C1 nvarchar(32), C2 nvarchar(32))";
+Command "update T1 set C1=C1||? where N=1" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command "update T1 set C2=C2||? where N=1" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command "select char_length(C1) from T1";
+Command "select char_length(C2) from T1";
+
+# C1とC2を混ぜたら
+Command "update T1 set C1=C2||? where N=1" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command "update T1 set C2=overlay(C1 placing ? from         5001) where N=1" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command "update T1 set C2=overlay(C1 placing ? from           -1) where N=1" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command "update T1 set C2=overlay(C1 placing ? from   9999999999) where N=1" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command "update T1 set C2=overlay(C1 placing ? from     4 for -2) where N=1" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command "update T1 set C2=overlay(C1 placing ? from 4 for -99999) where N=1" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "drop table T1";
+
+
+#image
+Command "create table T1(N int, C1 image, C2 image)";
+Command "update T1 set C1=C1||? where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "update T1 set C2=C2||? where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "select char_length(C1) from T1";
+Command "select char_length(C2) from T1";
+
+# C1とC2を混ぜたら
+Command "update T1 set C1=C2||? where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "update T1 set C2=overlay(C1 placing ? from         5001) where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "update T1 set C2=overlay(C1 placing ? from           -1) where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "update T1 set C2=overlay(C1 placing ? from   9999999999) where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "update T1 set C2=overlay(C1 placing ? from     4 for -2) where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command "update T1 set C2=overlay(C1 placing ? from 4 for -99999) where N=1" [binaryfile "..\\..\\doc\\rnd20k"];
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

@@ -1,0 +1,46 @@
+# add columnのテスト
+# 同じ名前の列を追加しようとしてエラーになる 
+# 2005.06.16 Tajima
+#
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+
+Command  "create table T1(C1_g nvarchar(6) NOT NULL, C2_f int default 0, C3_g nvarchar(50) hint heap,C4_g ntext ,C5_h BLOB, primary key(C1_g))";
+Command  "create index IDX_I ON T1(C2_f)";
+Command  "create fulltext index IDX_F on T1(C3_g) hint 'inverted=(nolocation=true, notf=true)'";
+
+#データセット-2レコード
+Command  "insert into T1 (C1_g,C2_f,C3_g,C4_g,C5_h) values (?, ?, ?, ?, ?)" ["000001",1,"A00000000001",textsjisfile "..\\..\\doc\\hello.txt",binaryfile "..\\..\\doc\\rnd1M-a"];
+Command  "insert into T1 (C1_g,C2_f,C3_g,C4_g,C5_h) values (?, ?, ?, ?, ?)" ["000002",2,"A00000000002",textsjisfile "..\\..\\doc\\ricoh.txt",binaryfile "..\\..\\doc\\rnd1M-b"];
+
+#テーブル確認
+Command "select * from T1";
+
+#カラムの追加 同じ名前の列を追加しようとしてエラーになる
+Command "alter table T1 add column C2_f int";
+Command "alter table T1 add column C1_g ntext";
+Command "alter table T1 add column C5_h blob";
+Command "alter table T1 add column C2_f int default 0";
+Command "alter table T1 add column C3_g ntext hint heap";
+
+
+#カラムを一度に追加 :同じ名前の列を追加しようとしてエラーになる
+Command "alter table T1 add column C2_f int,C1_g ntext,C5_h blob,C2_f int default 0,C3_g ntext"; 
+
+
+Command "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

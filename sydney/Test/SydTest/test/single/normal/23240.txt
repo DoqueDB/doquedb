@@ -1,0 +1,91 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# XA RECOVER -- ある状態のトランザクションブランチに対する状態取得のテスト
+#
+
+# 『存在しない』 ⇒ 何も出ない
+Command "xa recover";
+
+# 『データ操作中』 ⇒ 何も出ない
+## XA STARTでトランザクションブランチを開始した実行中のセッションで実行
+Command "xa start X'00'";
+Command "xa recover";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+## XA STARTでトランザクションブランチを開始した終了済のセッション以外のセッションで実行
+Command "xa start X'00'";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "xa recover";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 『待機中』 ⇒ 何も出ない
+## XA STARTでトランザクションブランチを開始した実行中のセッションで実行
+Command "xa start X'00'";
+Command "xa end X'00'";
+Command "xa recover";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+## XA STARTでトランザクションブランチを開始した終了済のセッション以外のセッションで実行
+Command "xa start X'00'";
+Command "xa end X'00'";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "xa recover";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 『コミット準備完了』 ⇒ コミット準備完了したトランザクションブランチが出る
+## XA STARTでトランザクションブランチ(データ操作無)を開始した実行中のセッションで実行
+Command "xa start X'00'";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa recover";
+Command "xa commit X'00'";
+
+## XA STARTでトランザクションブランチ(データ操作有)を開始した実行中のセッションで実行
+Command "create table T(I int)";
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [1];
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa recover";
+Command "xa commit X'00'";
+Command "drop table T";
+
+## XA STARTでトランザクションブランチ(データ操作無)を開始した終了済のセッション以外のセッションで実行
+Command "xa start X'00'";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "xa recover";
+Command "xa commit X'00'";
+
+## XA STARTでトランザクションブランチ(データ操作有)を開始した終了済のセッション以外のセッションで実行
+Command "create table T(I int)";
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [1];
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "xa recover";
+Command "xa commit X'00'";
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

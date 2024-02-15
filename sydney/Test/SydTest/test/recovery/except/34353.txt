@@ -1,0 +1,46 @@
+# PreparedCommandのテスト(異常系、ない表)
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# Tableを準備しない
+
+Command  "create fulltext index I1_2 on T1(C2) hint 'inverted=(nolocation=true)'";
+
+# 検索対象となるタプルを準備する
+CreatePreparedCommand "ins" "insert into T1 (C1, C2) values (?, ?)";
+PreparedCommand "ins" [1, "ほげ"];
+PreparedCommand "ins" [2, "ほげほげ"];
+PreparedCommand "ins" [3, "げほげほ"];
+PreparedCommand "ins" [4, "はらほげ"];
+PreparedCommand "ins" [5, "ほえ"];
+PreparedCommand "ins" [6, ""];
+ErasePreparedCommand "ins";
+
+Command "select * from T1";
+
+# スコア検索を行う
+CreatePreparedCommand "sel" "select C1, score(C2) from T1 where C2 like ?";
+PreparedCommand "sel" ["ほげ"];
+PreparedCommand "sel" ["%ほげ"];
+PreparedCommand "sel" ["ほげ%"];
+PreparedCommand "sel" ["%ほげ%"];
+ErasePreparedCommand "sel";
+
+Command  "select * from T1";
+
+TerminateSession;
+
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

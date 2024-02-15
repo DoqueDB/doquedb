@@ -1,0 +1,41 @@
+#
+#複文に'?'を使用するとsydtestが落ちる障害に対応
+#20050907　tajima
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create table T (f int)";
+Command "create table X (g int)";
+Command "create table Z (i int)";
+
+Command "create table T1 (f int,c1 nvarchar(10))";
+Command "create table X1 (g int,c2 nvarchar(10))";
+
+Command "insert T values (?) insert X values (?)" [1, 2];
+Command "select * from T";
+Command "select * from X";
+
+Command "insert T values (?) insert X values (?) insert Z values (?)" [1, 2, 3];
+Command "select * from T";
+Command "select * from X";
+Command "select * from Z";
+
+Command "insert T1 values (?,?) insert X1 values (?,?)" [100,"今日は水曜日",200,"明日は木曜日"];
+Command "select * from T1";
+Command "select * from X1";
+
+Command "update T set f= (?) where f= 1 update X set g=(?) where g=2" [101,102];
+Command "select * from T";
+Command "select * from X";
+
+Command "delete from  T where f= (?) delete from X where g=(?)" [101,102];
+Command "select * from T";
+Command "select * from X";
+
+
+Command "drop table T";
+Command "drop table X";
+TerminateSession;
+Terminate;
+End; 

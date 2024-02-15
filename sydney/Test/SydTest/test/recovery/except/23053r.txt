@@ -1,0 +1,36 @@
+#recoveryを行わせるためのSydTest
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+#g の値を指定せずに数件の挿入を繰り返す
+
+#insert T values (1, 10), (2, 20), (3, 30);
+#insert T values (4, 40), (5, 50), (6, 60);
+
+Command  "insert T(f, h) values (7, 70), (8, 80), (9, 90)";
+Command  "insert T(f, h) values (10, 100), (11, 110), (12, 120)";
+
+#g の値が 601 から始まっていることを確認する
+
+#select * from T;
+#⇒ 期待結果:
+#   {1, 100, 10}
+#   {2, 200, 20}
+#   {3, 300, 30}
+#   {4, 400, 40}
+#   {5, 500, 50}
+#   {6, 600, 60}
+#   {7, 601, 70}
+#   {8, 602, 80}
+#   {9, 603, 90}
+#   {10, 604, 100}
+#   {11, 605, 110}
+#   {12, 606, 120}
+
+Command  "select * from T";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,79 @@
+# select * from T1       inner join T2 using (<列1個>)
+#                   left outer
+#                  right outer
+# using(<列>)付きjoinテスト (使用する条件で列が1個)
+# 単索引
+# --T1索引有り, T2索引有り
+# --同種テスト 11[1-4]42
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "create index I1_1 on T1(C1)";
+Command  "create index I1_2 on T1(C2)";
+Command  "create index I1_3 on T1(C3)";
+Command  "create index I1_4 on T1(C4)";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  null, "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", null                                 ];
+
+
+# テーブルT2
+Command  "create table T2(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "create index I2_1 on T2(C1)";
+Command  "create index I2_2 on T2(C2)";
+Command  "create index I2_3 on T2(C3)";
+Command  "create index I2_4 on T2(C4)";
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "2",  "ほげ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  3,   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  null, "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",  "ぷう", null                                 ];
+
+
+# inner
+Command  "select * from T1 inner join T2 using (C1)";
+Command  "select * from T1 inner join T2 using (C2)";
+Command  "select * from T1 inner join T2 using (C3)";
+Command  "select * from T1 inner join T2 using (C4)";
+
+# left outer
+Command  "select * from T1 left outer join T2 using (C1)";
+Command  "select * from T1 left outer join T2 using (C2)";
+Command  "select * from T1 left outer join T2 using (C3)";
+Command  "select * from T1 left outer join T2 using (C4)";
+
+# right outer
+Command  "select * from T1 right outer join T2 using (C1)";
+Command  "select * from T1 right outer join T2 using (C2)";
+Command  "select * from T1 right outer join T2 using (C3)";
+Command  "select * from T1 right outer join T2 using (C4)";
+
+Command  "drop table T2";
+
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

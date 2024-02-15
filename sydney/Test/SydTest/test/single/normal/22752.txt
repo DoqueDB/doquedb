@@ -1,0 +1,51 @@
+# 同義語のテスト
+# 
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+Command "create database TEST";
+Command "create table T (ID int, F nvarchar(no limit), primary key(ID))";
+Command "create fulltext index T_F on T(F) hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1 @NORMRSCID:1)'";
+
+Command "insert into T(ID, F) values (1, 'ＳＦもその「ＳＦ大陸」の中で、歴史ＳＦ、時代ＳＦ、教養ＳＦ、ユーモアＳＦ、ホラーＳＦ、企業ＳＦなどと様々に分化し発展していったわけです。')";
+Command "insert into T(ID, F) values (2, '小学校の本校舎二階の図書館にあった忘れもしない児童向け少年少女空想科学小説シリーズに収録されていたアイザックが原点であった。')";
+Command "insert into T(ID, F) values (3, 'Successful Agingに関する先行研究のうち海外文献に焦点を絞って、15文献の検討を行った。')";
+Command "insert into T(ID, F) values (4, 'Sforzando プリュームファイバーケースと弓付きでお得なセットとなっております！')";
+Command "insert into T(ID, F) values (5, 'エスエフもその「エスエフ大陸」の中で、歴史エスエフ、時代エスエフ、教養エスエフ、ユーモアエスエフ、ホラーエスエフ、企業エスエフなどと様々に分化し発展していったわけです。')";
+
+# 辞書に載っている語
+#Command "select expand_synonym('sf' using 'UNA:1') from T where ID = 1";
+#Command "select expand_synonym('ＳＦ' using 'UNA:1') from T where ID = 1";
+Command "select expand_synonym('エスエフ' using 'UNA:1') from T where ID = 1";
+Command "select expand_synonym('空想科学小説' using 'UNA:1') from T where ID = 1";
+Command "select expand_synonym('新しい科学小説である' using 'UNA:1') from T where ID = 1";
+Command "select expand_synonym('図書館' using 'UNA:1') from T where ID = 1";
+
+# 辞書に載っていない語
+#Command "select expand_synonym('図書館' using 'UNA:1') from T where ID = 1";
+Command "select expand_synonym('sf' using 'UNA:1') from T where ID = 1";
+Command "select expand_synonym('ＳＦ' using 'UNA:1') from T where ID = 1";
+
+# ２つ以上の単語が載っている場合
+Command "select expand_synonym('エスエフの中のエスエフ' using 'UNA:1') from T where ID = 1";
+
+# 転置を普通に検索する
+Command "select id from T where F contains expand_synonym('エスエフ')";
+Command "select id from T where F contains expand_synonym('図書館')";
+# 一致条件が効いているか
+Command "select id from T where F contains expand_synonym(string('エスエフ'))";
+Command "select id from T where F contains expand_synonym(exactword('エスエフ'))";
+Command "select id from T where F contains expand_synonym(simpleword('科学小説'))";
+Command "select id from T where F contains expand_synonym(wordhead('空想科学小説'))";
+Command "select id from T where F contains expand_synonym(wordtail('サイエンスフィクション'))";
+
+# 言語も指定する
+Command "select id from T where F contains expand_synonym('エスエフ' language 'ja+en')";
+Command "select id from T where F contains expand_synonym(string('エスエフ' language 'ja+en'))";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

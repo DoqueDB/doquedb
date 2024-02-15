@@ -1,0 +1,20 @@
+Begin;
+Initialize;
+InitializeSession "";
+#------------------------------------
+NotExists "d:\\dm\\data\\DBDatabaseTest\\T";
+Exists "d:\\dm\\data\\databasetest\\T";
+NotExists "d:\\dm\\data\\DBDatabaseTest\\LOGICALLOG.SYD";
+Exists "d:\\dm\\data\\logtest\\LOGICALLOG.SYD";
+NotExists "d:\\dm\\system\\DBDatabaseTest\\OBJECTID";
+NotExists "d:\\dm\\system\\DBDatabaseTest\\SCHEMA";
+Exists "d:\\dm\\system\\systemtest\\OBJECTID";
+Exists "d:\\dm\\system\\systemtest\\SCHEMA";
+Command "drop database DBDatabaseTest";
+NotExists "d:\\dm\\data\\databasetest";
+NotExists "d:\\dm\\data\\logtest";
+NotExists "d:\\dm\\system\\systemtest";
+TerminateSession;
+
+#Terminate;
+End;

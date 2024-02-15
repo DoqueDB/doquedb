@@ -1,0 +1,43 @@
+#エリアのあるデータベースを移動してのmount (drop all)
+Begin;
+Initialize;
+InitializeSession "DBMountTest";
+Command "alter table T set area area1";
+Command "alter index T_f1 drop area";
+Command "select * from T where f1 < 5";
+TerminateSession;
+InitializeSession "";
+#------------------------------------
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+Exists "d:\\dm\\data\\area1\\T";
+Exists "d:\\dm\\data\\area1\\T\\BTR_T_f1";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create area area2 'area2'";
+Command "alter index T_f1 set area area2";
+Exists "d:\\dm\\data\\area1\\T";
+Exists "d:\\dm\\data\\area2\\T\\BTR_T_f1";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mkdir \"d:\\dm\\data\\alterdatabasetest\"";
+System "mv \"d:\\dm\\data\\logtest\" \"d:\\dm\\data\\alterlogtest\"";
+System "mv \"d:\\dm\\system\\systemtest\" \"d:\\dm\\system\\altersystemtest\"";
+System "mv \"d:\\dm\\data\\area1\\T\" \"d:\\dm\\data\\alterdatabasetest\"";
+System "mv \"d:\\dm\\data\\area2\\T\\BTR_T_f1\" \"d:\\dm\\data\\alterdatabasetest\\T\"";
+System "rmdir \"d:\\dm\\data\\area1\"";
+System "rmdir \"d:\\dm\\data\\area2\\T\"";
+System "rmdir \"d:\\dm\\data\\area2\"";
+System "rmdir \"d:\\dm\\data\\alterarea3-1\"";
+System "rmdir \"d:\\dm\\data\\alterarea4-1\"";
+System "rmdir \"d:\\dm\\data\\alterarea4-2\"";
+Exists "d:\\dm\\data\\alterdatabasetest\\T";
+Exists "d:\\dm\\data\\alterdatabasetest\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'alterdatabasetest' logicallog 'alterlogtest' system 'altersystemtest' drop all area";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+#------------------------------------
+TerminateSession;
+#Terminate;
+End;

@@ -1,0 +1,139 @@
+# 4302 -- 4300の強化版
+
+# 要請
+# 表は複数種類のファイルやらheapやらを持つこと
+# insertのみならず、updateやdeleteについても中断を試す
+
+Begin;
+
+#SetSystemParameter "Exception_FakeError" "Execution::Executor::execute_IsInterrupted count=(4 11 18 25 32 110 127 147 171 195 209 225 243 264 287 312 355)";
+#SetSystemParameter "Exception_FakeError" "Execution::Executor::execute_IsInterrupted count=(4 11 18 25 32 70 82 94 106 118 130 142 154 166 178 190 202)";
+SetSystemParameter "Exception_FakeError" "Execution::Executor::execute_IsInterrupted count=(1 2 3 4 5 12 18 24 30 36 42 49 55 61 67 73 79)";
+
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#まず表を作る
+Command "create table T(A int hint heap, B nvarchar(496), C ntext array [no limit])";
+Command "create index IB on T(B)";
+Command "create fulltext index IC on T(C) hint 'sectionized, delayed, inverted=(nolocation=true, notf=true, normalized=true)'";
+
+AsyncCommand "ins1" "insert into T values (1, ?, ?)" ["ほげ", ["ほげほげ"]];
+#CancelAsync "ins1";
+GetAsyncResult "ins1";
+Command "select * from T";
+
+AsyncCommand "ins2" "insert into T values (2, ?, ?)" ["ふにゃら", null];
+#CancelAsync "ins2";
+GetAsyncResult "ins2";
+Command "select * from T";
+
+AsyncCommand "ins3" "insert into T values (3, ?, ?)" [null, ["れれれれ"]];
+#CancelAsync "ins3";
+GetAsyncResult "ins3";
+Command "select * from T";
+
+AsyncCommand "ins4" "insert into T values (4, ?, ?)" 
+	[textsjisfile "..\\..\\doc\\ublab.txt", [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+#CancelAsync "ins4";
+GetAsyncResult "ins4";
+AsyncCommand "ins5" "insert into T values (5, ?, ?)" [null, null];
+#CancelAsync "ins5";
+GetAsyncResult "ins5";
+Command "select * from T";
+
+#保険
+Command "delete from T";
+
+#update/deleteのため
+Command "insert into T values (1, ?, ?)" ["ほげ", ["ほげほげ"]];
+Command "insert into T values (2, ?, ?)" ["ふにゃら", null];
+Command "insert into T values (3, ?, ?)" [null, ["れれれれ"]];
+Command "insert into T values (4, ?, ?)" 
+	[textsjisfile "..\\..\\doc\\ublab.txt", [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T values (5, ?, ?)" [null, null];
+
+# updateをcancelする
+
+AsyncCommand "upd1" "update T set A=10, B=?, C=? where A=1" ["へろ", ["へろへろ"]];
+#CancelAsync "upd1";
+GetAsyncResult "upd1";
+Command "select * from T";
+
+AsyncCommand "upd2" "update T set A=20, B=?, C=? where A=2" [null, ["ふにゃふにゃ"]];
+#CancelAsync "upd2";
+GetAsyncResult "upd2";
+Command "select * from T";
+
+AsyncCommand "upd3" "update T set A=30, B=?, C=? where A=3" ["れれろろ", null];
+#CancelAsync "upd3";
+GetAsyncResult "upd3";
+Command "select * from T";
+
+AsyncCommand "upd4" "update T set A=40, B=?, C=? where A=4"
+	[textsjisfile "..\\..\\doc\\Teihon.txt", [textsjisfile "..\\..\\doc\\dictionary.txt"]];
+#CancelAsync "upd4";
+GetAsyncResult "upd4";
+Command "select * from T";
+
+AsyncCommand "upd5" "update T set A=50, B=?, C=? where A=5" 
+	["ぴよよ", ["あ", "い", "う", "え", "お"]];
+#CancelAsync "upd5";
+GetAsyncResult "upd5";
+Command "select * from T";
+
+AsyncCommand "upd_all" "update T set A=0, B=?, C=? " ["へろ", ["へろへろ"]];
+#CancelAsync "upd_all";
+GetAsyncResult "upd_all";
+Command "select * from T";
+
+# deleteをcancelする
+
+AsyncCommand "del1" "delete from T where A=1";
+#CancelAsync "del1";
+GetAsyncResult "del1";
+Command "select * from T";
+
+AsyncCommand "del2" "delete from T where A=2";
+#CancelAsync "del2";
+GetAsyncResult "del2";
+Command "select * from T";
+
+AsyncCommand "del3" "delete from T where A=3";
+#CancelAsync "del3";
+GetAsyncResult "del3";
+Command "select * from T";
+
+AsyncCommand "del4" "delete from T where A=4";
+#CancelAsync "del4";
+GetAsyncResult "del4";
+Command "select * from T";
+
+AsyncCommand "del5" "delete from T where A=5";
+#CancelAsync "del5";
+GetAsyncResult "del5";
+Command "select * from T";
+
+AsyncCommand "del_all" "delete from T";
+#CancelAsync "del_all";
+GetAsyncResult "del_all";
+Command "select * from T";
+
+#表の後始末
+Command "delete from T";
+#Command "drop table T";
+
+TerminateSession;
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+
+SetSystemParameter "Exception_FakeError" "";
+
+End;

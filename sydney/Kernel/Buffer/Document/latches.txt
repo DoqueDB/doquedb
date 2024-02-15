@@ -1,0 +1,582 @@
+
+■Manager::Pool::initialize()
+
+■Manager::Pool::terminate()
+
+□Pool::attach(Category::Value)
+
+Latch				_Pool::_latch
+#Call				Pool::Pool()
+Unlatch				_Pool::_latch
+
+□Pool::attach()
+
+Latch				_Pool::_latch
+Unlatch				_Pool::_latch
+
+□Pool::detach(Pool*&)
+
+Latch				_Pool::_latch
+Unlatch				_Pool::_latch
+#Call				Pool::destruct()
+
+□Pool::detach()
+
+Latch				_Pool::_latch
+Unlatch				_Pool::_latch
+
+□Pool::getRefCount()
+
+Latch				_Pool::_latch
+Unlatch				_Pool::_latch
+
+■Pool::Pool(Category::Value, Os::Memory::Size)
+
+■Pool::destruct()
+
+□Pool::allocateMemory(Os::Memory::Size, bool, bool&, bool)
+
+#Call				Pool::FreeList::release()
+Latch				Statistics::getLatch()
+#Call				Statistics::record()
+Unlatch				Statistics::getLatch()
+
+□Pool::freeMemory(void*&, Os::Memory::Size)
+
+#Call				Pool::FreeList::register()
+Latch				Statistics::getLatch()
+#Call				Statistics::record()
+Unlatch				Statistics::getLatch()
+
+□Pool::replaceMemory(Os::Memory::Size, bool reset, bool&, Page&)
+
+{
+#Call				Pool::LruList::splice()
+}
+OR
+{
+#Call				Pool::calculateParameter()
+Call				Pool::getCandidate()
+#Call				Pool::allocateMemory()
+#Call				Pool::LruList::splice()
+}
+OR
+{
+Call				Pool::releaseVictim()
+Call				Pool::getCandidate()
+#Call				Pool::allocateMemory()
+#Call				Pool::LruList::pushBack()
+}
+
+■Pool::calculateParameter(const Page&)
+
+□Pool::getCandidate(Os::Memory::Size, bool, bool&, const Page&)
+
+Call				Pool::getCandidate(Os::Memory::Size, bool, bool&, LruList&, LruList&)
+
+□Pool::getCandidate(Os::Memory::Size, bool, bool&, LruList&, LruList&)
+
+Call				Page::attach()
+TryLatch			Page::getLatch()
+Call				Page::getRefCount()
+Unlatch				Page::getLatch()
+{
+#Call				Pool::LruList::splice()
+}
+OR
+{
+#Call				Pool::LruList::erase()
+}
+Call				Page::detach(Page*&, bool)
+#Call				Pool::freeMemory()
+#Call				Pool::allocateMemory()
+
+□Pool::releaseVictim(Os::Memory::Size, LruList&)
+
+Call				Page::attach()
+#Call				Pool::LruList::erase()
+Call				Page::detach()
+
+□Pool::discardPage(const DiscardablePageFilter::Base&)
+
+Latch				Pool::getLatch();
+Call				Page::attach();
+#Call				Pool::DiscardablePageFilter::Base::operator ()()
+Call				Page::detach();
+Unlatch				Pool::getLatch();
+
+Call				Page::attach();
+Latch				Page::getLatch();
+Unlatch				Page::getLatch();
+Call				Page::detach();
+
+Latch				Pool::getLatch()
+#Call				Pool::freeMemory();
+Unlatch				Pool::getLatch()
+
+Call				Page::attach();
+Call				Page::detach();
+
+□Pool::flushDirtyPage(const FlushablePageFilter::Base&, bool)
+
+Lock(Read)			Deterrent::getRWLock()
+Latch				Pool::getLatch()
+Unlatch				Pool::getLatch()
+Latch				Page::getLatch()
+Call				Pool::FlushablePageFilter::Base::operator ()()
+UnLatch				Page::getLatch()
+
+TryLock(Read)			Page::getRWLock()
+TryLatch			Page::getLatch()
+#Call				Page::calculateCRC()
+
+Call				Pool::writeBodies()
+
+Latch				Pool::getLatch()
+Unlatch				Pool::getLatch()
+Unlock(Read)			Deterrent::getRWLock()
+
+□Pool::writeBodies(unsigned int&, DirtyList::Itrator&, const DirtyList::Iterator&)
+
+Latch				File::getLatch()
+Call				File::openOsFile()
+Call				File::writeOsFile(const Os::File::IOBuffer& [], Os::Memory::Size, unsigned int, Os::File::Offset)
+Unlatch				File::getLatch()
+
+Unlatch				Page::getLatch()
+Unlock(Read)			Page::getRWLock()
+
+■Pool::markDirtyPage()
+
+■Pool::getLruList(LruList::Category::Value)
+
+□Pool::FlushablePageFilter::ForPool::operator()(const Page&)
+
+Call				Deterrent::isStarted()
+
+□Pool::FlushablePageFilter::ForFile::operator()(const Page&)
+
+Call				Deterrent::isStarted()
+
+■Pool::DiscardablePageFilter::ForPool::operator()(const Page&)
+
+■Pool::DiscardablePageFilter::ForFile::operator()(const Page&)
+
+■Pool::LruList::LruList(Category::Value)
+
+■Pool::LruList::pushBack(Page&)
+
+■Pool::LruList::erase(Page&)
+
+■Pool::LruList::popFront()
+
+■Pool::LruList::splice(Iterator&, LruList&, Page&)
+
+■Pool::FreeList::FreeList(Os::Memory::Size, Os::Memory::Size)
+
+■Pool::FreeList::~FreeList()
+
+■Pool::FreeList::register(void*&, Os::Memory::Size)
+
+■Pool::FreeList::release(Os::Memory::Size)
+
+■Manager::File::initialize()
+
+■Manager::File::terminate()
+
+■File::File(ID, Pool&, const Os::Path&, Os::Memory::Size, bool, bool, bool)
+
+□File::attach(Pool&, const Os::Path&, Os::Memory::Size, bool, bool, bool)
+
+Latch				_File::_latch
+#Call				File::File()
+Call				Pool::attach()
+Unlatch				_File::_latch
+
+□File::attach()
+
+Latch				_File::_latch
+Unlatch				_File::_latch
+
+□File::detach(File*&)
+
+Latch				_File::_latch
+Call				File::close()
+Unlatch				_File::_latch
+Call				Pool::detach(Pool*&)
+
+□File::detach()
+
+Latch				_File::_latch
+Unlatch				_File::_latch
+
+□File::getRefCount()
+
+Latch				_File::_latch
+Unlatch				_File::_latch
+
+□File::create(bool)
+
+Latch				File::getLatch()
+Call				File::isMounted()
+{
+#Call				File::isCreationDelayed()
+Call				File::openOsFile(Os::File::OpenMode::Value, Os::File::Permission::Value)
+}
+OR
+{
+Call				File::truncate()
+}
+Unlatch				File::getLatch()
+
+□File::destroy()
+
+Lock(Read)			Pool::getRWLock()
+Latch				File::getLatch()
+Call				Pool::discardPage(Pool::DiscardablePageFilter::ForFile(*this, 0))
+Call				File::closeOsFile()
+Unlatch				File::getLatch()
+Unlock(Read)			Pool::getRWLock()
+
+□File::mount(bool)
+
+Latch				File::getLatch()
+Call				File::isMounted()
+Call				File::openOsFile(Os::File::OpenMode::Value, Os::File::Permission::Value)
+Unlatch				File::getLatch()
+
+□File::unmount()
+
+Lock(Write)			Pool::getRWLock()
+Latch				File::getLatch()
+Call				Pool::flushDirtyPage(Pool::FlushablePageFilter::ForFile(*this, -1, false), true)
+Call				Pool::discardPage(Pool::DiscardablePageFilter::ForFile(*this, 0))
+Call				File::closeOsFile()
+Unlatch				File::getLatch()
+Unlock(Write)			Pool::getRWLock()
+
+□File::truncate(Os::File::Offset)
+
+Lock(Read)			Pool::getRWLock()
+Latch				File::getLatch()
+Call				Pool::discardPage(Pool::DiscardablePageFilter::ForFile(*this, Os::File::Offset))
+#Call				File::isCreationDelayed()
+Call				File::openOsFile(Os::File::OpenMode::Value, Os::File::Permission::Value)
+Unlatch				File::getLatch()
+Unlock(Read)			Pool::getRWLock()
+
+□File::extend(Os::File::Offset)
+
+Latch				File::getLatch()
+Call				File::getSize()
+#Call				File::isCreationDelayed()
+Call				File::openOsFile(Os::File::OpenMode::Value, Os::File::Permission::Value)
+
+Latch				Pool::getLatch()
+#Call				Pool::allocateMemory()
+Unlatch				Pool::getLatch()
+
+Call				File::writeOsFile(const Os::File::IOBuffer&, Os::Memory::Size, Os::File::Offset)
+
+Latch				Pool::getLatch()
+#Call				Pool::freeMemory()
+Unlatch				Pool::getLatch()
+
+Unlatch				File::getLatch()
+
+□File::rename(const Os::Path&)
+
+Latch				_File::_latch
+Latch				File::getLatch()
+Call				File::closeOsFile()
+Unlatch				File::getLatch()
+Unlatch				_File::_latch
+
+□File::open()
+
+Latch				File::getLatch()
+Call				File::openOsFile()
+Unlatch				File::getLatch()
+
+□File::openOsFile()
+
+#Call				File::isCreationDelayed()
+Call				File::openOsFile(Os::File::OpenMode::Value, Os::File::Permission::Value)
+
+□File::openOsFile(Os::File::OpenMode::Value, Os::File::Permission::Value)
+
+Latch				_File::_openList->getLatch()
+TryLatch			File::getLatch()
+Call				File::closeOsFile()
+Unlatch				File::getLatch()
+Call				File::getSize()
+Unlatch				_File::_openList->getLatch()
+
+□File::close()
+
+Latch				File::getLatch()
+Call				File::closeOsFile()
+Unlatch				File::getLatch()
+
+□File::closeOsFile()
+
+Latch				_File::_openList->getLatch()
+Unlatch				_File::_openList->getLatch()
+
+□File::readOsFile(Os::File::IOBuffer&, Os::Memory::Size, Os::File::Offset)
+
+Latch				Statistics::getLatch()
+#Call				Statistics::record()
+Unlatch				Statistics::getLatch()
+
+□File::writeOsFile(const Os::File::IOBuffer&, Os::Memory::Size, Os::File::Offset)
+
+Latch				Statistics::getLatch()
+#Call				Statistics::record()
+Unlatch				Statistics::getLatch()
+
+□File::writeOsFile(const Os::File::IOBuffer& [], Os::Memory::Size, unsigned int, Os::File::Offset)
+
+Latch				Statistics::getLatch()
+#Call				Statistics::record()
+Unlatch				Statistics::getLatch()
+
+□File::flush(Os::File::Offset)
+
+Lock(Write)			Pool::getRWLock()
+Call				Pool::flushDirtyPage(Pool::FlushablePageFilter::ForFile(*this, Os::File::Offset, false), true)
+Unlock(Write)			Pool::getRWLock()
+
+□File::startDeterrent()
+
+Lock(Write)			Deterrent::getRWLock()
+Call				File::attach()
+Unlock(Write)			Deterrent::getRWLock()
+
+□File::endDeterrent()
+
+Lock(Write)			Deterrent::getRWLock()
+Call				File::detach()
+Unlock(Write)			Deterrent::getRWLock()
+
+□File::getSize()
+
+Latch				File::getLatch()
+Unlatch				File::getLatch()
+
+□File::getPageCount()
+
+Call				File::getSize()
+Call				Page::fix()
+
+□File::isAccessible(bool)
+
+Latch				File::getLatch()
+Unlatch				File::getLatch()
+
+□File::isMounted()
+
+Latch				File::getLatch()
+Unlatch				File::getLatch()
+
+■File::isCreationDelayed()
+
+■Manager::Page::initialize()
+
+□Manager::Page::termiate()
+
+Call				Pool::attach(Category::Value)
+#Call				Pool::freeMemory()
+Call				File::detach(File*&)
+Call				Pool::detach(Pool*&)
+
+□Page::attach(File&, Os::File::Offset)
+
+Latch				_Page::_pageTable->getBucket().getLatch()
+Latch				_Page::_freeList->getLatch()
+Unlatch				_Page::_freeList->getLatch()
+Call				File::attach()
+Unlatch				_Page::_pageTable->getBucket().getLatch()
+
+□Page::attach()
+
+Latch				_Page::_pageTable->getBucket().getLatch()
+Unlatch				_Page::_pageTable->getBucket().getLatch()
+
+□Page::detach(Page*&, bool)
+
+Latch				_Page::_pageTable->getBucket().getLatch()
+Unlatch				_Page::_pageTable->getBucket().getLatch()
+Latch				_Page::_freeList->getLatch()
+Unlatch				_Page::_freeList->getLatch()
+Call				File::detach(File*&)
+
+□Page::detach()
+
+Latch				_Page::_pageTable->getBucket().getLatch()
+Unlatch				_Page::_pageTable->getBucket().getLatch()
+
+□Page::getRefCount()
+
+Latch				_Page::_pageTable->getBucket().getLatch()
+Unlatch				_Page::_pageTable->getBucket().getLatch()
+
+■Page::getBucket(File&, Os::File::Offset)
+
+□Page::fix(File&, Os::File::Offset, FixMode::Value)
+
+Call				Page::attach(File&, Os::File::Offset)
+Lock(Read OR Write)		Page::getRWLock()
+Latch				Page::getLatch()
+
+Latch				Pool::getLatch()
+Call				Pool::replaceMemory()
+Unlatch				Pool::getLatch()
+
+Latch				File::getLatch()
+Call				File::openOsFile()
+Call				File::readOsFile()
+Unlatch				File::getLatch()
+
+#Call				Page::verify()
+
+Unlatch				Page::getLatch()
+
+Lock(Write)			Pool::getRWLock()
+Call				Pool::flushDirtyPage(Pool::FlushablePageFilter::ForPool(false, false), false)
+Unlock(Write)			Pool::getRWLock()
+
+□Page::unfix(Memory::Category::Value, UnfixMode::Value)
+
+{
+Latch				Page::getLatch()
+Latch				Pool::getLatch()
+#Call				Pool::freeMemory()
+Unlatch				Pool::getLatch()
+Unlatch				Page::getLatch()
+}
+OR
+{
+Latch				Page::getLatch()
+Call				Page::getRefCount()
+
+Latch				Pool::getLatch()
+#Call				Pool::freeMemory()
+Unlatch				Pool::getLatch()
+Unlatch				Page::getLatch()
+}
+OR
+{
+Lock(Read)			Deterrent::getRWLock()
+Latch				Page::getLatch()
+
+Call				Deterrent::isStarted()
+Call				Page::getRefCount()
+
+Latch				Pool::getLatch()
+#Call				Pool::freeMemory()
+Unlatch				Pool::getLatch()
+
+#Call				Page::calculateCRC()
+
+Latch				File::getLatch()
+Call				File::openOsFile()
+Call				File::writeOsFile(const Os::File::IOBuffer&, Os::Memory::Size, Os::File::Offset)
+Unlatch				File::getLatch()
+
+Unlatch				Page::getLatch()
+Unlock(Read)			Deterrent::getRWLock()
+}
+
+Unlock(Read OR Write)		Page::getRWLock()
+Call				Page::detach()
+
+□Page::touch(Memory::Category::Value)
+
+Latch				Page::getLatch()
+Latch				Pool::getLatch()
+Unlatch				Pool::getLatch()
+Unlatch				Page::getLatch()
+
+■Page::getContentSize(Os::Memory::Size)
+
+■Page::calculateCRC()
+
+■Page::verify()
+
+■Page::verifySize(Os::Memory::Size)
+
+■Memory::Memory(Category::Value, Page&, bool)
+
+□Memory::operator char*()
+
+Latch				Page::getLatch()
+Latch				Pool::getLatch()
+#Call				Pool::allocateMemory();
+Unlatch				Pool::getLatch()
+Unlatch				Page::getLatch()
+
+□Memory::operator const char*()
+
+Latch				Page::getLatch()
+Unlatch				Page::getLatch()
+
+□Memory::unfix(bool, bool)
+
+Call				Page::unfix()
+
+□Memory::refix()
+
+Call				Page::fix()
+
+□Memory::touch(bool)
+
+Call				Page::touch()
+
+■Memory::discardable()
+
+■Memory::getSize()
+
+#Call				Memory::getPageSize()
+#Call				Page::getContentSize()
+
+■Memory::getPageSize()
+
+■Statistics::clear()
+
+■Statistics::record(Category::Value, Os::Memory::Size)
+
+□DirtyPageFlusher::repeatable()
+
+Lock(Write)			Pool::getRWLock()
+Call				Pool::flushDirtyPage(Pool::FlushablePageFilter::ForPool(false, bool), bool)
+Unlock(Write)			Pool::getRWLock()
+
+□GarbageCollector::repeatable()
+
+Call				Pool::attach(Category::Value)
+Latch				Pool::getLatch()
+Latch				Pool::_statistics.getLatch()
+Unlatch				Pool::_statistics.getLatch()
+Call				Pool::getCandidate()
+Call				Pool::getCandidate()
+Unlatch				Pool::getLatch()
+Call				Pool::detach(Pool*&)
+
+================================================================================
+
+Lock(Read OR Write)		Page::getRWLock()
+  |
+Lock(Read)			Deterrent::getRWLock()
+  |
+Latch				Page::getLatch()
+  |
+Latch				_File::_latch
+  |
+Lock(Read OR Write)		Pool::getRWLock()
+  |
+Latch				File::getLatch()
+  |
+Latch				Pool::getLatch()
+  |
+Latch				Statistics::getLatch()

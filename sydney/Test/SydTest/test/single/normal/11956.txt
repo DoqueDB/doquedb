@@ -1,0 +1,32 @@
+# 障害票 1239
+# Join条件とAnd notの組み合わせ
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command  "create table TBL1(f int, g ntext, primary key(f))";
+Command  "create table TBL2(f int, primary key(f))";
+
+Command  "insert TBL1 values (1, 'abc'), (2, 'def')";
+Command  "insert TBL2 values 1,2,3";
+
+Command  "create fulltext index IDX on TBL1(g)";
+
+Command  "select * from TBL1, TBL2 where TBL1.f = TBL2.f and not g contains 'a'"; 
+
+Command  "drop table TBL1";
+Command  "drop table TBL2";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

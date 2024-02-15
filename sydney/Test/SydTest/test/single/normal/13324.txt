@@ -1,0 +1,36 @@
+#エリアのあるデータベースを移動してのmount(複数パス)
+Begin;
+Initialize;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+TerminateSession;
+InitializeSession "";
+#------------------------------------
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create area area3 array ['area3-1', 'area3-2']";
+Command "create area area4 array ['area4-1', 'area4-2']";
+Command "alter table T set area area3";
+Command "alter index T_f1 set area area4";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mv \"d:\\dm\\data\\databasetest\" \"d:\\dm\\data\\alterdatabasetest\"";
+System "mv \"d:\\dm\\data\\logtest\" \"d:\\dm\\data\\alterlogtest\"";
+System "mv \"d:\\dm\\system\\systemtest\" \"d:\\dm\\system\\altersystemtest\"";
+System "mv \"d:\\dm\\data\\area3-1\" \"d:\\dm\\data\\alterarea3-1\"";
+System "mv \"d:\\dm\\data\\area4-1\" \"d:\\dm\\data\\alterarea4-1\"";
+System "mkdir \"d:\\dm\\data\\alterarea4-2\"";
+Exists "d:\\dm\\data\\alterarea3-1\\T";
+Exists "d:\\dm\\data\\alterarea4-1\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'alterdatabasetest' logicallog 'alterlogtest' system 'altersystemtest' alter area area3 modify [0] 'alterarea3-1' alter area area4 modify array ['alterarea4-1', 'alterarea4-2']";
+Exists "d:\\dm\\data\\alterarea3-1\\T";
+Exists "d:\\dm\\data\\alterarea4-1\\T\\BTR_T_f1";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+#------------------------------------
+TerminateSession;
+#Terminate;
+End;

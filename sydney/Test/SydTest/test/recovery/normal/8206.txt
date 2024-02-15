@@ -1,0 +1,75 @@
+## -*-Mode: text; tab-width: 4; c-basic-offset: 4;-*-
+## vi:set ts=4 sw=4:
+##
+## 8206.txt -- table 作成のテスト
+##
+##	TEST CONTENTS
+##		table の作成とindexの削除を同時に行う
+##
+##	START CONDITIONS
+##		特に無し
+##		
+##	END CONDITIONS
+##		start 前と同じ
+##
+##	CHECK
+##		
+##
+##	NOTE
+##		マルチスレッド
+##		正常系
+##		Schema の単体テストも兼ねる
+##
+## Copyright (c) 2001-2003 Ricoh Company, Ltd.
+## All rights reserved.
+##
+##		$Author$
+##		$Date$
+##		$Revision$
+##
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+# 準備
+
+InitializeSession "";
+Command "create database DB_xxxx";
+TerminateSession;
+
+InitializeSession 1 "DB_xxxx";
+InitializeSession 2 "DB_xxxx";
+
+# 作成と削除を同時に行う。
+# drop が先だったり、crete が先だったりするので結果は違う場合が多い。
+# デッドロックにならなければ良い。(順序によってERRORが出てもよい)
+
+CreateThread "Create";
+CreateThread "Drop";
+JoinThread "Create";
+JoinThread "Drop";
+
+TerminateSession 1;
+TerminateSession 2;
+
+# 後片付け
+#InitializeSession "DB_xxxx";
+#Command "drop database DB_xxxx";
+#TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;
+
+#---------------------------------------------------------------------------------
+
+Create
+{
+Command 1 "create table TBL1(C int)";
+}
+
+Drop
+{
+Command 2 "drop table TBL1";
+}
+

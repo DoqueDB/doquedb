@@ -1,0 +1,185 @@
+# select * from T where〈 列1個 〉(not) between〈 ほかの列 - 数字列 〉
+# 
+# between 式 and 式によるテスト
+# 索引
+# --索引き無し
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+
+# メインテーブル
+Command  "create table T(C1 int, C2 int, C3 varchar(4), C4 nvarchar(4))";
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [ 1,   3,    "20",  "14" ];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [ 2,   4,    "30",  "25" ];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [ 3,   5,    "40",  "36" ];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [ 4,   6,    "50",  "47" ];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [ 5,   7,    "60",  "14" ];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, 6,    "20",  "25" ];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [ 6,   null, "30",  "36" ];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [ 7,   5,     null, "47" ];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [ 8,   4,    "40",   null];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null, "50",  "14" ];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, 3,     null, "25" ];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [ 9,   null, "60",   null];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [10,   null,  null, "36" ];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, 4,    "20",   null];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [11,   5,     null,  null];
+Command  "insert into T (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null,  null,  null];
+
+
+# --between
+Command  "select * from T where C1 between C1 and C1";
+Command  "select * from T where C1 between C1 and C2";
+Command  "select * from T where C1 between C1 and C3";
+Command  "select * from T where C1 between C1 and C4";
+Command  "select * from T where C1 between C2 and C1";
+Command  "select * from T where C1 between C2 and C2";
+Command  "select * from T where C1 between C2 and C3";
+Command  "select * from T where C1 between C2 and C4";
+Command  "select * from T where C1 between C3 and C1";
+Command  "select * from T where C1 between C3 and C2";
+Command  "select * from T where C1 between C3 and C3";
+Command  "select * from T where C1 between C3 and C4";
+Command  "select * from T where C1 between C4 and C1";
+Command  "select * from T where C1 between C4 and C2";
+Command  "select * from T where C1 between C4 and C3";
+Command  "select * from T where C1 between C4 and C4";
+
+Command  "select * from T where C2 between C1 and C1";
+Command  "select * from T where C2 between C1 and C2";
+Command  "select * from T where C2 between C1 and C3";
+Command  "select * from T where C2 between C1 and C4";
+Command  "select * from T where C2 between C2 and C1";
+Command  "select * from T where C2 between C2 and C2";
+Command  "select * from T where C2 between C2 and C3";
+Command  "select * from T where C2 between C2 and C4";
+Command  "select * from T where C2 between C3 and C1";
+Command  "select * from T where C2 between C3 and C2";
+Command  "select * from T where C2 between C3 and C3";
+Command  "select * from T where C2 between C3 and C4";
+Command  "select * from T where C2 between C4 and C1";
+Command  "select * from T where C2 between C4 and C2";
+Command  "select * from T where C2 between C4 and C3";
+Command  "select * from T where C2 between C4 and C4";
+
+Command  "select * from T where C3 between C1 and C1";
+Command  "select * from T where C3 between C1 and C2";
+Command  "select * from T where C3 between C1 and C3";
+Command  "select * from T where C3 between C1 and C4";
+Command  "select * from T where C3 between C2 and C1";
+Command  "select * from T where C3 between C2 and C2";
+Command  "select * from T where C3 between C2 and C3";
+Command  "select * from T where C3 between C2 and C4";
+Command  "select * from T where C3 between C3 and C1";
+Command  "select * from T where C3 between C3 and C2";
+Command  "select * from T where C3 between C3 and C3";
+Command  "select * from T where C3 between C3 and C4";
+Command  "select * from T where C3 between C4 and C1";
+Command  "select * from T where C3 between C4 and C2";
+Command  "select * from T where C3 between C4 and C3";
+Command  "select * from T where C3 between C4 and C4";
+
+Command  "select * from T where C4 between C1 and C1";
+Command  "select * from T where C4 between C1 and C2";
+Command  "select * from T where C4 between C1 and C3";
+Command  "select * from T where C4 between C1 and C4";
+Command  "select * from T where C4 between C2 and C1";
+Command  "select * from T where C4 between C2 and C2";
+Command  "select * from T where C4 between C2 and C3";
+Command  "select * from T where C4 between C2 and C4";
+Command  "select * from T where C4 between C3 and C1";
+Command  "select * from T where C4 between C3 and C2";
+Command  "select * from T where C4 between C3 and C3";
+Command  "select * from T where C4 between C3 and C4";
+Command  "select * from T where C4 between C4 and C1";
+Command  "select * from T where C4 between C4 and C2";
+Command  "select * from T where C4 between C4 and C3";
+Command  "select * from T where C4 between C4 and C4";
+
+
+# --not between
+Command  "select * from T where C1 not between C1 and C1";
+Command  "select * from T where C1 not between C1 and C2";
+Command  "select * from T where C1 not between C1 and C3";
+Command  "select * from T where C1 not between C1 and C4";
+Command  "select * from T where C1 not between C2 and C1";
+Command  "select * from T where C1 not between C2 and C2";
+Command  "select * from T where C1 not between C2 and C3";
+Command  "select * from T where C1 not between C2 and C4";
+Command  "select * from T where C1 not between C3 and C1";
+Command  "select * from T where C1 not between C3 and C2";
+Command  "select * from T where C1 not between C3 and C3";
+Command  "select * from T where C1 not between C3 and C4";
+Command  "select * from T where C1 not between C4 and C1";
+Command  "select * from T where C1 not between C4 and C2";
+Command  "select * from T where C1 not between C4 and C3";
+Command  "select * from T where C1 not between C4 and C4";
+
+Command  "select * from T where C2 not between C1 and C1";
+Command  "select * from T where C2 not between C1 and C2";
+Command  "select * from T where C2 not between C1 and C3";
+Command  "select * from T where C2 not between C1 and C4";
+Command  "select * from T where C2 not between C2 and C1";
+Command  "select * from T where C2 not between C2 and C2";
+Command  "select * from T where C2 not between C2 and C3";
+Command  "select * from T where C2 not between C2 and C4";
+Command  "select * from T where C2 not between C3 and C1";
+Command  "select * from T where C2 not between C3 and C2";
+Command  "select * from T where C2 not between C3 and C3";
+Command  "select * from T where C2 not between C3 and C4";
+Command  "select * from T where C2 not between C4 and C1";
+Command  "select * from T where C2 not between C4 and C2";
+Command  "select * from T where C2 not between C4 and C3";
+Command  "select * from T where C2 not between C4 and C4";
+
+Command  "select * from T where C3 not between C1 and C1";
+Command  "select * from T where C3 not between C1 and C2";
+Command  "select * from T where C3 not between C1 and C3";
+Command  "select * from T where C3 not between C1 and C4";
+Command  "select * from T where C3 not between C2 and C1";
+Command  "select * from T where C3 not between C2 and C2";
+Command  "select * from T where C3 not between C2 and C3";
+Command  "select * from T where C3 not between C2 and C4";
+Command  "select * from T where C3 not between C3 and C1";
+Command  "select * from T where C3 not between C3 and C2";
+Command  "select * from T where C3 not between C3 and C3";
+Command  "select * from T where C3 not between C3 and C4";
+Command  "select * from T where C3 not between C4 and C1";
+Command  "select * from T where C3 not between C4 and C2";
+Command  "select * from T where C3 not between C4 and C3";
+Command  "select * from T where C3 not between C4 and C4";
+
+Command  "select * from T where C4 not between C1 and C1";
+Command  "select * from T where C4 not between C1 and C2";
+Command  "select * from T where C4 not between C1 and C3";
+Command  "select * from T where C4 not between C1 and C4";
+Command  "select * from T where C4 not between C2 and C1";
+Command  "select * from T where C4 not between C2 and C2";
+Command  "select * from T where C4 not between C2 and C3";
+Command  "select * from T where C4 not between C2 and C4";
+Command  "select * from T where C4 not between C3 and C1";
+Command  "select * from T where C4 not between C3 and C2";
+Command  "select * from T where C4 not between C3 and C3";
+Command  "select * from T where C4 not between C3 and C4";
+Command  "select * from T where C4 not between C4 and C1";
+Command  "select * from T where C4 not between C4 and C2";
+Command  "select * from T where C4 not between C4 and C3";
+Command  "select * from T where C4 not between C4 and C4";
+
+Command  "drop table T";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

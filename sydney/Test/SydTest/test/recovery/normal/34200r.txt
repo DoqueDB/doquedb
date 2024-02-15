@@ -1,0 +1,17 @@
+#recoveryを行わせるためのSydTest
+Begin;
+BeginTimeSpan;
+Initialize;
+InitializeSession "FullTextTest";
+Command "verify database FullTextTest cascade continue";
+
+#- 全文ファイルテスト用の表を消去
+#- DBを消去
+Command "drop table T";
+Command "drop database FullTextTest";
+TerminateSession;
+
+EndTimeSpan;
+Terminate;
+End;
+

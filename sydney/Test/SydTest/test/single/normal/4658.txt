@@ -1,0 +1,41 @@
+# 障害票 941
+# 複数の表からの取得結果をDISTINCTで得る
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+
+Command "create table T1 (f int, g int, h int, unique(g))";
+Command "create table T2 (x int, y int)";
+
+Command "insert T1 values (1,10,10), (2,null,20), (3,null,30)";
+Command "insert T2 values (10,100), (20,null), (30,null)";
+
+# table:2 unique:1
+Command "select distinct f, g, y from T1, T2 where h = x";
+# expected:
+#{1,10,100}
+#{2,(null),(null)}
+#{3,(null),(null)}
+
+# table:1 unique:1
+Command "select distinct g from T1";
+# expected:
+#{10}
+#{(null)}
+
+# table:2 unique:2
+Command "create table T3 (x int, y int, unique(y))";
+Command "insert T3 values (10,100), (20,null), (30,null)";
+Command "select distinct f, g, x, y from T1, T2 where h = x";
+# expected:
+#{1,10,10,100}
+#{2,(null),20,(null)}
+#{3,(null),30,(null)}
+
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

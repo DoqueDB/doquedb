@@ -1,0 +1,28 @@
+#全文ファイルテスト(FullText_MergeInvPack=2)
+
+Begin;
+
+SetSystemParameter "FullText_InsertMergeFileSize" 0;
+SetSystemParameter "FullText_ExpungeMergeFileSize" 0;
+#マージ閾値を1にする(設定前の既定値は0)
+#SetSystemParameter "FullText_InsertMergeTupleSize" 1;
+#SetSystemParameter "FullText_ExpungeMergeTupleSize" 1;
+
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+# DBを作成
+InitializeSession "";
+Command "create database FullTextTest";
+TerminateSession "";
+
+# 表を作成
+InitializeSession "FullTextTest";
+Command "create table T (N int, C ntext array [no limit] hint heap 'compressed')";
+Command "create fulltext index FTIndex on T(C) hint 'sectionized, delayed ,inverted=(nolocation=true, notf=true)'";
+
+TerminateSession;
+# (障害回復を試すためTerminateしない)
+
+End;

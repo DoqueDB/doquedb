@@ -1,0 +1,871 @@
+Begin;
+Initialize;
+
+# テスト用データベースを作成する
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T0( c_ntext ntext, c_datetime datetime, c_image image )";
+
+Command	 "create table dummy ( c_int int )";
+Command	 "insert into dummy ( c_int ) values (?)" [1];
+Command	 "select ROWID, c_int from dummy";
+
+###############################################################################
+#	二項演算子 +
+###############################################################################
+
+# 32 ビット整数 + 32 ビット整数
+Command	 "select ? + ? from dummy" [integer 1, integer 1];
+# 32 ビット整数 + 64 ビット整数
+Command	 "select ? + ? from dummy" [integer 1, integer64 1];
+# 32 ビット整数 + 32 ビット非負整数
+Command	 "select ? + ? from dummy" [integer 1, unsignedinteger 1];
+# 32 ビット整数 + 64 ビット非負整数
+Command	 "select ? + ? from dummy" [integer 1, unsignedinteger64 1];
+# 32 ビット整数 + 倍精度浮動小数点数
+Command	 "select ? + ? from dummy" [integer 1, double 1];
+# 32 ビット整数 + 単精度浮動小数点数
+Command	 "select ? + ? from dummy" [integer 1, float 1];
+# 32 ビット整数 + 文字列
+Command	 "select ? + ? from dummy" [integer 1, string "1"];
+# 32 ビット整数 + 日付 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [integer 1, date "1-01-01"];
+# 32 ビット整数 + 時刻 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [integer 1, time "1-01-01 00:00:00.000"];
+# 32 ビット整数 + null ⇒ null
+Command	 "select ? + ? from dummy" [integer 1, null];
+
+###############################################################################
+
+# 32 ビット整数の最大値 + 正の整数 ⇒ null
+Command	 "select ? + ? from dummy" [integer 2147483647, integer 1];
+# 32 ビット整数の最小値 + 負の整数 ⇒ null
+Command	 "select ? + ? from dummy" [integer -2147483648, integer -1];
+
+###############################################################################
+
+# 32 ビット非負整数 + 32 ビット整数
+Command	 "select ? + ? from dummy" [unsignedinteger 1, integer 1];
+# 32 ビット非負整数 + 64 ビット整数
+Command	 "select ? + ? from dummy" [unsignedinteger 1, integer64 1];
+# 32 ビット非負整数 + 32 ビット非負整数
+Command	 "select ? + ? from dummy" [unsignedinteger 1, unsignedinteger 1];
+# 32 ビット非負整数 + 64 ビット非負整数
+Command	 "select ? + ? from dummy" [unsignedinteger 1, unsignedinteger64 1];
+# 32 ビット非負整数 + 倍精度浮動小数点数
+Command	 "select ? + ? from dummy" [unsignedinteger 1, double 1];
+# 32 ビット非負整数 + 単精度浮動小数点数
+Command	 "select ? + ? from dummy" [unsignedinteger 1, float 1];
+# 32 ビット非負整数 + 文字列
+Command	 "select ? + ? from dummy" [unsignedinteger 1, string "1"];
+# 32 ビット非負整数 + 日付 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [unsignedinteger 1, date "1-01-01"];
+# 32 ビット非負整数 + 時刻 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [unsignedinteger 1, time "1-01-01 00:00:00.000"];
+# 32 ビット非負整数 + null ⇒ null
+Command	 "select ? + ? from dummy" [unsignedinteger 1, null];
+
+###############################################################################
+
+# 32 ビット非負整数の最大値 + 正の整数 ⇒ null
+Command	 "select ? + ? from dummy" [unsignedinteger 4294967295, integer 1];
+# 32 ビット非負整数の最小値 + 負の整数 ⇒ 2^32-1
+Command	 "select ? + ? from dummy" [unsignedinteger 0, integer -1];
+
+###############################################################################
+
+# 64 ビット整数 + 32 ビット整数
+Command	 "select ? + ? from dummy" [integer64 4294967295, integer 1];
+# 64 ビット整数 + 64 ビット整数
+Command	 "select ? + ? from dummy" [integer64 4294967295, integer64 1];
+# 64 ビット整数 + 32 ビット非負整数
+Command	 "select ? + ? from dummy" [integer64 4294967295, unsignedinteger 1];
+# 64 ビット整数 + 64 ビット非負整数
+Command	 "select ? + ? from dummy" [integer64 4294967295, unsignedinteger64 1];
+# 64 ビット整数 + 倍精度浮動小数点数
+Command	 "select ? + ? from dummy" [integer64 4294967295, double 1];
+# 64 ビット整数 + 単精度浮動小数点数
+Command	 "select ? + ? from dummy" [integer64 4294967295, float 1];
+# 64 ビット整数 + 文字列
+Command	 "select ? + ? from dummy" [integer64 4294967295, string "1"];
+# 64 ビット整数 + 日付 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [integer64 4294967295, date "1-01-01"];
+# 64 ビット整数 + 時刻 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [integer64 4294967295, time "1-01-01 00:00:00.000"];
+# 64 ビット整数 + null ⇒ null
+Command	 "select ? + ? from dummy" [integer64 4294967295, null];
+
+###############################################################################
+
+# 64 ビット整数の最大値 + 正の整数 ⇒ null
+Command	 "select ? + ? from dummy" [integer64 9223372036854775807, integer 1];
+# 64 ビット整数の最小値 + 負の整数 ⇒ 2^32-1
+Command	 "select ? + ? from dummy" [integer64 -9223372036854775808, integer -1];
+
+###############################################################################
+
+# 64 ビット非負整数 + 32 ビット整数
+Command	 "select ? + ? from dummy" [unsignedinteger64 9223372036854775807, integer 1];
+# 64 ビット非負整数 + 64 ビット整数
+Command	 "select ? + ? from dummy" [unsignedinteger64 9223372036854775807, integer64 1];
+# 64 ビット非負整数 + 32 ビット非負整数
+Command	 "select ? + ? from dummy" [unsignedinteger64 9223372036854775807, unsignedinteger 1];
+# 64 ビット非負整数 + 64 ビット非負整数
+Command	 "select ? + ? from dummy" [unsignedinteger64 9223372036854775807, unsignedinteger64 1];
+# 64 ビット非負整数 + 倍精度浮動小数点数
+Command	 "select ? + ? from dummy" [unsignedinteger64 9223372036854775807, double 1];
+# 64 ビット非負整数 + 単精度浮動小数点数
+Command	 "select ? + ? from dummy" [unsignedinteger64 9223372036854775807, float 1];
+# 64 ビット非負整数 + 文字列
+Command	 "select ? + ? from dummy" [unsignedinteger64 9223372036854775807, string "1"];
+# 64 ビット非負整数 + 日付 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [unsignedinteger64 9223372036854775807, date "1-01-01"];
+# 64 ビット非負整数 + 時刻 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [unsignedinteger64 9223372036854775807, time "1-01-01 00:00:00.000"];
+# 64 ビット非負整数 + null ⇒ null
+Command	 "select ? + ? from dummy" [unsignedinteger64 9223372036854775807, null];
+
+###############################################################################
+
+# 64 ビット非負整数の最大値 + 正の整数 ⇒ null
+Command	 "select ? + ? from dummy" [unsignedinteger64 18446744073709551615, integer 1];
+# 64 ビット非負整数の最小値 + 負の整数 ⇒ 2^64-1
+Command	 "select ? + ? from dummy" [unsignedinteger64 0, integer -1];
+
+###############################################################################
+
+# 倍精度浮動小数点数 + 32 ビット整数
+Command	 "select ? + ? from dummy" [double 1, integer 1];
+# 倍精度浮動小数点数 + 64 ビット整数
+Command	 "select ? + ? from dummy" [double 1, integer64 1];
+# 倍精度浮動小数点数 + 32 ビット非負整数
+Command	 "select ? + ? from dummy" [double 1, unsignedinteger 1];
+# 倍精度浮動小数点数 + 64 ビット非負整数
+Command	 "select ? + ? from dummy" [double 1, unsignedinteger64 1];
+# 倍精度浮動小数点数 + 倍精度浮動小数点数
+Command	 "select ? + ? from dummy" [double 1, double 1];
+# 倍精度浮動小数点数 + 単精度浮動小数点数
+Command	 "select ? + ? from dummy" [double 1, float 1];
+# 倍精度浮動小数点数 + 文字列
+Command	 "select ? + ? from dummy" [double 1, string "1"];
+# 倍精度浮動小数点数 + 日付 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [double 1, date "1-01-01"];
+# 倍精度浮動小数点数 + 時刻 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [double 1, time "1-01-01 00:00:00.000"];
+# 倍精度浮動小数点数 + null ⇒ null
+Command	 "select ? + ? from dummy" [double 1, null];
+
+###############################################################################
+
+# 単精度浮動小数点数 + 32 ビット整数
+Command	 "select ? + ? from dummy" [float 1, integer 1];
+# 単精度浮動小数点数 + 64 ビット整数
+Command	 "select ? + ? from dummy" [float 1, integer64 1];
+# 単精度浮動小数点数 + 32 ビット非負整数
+Command	 "select ? + ? from dummy" [float 1, unsignedinteger 1];
+# 単精度浮動小数点数 + 64 ビット非負整数
+Command	 "select ? + ? from dummy" [float 1, unsignedinteger64 1];
+# 単精度浮動小数点数 + 倍精度浮動小数点数
+Command	 "select ? + ? from dummy" [float 1, double 1];
+# 単精度浮動小数点数 + 単精度浮動小数点数
+Command	 "select ? + ? from dummy" [float 1, float 1];
+# 単精度浮動小数点数 + 文字列
+Command	 "select ? + ? from dummy" [float 1, string "1"];
+# 単精度浮動小数点数 + 日付 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [float 1, date "1-01-01"];
+# 単精度浮動小数点数 + 時刻 ⇒ Can't cast class
+Command	 "select ? + ? from dummy" [float 1, time "1-01-01 00:00:00.000"];
+# 単精度浮動小数点数 + null ⇒ null
+Command	 "select ? + ? from dummy" [float 1, null];
+
+###############################################################################
+#	二項演算子 -
+###############################################################################
+
+# 32 ビット整数 - 32 ビット整数
+Command	 "select ? - ? from dummy" [integer 1, integer 1];
+# 32 ビット整数 - 64 ビット整数
+Command	 "select ? - ? from dummy" [integer 1, integer64 1];
+# 32 ビット整数 - 32 ビット非負整数
+Command	 "select ? - ? from dummy" [integer 1, unsignedinteger 1];
+# 32 ビット整数 - 64 ビット非負整数
+Command	 "select ? - ? from dummy" [integer 1, unsignedinteger64 1];
+# 32 ビット整数 - 倍精度浮動小数点数
+Command	 "select ? - ? from dummy" [integer 1, double 1];
+# 32 ビット整数 - 単精度浮動小数点数
+Command	 "select ? - ? from dummy" [integer 1, float 1];
+# 32 ビット整数 - 文字列
+Command	 "select ? - ? from dummy" [integer 1, string "1"];
+# 32 ビット整数 - 日付 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [integer 1, date "1-01-01"];
+# 32 ビット整数 - 時刻 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [integer 1, time "1-01-01 00:00:00.000"];
+# 32 ビット整数 - null ⇒ null
+Command	 "select ? - ? from dummy" [integer 1, null];
+
+###############################################################################
+
+# 32 ビット整数の最小値 - 正の整数 ⇒ null
+Command	 "select ? - ? from dummy" [integer -2147483648, integer 1];
+# 32 ビット整数の最大値 - 負の整数 ⇒ null
+Command	 "select ? - ? from dummy" [integer 2147483647, integer -1];
+
+###############################################################################
+
+# 32 ビット非負整数 - 32 ビット整数
+Command	 "select ? - ? from dummy" [unsignedinteger 1, integer 1];
+# 32 ビット非負整数 - 64 ビット整数
+Command	 "select ? - ? from dummy" [unsignedinteger 1, integer64 1];
+# 32 ビット非負整数 - 32 ビット非負整数
+Command	 "select ? - ? from dummy" [unsignedinteger 1, unsignedinteger 1];
+# 32 ビット非負整数 - 64 ビット非負整数
+Command	 "select ? - ? from dummy" [unsignedinteger 1, unsignedinteger64 1];
+# 32 ビット非負整数 - 倍精度浮動小数点数
+Command	 "select ? - ? from dummy" [unsignedinteger 1, double 1];
+# 32 ビット非負整数 - 単精度浮動小数点数
+Command	 "select ? - ? from dummy" [unsignedinteger 1, float 1];
+# 32 ビット非負整数 - 文字列
+Command	 "select ? - ? from dummy" [unsignedinteger 1, string "1"];
+# 32 ビット非負整数 - 日付 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [unsignedinteger 1, date "1-01-01"];
+# 32 ビット非負整数 - 時刻 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [unsignedinteger 1, time "1-01-01 00:00:00.000"];
+# 32 ビット非負整数 - null ⇒ null
+Command	 "select ? - ? from dummy" [unsignedinteger 1, null];
+
+###############################################################################
+
+# 32 ビット非負整数の最小値 - 正の整数 ⇒ null
+Command	 "select ? - ? from dummy" [unsignedinteger 0, integer 1];
+# 32 ビット非負整数の最大値 - 負の整数 ⇒ 0
+Command	 "select ? - ? from dummy" [unsignedinteger 4294967295, integer -1];
+
+###############################################################################
+
+# 64 ビット整数 - 32 ビット整数
+Command	 "select ? - ? from dummy" [integer64 9223372036854775807, integer 1];
+# 64 ビット整数 - 64 ビット整数
+Command	 "select ? - ? from dummy" [integer64 9223372036854775807, integer64 1];
+# 64 ビット整数 - 32 ビット非負整数
+Command	 "select ? - ? from dummy" [integer64 9223372036854775807, unsignedinteger 1];
+# 64 ビット整数 - 64 ビット非負整数
+Command	 "select ? - ? from dummy" [integer64 9223372036854775807, unsignedinteger64 1];
+# 64 ビット整数 - 倍精度浮動小数点数 => null
+Command	 "select ? - ? from dummy" [integer64 9223372036854775807, double 1];
+# 64 ビット整数 - 単精度浮動小数点数 => null
+Command	 "select ? - ? from dummy" [integer64 9223372036854775807, float 1];
+# 64 ビット整数 - 文字列
+Command	 "select ? - ? from dummy" [integer64 9223372036854775807, string "1"];
+# 64 ビット整数 - 日付 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [integer64 9223372036854775807, date "1-01-01"];
+# 64 ビット整数 - 時刻 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [integer64 9223372036854775807, time "1-01-01 00:00:00.000"];
+# 64 ビット整数 - null ⇒ null
+Command	 "select ? - ? from dummy" [integer64 9223372036854775807, null];
+
+###############################################################################
+
+# 64 ビット整数の最小値 - 正の整数 ⇒ null
+Command	 "select ? - ? from dummy" [integer64 -9223372036854775808, integer 1];
+# 64 ビット整数の最大値 - 負の整数 ⇒ null
+Command	 "select ? - ? from dummy" [integer64 9223372036854775807, integer -1];
+
+###############################################################################
+
+# 64 ビット非負整数 - 32 ビット整数
+Command	 "select ? - ? from dummy" [unsignedinteger64 1, integer 1];
+# 64 ビット非負整数 - 64 ビット整数
+Command	 "select ? - ? from dummy" [unsignedinteger64 1, integer64 1];
+# 64 ビット非負整数 - 32 ビット非負整数
+Command	 "select ? - ? from dummy" [unsignedinteger64 1, unsignedinteger 1];
+# 64 ビット非負整数 - 64 ビット非負整数
+Command	 "select ? - ? from dummy" [unsignedinteger64 1, unsignedinteger64 1];
+# 64 ビット非負整数 - 倍精度浮動小数点数
+Command	 "select ? - ? from dummy" [unsignedinteger64 1, double 1];
+# 64 ビット非負整数 - 単精度浮動小数点数
+Command	 "select ? - ? from dummy" [unsignedinteger64 1, float 1];
+# 64 ビット非負整数 - 文字列
+Command	 "select ? - ? from dummy" [unsignedinteger64 1, string "1"];
+# 64 ビット非負整数 - 日付 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [unsignedinteger64 1, date "1-01-01"];
+# 64 ビット非負整数 - 時刻 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [unsignedinteger64 1, time "1-01-01 00:00:00.000"];
+# 64 ビット非負整数 - null ⇒ null
+Command	 "select ? - ? from dummy" [unsignedinteger64 1, null];
+
+###############################################################################
+
+# 64 ビット非負整数の最小値 - 正の整数 ⇒ null
+Command	 "select ? - ? from dummy" [unsignedinteger64 0, integer 1];
+# 64 ビット非負整数の最大値 - 負の整数 ⇒ 0
+Command	 "select ? - ? from dummy" [unsignedinteger64 18446744073709551615, integer -1];
+
+###############################################################################
+
+# 倍精度浮動小数点数 - 32 ビット整数
+Command	 "select ? - ? from dummy" [double 1, integer 1];
+# 倍精度浮動小数点数 - 64 ビット整数
+Command	 "select ? - ? from dummy" [double 1, integer64 1];
+# 倍精度浮動小数点数 - 32 ビット非負整数
+Command	 "select ? - ? from dummy" [double 1, unsignedinteger 1];
+# 倍精度浮動小数点数 - 64 ビット非負整数
+Command	 "select ? - ? from dummy" [double 1, unsignedinteger64 1];
+# 倍精度浮動小数点数 - 倍精度浮動小数点数
+Command	 "select ? - ? from dummy" [double 1, double 1];
+# 倍精度浮動小数点数 - 単精度浮動小数点数
+Command	 "select ? - ? from dummy" [double 1, float 1];
+# 倍精度浮動小数点数 - 文字列
+Command	 "select ? - ? from dummy" [double 1, string "1"];
+# 倍精度浮動小数点数 - 日付 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [double 1, date "1-01-01"];
+# 倍精度浮動小数点数 - 時刻 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [double 1, time "1-01-01 00:00:00.000"];
+# 倍精度浮動小数点数 - null ⇒ null
+Command	 "select ? - ? from dummy" [double 1, null];
+
+###############################################################################
+
+# 単精度浮動小数点数 - 32 ビット整数
+Command	 "select ? - ? from dummy" [float 1, integer 1];
+# 単精度浮動小数点数 - 64 ビット整数
+Command	 "select ? - ? from dummy" [float 1, integer64 1];
+# 単精度浮動小数点数 - 32 ビット非負整数
+Command	 "select ? - ? from dummy" [float 1, unsignedinteger 1];
+# 単精度浮動小数点数 - 64 ビット非負整数
+Command	 "select ? - ? from dummy" [float 1, unsignedinteger64 1];
+# 単精度浮動小数点数 - 倍精度浮動小数点数
+Command	 "select ? - ? from dummy" [float 1, double 1];
+# 単精度浮動小数点数 - 単精度浮動小数点数
+Command	 "select ? - ? from dummy" [float 1, float 1];
+# 単精度浮動小数点数 - 文字列
+Command	 "select ? - ? from dummy" [float 1, string "1"];
+# 単精度浮動小数点数 - 日付 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [float 1, date "1-01-01"];
+# 単精度浮動小数点数 - 時刻 ⇒ Can't cast class
+Command	 "select ? - ? from dummy" [float 1, time "1-01-01 00:00:00.000"];
+# 単精度浮動小数点数 - null ⇒ null
+Command	 "select ? - ? from dummy" [float 1, null];
+
+###############################################################################
+#	二項演算子 *
+###############################################################################
+
+# 32 ビット整数 * 32 ビット整数
+Command	 "select ? * ? from dummy" [integer 1, integer 1];
+# 32 ビット整数 * 64 ビット整数
+Command	 "select ? * ? from dummy" [integer 1, integer64 1];
+# 32 ビット整数 * 32 ビット非負整数
+Command	 "select ? * ? from dummy" [integer 1, unsignedinteger 1];
+# 32 ビット整数 * 64 ビット非負整数
+Command	 "select ? * ? from dummy" [integer 1, unsignedinteger64 1];
+# 32 ビット整数 * 倍精度浮動小数点数
+Command	 "select ? * ? from dummy" [integer 1, double 1];
+# 32 ビット整数 * 単精度浮動小数点数
+Command	 "select ? * ? from dummy" [integer 1, float 1];
+# 32 ビット整数 * 文字列
+Command	 "select ? * ? from dummy" [integer 1, string "1"];
+# 32 ビット整数 * 日付 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [integer 1, date "1-01-01"];
+# 32 ビット整数 * 時刻 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [integer 1, time "1-01-01 00:00:00.000"];
+# 32 ビット整数 * null ⇒ null
+Command	 "select ? * ? from dummy" [integer 1, null];
+
+###############################################################################
+
+# 32 ビット整数の最大値 * 1 より大きい 32 ビット整数 ⇒ null
+Command	 "select ? * ? from dummy" [integer 2147483647, integer 2];
+# 32 ビット整数の最小値 * 1 より大きい 32 ビット整数 ⇒ null
+Command	 "select ? * ? from dummy" [integer -2147483648, integer 2];
+
+###############################################################################
+
+# 32 ビット非負整数 * 32 ビット整数
+Command	 "select ? * ? from dummy" [unsignedinteger 1, integer 1];
+# 32 ビット非負整数 * 64 ビット整数
+Command	 "select ? * ? from dummy" [unsignedinteger 1, integer64 1];
+# 32 ビット非負整数 * 32 ビット非負整数
+Command	 "select ? * ? from dummy" [unsignedinteger 1, unsignedinteger 1];
+# 32 ビット非負整数 * 64 ビット非負整数
+Command	 "select ? * ? from dummy" [unsignedinteger 1, unsignedinteger64 1];
+# 32 ビット非負整数 * 倍精度浮動小数点数
+Command	 "select ? * ? from dummy" [unsignedinteger 1, double 1];
+# 32 ビット非負整数 * 単精度浮動小数点数
+Command	 "select ? * ? from dummy" [unsignedinteger 1, float 1];
+# 32 ビット非負整数 * 文字列
+Command	 "select ? * ? from dummy" [unsignedinteger 1, string "1"];
+# 32 ビット非負整数 * 日付 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [unsignedinteger 1, date "1-01-01"];
+# 32 ビット非負整数 * 時刻 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [unsignedinteger 1, time "1-01-01 00:00:00.000"];
+# 32 ビット非負整数 * null ⇒ null
+Command	 "select ? * ? from dummy" [unsignedinteger 1, null];
+
+###############################################################################
+
+# 32 ビット非負整数の最大値 * 1 より大きい 32 ビット整数 ⇒ null
+Command	 "select ? * ? from dummy" [unsignedinteger 4294967295, integer 2];
+# 32 ビット非負整数 * 負数 ⇒ 2^32-1
+Command	 "select ? * ? from dummy" [unsignedinteger 1, integer -1];
+
+###############################################################################
+
+# 64 ビット整数 * 32 ビット整数
+Command	 "select ? * ? from dummy" [integer64 9223372036854775807, integer 1];
+# 64 ビット整数 * 64 ビット整数
+Command	 "select ? * ? from dummy" [integer64 9223372036854775807, integer64 1];
+# 64 ビット整数 * 32 ビット非負整数
+Command	 "select ? * ? from dummy" [integer64 9223372036854775807, unsignedinteger 1];
+# 64 ビット整数 * 64 ビット非負整数
+Command	 "select ? * ? from dummy" [integer64 9223372036854775807, unsignedinteger64 1];
+# 64 ビット整数 * 倍精度浮動小数点数 => null
+Command	 "select ? * ? from dummy" [integer64 9223372036854775807, double 1];
+# 64 ビット整数 * 単精度浮動小数点数 => null
+Command	 "select ? * ? from dummy" [integer64 9223372036854775807, float 1];
+# 64 ビット整数 * 文字列
+Command	 "select ? * ? from dummy" [integer64 9223372036854775807, string "1"];
+# 64 ビット整数 * 日付 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [integer64 9223372036854775807, date "1-01-01"];
+# 64 ビット整数 * 時刻 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [integer64 9223372036854775807, time "1-01-01 00:00:00.000"];
+# 64 ビット整数 * null ⇒ null
+Command	 "select ? * ? from dummy" [integer64 9223372036854775807, null];
+
+###############################################################################
+
+# 64 ビット整数の最大値 * 32 ビット整数の最大値 ⇒ null
+Command	 "select ? * ? from dummy" [integer64 9223372036854775807, integer 2147483647];
+# 64 ビット整数の最小値 * 32 ビット整数の最大値 ⇒ null
+Command	 "select ? * ? from dummy" [integer64 -9223372036854775808, integer 2147483647];
+
+###############################################################################
+
+# 64 ビット非負整数 * 32 ビット整数
+Command	 "select ? * ? from dummy" [unsignedinteger64 1, integer 1];
+# 64 ビット非負整数 * 64 ビット整数
+Command	 "select ? * ? from dummy" [unsignedinteger64 1, integer64 1];
+# 64 ビット非負整数 * 32 ビット非負整数
+Command	 "select ? * ? from dummy" [unsignedinteger64 1, unsignedinteger 1];
+# 64 ビット非負整数 * 64 ビット非負整数
+Command	 "select ? * ? from dummy" [unsignedinteger64 1, unsignedinteger64 1];
+# 64 ビット非負整数 * 倍精度浮動小数点数
+Command	 "select ? * ? from dummy" [unsignedinteger64 1, double 1];
+# 64 ビット非負整数 * 単精度浮動小数点数
+Command	 "select ? * ? from dummy" [unsignedinteger64 1, float 1];
+# 64 ビット非負整数 * 文字列
+Command	 "select ? * ? from dummy" [unsignedinteger64 1, string "1"];
+# 64 ビット非負整数 * 日付 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [unsignedinteger64 1, date "1-01-01"];
+# 64 ビット非負整数 * 時刻 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [unsignedinteger64 1, time "1-01-01 00:00:00.000"];
+# 64 ビット非負整数 * null ⇒ null
+Command	 "select ? * ? from dummy" [unsignedinteger64 1, null];
+
+###############################################################################
+
+# 64 ビット非負整数の最大値 * 1 より大きい 32 ビット整数 ⇒ null
+Command	 "select ? * ? from dummy" [unsignedinteger64 18446744073709551615, integer 2];
+# 64 ビット非負整数 * 負数 ⇒ 2^64-1
+Command	 "select ? * ? from dummy" [unsignedinteger64 1, integer -1];
+
+###############################################################################
+
+# 倍精度浮動小数点数 * 32 ビット整数
+Command	 "select ? * ? from dummy" [double 1, integer 1];
+# 倍精度浮動小数点数 * 64 ビット整数
+Command	 "select ? * ? from dummy" [double 1, integer64 1];
+# 倍精度浮動小数点数 * 32 ビット非負整数
+Command	 "select ? * ? from dummy" [double 1, unsignedinteger 1];
+# 倍精度浮動小数点数 * 64 ビット非負整数
+Command	 "select ? * ? from dummy" [double 1, unsignedinteger64 1];
+# 倍精度浮動小数点数 * 倍精度浮動小数点数
+Command	 "select ? * ? from dummy" [double 1, double 1];
+# 倍精度浮動小数点数 * 単精度浮動小数点数
+Command	 "select ? * ? from dummy" [double 1, float 1];
+# 倍精度浮動小数点数 * 文字列
+Command	 "select ? * ? from dummy" [double 1, string "1"];
+# 倍精度浮動小数点数 * 日付 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [double 1, date "1-01-01"];
+# 倍精度浮動小数点数 * 時刻 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [double 1, time "1-01-01 00:00:00.000"];
+# 倍精度浮動小数点数 * null ⇒ null
+Command	 "select ? * ? from dummy" [double 1, null];
+
+###############################################################################
+
+# 単精度浮動小数点数 * 32 ビット整数
+Command	 "select ? * ? from dummy" [float 1, integer 1];
+# 単精度浮動小数点数 * 64 ビット整数
+Command	 "select ? * ? from dummy" [float 1, integer64 1];
+# 単精度浮動小数点数 * 32 ビット非負整数
+Command	 "select ? * ? from dummy" [float 1, unsignedinteger 1];
+# 単精度浮動小数点数 * 64 ビット非負整数
+Command	 "select ? * ? from dummy" [float 1, unsignedinteger64 1];
+# 単精度浮動小数点数 * 倍精度浮動小数点数
+Command	 "select ? * ? from dummy" [float 1, double 1];
+# 単精度浮動小数点数 * 単精度浮動小数点数
+Command	 "select ? * ? from dummy" [float 1, float 1];
+# 単精度浮動小数点数 * 文字列
+Command	 "select ? * ? from dummy" [float 1, string "1"];
+# 単精度浮動小数点数 * 日付 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [float 1, date "1-01-01"];
+# 単精度浮動小数点数 * 時刻 ⇒ Can't cast class
+Command	 "select ? * ? from dummy" [float 1, time "1-01-01 00:00:00.000"];
+# 単精度浮動小数点数 * null ⇒ null
+Command	 "select ? * ? from dummy" [float 1, null];
+
+###############################################################################
+#	二項演算子 /
+###############################################################################
+
+# 32 ビット整数 / 32 ビット整数
+Command	 "select ? / ? from dummy" [integer 1, integer 1];
+# 32 ビット整数 / 64 ビット整数
+Command	 "select ? / ? from dummy" [integer 1, integer64 1];
+# 32 ビット整数 / 32 ビット非負整数
+Command	 "select ? / ? from dummy" [integer 1, unsignedinteger 1];
+# 32 ビット整数 / 64 ビット非負整数
+Command	 "select ? / ? from dummy" [integer 1, unsignedinteger64 1];
+# 32 ビット整数 / 倍精度浮動小数点数
+Command	 "select ? / ? from dummy" [integer 1, double 1];
+# 32 ビット整数 / 単精度浮動小数点数
+Command	 "select ? / ? from dummy" [integer 1, float 1];
+# 32 ビット整数 / 文字列
+Command	 "select ? / ? from dummy" [integer 1, string "1"];
+# 32 ビット整数 / 日付 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [integer 1, date "1-01-01"];
+# 32 ビット整数 / 時刻 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [integer 1, time "1-01-01 00:00:00.000"];
+# 32 ビット整数 / null ⇒ null
+Command	 "select ? / ? from dummy" [integer 1, null];
+
+###############################################################################
+
+# 32 ビット整数 / 0 ⇒ null
+Command	 "select ? / ? from dummy" [integer 1, 0];
+# 32 ビット整数の最小値 / -1 ⇒ null
+Command	 "select ? / ? from dummy" [integer -2147483648, -1];
+
+###############################################################################
+
+# 32 ビット非負整数 / 32 ビット整数
+Command	 "select ? / ? from dummy" [unsignedinteger 1, integer 1];
+# 32 ビット非負整数 / 64 ビット整数
+Command	 "select ? / ? from dummy" [unsignedinteger 1, integer64 1];
+# 32 ビット非負整数 / 32 ビット非負整数
+Command	 "select ? / ? from dummy" [unsignedinteger 1, unsignedinteger 1];
+# 32 ビット非負整数 / 64 ビット非負整数
+Command	 "select ? / ? from dummy" [unsignedinteger 1, unsignedinteger64 1];
+# 32 ビット非負整数 / 倍精度浮動小数点数
+Command	 "select ? / ? from dummy" [unsignedinteger 1, double 1];
+# 32 ビット非負整数 / 単精度浮動小数点数
+Command	 "select ? / ? from dummy" [unsignedinteger 1, float 1];
+# 32 ビット非負整数 / 文字列
+Command	 "select ? / ? from dummy" [unsignedinteger 1, string "1"];
+# 32 ビット非負整数 / 日付 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [unsignedinteger 1, date "1-01-01"];
+# 32 ビット非負整数 / 時刻 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [unsignedinteger 1, time "1-01-01 00:00:00.000"];
+# 32 ビット非負整数 / null ⇒ null
+Command	 "select ? / ? from dummy" [unsignedinteger 1, null];
+
+###############################################################################
+
+# 32 ビット非負整数 / 0 ⇒ null
+Command	 "select ? / ? from dummy" [unsignedinteger 1, 0];
+# 32 ビット非負整数 / 負数 ⇒ 0
+Command	 "select ? / ? from dummy" [unsignedinteger 1, -1];
+
+###############################################################################
+
+# 64 ビット整数 / 32 ビット整数
+Command	 "select ? / ? from dummy" [integer64 9223372036854775807, integer 1];
+# 64 ビット整数 / 64 ビット整数
+Command	 "select ? / ? from dummy" [integer64 9223372036854775807, integer64 1];
+# 64 ビット整数 / 32 ビット非負整数
+Command	 "select ? / ? from dummy" [integer64 9223372036854775807, unsignedinteger 1];
+# 64 ビット整数 / 64 ビット非負整数
+Command	 "select ? / ? from dummy" [integer64 9223372036854775807, unsignedinteger64 1];
+# 64 ビット整数 / 倍精度浮動小数点数 => null
+Command	 "select ? / ? from dummy" [integer64 9223372036854775807, double 1];
+# 64 ビット整数 / 単精度浮動小数点数 => null
+Command	 "select ? / ? from dummy" [integer64 9223372036854775807, float 1];
+# 64 ビット整数 / 文字列
+Command	 "select ? / ? from dummy" [integer64 9223372036854775807, string "1"];
+# 64 ビット整数 / 日付 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [integer64 9223372036854775807, date "1-01-01"];
+# 64 ビット整数 / 時刻 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [integer64 9223372036854775807, time "1-01-01 00:00:00.000"];
+# 64 ビット整数 / null ⇒ null
+Command	 "select ? / ? from dummy" [integer64 9223372036854775807, null];
+
+###############################################################################
+
+# 64 ビット整数 / 0 ⇒ null
+Command	 "select ? / ? from dummy" [integer64 1, 0];
+# 64 ビット整数の最小値 / -1 ⇒ null
+Command	 "select ? / ? from dummy" [integer64 -9223372036854775808, -1];
+
+###############################################################################
+
+# 64 ビット非負整数 / 32 ビット整数
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, integer 1];
+# 64 ビット非負整数 / 64 ビット整数
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, integer64 1];
+# 64 ビット非負整数 / 32 ビット非負整数
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, unsignedinteger 1];
+# 64 ビット非負整数 / 64 ビット非負整数
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, unsignedinteger64 1];
+# 64 ビット非負整数 / 倍精度浮動小数点数
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, double 1];
+# 64 ビット非負整数 / 単精度浮動小数点数
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, float 1];
+# 64 ビット非負整数 / 文字列
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, string "1"];
+# 64 ビット非負整数 / 日付 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, date "1-01-01"];
+# 64 ビット非負整数 / 時刻 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, time "1-01-01 00:00:00.000"];
+# 64 ビット非負整数 / null ⇒ null
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, null];
+
+###############################################################################
+
+# 64 ビット非負整数 / 0 ⇒ null
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, 0];
+# 64 ビット非負整数 / 負数 ⇒ 0
+Command	 "select ? / ? from dummy" [unsignedinteger64 1, -1];
+
+###############################################################################
+
+# 倍精度浮動小数点数 / 32 ビット整数
+Command	 "select ? / ? from dummy" [double 1, integer 1];
+# 倍精度浮動小数点数 / 64 ビット整数
+Command	 "select ? / ? from dummy" [double 1, integer64 1];
+# 倍精度浮動小数点数 / 32 ビット非負整数
+Command	 "select ? / ? from dummy" [double 1, unsignedinteger 1];
+# 倍精度浮動小数点数 / 64 ビット非負整数
+Command	 "select ? / ? from dummy" [double 1, unsignedinteger64 1];
+# 倍精度浮動小数点数 / 倍精度浮動小数点数
+Command	 "select ? / ? from dummy" [double 1, double 1];
+# 倍精度浮動小数点数 / 単精度浮動小数点数
+Command	 "select ? / ? from dummy" [double 1, float 1];
+# 倍精度浮動小数点数 / 文字列
+Command	 "select ? / ? from dummy" [double 1, string "1"];
+# 倍精度浮動小数点数 / 日付 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [double 1, date "1-01-01"];
+# 倍精度浮動小数点数 / 時刻 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [double 1, time "1-01-01 00:00:00.000"];
+# 倍精度浮動小数点数 / null ⇒ null
+Command	 "select ? / ? from dummy" [double 1, null];
+
+###############################################################################
+
+# 倍精度浮動小数点数 / 0 ⇒ null
+Command	 "select ? / ? from dummy" [double 1, 0];
+# 倍精度浮動小数点数 / 負数 ⇒ null
+# Command	 "select ? / ? from dummy" [double 1, -1]; #テスト不要
+
+###############################################################################
+
+# 単精度浮動小数点数 / 32 ビット整数
+Command	 "select ? / ? from dummy" [float 1, integer 1];
+# 単精度浮動小数点数 / 64 ビット整数
+Command	 "select ? / ? from dummy" [float 1, integer64 1];
+# 単精度浮動小数点数 / 32 ビット非負整数
+Command	 "select ? / ? from dummy" [float 1, unsignedinteger 1];
+# 単精度浮動小数点数 / 64 ビット非負整数
+Command	 "select ? / ? from dummy" [float 1, unsignedinteger64 1];
+# 単精度浮動小数点数 / 倍精度浮動小数点数
+Command	 "select ? / ? from dummy" [float 1, double 1];
+# 単精度浮動小数点数 / 単精度浮動小数点数
+Command	 "select ? / ? from dummy" [float 1, float 1];
+# 単精度浮動小数点数 / 文字列
+Command	 "select ? / ? from dummy" [float 1, string "1"];
+# 単精度浮動小数点数 / 日付 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [float 1, date "1-01-01"];
+# 単精度浮動小数点数 / 時刻 ⇒ Can't cast class
+Command	 "select ? / ? from dummy" [float 1, time "1-01-01 00:00:00.000"];
+# 単精度浮動小数点数 / null ⇒ null
+Command	 "select ? / ? from dummy" [float 1, null];
+
+###############################################################################
+
+# 単精度浮動小数点数 / 0 ⇒ null
+Command	 "select ? / ? from dummy" [float 1, 0];
+# 単精度浮動小数点数 / 負数 ⇒ null
+# Command	 "select ? / ? from dummy" [float 1, -1]; # テスト不要
+
+###############################################################################
+#	単項演算子 -
+###############################################################################
+
+# - 32 ビット整数
+Command	 "select - ? from dummy" [integer 1];
+
+###############################################################################
+
+# - 32 ビット整数の最小値 ⇒ null
+Command	 "select - ? from dummy" [integer -2147483648];
+
+###############################################################################
+
+# - 32 ビット非負整数 ⇒ null
+Command	 "select - ? from dummy" [unsignedinteger 1];
+
+###############################################################################
+
+# - 64 ビット整数
+Command	 "select - ? from dummy" [integer64 9223372036854775807];
+
+###############################################################################
+
+# - 64 ビット整数の最小値 ⇒ null
+Command	 "select - ? from dummy" [integer64 -9223372036854775808];
+
+###############################################################################
+
+# - 64 ビット非負整数 ⇒ null
+Command	 "select - ? from dummy" [unsignedinteger64 1];
+
+###############################################################################
+
+# - 倍精度浮動小数点数
+Command	 "select - ? from dummy" [double 1];
+
+###############################################################################
+
+# - 単精度浮動小数点数
+Command	 "select - ? from dummy" [float 1];
+
+###############################################################################
+#	関数 ABS
+###############################################################################
+
+# ABS(正の32 ビット整数)
+Command	 "select ABS(?) from dummy" [integer 1];
+# ABS(負の32 ビット整数)
+Command	 "select ABS(?) from dummy" [integer -1];
+
+###############################################################################
+
+# ABS(32 ビット整数の最小値) ⇒ null
+Command	 "select ABS(?) from dummy" [integer -2147483648];
+
+###############################################################################
+
+# ABS(32 ビット非負整数)
+Command	 "select ABS(?) from dummy" [unsignedinteger 1];
+
+###############################################################################
+
+# ABS(正の64 ビット整数)
+Command	 "select ABS(?) from dummy" [integer64 9223372036854775807];
+# ABS(負の64 ビット整数)
+Command	 "select ABS(?) from dummy" [integer64 -9223372036854775807];
+
+###############################################################################
+
+# ABS(64 ビット整数の最小値) ⇒ null
+Command	 "select ABS(?) from dummy" [integer64 -9223372036854775808];
+
+###############################################################################
+
+# ABS(64 ビット非負整数)
+Command	 "select ABS(?) from dummy" [unsignedinteger64 1];
+
+###############################################################################
+
+# ABS(倍精度浮動小数点数)
+Command	 "select ABS(?) from dummy" [double 1];
+
+###############################################################################
+
+# ABS(単精度浮動小数点数)
+Command	 "select ABS(?) from dummy" [float 1];
+
+###############################################################################
+
+# ABS(文字列) ⇒ Not Supported
+Command	 "select ABS(?) from dummy" [string "1"];
+
+###############################################################################
+
+# ABS(日付) ⇒ Not Supported
+Command	 "select ABS(?) from dummy" [date "1-01-01"];
+
+###############################################################################
+
+# ABS(時刻) ⇒ Not Supported
+Command	 "select ABS(?) from dummy" [time "1-01-01 00:00:00.000"];
+
+###############################################################################
+
+# ABS(null) ⇒ null
+Command	 "select ABS(?) from dummy" [null];
+
+###############################################################################
+#	二項演算子 =
+###############################################################################
+
+Command	 "start transaction read write";
+
+# 文字列 = 32 ビット整数
+Command	 "insert into T0 ( c_ntext ) values (?)" [integer 1];
+# 文字列 = 64 ビット整数
+Command	 "insert into T0 ( c_ntext ) values (?)" [integer64 1];
+# 文字列 = 32 ビット非負整数
+Command	 "insert into T0 ( c_ntext ) values (?)" [unsignedinteger 1];
+# 文字列 = 64 ビット非負整数
+Command	 "insert into T0 ( c_ntext ) values (?)" [unsignedinteger64 1];
+# 文字列 = 倍精度浮動小数点数
+Command	 "insert into T0 ( c_ntext ) values (?)" [double 1];
+# 文字列 = 単精度浮動小数点数
+Command	 "insert into T0 ( c_ntext ) values (?)" [float 1];
+# 文字列 = 文字列
+Command	 "insert into T0 ( c_ntext ) values (?)" [string "1"];
+# 文字列 = 日付
+Command	 "insert into T0 ( c_ntext ) values (?)" [date "1-01-01"];
+# 文字列 = 時刻
+Command	 "insert into T0 ( c_ntext ) values (?)" [time "1-01-01 00:00:00.000"];
+# 文字列 = null
+Command	 "insert into T0 ( c_ntext ) values (?)" [null];
+
+# 時刻 = 32 ビット整数 ⇒ Can't cast class
+Command	 "insert into T0 ( c_datetime ) values (?)" [integer 1];
+# 時刻 = 64 ビット整数 ⇒ Can't cast class
+Command	 "insert into T0 ( c_datetime ) values (?)" [integer64 1];
+# 時刻 = 32 ビット非負整数 ⇒ Can't cast class
+Command	 "insert into T0 ( c_datetime ) values (?)" [unsignedinteger 1];
+# 時刻 = 64 ビット非負整数 ⇒ Can't cast class
+Command	 "insert into T0 ( c_datetime ) values (?)" [unsignedinteger64 1];
+# 時刻 = 倍精度浮動小数点数 ⇒ Can't cast class
+Command	 "insert into T0 ( c_datetime ) values (?)" [double 1];
+# 時刻 = 単精度浮動小数点数 ⇒ Can't cast class
+Command	 "insert into T0 ( c_datetime ) values (?)" [float 1];
+# 時刻 = 文字列
+Command	 "insert into T0 ( c_datetime ) values (?)" [string "1-01-01"];
+# 時刻 = 日付
+Command	 "insert into T0 ( c_datetime ) values (?)" [date "1-01-01"];
+# 時刻 = 時刻
+Command	 "insert into T0 ( c_datetime ) values (?)" [time "1-01-01 00:00:00.000"];
+# 時刻 = null
+Command	 "insert into T0 ( c_datetime ) values (?)" [null];
+
+# バイナリ = null
+Command	 "insert into T0 ( c_image ) values (?)" [null];
+
+Command	 "rollback";
+
+TerminateSession;
+
+# テスト用データベースの削除
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+End;

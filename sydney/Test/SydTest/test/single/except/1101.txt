@@ -1,0 +1,130 @@
+# blob/nvarchar/imageファイルのテスト
+
+Begin;
+SetSystemParameter "SydTest_ShowBinary" "True";
+Initialize;
+
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#blobはbinary, nclobは文字列
+Command "create table T1(N int, C1 nclob)";
+Command "select C1 from T1";
+Command "insert into T1 (N) values 1, 2";
+Command "select char_length(C1) from T1";
+Command "update T1 set C1=? where N=1" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command "update T1 set C1=? where N=2" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from        0 for   0) from T1";
+Command "select substring(C1 from      -99 for 200) from T1";
+Command "select substring(C1 from       71 for  80) from T1";
+Command "select substring(C1 from       -4 for  25) from T1";
+Command "select substring(C1 from       -1 for   1) from T1";
+Command "select substring(C1 from       -5 for   1) from T1";
+Command "select substring(C1 from 99999999 for   1) from T1";
+Command "select substring(C1 from        1 for  -1) from T1";
+
+Command "update T1 set C1=overlay(C1 placing ? from      -99) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from      101) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from       -1) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from 99999999) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from      -99) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from      101) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from       -1) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from 99999999) where N=2" ["理光。"];
+Command "select C1 from T1";
+
+# 入っているデータからはみ出るもの
+Command "update T1 set C1=overlay(C1 placing ? from 21) where N=2" ["hogehogefugafuga"];
+Command "update T1 set C1=overlay(C1 placing ? from  5) where N=2" ["リコーでございます"];
+Command "select C1 from T1";
+Command  "drop table T1";
+
+
+#nvarchar
+Command "create table T1(N int, C1 nvarchar(32))";
+Command "select C1 from T1";
+Command "insert into T1 (N) values 1, 2";
+Command "select char_length(C1) from T1";
+Command "update T1 set C1=? where N=1" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command "update T1 set C1=? where N=2" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from        0 for   0) from T1";
+Command "select substring(C1 from      -99 for 200) from T1";
+Command "select substring(C1 from       71 for  80) from T1";
+Command "select substring(C1 from       -4 for  25) from T1";
+Command "select substring(C1 from       -1 for   1) from T1";
+Command "select substring(C1 from       -5 for   1) from T1";
+Command "select substring(C1 from 99999999 for   1) from T1";
+Command "select substring(C1 from        1 for  -1) from T1";
+
+Command "update T1 set C1=overlay(C1 placing ? from          -99) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from          101) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from           -1) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from     99999999) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from     4 for -2) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from 4 for -99999) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from          -99) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from          101) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from           -1) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from     99999999) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from     4 for -2) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from 4 for -99999) where N=2" ["理光。"];
+
+# 入っているデータからはみ出るもの
+Command "update T1 set C1=overlay(C1 placing ? from 21) where N=2" ["hogehogefugafuga"];
+Command "update T1 set C1=overlay(C1 placing ? from  5) where N=2" ["リコーでございます"];
+Command "select C1 from T1";
+Command  "drop table T1";
+
+
+#image
+Command "create table T1(N int, C1 image)";
+Command "select C1 from T1";
+Command "insert into T1 (N) values 1, 2";
+Command "select char_length(C1) from T1";
+Command "update T1 set C1=? where N=1" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command "update T1 set C1=? where N=2" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from        0 for   0) from T1";
+Command "select substring(C1 from      -99 for 200) from T1";
+Command "select substring(C1 from       71 for  80) from T1";
+Command "select substring(C1 from       -4 for  25) from T1";
+Command "select substring(C1 from       -1 for   1) from T1";
+Command "select substring(C1 from       -5 for   1) from T1";
+Command "select substring(C1 from 99999999 for   1) from T1";
+Command "select substring(C1 from        1 for  -1) from T1";
+
+Command "update T1 set C1=overlay(C1 placing ? from          -99) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from          101) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from           -1) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from     99999999) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from     4 for -2) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from 4 for -99999) where N=1" ["HELLO"];
+Command "update T1 set C1=overlay(C1 placing ? from          -99) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from          101) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from           -1) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from     99999999) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from     4 for -2) where N=2" ["理光。"];
+Command "update T1 set C1=overlay(C1 placing ? from 4 for -99999) where N=2" ["理光。"];
+
+# 入っているデータからはみ出るもの
+Command "update T1 set C1=overlay(C1 placing ? from 21) where N=2" ["hogehogefugafuga"];
+Command "update T1 set C1=overlay(C1 placing ? from  5) where N=2" ["リコーでございます"];
+Command "select C1 from T1";
+
+Command  "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+SetSystemParameter "SydTest_ShowBinary" "False";
+End;
+

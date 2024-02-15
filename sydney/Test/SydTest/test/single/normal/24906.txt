@@ -1,0 +1,61 @@
+# Bug report 1676
+# ROWIDとint型列を比較して検索
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+CreateThread "Prepare";
+JoinThread "Prepare";
+
+CreateThread "Test";
+JoinThread "Test";
+
+CreateThread "Finish";
+JoinThread "Finish";
+
+TerminateSession;
+Terminate;
+End;
+
+Prepare
+{
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+
+
+Command  "create table TBL1(f int, g ntext, primary key(f))";
+Command  "create table TBL2(f int, primary key(f))";
+
+Command  "insert TBL1 values (1, 'abc'), (2, 'def')";
+Command  "insert TBL2 select rowid from TBL1";
+Command "insert TBL1 select f+2, g||'x' from TBL1";
+Command "insert TBL1 select f+4, g||'y' from TBL1";
+Command "insert TBL1 select f+8, g||'z' from TBL1";
+}
+
+Test
+{
+Command  "select * from TBL1, TBL2 where TBL1.rowid = TBL2.f"; 
+#期待結果: {1,abc,0},{2,def,1}
+
+Command  "select * from TBL1, TBL2 where TBL1.rowid = TBL2.rowid"; 
+#期待結果: {1,abc,0},{2,def,1}
+
+Command  "select * from TBL1, TBL2 where TBL1.f = TBL2.rowid"; 
+#期待結果: {1,abc,1}
+
+Command  "select * from TBL1, TBL2 where TBL1.rowid = TBL2.f and TBL1.f < 2"; 
+#期待結果: {1,abc,0}
+
+Command  "select * from TBL1, TBL2 where TBL1.rowid = TBL2.rowid and TBL1.f < 2"; 
+#期待結果: {1,abc,0}
+
+Command  "select * from TBL1, TBL2 where TBL1.f = TBL2.rowid and TBL1.f < 2"; 
+#期待結果: {1,abc,1}
+}
+
+Finish
+{
+Command  "drop database TESTDB";
+}

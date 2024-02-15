@@ -1,0 +1,26 @@
+# 障害票 1195
+#system_userなどのシステム表に対してORDER BY
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table TBL(f int, primary key(f))";
+Command "insert TBL values (0), (1)";
+
+Command "select * from system_user order by userid";
+Command "select * from system_user, TBL where userid = f order by userid";
+
+Command "drop table TBL";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

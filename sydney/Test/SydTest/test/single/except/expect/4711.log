@@ -1,0 +1,125 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f int ARRAY[2])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (ARRAY[1])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (ARRAY[1,2])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (ARRAY[1,2,3])
+Worker: [ERR] (Server) [TESTDB] SQL=insert T values (ARRAY[1,2,3])
+Worker: [ERR] (Server) Object No=xxx (Plan::ColumnType) Data exception - array data, right truncation.
+Executor: [ERR] (SydTest) Object No=xxx (Plan::ColumnType) Data exception - array data, right truncation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(N int, X ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (1, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {A}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (2, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {A}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (3, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {A}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (4, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {A}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (5, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {B}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (6, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {B}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (7, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {B}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (8, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {B}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] declare cursor Cur for select * from T where X=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {A}
+Executor: [ERR] (SydTest) Object No=xxx (Statement::SQLParser) SQL syntax error ' near token XXX at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] open Cur
+Executor: [ERR] (SydTest) Object No=xxx (Statement::SQLParser) SQL syntax error ' near token XXX at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] fetch Cur into N
+Executor: [ERR] (SydTest) Object No=xxx (Statement::SQLParser) SQL syntax error ' near token XXX at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] close Cur
+Executor: [ERR] (SydTest) Object No=xxx (Statement::SQLParser) SQL syntax error ' near token XXX at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where N = all (select * from T1 where X=?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {B}
+Executor: [ERR] (SydTest) Object No=xxx (Statement::SQLParser) SQL syntax error ' near token XXX at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where N = any (select * from T1 where X=?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {A}
+Executor: [ERR] (SydTest) Object No=xxx (Statement::SQLParser) SQL syntax error ' near token XXX at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f nvarchar(32))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values ('ua%ua')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f like '%aaa%%' escape 'a'
+SydTest::Executor: [INFO] {ua%ua}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f like '%aaa%%' escape 'aa'
+Worker: [ERR] (Server) [TESTDB] SQL=select * from T where f like '%aaa%%' escape 'aa'
+Worker: [ERR] (Server) Object No=xxx (Plan::PredicateNode_Like) Data exception - invalid escape character.
+Executor: [ERR] (SydTest) Object No=xxx (Plan::PredicateNode_Like) Data exception - invalid escape character.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f like '%aaa%%a' escape 'a'
+Worker: [ERR] (Server) [TESTDB] SQL=select * from T where f like '%aaa%%a' escape 'a'
+Worker: [ERR] (Server) Object No=xxx (Common::StringData) Data exception - invalid escape sequence.
+Executor: [ERR] (SydTest) Object No=xxx (Common::StringData) Data exception - invalid escape sequence.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

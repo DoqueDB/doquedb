@@ -1,0 +1,57 @@
+# 050316 horibe
+# 索引なし、B木索引あり、全文索引あり、のテーブルに対して、
+# 一件も入っていない状態で、sum, max, min, avg, countを実行する。
+# count()で0になる以外はnullになるはず。
+# 障害票0444　select distinct count(*)でAccess Violation
+
+# 関連スクリプト :	1300番台	全文のテストで使用
+#		 	4810番台	算術演算
+#			10600番台	group by の中で使用
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T(C1 int, C2 int, C3 ntext)";
+Command  "create index I2 on T(C2)";
+Command  "create fulltext index I3 on T(C3) hint 'inverted=(nolocation=true, notf=true)'";
+Command  "select * from T";
+
+# 索引なし
+Command  "select count(C1) from T";
+Command  "select sum(C1) from T";
+Command  "select max(C1) from T";
+Command  "select min(C1) from T";
+Command  "select avg(C1) from T";
+
+# B木索引あり
+Command  "select count(C2) from T";
+Command  "select sum(C2) from T";
+Command  "select max(C2) from T";
+Command  "select min(C2) from T";
+Command  "select avg(C2) from T";
+
+# 障害によるテスト
+Command  "select distinct count(C1) from T";
+Command  "select distinct sum(C1) from T";
+Command  "select distinct max(C1) from T";
+Command  "select distinct min(C1) from T";
+Command  "select distinct avg(C1) from T";
+
+# 障害によるテスト
+Command  "select distinct * from T";
+
+# 全文索引あり
+Command  "select count(C3) from T";
+Command  "select avg(char_length(C3)) from T";
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

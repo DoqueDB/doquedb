@@ -1,0 +1,50 @@
+# Bug report 1847
+# 複合索引の更新をロールバックした時
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+
+Command "create table TBL(x int, y int, z int)";
+Command "create index IDX_xy on TBL(x, y)";
+Command "create index IDX_yz on TBL(y, z)";
+Command "insert TBL values (1,1,1), (2,2,2)";
+
+Command "start transaction read write";
+Command "update TBL set x = 2 where x = 1";
+Command "commit";
+
+Command "select * from TBL";
+# {2,1,1},{2,2,2}
+
+Command "start transaction read write";
+Command "update TBL set x = 3 where x = 2";
+Command "rollback";
+
+Command "select * from TBL";
+# {2,1,1},{2,2,2}
+
+Command "create table TBL2(x int, y int, z int, w nclob)";
+Command "create index IDX2_xy on TBL2(x, y)";
+Command "create index IDX2_yz on TBL2(y, z)";
+Command "insert TBL2 values (1,1,1,'a'), (2,2,2,'b')";
+
+Command "start transaction read write";
+Command "update TBL2 set x = 2, w = 'b' where x = 1";
+Command "commit";
+
+Command "select * from TBL2";
+# {2,1,1,b},{2,2,2,b}
+
+Command "start transaction read write";
+Command "update TBL2 set x = 3, w = 'c' where x = 2";
+Command "rollback";
+
+Command "select * from TBL2";
+# {2,1,1,b},{2,2,2,b}
+
+TerminateSession;
+#Terminate;
+End;

@@ -1,0 +1,101 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(C ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=10))'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,score(C),cluster(C).id from T where C contains 'ロハス' cluster limit 0.8
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) SQL syntax error ' near token XXX at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,score(C),cluster(C).id from T where C contains 'ロハス' cluster limit 0.73
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) SQL syntax error ' near token XXX at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,score(C),cluster(C).id from T where C contains 'ロハス' clustered limit -0.8
+SydTest::Executor: [INFO] {2,2.565245747126E-1,1}
+SydTest::Executor: [INFO] {0,1.951475292292E-1,2}
+SydTest::Executor: [INFO] {1,1.951475292292E-1,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,score(C),cluster(C).id from T where C contains 'ロハス' clustered limit -0.73
+SydTest::Executor: [INFO] {2,2.565245747126E-1,1}
+SydTest::Executor: [INFO] {0,1.951475292292E-1,2}
+SydTest::Executor: [INFO] {1,1.951475292292E-1,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,score(C) from T where C contains 'ロハス' CLUSTERED LIMIT 0.8
+SydTest::Executor: [INFO] {0,1.951475292292E-1}
+SydTest::Executor: [INFO] {1,1.951475292292E-1}
+SydTest::Executor: [INFO] {2,2.565245747126E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,score(C) from T where C contains 'ロハス' CLUSTERED LIMIT 0.73
+SydTest::Executor: [INFO] {0,1.951475292292E-1}
+SydTest::Executor: [INFO] {1,1.951475292292E-1}
+SydTest::Executor: [INFO] {2,2.565245747126E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I1 on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,cluster=(feature=10))'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I2 on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feture=10))'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I3 on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=0))'
+FileID: [ERR] (Inverted) Illegal Feature Numbers 0
+Reorganize: [ERR] (Schema) create index failed.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I4 on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=0.1))'
+FileID: [ERR] (Inverted) Illegal Feature Numbers 0.1
+Reorganize: [ERR] (Schema) create index failed.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I5 on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=-10))'
+FileID: [ERR] (Inverted) Illegal Feature Numbers -10
+Reorganize: [ERR] (Schema) create index failed.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

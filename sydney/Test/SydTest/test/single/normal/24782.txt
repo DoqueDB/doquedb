@@ -1,0 +1,40 @@
+# Execution/Collection/Data のテスト
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+
+Command "create table T (F_INT int, F_BIGINT bigint, F_STRING nvarchar(256), F_DOUBLE float, F_DECIMAL decimal(10,5), F_DATETIME datetime, F_BINARY image, F_LANGUAGE language, F_ARRAY nvarchar(128) array[NO LIMIT])";
+
+Command "insert into T values (43,7736,'canteen',2.6,81.38,'2013-11-23 11:45:58','canteen',null,array['c','a','n','t','e','e','n'])";
+Command "insert into T values (299,893,'frizzle',null,69.37,'2013-08-05 21:10:19','frizzle','en',array['f','r','i','z','z','l','e'])";
+Command "insert into T values (2,8515,'seismic',12.9,null,'2013-03-01 02:29:58','seismic','ja',array['s','e','i','s','m','i','c'])";
+Command "insert into T values (807,7068,null,13.3,93.09,'2013-10-02 14:11:57',null,'en',array['s','y','n','a','g','o','g','u','e'])";
+Command "insert into T values (723,8135,'ferment',16.6,null,'2013-08-01 22:33:50','ferment','ja+en',array['f','e','r','m','e','n','t'])";
+Command "insert into T values (900,6466,'mantel',35.2,24.19,null,'mantel','ja+en',array['m','a','n','t','e','l'])";
+Command "insert into T values (302,2961,'guide',null,63.61,'2013-08-06 18:46:00','guide','en',array['g','u','i','d','e'])";
+Command "insert into T values (968,null,'queasy',3.7,89.86,'2013-11-08 22:06:06','queasy','en',array['q','u','e','a','s','y'])";
+Command "insert into T values (470,4523,'anisotropy',1.5,56.49,'2013-07-02 01:29:07','anisotropy','ja',null)";
+Command "insert into T values (738,null,'tribal',3.3,59.18,'2013-01-21 07:25:31','tribal','en',array['t','r','i','b','a','l'])";
+
+Command "select * from T";
+Command "insert into T select * from T";
+Command "select * from T";
+
+Command "select F_INT from T order by F_INT";
+Command "select F_BIGINT from T order by F_BIGINT desc";
+Command "select F_STRING from T order by F_STRING";
+Command "select F_INT, F_DOUBLE from T order by F_DOUBLE desc";
+Command "select F_DECIMAL, F_INT from T order by F_DECIMAL";
+Command "select F_INT, F_DATETIME from T order by F_DATETIME";
+Command "select F_STRING from T order by F_BINARY desc";
+Command "select F_LANGUAGE from T order by F_LANGUAGE";
+Command "select * from T order by F_ARRAY desc";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

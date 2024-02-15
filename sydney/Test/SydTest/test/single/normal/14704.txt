@@ -1,0 +1,20 @@
+# 障害票 0942
+# 4638(B+木用)のALL ROWS版
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+Command "create table T (f int)";
+Command "create all rows index I on T(f)";
+Command "create table X (g int)";
+
+Command "insert T values (null),1,2,3";
+Command "insert X values (null),1,2,3";
+
+Command "select * from T, X where T.f = X.g and (T.f is null or T.f = 1 or T.f = 2 or T.f = 3)";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

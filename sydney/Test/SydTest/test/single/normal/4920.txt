@@ -1,0 +1,91 @@
+#nvarcharなどの字数制限
+
+# 補足 (040903 horibe)
+# 現在の仕様は括弧内の数字までしか入らない。
+# charとncharは数字に満たない部分に空白が入る。
+# charとvarcharに全角文字を入れるとエラーになる。
+# ncharとnvarcharは全角半角を区別しない。
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T (C nvarchar(16))";
+Command "insert into T (C) values ('123456789012345')";
+Command "insert into T (C) values ('一二三四五六七八九〇一二三四五')";
+Command "insert into T (C) values ('1234五六七八9012三四五')";
+Command "insert into T (C) values ('一二三四5678九〇一二345')";
+Command "insert into T (C) values ('1234567890123456')";
+Command "insert into T (C) values ('一二三四五六七八九〇一二三四五六')";
+Command "insert into T (C) values ('1234五六七八9012三四五六')";
+Command "insert into T (C) values ('一二三四5678九〇一二3456')";
+Command "insert into T (C) values ('12345678901234567')";
+# 規格としては「一二三四五六七八九〇一二三四五六」に切り詰められる
+Command "insert into T (C) values ('一二三四五六七八九〇一二三四五六七')";
+# 規格としては「1234五六七八9012三四五六」に切り詰められる
+Command "insert into T (C) values ('1234五六七八9012三四五六7')";
+Command "insert into T (C) values ('一二三四5678九〇一二3456七')";
+Command "insert into T (C) values ('12345678901234567890')";
+Command "insert into T (C) values ('一二三四五六七八九〇一二三四五六七八九〇')";
+Command "insert into T (C) values ('1234五六七八9012三四五六7890')";
+Command "insert into T (C) values ('一二三四5678九〇一二3456七八九〇')";
+Command "select * from T";
+Command "drop table T";
+Pause;
+
+Command "create table T (C varchar(16))";
+Command "insert into T (C) values ('123456789012345')";
+# マルチバイト文字を入れるとエラー
+Command "insert into T (C) values ('一二三四五六七八九〇一二三四五')";
+Command "insert into T (C) values ('1234567890123456')";
+Command "insert into T (C) values ('12345678901234567')";
+Command "insert into T (C) values ('12345678901234567890')";
+Command "select * from T";
+Command "drop table T";
+Pause;
+
+Command "create table T (C nchar(16))";
+# 下4つ、規格としては右端にpaddingが入る
+Command "insert into T (C) values ('123456789012345')";
+Command "insert into T (C) values ('一二三四五六七八九〇一二三四五')";
+Command "insert into T (C) values ('1234五六七八9012三四五')";
+Command "insert into T (C) values ('一二三四5678九〇一二345')";
+Command "insert into T (C) values ('1234567890123456')";
+Command "insert into T (C) values ('一二三四五六七八九〇一二三四五六')";
+Command "insert into T (C) values ('1234五六七八9012三四五六')";
+Command "insert into T (C) values ('一二三四5678九〇一二3456')";
+Command "insert into T (C) values ('12345678901234567')";
+# 規格としては「一二三四五六七八九〇一二三四五六」に切り詰められる
+Command "insert into T (C) values ('一二三四五六七八九〇一二三四五六七')";
+Command "insert into T (C) values ('1234五六七八9012三四五六7')";
+Command "insert into T (C) values ('一二三四5678九〇一二3456七')";
+# 規格としては「1234567890123456」に切り詰められる
+Command "insert into T (C) values ('12345678901234567890')";
+Command "insert into T (C) values ('一二三四五六七八九〇一二三四五六七八九〇')";
+Command "insert into T (C) values ('1234五六七八9012三四五六7890')";
+Command "insert into T (C) values ('一二三四5678九〇一二3456七八九〇')";
+Command "select * from T";
+Command "drop table T";
+Pause;
+
+Command "create table T (C char(16))";
+# 規格としては右端にpaddingが入る
+Command "insert into T (C) values ('123456789012345')";
+# マルチバイト文字を入れるとエラー
+Command "insert into T (C) values ('一二三四五六七八九〇一二三四五')";
+Command "insert into T (C) values ('1234567890123456')";
+Command "insert into T (C) values ('12345678901234567')";
+Command "insert into T (C) values ('12345678901234567890')";
+Command "select * from T";
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

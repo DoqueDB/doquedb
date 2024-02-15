@@ -1,0 +1,31 @@
+#verify table (異常系2)
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T (F ntext array[no limit] hint heap 'compressed')";
+Command "insert into T values (?)" [["hoge"]];
+TerminateSession;
+Terminate;
+
+#テーブルのディレクトリごと消す
+System "rm -rf d:/dm/data/TESTDB/T";
+
+Initialize;
+InitializeSession "TESTDB";
+Command "start transaction read write";
+Command "verify table T";
+Command "verify table T correct";
+Command "commit";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

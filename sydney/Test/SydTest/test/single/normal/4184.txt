@@ -1,0 +1,62 @@
+# lang情報のついた全文索引とlang情報のない全文索引との共存
+
+Begin;
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (N int, C1 ntext array [no limit], 
+			 C2 ntext array [no limit], L language array [no limit])";
+
+# 索引作成
+Command "create fulltext index FT1 on T(C1) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+Command "create fulltext index FT2 on T(C2) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C1, C2, L) values (?, ?, ?, ?)";
+PreparedCommand "ins" [0, [null, null], 
+			[textucsfile "..\\..\\doc\\takekurabe.txt",
+		         textucsfile "..\\..\\doc\\takekurabe.txt"],
+			["ja", "en"]];
+PreparedCommand "ins" [1, [null, textucsfile "..\\..\\doc\\takekurabe.txt"],
+			[textucsfile "..\\..\\doc\\takekurabe.txt", null], 
+			["ja", "en"]];
+PreparedCommand "ins" [2, [textucsfile "..\\..\\doc\\takekurabe.txt", null], 
+		        [null, textucsfile "..\\..\\doc\\takekurabe.txt"],
+			["ja", "en"]];
+PreparedCommand "ins" [3, [textucsfile "..\\..\\doc\\takekurabe.txt",
+		           textucsfile "..\\..\\doc\\takekurabe.txt"],
+			[null, null], ["ja", "en"]];
+ErasePreparedCommand "ins";
+
+#一部のタプルのみ取れることを期待
+Command "select N, sectionized(C1) from T where C1 like ? language ?"
+	["%ペイジ%", "ja"]; # 「ページ」の異表記
+Command "select N, sectionized(C1) from T where C1 like ? language ?"
+	["%ペイジ%", "en"]; # 「ページ」の異表記
+Command "select N, sectionized(C1) from T where C1 like ? language ?"
+	["%improve%", "ja"]; # 「improving」の原形
+Command "select N, sectionized(C1) from T where C1 like ? language ?"
+	["%improve%", "en"]; # 「improving」の原形
+
+Command "select N, sectionized(C2) from T where C2 like ? language ?"
+	["%ペイジ%", "ja"]; # 「ページ」の異表記
+Command "select N, sectionized(C2) from T where C2 like ? language ?"
+	["%ペイジ%", "en"]; # 「ページ」の異表記
+Command "select N, sectionized(C2) from T where C2 like ? language ?"
+	["%improve%", "ja"]; # 「improving」の原形
+Command "select N, sectionized(C2) from T where C2 like ? language ?"
+	["%improve%", "en"]; # 「improving」の原形
+
+Command "verify index FT1 cascade continue";
+Command "verify index FT2 cascade continue";
+Command "verify table T cascade continue";
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;
+

@@ -1,0 +1,35 @@
+# 索引のついた列への条件を2つ以上ORでつないだものと、他の表とのJoinを索引のついていない列で行うものをANDでつないだSELECT文
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T0(f1 float,f2 float,f3 float)";
+Command  "insert into T0 (f1, f2, f3) values (0.11, 0.51, 1)";
+Command  "insert into T0 (f1, f2, f3) values (0.52, 1.02, 2)";
+Command  "insert into T0 (f1, f2, f3) values (0.53, 1.53, 3)";
+Command  "insert into T0 (f1, f2, f3) values (1.54, 0.54, 4)";
+Command  "insert into T0 (f1, f2, f3) values (0.55, 1.05, 5)";
+Command  "insert into T0 (f1, f2, f3) values (0.96, 1.56, 7)";
+Command  "insert into T0 (f1, f2, f3) values (2.07, 1.57, 7)";
+
+Command  "create table T1(f1 float,f2 float,f3 float)";
+Command  "insert into T1 (f1, f2, f3) values (0.11, 0.51, 1)";
+Command  "insert into T1 (f1, f2, f3) values (1.52, 1.02, 1)";
+Command  "insert into T1 (f1, f2, f3) values (1.53, 1.53, 3)";
+Command  "insert into T1 (f1, f2, f3) values (1.54, 0.54, 3)";
+Command  "insert into T1 (f1, f2, f3) values (1.55, 1.05, 6)";
+Command  "insert into T1 (f1, f2, f3) values (0.56, 1.56, 6)";
+Command  "insert into T1 (f1, f2, f3) values (0.57, 1.57, 7)";
+
+Command  "select T0.f1,T0.f2 from T0, T1 where (T0.f1 > 1 or T0.f2 > 1) and T0.f3 = T1.f3;";
+Command  "drop table T1";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

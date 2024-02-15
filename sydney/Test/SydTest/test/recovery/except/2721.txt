@@ -1,0 +1,64 @@
+#tableを含むDBのareaの移動(異常系)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+#テストに使うデータベースを作成する
+InitializeSession "";
+NotExists "d:\\dm\\data\\areatest";
+Command "create database AreaTest";
+Exists "d:\\dm\\data\\areatest";
+TerminateSession;
+
+#テストに使うデータベースを設定したセッションを作る
+InitializeSession "AreaTest";
+
+#使用している表があったらエラーになることの確認
+Command "create area area1 'd:\\dm\\area\\0'";
+NotExists "d:\\dm\\area\\0\\T";
+Command "create table T (f1 int) area area1";
+Command "insert into T values (1)";
+Exists "d:\\dm\\area\\0\\T";
+#↓area1はTがあるので消去できない
+Command "drop area area1";
+Command "drop table T";		#後始末
+NotExists "d:\\dm\\area\\0\\T";
+Command "drop area area1";	#後始末
+NotExists "d:\\dm\\area\\0";
+
+#表と索引が乗っている状態でのdropがエラーになることの確認
+#↓area1は存在しない
+Command "drop area area1";
+Exists "d:\\dm\\area\\0";
+#↓T_f2は存在しない
+Command "drop index T_f2";
+NotExists "d:\\dm\\area\\0\\T\\FTS_T_f2";
+#↓area1は存在しない
+Command "drop area area1";
+Exists "d:\\dm\\area\\0";
+#↓T_f1は存在しない
+Command "drop index T_f1";
+NotExists "d:\\dm\\area\\0\\T\\BTR_T_f1";
+#↓area1は存在しない
+Command "drop area area1";
+Exists "d:\\dm\\area\\0";
+#↓Tは存在しない
+Command "drop table T";
+NotExists "d:\\dm\\area\\0\\T";
+#↓area1は存在しない
+Command "drop area area1";
+NotExists "d:\\dm\\area\\0";
+
+TerminateSession;
+
+#テストに使ったデータベースの破棄
+#InitializeSession "";
+#Exists "d:\\dm\\data\\areatest";
+#Command "drop database AreaTest";
+#NotExists "d:\\dm\\data\\areatest";
+#TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;

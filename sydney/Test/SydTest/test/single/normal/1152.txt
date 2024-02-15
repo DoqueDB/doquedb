@@ -1,0 +1,47 @@
+#unmount->terminate->initialize->mount(4)
+#unmount/mountとalter database(空ではないDBに対して)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+InitializeSession "";
+Command  "create table T1(C1 int, C2 nclob)";
+Command  "insert into T1 (C1, C2) values (?, ?)" [1, "1"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [2, "2"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [3, "3"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [4, "4"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [5, "5"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [6, "6"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [7, "7"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [8, "8"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [9, "9"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [10, "10"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [11, "11"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [12, "12"];
+
+#unmountの前にalter databaseを行う
+Command "alter database DefaultDB set path 'd:\\dm\\alter\\DefaultDB'";
+Exists "d:\\dm\\alter\\DefaultDB";
+Command "unmount DefaultDB";
+Command "mount DefaultDB path 'd:\\dm\\alter\\DefaultDB' using snapshot";
+
+#元の位置に戻す
+Command "alter database DefaultDB set path 'd:\\dm\\data\\DefaultDB'";
+Command "unmount DefaultDB";
+TerminateSession;
+Terminate;
+
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "mount DefaultDB path 'd:\\dm\\data\\DefaultDB' using snapshot";
+
+NotExists "d:\\dm\\alter\\DefaultDB";
+
+TerminateSession;
+Terminate;
+End;
+

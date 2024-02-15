@@ -1,0 +1,380 @@
+/*
+ * Makefile.rule -- Makefile生成用ルールファイル
+ * 
+ * Copyright (c) 1996, 2001, 2004, 2023 Ricoh Company, Ltd.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#if defined(OS_RHLINUX6_0)
+#define REFERINGSYMBOL(_x_) $$
+#define REFER(_x_) \
+	REFERINGSYMBOL(_x_)_x_
+#define VAR(_x_) \
+	_x_
+#define FOR(_x_, _list_) \
+	for _x_ in _list_; \						@@\
+	do
+#define ROF \
+	; \								@@\
+	done
+#define IF(_c_) \
+	if [ _c_ ]; then
+#define ELSE \
+	; \
+	else
+#define FI \
+	; \								@@\
+	fi
+#define DELIM &&
+#define NOTEQUAL(_x_, _v_) \
+	_x_ != _v_
+#define FILEEXISTS(_x_) \
+	-e _x_
+#define BEGINLOCAL(_x_) \
+	(
+#define ENDLOCAL(_x_) \
+	) || exit 1
+#define LDELIM(_x_) &&
+#define SETENV(_x_, _v_) _x_=_v_ ; export _x_
+#endif
+
+#ifndef REFER
+#error "Can't make Makefile: Unknown OS"
+#endif
+
+/*
+ * RTarget -- XXX-rのルールを作成
+ */
+#define RTarget(target, subtarget, subdirs)				@@\
+target-r: target-c target						@@\
+									@@\
+target-c:								@@\
+	@FOR(VAR(d), subdirs .dummy) \					@@\
+		IF(NOTEQUAL(REFER(d), .dummy)) \			@@\
+			BEGINLOCAL(target-c) \				@@\
+				cd ..$(S)REFER(d)$(S)c.CONF LDELIM(target-c) \ @@\
+				$(MAKE) subtarget-r \			@@\
+			ENDLOCAL(target-c) \				@@\
+		FI \							@@\
+	ROF								@@\
+									@@\
+target::								@@
+
+/*
+ * AllRTarget -- all-rのルールを作成
+ */
+#define	AllRTarget() RTarget(all, all, $(SUBDIRS))
+
+#define ConfRTargetBase(target, subtarget, subdirs)			@@\
+target-r: target-c target						@@\
+									@@\
+target-c:								@@\
+	@FOR(VAR(d), subdirs .dummy) \					@@\
+		IF(NOTEQUAL(REFER(d), .dummy)) \			@@\
+			BEGINLOCAL(target-c) \				@@\
+				cd ..$(S)REFER(d) LDELIM(target-c) \	@@\
+				cd c LDELIM(target-c) \			@@\
+				$(MAKE) $(MAKEMAKEFILEFLAGS)LDELIM(target-c) \ @@\
+				cd .. LDELIM(target-c) \		@@\
+				$(MKCONFDIR) CONF LDELIM(target-c) \	@@\
+				cd c.CONF LDELIM(target-c) \		@@\
+				$(MAKE) subtarget-r \			@@\
+			ENDLOCAL(target-c) \				@@\
+		FI \							@@\
+	ROF								@@\
+									@@\
+target::								@@
+
+/*
+ * ConfRTarget -- make conf-rのルールを作成
+ */
+#define ConfRTarget()							@@\
+ConfRTargetBase(conf, conf, $(SUBDIRS))					@@\
+conf:: Makefile								@@\
+									@@\
+Makefile: ../c/Makefile.c $(UNAINSTTOP)/conf/Makefile.rule $(UNAINSTTOP)/conf/Makefile.tmpl @@\
+	@BEGINLOCAL(make) \						@@\
+		cd .. LDELIM(make) $(MKCONFDIR) CONF \			@@\
+	ENDLOCAL(make)							@@
+
+/*
+ * ReConfRTarget -- make reconf-rのルールを作成
+ */
+#define ReConfRTarget()							@@\
+reconf-r:: cleanconf-r conf-r						@@\
+RTarget(cleanconf, cleanconf, $(SUBDIRS))				@@\
+									@@\
+cleanconf::								@@\
+	@BEGINLOCAL(cleanconf) \					@@\
+		cd ..$(S)c LDELIM(cleanconf) $(RM) Makefile.h \		@@\
+	ENDLOCAL(cleanconf) \						@@
+
+/*
+ * InstallRTarget -- make install-rのルールを作成
+ */
+#define InstallRTarget()						@@\
+RTarget(install, install, $(SUBDIRS))					@@\
+RTarget(installh, installh, $(SUBDIRS))					@@\
+RTarget(installdll, installdll, $(SUBDIRS))				@@
+
+/*
+ * CleanRTarget -- make clean-rのルールを作成
+ */
+#define CleanRTarget()							@@\
+clean-r: clean-c clean							@@\
+									@@\
+clean-c:								@@\
+	@FOR(VAR(d), $(SUBDIRS) .dummy) \				@@\
+		IF(NOTEQUAL(REFER(d), .dummy)) \			@@\
+			BEGINLOCAL(cl-c) \				@@\
+				cd ..$(S)REFER(d)$(S)c.CONF LDELIM(cl-c) \ @@\
+				$(MAKE) clean-r \			@@\
+			ENDLOCAL(cl-c) \				@@\
+		FI \							@@\
+	ROF								@@\
+	@IF(NOTEQUAL('$(CC_TEMPLATEDB)', '')) \				@@\
+		$(RMALL) $(CC_TEMPLATEDB) \				@@\
+	FI								@@\
+									@@\
+clean::									@@
+
+/*
+ * AllTarget -- allのルールを作成
+ *
+ *	make allのターゲットを作る。
+ *	make allで生成してほしいターゲットをtargetsに指定する。
+ */
+#if defined(OS_RHLINUX6_0)
+#define	AllTarget(targets)						@@\
+all:: targets								@@
+#endif
+
+/*
+ * ProgramTarget -- 実行可能ファイルを生成するルールを作成
+ *
+ *	生成するプログラム名をprogramに、そのプログラムにリンクする
+ *	オブジェクトファイルのobjectsに指定する。
+ */
+#if defined(CC_GCC)
+#define ProgramTarget(program, objects)					@@\
+program: objects							@@\
+	$(LD) -o program.new objects $(LDFLAGS)				@@\
+	$(MV) program.new program
+#define PurifyProgramTarget(program, objects)				@@\
+program-purify: objects							@@\
+	$(PURIFY) $(PURIFYFLAGS) $(LD) -o program.new objects $(PURIFYLDFLAGS)	@@\
+	$(MV) program.new program-purify
+#endif
+
+/*
+ * ProgramTarget2 -- 実行可能ファイルを生成するルールを作成
+ *
+ *	生成するプログラム名をprogramに、そのプログラムにリンクする
+ *	オブジェクトファイルのobjectsに指定する。
+ *	リンクするライブラリーへの依存関係が記述できるように拡張
+ */
+#if defined(CC_GCC)
+#define ProgramTarget2(program, objects, libs)				@@\
+program: objects libs							@@\
+	$(LD) -o program.new objects $(LDFLAGS)				@@\
+	$(MV) program.new program
+#endif
+
+/*
+ * ProgramTarget3 -- 実行可能ファイルを生成するルールを作成
+ *
+ *	生成するプログラム名をprogramに、そのプログラムにリンクする
+ *	オブジェクトファイルのobjectsに指定する。
+ *	リンクするライブラリーへの依存関係が記述できるように拡張
+ *	LDFLAGS の後ろにリンクするオブジェクトを記述できるように拡張
+ */
+#if defined(CC_GCC)
+#define ProgramTarget3(program, objects, objects2, libs)		@@\
+program: objects objects2 libs						@@\
+	$(LD) -o program.new objects $(LDFLAGS) objects2		@@\
+	$(MV) program.new program
+#endif
+
+#if defined(OS_RHLINUX6_0)
+/*
+ * ProgramTargetRsh -- 実行可能ファイルを生成するルールを作成
+ * ProgramTarget2Rsh -- 実行可能ファイルを生成するルールを作成
+ *
+ *	生成するプログラム名をprogramに、そのプログラムにリンクする
+ *	オブジェクトファイルのobjectsに指定する。
+ *	リモートホストで実行する
+ */
+#define ProgramTargetRsh(host, dir, program, objects)			@@\
+program: objects							@@\
+	rsh host "cd dir; $(LD) -o program.new objects $(LDFLAGS)"	@@\
+	rsh host "cd dir; $(MV) program.new program"
+#define ProgramTarget2Rsh(host, dir, program, objects, libs)		@@\
+program: objects libs							@@\
+	rsh host "cd dir; $(LD) -o program.new objects $(LDFLAGS)"	@@\
+	rsh host "cd dir; $(MV) program.new program"
+#endif
+
+/*
+ * InstallProgramTarget -- 実行可能ファイルをインストールするルールを作成
+ *
+ *	インストールするプログラム名をprogramに、それを
+ *	インストールするディレクトリをdirectoryに指定する。
+  */
+#define InstallProgramTarget(program, directory)			@@\
+install:: program							@@\
+	@$(INSTALL) $(INSTALLBINFLAGS) program directory		@@
+
+/*
+ * LibraryTarget -- ライブラリを生成するルールを作成
+ *
+ *	生成するライブラリ名をlibraryに、そのライブラリに含める
+ *	オブジェクトファイルのobjectsに指定する。
+ */
+#if defined(CC_GCC)
+#ifdef MOD_DLL
+#define LibraryTarget(library, objects)					@@\
+library: objects							@@\
+	-$(RM) library							@@\
+	$(AR) $(ARFLAGS) library.new objects $(LDFLAGS)			@@\
+	$(MV) library.new library					@@\
+print_exported_objects:							@@\
+	echo objects
+#else
+#define LibraryTarget(library, objects)					@@\
+library: objects							@@\
+	-$(RM) library							@@\
+	$(AR) $(ARFLAGS) library.new objects				@@\
+	$(RANLIB) library.new						@@\
+	$(MV) library.new library					@@\
+print_exported_objects:							@@\
+	echo objects
+#endif
+#endif
+
+/*
+ * LibraryTarget2 -- ライブラリを生成するルールを作成
+ *
+ *	生成するライブラリ名をlibraryに、そのライブラリに含める
+ *	オブジェクトファイルのobjectsに指定する。
+ *	リンクするライブラリーへの依存関係が記述できるように拡張
+ */
+#if defined(CC_GCC)
+#ifdef MOD_DLL
+#define LibraryTarget2(library, objects, libs)				@@\
+library: objects libs							@@\
+	-$(RM) library							@@\
+	$(AR) $(ARFLAGS) library.new objects $(LDFLAGS)			@@\
+	$(MV) library.new library					@@\
+print_exported_objects:							@@\
+	echo objects
+#else
+#define LibraryTarget2(library, objects, libs)				@@\
+library: objects libs							@@\
+	-$(RM) library							@@\
+	$(AR) $(ARFLAGS) library.new objects				@@\
+	$(RANLIB) library.new						@@\
+	$(MV) library.new library					@@\
+print_exported_objects:							@@\
+	echo objects
+#endif
+#endif
+
+/*
+ * CombineLibraryTarget -- ライブラリを一つにまとめるルールを作成
+ *
+ *	生成するライブラリ名をlibraryに、そのライブラリにまとめる
+ *	ライブラリをlibrariesに指定する。
+ */
+#if defined(CC_GCC)
+#define CombineLibraryTarget(library, libraries)			@@\
+library: libraries							@@\
+	-$(RM) library							@@\
+	-$(RMALL) ./tmp							@@\
+	$(MKDIR) ./tmp							@@\
+	cd ./tmp							@@\
+	FOR(VAR(lib), libraries) ar x ../REFER(lib) ROF			@@\
+	$(AR) $(ARFLAGS) library.new *.$(O) 				@@\
+	$(RANLIB) library.new						@@\
+	$(MV) library.new ../library					@@\
+	cd ..								@@\
+	$(RMALL) ./tmp							@@
+#endif
+
+/*
+ * InstallLibraryTarget -- ライブラリをインストールするルールを作成
+ *
+ *	インストールするライブラリ名をlibraryに、それを
+ *	インストールするディレクトリをdirectoryに指定する。
+ */
+#if defined(CC_GCC)
+#define InstallLibraryTarget(library, directory, linkname)			@@\
+install::								@@\
+	@$(INSTALL) $(INSTALLBINFLAGS) library directory    @@\
+	cd directory; $(SYMLINK) library linkname
+#endif
+
+/*
+ * InstallHeaderTarget -- ヘッダーファイルをインストールするルールを作成
+ *
+ *	インストールするヘッダーファイル名をheaderに、それを
+ *	インストールするディレクトリをdirectoryに指定する。
+ */
+#define InstallHeaderTarget(header, directory)				@@\
+directory::								@@\
+	@$(MKDIR) $@							@@\
+installh:: directory header						@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header directory		@@
+
+#define InstallHeaderTarget2(header1, header2, directory)		@@\
+directory::								@@\
+	@$(MKDIR) $@							@@\
+installh:: directory header1 header2					@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header1 directory		@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header2 directory		@@
+
+#define InstallHeaderTarget3(header1, header2, header3, directory)	@@\
+directory::								@@\
+	@$(MKDIR) $@							@@\
+installh:: directory header1 header2 header3				@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header1 directory		@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header2 directory		@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header3 directory		@@
+
+/*
+ * CleanTarget -- 不要なファイルを消去するルールを作成
+ *
+ *	make cleanで消去してほしいファイルをfilesに指定する。
+ *	INTELの場合はTEMPLATE_DBがない。なくても無視するオプションがないので。
+ */
+#if defined(OS_RHLINUX6_0)
+#define CleanTarget(files)						@@\
+clean::									@@\
+	-$(RM) files							@@\
+	-$(RMALL) $(CC_TEMPLATEDB)					@@
+#endif
+
+/*
+ * テープイメージを再帰的に作る
+ */
+#define	TapeRTarget() RTarget(tape, tape, $(SUBDIRS))
+
+/*
+ * テープに含めるヘッダーファイル
+ */
+#define TapeHeaderTarget(header, directory)				@@\
+directory::								@@\
+	@$(MKDIR) $@							@@\
+tape:: directory header							@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header directory		@@
+

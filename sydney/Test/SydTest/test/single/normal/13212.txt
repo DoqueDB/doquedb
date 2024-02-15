@@ -1,0 +1,52 @@
+#全文ファイルテスト(FullText_MergeInvPack=2)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "FullTextTest";
+
+# 全文ファイルに挿入→マージ
+Command "insert into T (N, C) values (1, ?)" [[textsjisfile "..\\..\\doc\\introduction.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (2, ?)" [[textsjisfile  "..\\..\\doc\\RainyNight.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (3, ?)" [[textsjisfile  "..\\..\\doc\\kenpou.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (4, ?)" [[textsjisfile  "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (5, ?)" [[textsjisfile  "..\\..\\doc\\rasyoumon.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (6, ?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (7, ?)" [[textsjisfile  "..\\..\\doc\\dictionary.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (8, ?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (9, ?)" [[textsjisfile  "..\\..\\doc\\takekurabe.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (10, ?)" [[textsjisfile  "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (11, ?)" [[textsjisfile  "..\\..\\doc\\introduction.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (12, ?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+Command "select count(*) from T";
+
+#- 1件ずつ削除→マージ
+Command "delete from T where N= 1";
+Command "delete from T where N= 2";
+Command "delete from T where N= 3";
+Command "delete from T where N= 4";
+Command "delete from T where N= 5";
+Command "delete from T where N= 6";
+Command "delete from T where N= 7";
+Command "delete from T where N= 8";
+Command "delete from T where N= 9";
+Command "delete from T where N=10";
+Command "delete from T where N=11";
+Command "delete from T where N=12";
+
+TerminateSession;
+# (障害回復を試すためTerminateしない)
+
+End;

@@ -1,0 +1,70 @@
+# 障害表　0565
+# EXPAND句に ORDER BY句がないと異常終了
+# Freetext検索の結果をGetByBitSetで取得するとアサート
+#
+# 障害票 1286
+# 関連語拡張ありの文書検索で内部的に使われる検索語のスケール値と、関連語拡張ありの単語検索で得られる検索語のスケール値
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+
+Command "create database TESTDB";
+Command "create table T (f ntext,id int)";
+Command "create fulltext index I on t(f)";
+
+Command "insert into T values('テスト',10)";
+Command "insert into T values('てすと',20)";
+Command "insert into T values('テストがある',100)";
+
+
+#expand なし　and ソートなしOK
+Command "select count(*) FROM T WHERE f contains FREETEXT('テスト')";
+
+#ソートありOK
+Command "select count(*) FROM T WHERE f CONTAINS FREETEXT('テスト') 
+		EXPAND (FROM (SELECT f FROM T WHERE rowid ='1')) ORDER BY SCORE(f)";
+
+
+
+#ソートなし：障害があった
+Command "select count(*) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))";
+
+
+
+
+#max,min,word,scoreでもorder by なしテスト
+
+Command "select max(id) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))";
+
+Command "select min(id) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))";
+
+
+Command "select sum(id) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))";
+
+Command "select avg(id) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))";
+
+Command "select word(f) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))";
+
+Command "select score(f) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))";
+
+# 関連語拡張ありの文書検索で内部的に使われる検索語のスケール値と、関連語拡張ありの単語検索で得られる検索語のスケール値
+Command "select f from T where f contains freetext('テスト')";
+Command "select f from T where f contains freetext('テスト') 
+		expand ( from (select f from T where f contains freetext('テスト')))";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

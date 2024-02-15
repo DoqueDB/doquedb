@@ -1,0 +1,105 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t0 (
+	c0	int,
+	c1	int hint heap
+)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c0, c1 ) values ( 1, 1 )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c0, c1 ) values ( 2, 2 )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ROWID, c0, c1 from t0 where ROWID = 0
+SydTest::Executor: [INFO] {0,1,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ROWID, c0, c1 from t0 where ROWID > 0
+SydTest::Executor: [INFO] {1,2,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update t0 set c1 = 3 where ROWID > 0
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ROWID, c0, c1 from t0 where ROWID > 0
+SydTest::Executor: [INFO] {1,2,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( ROWID, c0, c1 ) values ( 5, 7, 9 )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Column 'ROWID' cannot be specified for insert or update.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( ROWID, c0, c1 ) values ( 0, 0, 0 )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Column 'ROWID' cannot be specified for insert or update.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ROWID, c0, c1 from t0
+SydTest::Executor: [INFO] {0,1,1}
+SydTest::Executor: [INFO] {1,2,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update t0 set ROWID = 8 where ROWID > 1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Column 'ROWID' cannot be specified for insert or update.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ROWID, c0, c1 from t0
+SydTest::Executor: [INFO] {0,1,1}
+SydTest::Executor: [INFO] {1,2,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t0
+SydTest::Executor: [INFO] {1,1}
+SydTest::Executor: [INFO] {2,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] Main End.
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify database TESTDB cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t0
+SydTest::Executor: [INFO] {1,1}
+SydTest::Executor: [INFO] {2,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

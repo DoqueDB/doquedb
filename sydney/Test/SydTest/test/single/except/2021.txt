@@ -1,0 +1,16 @@
+# わざと二重にDBを作ろうとする
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+Terminate;
+
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

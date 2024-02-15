@@ -1,0 +1,41 @@
+Begin;
+SetSystemParameter "Execution_LikeNormalizedString" 3;
+
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T (F nvarchar(100))";
+
+Command "insert into T values 'Ａ０　＃％あが'";
+Command "insert into T values 'Ａ０　＃＠あが'";
+Command "insert into T values 'ａ０　＃％アガ'";
+Command "insert into T values 'ａ０　＃＠アガ'";
+Command "insert into T values 'A0 #%アガ'";
+Command "insert into T values 'a0 #@アガ'";
+
+Command "select * from T where F like 'Ａ０　＃％あが'";
+Command "select * from T where F like 'Ａ０　＃*％あが' escape '*'";
+Command "select * from T where F like 'Ａ０　＃＠あが'";
+Command "select * from T where F like 'ａ０　＃％アガ'";
+Command "select * from T where F like 'ａ０　＃*％アガ' escape '*'";
+Command "select * from T where F like 'ａ０　＃＠アガ'";
+Command "select * from T where F like 'A0 #*%アガ' escape '*'";
+Command "select * from T where F like 'a0 #@アガ'";
+
+Command "create index I on T(F) hint 'normalized'";
+
+Command "select * from T where F like 'Ａ０　＃％あが'";
+Command "select * from T where F like 'Ａ０　＃*％あが' escape '*'";
+Command "select * from T where F like 'Ａ０　＃＠あが'";
+Command "select * from T where F like 'ａ０　＃％アガ'";
+Command "select * from T where F like 'ａ０　＃*％アガ' escape '*'";
+Command "select * from T where F like 'ａ０　＃＠アガ'";
+Command "select * from T where F like 'A0 #*%アガ' escape '*'";
+Command "select * from T where F like 'a0 #@アガ'";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

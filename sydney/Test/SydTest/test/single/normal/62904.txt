@@ -1,0 +1,41 @@
+#verify database (正常系)
+
+Begin;
+Initialize;
+#verifyされるべきDBを生成
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#Command "create table T (F ntext array[no limit] hint heap 'compressed')";
+#Command "create fulltext index I on T(F) hint 'sectionized, delayed ,inverted=(nolocation=true, notf=true)'";
+
+#r/wトランザクションについて可能な組み合わせを全て試す
+Command "start transaction read write";
+Command "verify database TESTDB";
+Command "verify database TESTDB cascade";
+Command "verify database TESTDB continue";
+Command "verify database TESTDB cascade continue";
+Command "verify database TESTDB correct";
+Command "verify database TESTDB cascade correct";
+Command "verify database TESTDB continue correct";
+Command "verify database TESTDB cascade continue correct";
+Command "commit";
+
+#r/oトランザクションについて正常に実行可能な組み合わせを全て試す
+Command "start transaction read only, using snapshot";
+Command "verify database TESTDB";
+Command "verify database TESTDB cascade";
+Command "verify database TESTDB continue";
+Command "verify database TESTDB cascade continue";
+Command "commit";
+Pause;
+
+TerminateSession;
+#あとかたづけ
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,1408 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(f1_index int, g1 int, h1 int, i1 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create  index I_T1_f1 on T1(f1_index)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(f2_index int, g2 int, h2 int, i2 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create  index I_T2_f2 on T2(f2_index)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T2 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T3(f3_index int, g3 int, h3 int, i3 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create  index I_T3_f3 on T3(f3_index)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T3 values (?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select avg(g1) from T1 where (f1_index = 6543210) and (TBL.f1_index = f1_index)) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,(null)}
+SydTest::Executor: [INFO] {-2147483648,(null)}
+SydTest::Executor: [INFO] {-34567890,(null)}
+SydTest::Executor: [INFO] {-34567890,(null)}
+SydTest::Executor: [INFO] {-1,(null)}
+SydTest::Executor: [INFO] {0,(null)}
+SydTest::Executor: [INFO] {1,(null)}
+SydTest::Executor: [INFO] {6543210,6543210}
+SydTest::Executor: [INFO] {2147483647,(null)}
+SydTest::Executor: [INFO] {2147483647,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index) = (select avg(g1) from T1 where (f1_index = 6543210) and (TBL.f1_index = f1_index))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {6543210}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index) = (select avg(g1) from T1 where (f1_index = 6543210) and (TBL.f1_index = f1_index))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {6543210}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index) = (select avg(g1) from T1 where (f1_index = 6543210) and (TBL.f1_index = f1_index))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {6543210}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select h1,i1 from T1 where (exists (select * from T2 where T1.f1_index = T2.f2_index)) and (TBL.f1_index = f1_index) limit 1) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,0,1}
+SydTest::Executor: [INFO] {-2147483648,0,1}
+SydTest::Executor: [INFO] {-34567890,(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null)}
+SydTest::Executor: [INFO] {-1,6543210,-34567890}
+SydTest::Executor: [INFO] {0,1,-1}
+SydTest::Executor: [INFO] {1,-1,6543210}
+SydTest::Executor: [INFO] {6543210,-34567890,2147483647}
+SydTest::Executor: [INFO] {2147483647,(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1) = (select h1,i1 from T1 where (exists (select * from T2 where T1.f1_index = T2.f2_index)) and (TBL.f1_index = f1_index) limit 1),i1=i1 / 2
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {-34567890,2147483647}
+SydTest::Executor: [INFO] {6543210,-34567890}
+SydTest::Executor: [INFO] {-1,6543210}
+SydTest::Executor: [INFO] {1,-1}
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {-34567890,2147483647}
+SydTest::Executor: [INFO] {6543210,-34567890}
+SydTest::Executor: [INFO] {-1,6543210}
+SydTest::Executor: [INFO] {1,-1}
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {-34567890,2147483647}
+SydTest::Executor: [INFO] {6543210,-34567890}
+SydTest::Executor: [INFO] {-1,6543210}
+SydTest::Executor: [INFO] {1,-1}
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select i2 from T2 where (f2_index = 6543210) and (TBL.f1_index = f2_index) limit 1) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,(null)}
+SydTest::Executor: [INFO] {-2147483648,(null)}
+SydTest::Executor: [INFO] {-34567890,(null)}
+SydTest::Executor: [INFO] {-34567890,(null)}
+SydTest::Executor: [INFO] {-1,(null)}
+SydTest::Executor: [INFO] {0,(null)}
+SydTest::Executor: [INFO] {1,(null)}
+SydTest::Executor: [INFO] {6543210,2147483647}
+SydTest::Executor: [INFO] {2147483647,(null)}
+SydTest::Executor: [INFO] {2147483647,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index) = (select i2 from T2 where (f2_index = 6543210) and (TBL.f1_index = f2_index) limit 1)
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {2147483647}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {2147483647}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {2147483647}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select avg(f2_index),avg(g2) from T2 where (exists (select * from T2 where T2.f2_index = T2.f2_index)) and (TBL.f1_index = f2_index)) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {-2147483648,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {-34567890,(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null)}
+SydTest::Executor: [INFO] {-1,-1,-1}
+SydTest::Executor: [INFO] {0,0,0}
+SydTest::Executor: [INFO] {1,1,1}
+SydTest::Executor: [INFO] {6543210,6543210,6543210}
+SydTest::Executor: [INFO] {2147483647,(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1) = (select avg(f2_index),avg(g2) from T2 where (exists (select * from T2 where T2.f2_index = T2.f2_index)) and (TBL.f1_index = f2_index)),i1=i1 / 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {6543210,6543210}
+SydTest::Executor: [INFO] {-1,-1}
+SydTest::Executor: [INFO] {1,1}
+SydTest::Executor: [INFO] {0,0}
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1) = (select avg(f2_index),avg(g2) from T2 where (exists (select * from T2 where T2.f2_index = T2.f2_index)) and (TBL.f1_index = f2_index)),i1=i1 / 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {6543210,6543210}
+SydTest::Executor: [INFO] {-1,-1}
+SydTest::Executor: [INFO] {1,1}
+SydTest::Executor: [INFO] {0,0}
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1) = (select avg(f2_index),avg(g2) from T2 where (exists (select * from T2 where T2.f2_index = T2.f2_index)) and (TBL.f1_index = f2_index)),i1=i1 / 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {6543210,6543210}
+SydTest::Executor: [INFO] {-1,-1}
+SydTest::Executor: [INFO] {1,1}
+SydTest::Executor: [INFO] {0,0}
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select avg(g2),avg(h1),avg(i2),avg(f1_index) from T1,T2 where (T2.f2_index = 2147483647) and (TBL.f1_index = f1_index)) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-2147483648,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-1,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {0,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {1,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {6543210,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1,h1,i1) = (select avg(g2),avg(h1),avg(i2),avg(f1_index) from T1,T2 where (T2.f2_index = 2147483647) and (TBL.f1_index = f1_index))
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select h1,i2,f1_index,g2 from T1,T2 where (T1.f1_index = T2.f2_index) and (TBL.f1_index = f1_index) limit 1) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {-2147483648,0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {-34567890,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-1,6543210,-34567890,-1,-1}
+SydTest::Executor: [INFO] {0,1,-1,0,0}
+SydTest::Executor: [INFO] {1,-1,6543210,1,1}
+SydTest::Executor: [INFO] {6543210,-34567890,2147483647,6543210,6543210}
+SydTest::Executor: [INFO] {2147483647,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1,h1,i1) = (select h1,i2,f1_index,g2 from T1,T2 where (T1.f1_index = T2.f2_index) and (TBL.f1_index = f1_index) limit 1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,2147483647,6543210,6543210}
+SydTest::Executor: [INFO] {6543210,-34567890,-1,-1}
+SydTest::Executor: [INFO] {-1,6543210,1,1}
+SydTest::Executor: [INFO] {1,-1,0,0}
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1,h1,i1) = (select h1,i2,f1_index,g2 from T1,T2 where (T1.f1_index = T2.f2_index) and (TBL.f1_index = f1_index) limit 1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,2147483647,6543210,6543210}
+SydTest::Executor: [INFO] {6543210,-34567890,-1,-1}
+SydTest::Executor: [INFO] {-1,6543210,1,1}
+SydTest::Executor: [INFO] {1,-1,0,0}
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1,h1,i1) = (select h1,i2,f1_index,g2 from T1,T2 where (T1.f1_index = T2.f2_index) and (TBL.f1_index = f1_index) limit 1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,2147483647,6543210,6543210}
+SydTest::Executor: [INFO] {6543210,-34567890,-1,-1}
+SydTest::Executor: [INFO] {-1,6543210,1,1}
+SydTest::Executor: [INFO] {1,-1,0,0}
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select i3 from T2,T3 where (T3.f3_index = T2.f2_index) and (TBL.f1_index = f2_index) limit 1) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,(null)}
+SydTest::Executor: [INFO] {-2147483648,(null)}
+SydTest::Executor: [INFO] {-34567890,(null)}
+SydTest::Executor: [INFO] {-34567890,(null)}
+SydTest::Executor: [INFO] {-1,-34567890}
+SydTest::Executor: [INFO] {0,(null)}
+SydTest::Executor: [INFO] {1,6543210}
+SydTest::Executor: [INFO] {6543210,2147483647}
+SydTest::Executor: [INFO] {2147483647,(null)}
+SydTest::Executor: [INFO] {2147483647,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index) = (select i3 from T2,T3 where (T3.f3_index = T2.f2_index) and (TBL.f1_index = f2_index) limit 1),i1=i1 / 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {2147483647}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {6543210}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index) = (select i3 from T2,T3 where (T3.f3_index = T2.f2_index) and (TBL.f1_index = f2_index) limit 1),i1=i1 / 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {2147483647}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {6543210}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index) = (select i3 from T2,T3 where (T3.f3_index = T2.f2_index) and (TBL.f1_index = f2_index) limit 1),i1=i1 / 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {2147483647}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {6543210}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select avg(f2_index),avg(g3) from T2,T3 where (T2.f2_index = -34567890) and (TBL.f1_index = f2_index)) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,(null),(null)}
+SydTest::Executor: [INFO] {-2147483648,(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null)}
+SydTest::Executor: [INFO] {-1,(null),(null)}
+SydTest::Executor: [INFO] {0,(null),(null)}
+SydTest::Executor: [INFO] {1,(null),(null)}
+SydTest::Executor: [INFO] {6543210,(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1) = (select avg(f2_index),avg(g3) from T2,T3 where (T2.f2_index = -34567890) and (TBL.f1_index = f2_index))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1) = (select avg(f2_index),avg(g3) from T2,T3 where (T2.f2_index = -34567890) and (TBL.f1_index = f2_index))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1) = (select avg(f2_index),avg(g3) from T2,T3 where (T2.f2_index = -34567890) and (TBL.f1_index = f2_index))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select g3,h2,i3,f2_index from T2,T3 where (T3.f3_index = 6543210) and (TBL.f1_index = f2_index) limit 1) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,6543210,0,2147483647,-2147483648}
+SydTest::Executor: [INFO] {-2147483648,6543210,0,2147483647,-2147483648}
+SydTest::Executor: [INFO] {-34567890,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-1,6543210,6543210,2147483647,-1}
+SydTest::Executor: [INFO] {0,6543210,1,2147483647,0}
+SydTest::Executor: [INFO] {1,6543210,-1,2147483647,1}
+SydTest::Executor: [INFO] {6543210,6543210,-34567890,2147483647,6543210}
+SydTest::Executor: [INFO] {2147483647,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1,h1,i1) = (select g3,h2,i3,f2_index from T2,T3 where (T3.f3_index = 6543210) and (TBL.f1_index = f2_index) limit 1)
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {6543210,0,2147483647,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {6543210,-34567890,2147483647,6543210}
+SydTest::Executor: [INFO] {6543210,6543210,2147483647,-1}
+SydTest::Executor: [INFO] {6543210,-1,2147483647,1}
+SydTest::Executor: [INFO] {6543210,1,2147483647,0}
+SydTest::Executor: [INFO] {6543210,0,2147483647,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {6543210,0,2147483647,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {6543210,-34567890,2147483647,6543210}
+SydTest::Executor: [INFO] {6543210,6543210,2147483647,-1}
+SydTest::Executor: [INFO] {6543210,-1,2147483647,1}
+SydTest::Executor: [INFO] {6543210,1,2147483647,0}
+SydTest::Executor: [INFO] {6543210,0,2147483647,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {6543210,0,2147483647,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {6543210,-34567890,2147483647,6543210}
+SydTest::Executor: [INFO] {6543210,6543210,2147483647,-1}
+SydTest::Executor: [INFO] {6543210,-1,2147483647,1}
+SydTest::Executor: [INFO] {6543210,1,2147483647,0}
+SydTest::Executor: [INFO] {6543210,0,2147483647,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select avg(h1),avg(i1),avg(f1_index),avg(g1) from T1 where (exists (select * from T2 where T1.f1_index = T2.f2_index)) and (TBL.f1_index = f1_index)) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {-2147483648,0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {-34567890,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-1,6543210,-34567890,-1,-1}
+SydTest::Executor: [INFO] {0,1,-1,0,0}
+SydTest::Executor: [INFO] {1,-1,6543210,1,1}
+SydTest::Executor: [INFO] {6543210,-34567890,2147483647,6543210,6543210}
+SydTest::Executor: [INFO] {2147483647,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1,h1,i1) = (select avg(h1),avg(i1),avg(f1_index),avg(g1) from T1 where (exists (select * from T2 where T1.f1_index = T2.f2_index)) and (TBL.f1_index = f1_index))
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,2147483647,6543210,6543210}
+SydTest::Executor: [INFO] {6543210,-34567890,-1,-1}
+SydTest::Executor: [INFO] {-1,6543210,1,1}
+SydTest::Executor: [INFO] {1,-1,0,0}
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,2147483647,6543210,6543210}
+SydTest::Executor: [INFO] {6543210,-34567890,-1,-1}
+SydTest::Executor: [INFO] {-1,6543210,1,1}
+SydTest::Executor: [INFO] {1,-1,0,0}
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,2147483647,6543210,6543210}
+SydTest::Executor: [INFO] {6543210,-34567890,-1,-1}
+SydTest::Executor: [INFO] {-1,6543210,1,1}
+SydTest::Executor: [INFO] {1,-1,0,0}
+SydTest::Executor: [INFO] {0,1,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select avg(i2),avg(f2_index),avg(g2),avg(h2) from T2 where (exists (select * from T2 where T2.f2_index = T2.f2_index)) and (TBL.f1_index = f2_index)) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,1,-2147483648,-2147483648,0}
+SydTest::Executor: [INFO] {-2147483648,1,-2147483648,-2147483648,0}
+SydTest::Executor: [INFO] {-34567890,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {-1,-34567890,-1,-1,6543210}
+SydTest::Executor: [INFO] {0,-1,0,0,1}
+SydTest::Executor: [INFO] {1,6543210,1,1,-1}
+SydTest::Executor: [INFO] {6543210,2147483647,6543210,6543210,-34567890}
+SydTest::Executor: [INFO] {2147483647,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1,h1,i1) = (select avg(i2),avg(f2_index),avg(g2),avg(h2) from T2 where (exists (select * from T2 where T2.f2_index = T2.f2_index)) and (TBL.f1_index = f2_index))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {1,-2147483648,-2147483648,0}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {2147483647,6543210,6543210,-34567890}
+SydTest::Executor: [INFO] {-34567890,-1,-1,6543210}
+SydTest::Executor: [INFO] {6543210,1,1,-1}
+SydTest::Executor: [INFO] {-1,0,0,1}
+SydTest::Executor: [INFO] {1,-2147483648,-2147483648,0}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1,h1,i1) = (select avg(i2),avg(f2_index),avg(g2),avg(h2) from T2 where (exists (select * from T2 where T2.f2_index = T2.f2_index)) and (TBL.f1_index = f2_index))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {1,-2147483648,-2147483648,0}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {2147483647,6543210,6543210,-34567890}
+SydTest::Executor: [INFO] {-34567890,-1,-1,6543210}
+SydTest::Executor: [INFO] {6543210,1,1,-1}
+SydTest::Executor: [INFO] {-1,0,0,1}
+SydTest::Executor: [INFO] {1,-2147483648,-2147483648,0}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1,h1,i1) = (select avg(i2),avg(f2_index),avg(g2),avg(h2) from T2 where (exists (select * from T2 where T2.f2_index = T2.f2_index)) and (TBL.f1_index = f2_index))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1,h1,i1 from T1
+SydTest::Executor: [INFO] {1,-2147483648,-2147483648,0}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {2147483647,6543210,6543210,-34567890}
+SydTest::Executor: [INFO] {-34567890,-1,-1,6543210}
+SydTest::Executor: [INFO] {6543210,1,1,-1}
+SydTest::Executor: [INFO] {-1,0,0,1}
+SydTest::Executor: [INFO] {1,-2147483648,-2147483648,0}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select f1_index,g2 from T1,T2 where (T1.f1_index = -2147483648) and (TBL.f1_index = f1_index) limit 1) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {-2147483648,-2147483648,-2147483648}
+SydTest::Executor: [INFO] {-34567890,(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null)}
+SydTest::Executor: [INFO] {-1,(null),(null)}
+SydTest::Executor: [INFO] {0,(null),(null)}
+SydTest::Executor: [INFO] {1,(null),(null)}
+SydTest::Executor: [INFO] {6543210,(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1) = (select f1_index,g2 from T1,T2 where (T1.f1_index = -2147483648) and (TBL.f1_index = f1_index) limit 1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1) = (select f1_index,g2 from T1,T2 where (T1.f1_index = -2147483648) and (TBL.f1_index = f1_index) limit 1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1) = (select f1_index,g2 from T1,T2 where (T1.f1_index = -2147483648) and (TBL.f1_index = f1_index) limit 1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select avg(g2) from T1,T2 where (T2.f2_index = T1.f1_index) and (TBL.f1_index = f1_index)) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {-2147483648,-2147483648}
+SydTest::Executor: [INFO] {-34567890,(null)}
+SydTest::Executor: [INFO] {-34567890,(null)}
+SydTest::Executor: [INFO] {-1,-1}
+SydTest::Executor: [INFO] {0,0}
+SydTest::Executor: [INFO] {1,1}
+SydTest::Executor: [INFO] {6543210,6543210}
+SydTest::Executor: [INFO] {2147483647,(null)}
+SydTest::Executor: [INFO] {2147483647,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index) = (select avg(g2) from T1,T2 where (T2.f2_index = T1.f1_index) and (TBL.f1_index = f1_index)),i1=i1 / 2
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {-2147483648}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {6543210}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {-2147483648}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {-2147483648}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {6543210}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {-2147483648}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from T1
+SydTest::Executor: [INFO] {-2147483648}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {6543210}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {-2147483648}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1_index from T1) as TBL left outer join (select h2,i2 from T2 where (f2_index = -2147483648) and (TBL.f1_index = f2_index) limit 1) as X on (1=1)
+SydTest::Executor: [INFO] {-2147483648,0,1}
+SydTest::Executor: [INFO] {-2147483648,0,1}
+SydTest::Executor: [INFO] {-34567890,(null),(null)}
+SydTest::Executor: [INFO] {-34567890,(null),(null)}
+SydTest::Executor: [INFO] {-1,(null),(null)}
+SydTest::Executor: [INFO] {0,(null),(null)}
+SydTest::Executor: [INFO] {1,(null),(null)}
+SydTest::Executor: [INFO] {6543210,(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null)}
+SydTest::Executor: [INFO] {2147483647,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Query]] update T1 as TBL set (f1_index,g1) = (select h2,i2 from T2 where (f2_index = -2147483648) and (TBL.f1_index = f2_index) limit 1)
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index,g1 from T1
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {0,1}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] {(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1,0,0,1,-1,1,1,-1,6543210,-1,-1,6543210,-34567890,6543210,6543210,-34567890,2147483647,-34567890,-34567890,2147483647,-2147483648,2147483647,2147483647,-2147483648,0,-2147483648,-2147483648,0,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

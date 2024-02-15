@@ -1,0 +1,311 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<!--
+  Copyright (c) 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the License);
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<html>
+
+<head>
+  <!-- Google Tag Manager -->
+  <script type="text/javascript">(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-KRXS4RS');</script>
+  <!-- End Google Tag Manager -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="css/default.css">
+  <title>全文索引を使いこなす</title>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRXS4RS" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <h1>全文索引を使いこなす</h1>
+  <div class="right"><a href="knowledge.html">[ナレッジに戻る]</a></div>
+  <div class="contents">
+    <dl>
+      <dt>
+        <a href="#sec1">1. はじめに</a>
+      </dt>
+      <dt>
+        <a href="#sec2">2. 適合性フィードバック</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec21">2.1 特徴語の抽出</a>
+          </dt>
+          <dt>
+            <a href="#sec22">2.2 特徴語での検索</a>
+          </dt>
+          <dt>
+            <a href="#sec23">2.3 拡張語の取得</a>
+          </dt>
+          <dt>
+            <a href="#sec24">2.4 特徴語と拡張語での検索</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec3">3. 検索結果とクラスタリング</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec31">3.1 索引定義</a>
+          </dt>
+          <dt>
+            <a href="#sec32">3.2 クラスタリングの実行</a>
+          </dt>
+        </dl>
+      </dd>
+    </dl>
+  </div>
+
+  <h2><a id="sec1">1. はじめに</a></h2>
+  <p>
+    DoqueDBには豊富な全文検索機能があり、全文索引を定義することで利用できるようになります。
+    DoqueDBの全文索引は転置ファイル形式の索引ファイルであり、確率モデルに基づくスコアを取得できます。
+    ここでは基本的なデータベースおよび転置索引の知識と、マニュアルの内容を理解していることを前提に、全文検索を効果的に行う方法を説明します。
+  </p>
+
+  <h2><a id="sec2">2. 適合性フィードバック</a></h2>
+  <p>
+    以下のスキーマを例として、適合性フィードバックを行うための手順を説明します。
+  </p>
+  <pre>
+create table doc (
+  d_id     int,                -- プライマリキー
+  d_title  nvarchar(256),      -- タイトル
+  d_text   nvarchar(no limit), -- 全文データ
+  primary key(d_id)
+);
+
+create fulltext index doc_text on doc(d_text)
+    hint 'delayed, inverted=(indexing=dual, normalize=true,
+          tokenizer=DUAL:JAP:ALL:2 @NORMRSCID:1 @UNARSCID:1)';
+</pre>
+  <p>
+    適合性フィードバックは以下の手順で実行します。
+  </p>
+  <ol>
+    <li class="nomargin"> 質問文から特徴語を抽出する。</li>
+    <li class="nomargin"> 特徴語を利用して検索実行する。</li>
+    <li class="nomargin"> 質問文と適合文から拡張語を抽出する。</li>
+    <li class="nomargin"> 特徴語と拡張語を利用して検索を実行する。</li>
+  </ol>
+  <p>
+    これらの手順を1つのSQL文で実行することも可能ですし、それぞれ別のSQL文として実行することも可能です。
+  </p>
+
+  <h3><a id="sec21">2.1 特徴語の抽出</a></h3>
+  <p>
+    質問文から特徴語を抽出するには、以下のようなSQL文を実行します。
+  </p>
+  <pre>
+SQL&gt;select word(d_text) from doc
+    where d_text contains freetext('リコーの環境への取り組み');
+{word(d_text)}
+{'リコー' language 'ja' category 'Helpful' scale 0.0 df 34452}
+{'環境' language 'ja' category 'Helpful' scale 0.0 df 24132}
+{'取り組み' language 'ja' category 'Helpful' scale 0.0 df 3122}
+</pre>
+  <p>
+    特徴語の取得には関数word()を利用します。
+    word()は以下のメンバーを持つ構造体を返します。
+  </p>
+  <pre>
+term      -- 単語
+language  -- 言語
+category  -- カテゴリ(特徴語の場合は Helpful、拡張語の場合は HelpfulRelated)
+scale     -- スケール
+df        -- 文書頻度
+</pre>
+
+  <h3><a id="sec22">2.2 特徴語での検索</a></h3>
+  <p>
+    特徴語を利用して検索を行うには2つの方法があります。
+    １つは特徴語を取得することなく検索する方法で、もう１つは特徴語をいったん取得してから検索する方法です。
+    前者は特徴語をユーザーに表示する必要のないアプリケーションで利用してください。
+  </p>
+  <dl>
+    <dt class="bold">自然文でそのまま検索</dt>
+    <dd>
+      DoqueDB内部で特徴語を抽出し、それを利用して検索を行います。
+      <pre>
+select d_id, d_title from doc
+    where d_text contains freetext('リコーの環境への取り組み')
+    order by score(d_text) limit 10
+</pre>
+    </dd>
+    <dt class="bold">特徴語を指定して検索</dt>
+    <dd>
+      上記で取得した特徴語を指定して検索を行います。
+      <pre>
+select d_id, d_tilte from doc
+    where d_text contains 'リコー' | '環境' | '取り組み'
+    order by score(d_text) limit 10
+</pre>
+    </dd>
+  </dl>
+
+  <h3><a id="sec23">2.3 拡張語の取得</a></h3>
+  <p>
+    拡張語を取得するには、最初の質問文と適合文書を指定します。
+    適合文書の指定方法にはサブクエリーを利用します。
+  </p>
+  <pre>
+select word(d_text) from doc
+    where d_text contains freetext('リコーの環境への取り組み')
+    expand (from (select d_text from doc where d_id in (1,3,5)))
+</pre>
+  <p>
+    適合文書の全文データを取得している場合には、以下のようにします。
+  </p>
+  <pre>
+select word(d_text) from doc
+    where d_text contains freetext('リコーの環境への取り組み')
+    expand (from (values ('事業所のゴミゼロ化'),('工場のリサイクル率の向上')))
+</pre>
+  <p>
+    word()関数の戻り値は特徴語と拡張語を含んでいます。
+  </p>
+  <pre>
+{word(d_text)}
+{'リコー' language 'ja' category 'Helpful' scale 0.25 df 34452}
+{'環境' language 'ja' category 'Helpful' scale 0.25 df 24132}
+{'取り組み' language 'ja' category 'Helpful' scale 0.25 df 3122}
+{'ゴミゼロ' language 'ja' category 'HelpfulRelated' scale 0.08000000000000002 df 19}
+{'リサイクル' language 'ja' category 'HelpfulRelated' scale 0.08000000000000002df 764}
+{'工場' language 'ja' category 'HelpfulRelated' scale 0.08000000000000002 df 1452}
+{'事業所' language 'ja' category 'HelpfulRelated' scale 0.08000000000000002 df 7782}
+</pre>
+  <p>
+    特徴語か拡張語かは category を見て判断してください。
+  </p>
+
+  <h3><a id="sec24">2.4 特徴語と拡張語での検索</a></h3>
+  <p>
+    得られた特徴語と拡張語を利用して検索を行います。
+    この検索にも2つの方法があり、特徴語や拡張語を取得することなく検索を行うことができます。
+  <dl>
+    <dt class="bold">自然文でそのまま検索</dt>
+    <dd>
+      <pre>
+select d_id, d_title from doc
+    where d_text contains freetext('リコーの環境への取り組み')
+    expand (from (values ('事業所のゴミゼロ化'),('工場のリサイクル率の向上')))
+    order by score(d_text) desc limit 10
+</pre>
+      この方法では、内部的に特徴語と拡張語に適切な重みをつけて検索を行います。
+    </dd>
+    <dt class="bold">特徴語および拡張語を指定して検索</dt>
+    <dd>
+      <pre>
+select d_id, d_tilte from doc
+    where d_text contains 'リコー' | '環境' | '取り組み' |
+        'ゴミゼロ' | 'リサイクル' | '工場' | '事事業所'
+    order by score(d_text) limit 10
+</pre>
+      特徴語と拡張語で重みをつけて検索を行うことも可能です。
+      その場合はweight()関数を利用します。
+      <pre>
+select d_id, d_tilte from doc
+    where d_text contains weight('リコー' scale 0.25) |
+        weight('環境' scale 0.25) |
+        weight('取り組み' scale 0.25) |
+        weight('ゴミゼロ' scale 0.08) |
+        weight('リサイクル' scale 0.08) |
+        weight('工場' scale 0.08) |
+        weight('事事業所' scale 0.08)
+    order by score(d_text) limit 10
+</pre>
+    </dd>
+  </dl>
+
+  <h2><a id="sec3">3. 検索結果クラスタリング</a></h2>
+  <p>
+    検索結果クラスタリングとは、キーワード検索や概念検索の検索結果集合をクラスター化する機能で、事前に抽出しておいた特徴語を用いて文書間の距離を測定し、その距離が近いものを1つのクラスターにまとめるものです。
+    企業内データのように、似たような文書が格納されているデータに対してこの機能を適用し、検索結果をクラスターごとにまとめて表示すると、目的の文書を容易に探し出すことが可能となります。
+  </p>
+  <p>
+    DoqueDBのクラスタリングの特徴は、非常に高速である点です。
+    通常のスコア検索のコストの2倍程度でクラスタリング結果が取得できます。
+    さらにlimit指定を行えば、クラスタリングを行う範囲を狭めることができるので、速度に与える影響を最小にすることが可能です。
+  </p>
+
+  <h3><a id="sec31">3.1 索引定義</a></h3>
+  <p>
+    検索結果クラスタリング機能を利用するためには、文書登録時に特徴語を抽出・格納しておく必要があります。
+    特徴語を抽出・格納するためにはclusteredヒントを利用します。
+  </p>
+  <pre>
+create table doc (
+  d_id     int,                -- プライマリーキー
+  d_title  nvarchar(256),      -- タイトル
+  d_text   nvarchar(no limit), -- 全文データ
+  d_utime  datetime,           -- 更新日時
+  primary key(d_id)
+);
+
+create fulltext index doc_text on doc(d_text)
+    hint 'delayed, inverted=(indexing=dual, normalize=true,
+          tokenizer=DUAL:JAP:ALL:2 @NORMRSCID:1 @UNARSCID:1,
+          clustered=(feature=10))';
+</pre>
+  <p>
+    抽出する特徴語の数をfeatureで指定します。
+    特徴語の抽出は、文書内に存在する形態素のうち特徴量が大きいものから行われます。
+    上記の例の場合、特徴量の大きいほうから10個の特徴語を抽出・格納します。
+  </p>
+  <h3><a id="sec32">3.2 クラスタリングの実行</a></h3>
+  <p>
+    検索結果クラスタリングを実行するには、クラスターIDを取得するようにselectリストに指定し、かつクラスター間の距離の閾値を指定します。
+    クラスターIDは1以上の整数値であり、同じクラスターに属している検索結果には同じクラスターIDが割り当てられます。
+    クラスター間の距離の閾値には0以上1未満の数値を指定します。
+  </p>
+  <dl>
+    <dt class="bold">クラスター間の閾値を0.8 とし、スコア上位100件のクラスターを取得するSQL文</dt>
+    <dd>
+      <pre>
+select cluster(d_text).id, score(d_text), d_title from doc 
+    where d_text contains 'DoqueDB' clustered limit 0.8
+    order by score(d_text) desc partition by cluster(d_text).id limit 100;
+</pre>
+    </dd>
+    <dt class="bold">
+      クラスター間の閾値を0.8 とし、d_utime(更新日時)の新しいほうから100件のクラスターを取得するSQL文</dt>
+    <dd>
+      <pre>
+select cluster(d_text).id, d_title, d_utime from doc
+    where d_text contains 'DoqueDB' clustered limit 0.8
+    order by d_utime desc partition by cluster(d_text).id limit 100;
+</pre>
+    </dd>
+  </dl>
+
+  <hr>
+  <p class="center">Copyright (c) 2023 Ricoh Company, Ltd. All rights reserved.</p>
+
+</body>
+
+</html>

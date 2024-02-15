@@ -1,0 +1,46 @@
+
+# コミットされたトランザクション中の
+# STATEMENT ROLLBACK が記録されたデータベースを障害回復する
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T0 ( C0 int, primary key (C0) )";
+
+Command "insert into T0 ( C0 ) values ( 1 )";
+
+# コミットされたトランザクション中の
+# 次の INSERT 文はユニークエラーになり、STATEMENT ROLLBACK される
+
+Command "start transaction read write";
+Command "insert into T0 ( C0 ) values ( 1 )";
+Command "commit";
+
+# ロールバックされたトランザクション中の
+# 次の INSERT 文はユニークエラーになり、STATEMENT ROLLBACK される
+
+Command "start transaction read write";
+Command "insert into T0 ( C0 ) values ( 1 )";
+Command "rollback";
+TerminateSession;
+
+InitializeSession 1 "TESTDB";
+InitializeSession 2 "TESTDB";
+
+# 障害発生時までに終了しなかったトランザクション中の
+# 次の INSERT 文はユニークエラーになり、STATEMENT ROLLBACK される
+
+Command 1 "start transaction read write";
+Command 1 "insert into T0 ( C0 ) values ( 1 )";
+
+## 以下の INSERT 文がコミットされることにより、
+## TESTDB の論理ログファイルがフラッシュされ、
+## 上の INSERT 文の論理ログも同時に永続化される
+
+Command 2 "insert into T0 ( C0 ) values ( 2 )";
+
+End;

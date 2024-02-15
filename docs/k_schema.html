@@ -1,0 +1,707 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<!--
+  Copyright (c) 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the License);
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<html>
+
+<head>
+  <!-- Google Tag Manager -->
+  <script type="text/javascript">(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-KRXS4RS');</script>
+  <!-- End Google Tag Manager -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="css/default.css">
+  <title>スキーマ定義</title>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRXS4RS" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <h1>スキーマ定義</h1>
+  <div class="right"><a href="knowledge.html">[ナレッジに戻る]</a></div>
+  <div class="contents">
+    <dl>
+      <dt>
+        <a href="#sec1">1. スキーマ定義</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec11">1.1 データベースの作成</a>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <a href="#sec111">1.1.1 データベース名</a>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <a href="#sec12">1.2 表の作成</a>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <a href="#sec121">1.2.1 表名</a>
+              </dt>
+              <dt>
+                <a href="#sec122">1.2.2 表制約</a>
+              </dt>
+              <dt>
+                <a href="#sec123">1.2.3 ROWID</a>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <a href="#sec13">1.3 列定義</a>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <a href="#sec131">1.3.1 列名</a>
+              </dt>
+              <dt>
+                <a href="#sec132">1.3.2 型</a>
+              </dt>
+              <dt>
+                <a href="#sec133">1.3.3 ARRAY</a>
+              </dt>
+              <dt>
+                <a href="#sec134">1.3.4 DEFAULT指定</a>
+              </dt>
+              <dt>
+                <a href="#sec135">1.3.5 IDENTITY指定</a>
+              </dt>
+              <dt>
+                <a href="#sec136">1.3.6 列制約</a>
+              </dt>
+              <dt>
+                <a href="#sec137">1.3.7 hint</a>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <a href="#sec14">1.4 LOBについて</a>
+          </dt>
+          <dt>
+            <a href="#sec15">1.5 索引の作成</a>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <a href="#sec151">1.5.1 索引タイプ</a>
+              </dt>
+              <dt>
+                <a href="#sec152">1.5.2 索引名</a>
+              </dt>
+              <dt>
+                <a href="#sec153">1.5.3 キー</a>
+              </dt>
+              <dt>
+                <a href="#sec154">1.5.4 hint</a>
+              </dt>
+            </dl>
+          </dd>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec2">2. スキーマ定義のコツ</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec21">2.1 表定義のコツ</a>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <a href="#sec211">2.1.1 hintの効果的な指定方法</a>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <a href="#sec22">2.2 索引定義のコツ</a>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <a href="#sec221">2.2.1 索引をつけると効果的な例</a>
+              </dt>
+            </dl>
+          </dd>
+        </dl>
+      </dd>
+    </dl>
+  </div>
+
+  <h2><a id="sec1">1. スキーマ定義</a></h2>
+
+  <h3><a id="sec11">1.1 データベースの作成</a></h3>
+
+  <p>データベースはcreate database文で作成できます。
+    このSQL文はDoqueDBの拡張です。
+  </p>
+  <pre>
+create database DB1;
+</pre>
+  <p>pathの指定によりデータベースを構成するファイルの場所を明示することもできます。
+  </p>
+  <pre>
+create database DB1 path '/DOQUEDB/data/DB1' logicallog '/DOQUEDB/log/DB1' system '/DOQUEDB/system/DB1';
+</pre>
+  <p>pathの直後はデータファイル、logicallogの直後は論理ログファイル、systemの直後はスキーマファイルの格納場所です。
+    一部の指定を省略することもできます。この場合、省略された部分はデフォルト値が使用されます。
+  </p>
+  <pre>create database DB1 path logicallog '/DOQUEDB/log/DB1';
+</pre>
+  <p>ディスク破損のリスクを考えると、データファイルと論理ログファイルは異なるパーティションに置いたほうが安全です。
+    データファイルを置いてあるパーティションが破損しても、バックアップファイルと論理ログファイルがあればロールフォワードリカバリーにより最新の状態に戻すことができます。
+  </p>
+
+  <h4><a id="sec111">1.1.1 データベース名</a></h4>
+  <p>データベース名には、一部を除いた任意の文字が使用できます。
+    使用できない文字は、OSでパス名を構成する文字(スラッシュ、バックスラッシュ、コロンなど)とセミコロンです。
+    大文字小文字の違いは無視されます。
+    データベース名に構文要素などのキーワードを使用したり空白や引用符を含めるときは、データベース名全体を2重引用符で囲みます。
+    2重引用符を含めたいときは2重引用符を2つ書きます。
+  </p>
+  <pre>
+create database "This is a database";
+create database "Use ' and "" in a name";
+</pre>
+
+  <h3><a id="sec12">1.2 表の作成</a></h3>
+  <p>表はcreate table文で作成できます。
+  </p>
+  <pre>
+create table &lt;表名&gt; (
+  &lt;列定義&gt;,
+  ...
+  &lt;表制約&gt;,
+  ...
+);
+</pre>
+
+  <h4><a id="sec121">1.2.1 表名</a></h4>
+  <p>表名に対する制限はデータベース名に対するものとほぼ同様です。
+    50文字を超えるとエラーになります。
+  </p>
+
+  <h4><a id="sec122">1.2.2 表制約</a></h4>
+  <p>表制約には以下のものが使用できます。
+  </p>
+  <pre>
+primary key
+unique
+</pre>
+  <p>その他の表制約(foreign keyなど)は未サポートです。
+  </p>
+
+  <h4><a id="sec123">1.2.3 ROWID</a></h4>
+  <p>
+    表を定義すると、列定義に書いたものの前にROWIDという名前の列が定義されます。
+    ROWIDには表に挿入するごとに0から1ずつ増える値が割り当てられます。
+    通常の列と同じように条件などに指定できますが、以下の制限があります。
+  </p>
+  <ul>
+    <li>select * from TBLのようにアスタリスクで列を指定したときはROWIDは含まれません。</li>
+    <li>ROWIDの値を明示して挿入や更新を行うことはできません。</li>
+  </ul>
+
+  <h4><a id="sec13">1.3 列定義</a></h4>
+  <p>
+    列定義は以下のように書きます。
+  </p>
+  <pre>
+&lt;列名&gt; &lt;型&gt; [ &lt;DEFAULT指定&gt; または &lt;IDENTITY指定&gt; ] &lt;列制約&gt; &lt;HINT&gt;
+</pre>
+
+  <h4><a id="sec131">1.3.1 列名</a></h4>
+  <p>
+    列名の制限は表名と同様です。
+  </p>
+
+  <h4><a id="sec132">1.3.2 型</a></h4>
+  <p>
+    型には以下のものが指定可能です。
+  </p>
+  <pre>
+char(N)             N文字固定長文字列(ASCIIのみ)
+varchar(N)          最大N文字の可変長文字列(ASCIIのみ)
+varchar(no limit)   無制限可変長文字列(ASCIIのみ)
+nchar(N)            N文字固定長文字列
+nvarchar(N)         最大N文字の可変長文字列
+nvarchar(no limit)  無制限可変長文字列
+int                 32bit符号付整数
+bigint              64bit符号付整数
+float               倍精度浮動小数点
+datetime            日時
+binary(N)           Nバイト固定長バイナリー
+binary(no limit)    無制限可変長バイナリー
+blob                バイナリーLOB
+nclob               文字列LOB
+
+DoqueDB拡張
+language            言語
+ntext               = nvarchar(no limit)
+fulltext            = nvarchar(no limit)
+image               = binary(no limit)
+uniqueidentifier    = char(36)
+</pre>
+  <dl>
+    <dt class="bold">注意</dt>
+    <dd>
+      固定長文字列型はPAD SPACEの動作をします。
+      つまり、N未満の文字数が挿入されたときに末尾に空白が埋められます。
+      可変長文字列型は末尾の空白を無視します。
+      つまり、末尾に空白のある文字列が挿入されたときは末尾の空白が削除されます。
+      可変長文字列型のこの動作を抑制するには、HINTにnontruncateを指定します。
+    </dd>
+  </dl>
+
+  <h4><a id="sec133">1.3.3 ARRAY</a></h4>
+  <p>配列型を定義することもできます。
+    以下のように型の後ろにARRAYを指定します。
+  </p>
+  <pre>
+create table TBL (
+  f int ARRAY[10],                   最大要素数10のint配列型
+  g nvarchar(100) ARRAY[no limit]    要素数無制限のnvarchar(100)配列型
+);
+</pre>
+  <p>配列型にはB+木索引をつけることはできません。
+  </p>
+
+  <h4><a id="sec134">1.3.4 DEFAULT指定</a></h4>
+  <p>DEFAULT指定にはリテラルまたはCURRENT_TIMESTAMPを書くことができます。
+  </p>
+  <pre>
+create table TBL1 (
+  f int DEFAULT 10,
+  g datetime DEFAULT CURRENT_TIMESTAMP
+);
+</pre>
+  <p>INSERT文で値を指定しない場合、DEFAULT指定に記述された値が使用されます。
+    CURRENT_TIMESTAMPの場合はその文を実行している時点の日時が使用されます。
+    DEFAULT指定を省略するとDEFAULT NULLと解釈されます。
+  </p>
+
+  <h4><a id="sec135">1.3.5 IDENTITY指定</a></h4>
+  <p>DEFAULT指定でIDENTITY COLUMNを定義することもできます。
+    以下のように定義します。
+  </p>
+  <pre>
+create table TBL2 (
+  id int GENERATED BY DEFAULT AS IDENTITY,
+  f int
+);
+</pre>
+  <p>INSERT文で値を指定しない場合、0から順番に1ずつ増える値が割り当てられます。
+    IDENTITY COLUMNはひとつの表に対して2つ以上定義できません。
+    以下のようにすると10から始めることができます。
+  </p>
+  <pre>
+create table TBL3 (
+  id int GENERATED BY DEFAULT AS IDENTITY (START WITH 10),
+  f int
+);
+</pre>
+  <p>IDENTITYには以下のようなオプションが指定できます。
+    複数のオプションを指定するときは空白で区切ります。
+    同じ種類のオプションを重複して指定するとエラーになります。
+  </p>
+  <pre>
+START WITH N        割り当てる値をNから始めます。無指定時は0です。
+INCREMENT BY N      割り当てる値を前回の値＋Nにします。無指定時は1です。
+MAXVALUE N          割り当てる値の最大値をNにします。無指定時は2147483647です。
+NO MAXVALUE         MAXVALUEの無指定時と同じです。
+MINVALUE N          割り当てる値の最小値をNにします。INCREMENT BYに負数が与えられたときなど。
+                    無指定時は0です。
+NO MINVALUE         MINVALUEの無指定時と同じです。
+CYCLE               最大値(INCREMENTが負のときは最小値)に到達したときに、次の割り当て値を
+                    最小値(INCREMENTが負のときは最大値)にします。無指定時はNO CYCLEです。
+NO CYCLE            最大値または最小値に到達したとき、次に割り当てが要求されたらエラーにします。
+
+DoqueDB拡張
+GET MAX             値を明示してINSERTやUPDATEをしたとき、それに続く値を次に割り当てます。
+                    無指定時は値を明示しても次の割り当て値に影響しません。
+</pre>
+  <p>値を明示することを禁止することもできます。以下のようにALWAYSを使って定義します。
+  </p>
+  <pre>
+create table TBL4 (
+  id int GENERATED ALWAYS AS IDENTITY,
+  f int
+);
+</pre>
+
+  <h4><a id="sec136">1.3.6 列制約</a></h4>
+  <p>列制約には以下のものが指定可能です。
+  </p>
+  <pre>
+NOT NULL
+</pre>
+  <p>primary keyやuniqueは表制約として指定してください。
+  </p>
+
+  <h4><a id="sec137">1.3.7 hint</a></h4>
+  <p>HINTは列値の解釈や格納方法に関するオプションを指定するときに使います。
+    以下のものが指定可能です。複数指定するときは空白で区切ってください。
+  </p>
+  <pre>
+HEAP                その列値だけを格納するレコードファイルを別途作成します。
+NONTRUNCATE         可変長文字列に入れる文字列の末尾に空白があっても削除しません。
+'compressed'        文字列やバイナリーを圧縮して格納します。
+'fixed'             文字列やバイナリーは固定長の型でも可変長用のファイルに格納されます。
+                    上限値が小さい文字列やバイナリーにこのヒントを設定すると、
+                    固定長用のファイルに格納され、速度が改善することがあります。
+</pre>
+
+  <h3><a id="sec14">1.4 LOBについて</a></h3>
+  <p>列の型にblobやnclobを指定すると、その列値はLobファイルという特殊な機能を持ったファイルに格納され、Locatorという特殊なアクセス手段を用いた処理ができます。
+    Locatorには以下のような機能があります。
+  </p>
+  <pre>
+append              末尾にデータを追加します。
+replace             データの一部を別のデータに置き換えます。
+get                 データの一部を取得します。
+length              データの長さを取得します。
+</pre>
+  <p>Locatorを用いることで、大きなデータの全体を読み込まずに更新や一部取得の処理ができます。
+    ただし、Locatorのインターフェースそのものは利用者に公開されません。
+    Locatorの機能は以下のようなSQL文を通じて使用できます。
+  </p>
+  <pre>
+select SUBSTRING(lobdata FROM 10 FOR 20)
+           from TBL;                         getにより10文字目から20文字だけ取得します。
+select CHAR_LENGTH(lobdata) from TBL;        lengthにより長さを取得します。
+update TBL set lobdata = lobdata || 'xxx';   appendにより'xxx'を追加します。
+update TBL set lobdata = overlay
+           (lobdata PLACING 'xxx' FROM 10);  replaceにより10文字目から3文字を'xxx'に置き換えます。
+</pre>
+
+  <h3><a id="sec15">1.5 索引の作成</a></h3>
+  <p>1つまたは複数の列に対して特定の条件判定を高速に行うための索引を作成することができます。
+    索引はcreate index文で作成します。
+    このSQL文はDoqueDBの拡張です。
+  </p>
+  <pre>create &lt;索引タイプ&gt; &lt;索引名&gt; on &lt;表名&gt;(&lt;キー列名&gt;, ...) &lt;hint&gt;;
+</pre>
+  <p>表名で指定された表に属する列のうち、キー列名のリストで指定された1つ以上の列をキーとした索引を作成します。
+  </p>
+
+  <h4><a id="idxtype"></a><a id="sec151">1.5.1 索引タイプ</a></h4>
+  <p>索引タイプには以下が指定できます。
+  </p>
+  <pre>
+索引タイプなし      B+木索引
+bitmap              ビットマップ索引
+fulltext            全文索引
+unique              hint unique(後述)を指定したものと同じ
+array               配列索引
+all rows            NULL値も格納するB+木索引
+</pre>
+  <p>それぞれ以下のような特徴があります。
+  </p>
+  <dl>
+    <dt class="bold">B+木索引</dt>
+    <dd>
+      大小比較の条件を処理するのに適しています。
+      選択性のいい列、つまり同じ値を持つレコードが少ないような列に対して定義すると有効です。
+    </dd>
+    <dt class="bold">ビットマップ索引</dt>
+    <dd>
+      選択性の悪い列に対するEqual条件を処理するのに適しています。
+      配列型にも定義できます。
+    </dd>
+    <dt class="bold">全文索引</dt>
+    <dd>
+      文字列に対するブーリアン検索やランキング検索を行うために使用します。
+      自然文検索など高機能な全文検索機能を使うこともできます。
+    </dd>
+    <dt class="bold">配列索引</dt>
+    <dd>
+      B+木索引と同様ですが、配列型に対して定義できます。
+    </dd>
+  </dl>
+  <p>各索引が処理できる条件は以下の通りです。
+  </p>
+  <pre>
+B+木索引            =, &lt;, &gt;, &lt;=, &gt;=, in, between, like 'xxx%' (前方一致)
+ビットマップ索引    =, &lt;, &gt;, &lt;=, &gt;=, in
+                    配列型に対しては、左辺が任意要素指定(x[] = 10)である必要があります。
+全文索引            like, contains
+配列索引            B+木索引と同様ですが、左辺が任意要素指定(x[] = 10)である必要があります。
+</pre>
+
+  <h4><a id="sec152">1.5.2 索引名</a></h4>
+  <p>索引名には表名と同様の長さ制限があります。
+    また、同じデータベースに属する異なる表に同じ名前の索引をつけることはできません。
+  </p>
+
+  <h4><a id="sec153">1.5.3 キー</a></h4>
+  <p>索引タイプごとに、キーにする列に対して制約があります。
+  </p>
+  <dl>
+    <dt class="bold">キーの数</dt>
+    <dd>
+      B+木索引はキーの数を1～7個指定できます。ビットマップ索引および全文索引は1つのキーしか指定できません。
+    </dd>
+    <dt class="bold">つけられる型</dt>
+    <dd>B+木索引は以下の型の列をキーにできます。
+      <pre>
+char(N), varchar(N), nchar(N), nvarchar(N), int, bigint, float, datetime, language
+</pre>
+      ビットマップ索引は以下の型の列をキーにできます。
+      <pre>
+char(N), varchar(N), nchar(N), nvarchar(N), int, bigint, float, datetime, language
+上記の配列型
+</pre>
+      全文索引は以下の型の列をキーにできます。
+      <pre>
+char(N), varchar(N), varchar(no limit), nchar(N), nvarchar(N), nvarchar(no limit)
+上記の配列型
+</pre>
+    </dd>
+    <dt class="bold">サイズ</dt>
+    <dd>
+      B+木索引およびビットマップ索引では、キーに使用される列の合計サイズが996以下でなければなりません。
+      各型に対するサイズは以下の式で計算されます。
+      配列型についても同じ計算式になります。<br>
+      たとえばキーの数がひとつのとき、charおよびvarcharの最大長は994、ncharおよびnvarcharの最大長は497になります。この値を超える型の列にはB+木索引およびビットマップ索引をつけることはできません。
+      <pre>
+char(N), varchar(N)           ((n+1)/4+1)*4
+nchar(N), nvarchar(N)         (n/2+1)*4
+int                           4
+bigint                        8
+float                         8
+datetime                      8
+language                      16
+</pre>
+    </dd>
+  </dl>
+
+  <h4><a id="sec154">1.5.4 hint</a></h4>
+  <p>
+    hintは索引の動作を制御するために指定します。<br>
+    B+木索引には以下のヒントをつけることができます。
+    複数指定するときは空白で区切ります。
+  </p>
+  <pre>
+unique          同じ値を持ったキー(複数の場合は同じ値の組み合わせ)がないことを保証する。
+'normalized'    文字列に対して簡単なあいまい検索を可能にする(大文字小文字、全角半角の同一視)。
+</pre>
+  <p>
+    全文索引には以下のヒントをつけることができます。
+    全体を引用符で囲み、複数指定するときはカンマで区切ります。
+    なお、ここではすべてが説明されているわけではありません。
+    全文索引のさらに詳しい作成方法は「<a href="k_fulltext.html">全文索引をつかいこなす</a>」を参照してください。
+  </p>
+  <pre>
+delayed         遅延更新によりデータの更新操作を高速化します。
+sectionized     配列型に定義したときに、条件がどの配列要素に合致したのかを取得できるようにします。
+inverted=(...)  全文索引を構成する転置ファイルの動作を制御します。
+</pre>
+
+  <h2><a id="sec2">2. スキーマ定義のコツ</a></h2>
+
+  <h3><a id="sec21">2.1 表定義のコツ</a></h3>
+
+  <h4><a id="sec211">2.1.1 hintの効果的な指定方法</a></h4>
+  <p>表を構成する列値は、原則としてRecordファイルに格納されます。
+    (BLOBとNCLOBは別のLobファイルに格納されます。)
+    Recordファイルは固定長用のファイルと可変長用のファイルから構成されます。
+    固定長のファイルには、固定長型(ROWID, int, bigint, float, datetime)の列値と可変長ファイルに格納される可変長オブジェクトへのポインターが格納されます。
+    hint heapつきの列やLOBがあるときは、そのオブジェクトへのポインターも格納されます。
+    また、hint 'fixed'が指定されている列も固定長のファイルに格納されます。
+    可変長のファイルには、可変長型(char, varchar, nchar, nvarchar, binary)の列値をひとまとまりにした可変長オブジェクトが格納されます。
+    以下の例を見てください。
+  </p>
+  <pre>
+create table TBL (
+  id int,
+  title nvarchar(100),
+  contents nvarchar(no limit)
+);
+</pre>
+  <p>
+    このとき、固定長ファイルには以下のデータが格納されます。
+  </p>
+  <pre>
+ROWID                   (4byte)
+id                      (4byte)
+可変長へのポインター    (6byte)
+</pre>
+  <p>また、可変長ファイルには以下のデータが格納されます。
+  </p>
+  <pre>
+title                   (最大200byte)
+contents                (無制限)
+</pre>
+  <p>ここで、簡単な検索アプリを考えてみます。
+    idが指定した範囲にあるデータの一覧を得ることにします。
+    一覧なのでidとtitleがあればいいでしょう。
+  </p>
+  <pre>
+select id, title from TBL where id between&nbsp;? and&nbsp;?;
+</pre>
+  <p>この処理をするためにはidとtitleの値があればいいのですが、
+    可変長オブジェクトにtitleとcontentsがまとめられているため、
+    不必要なcontentsのデータまで読み込むことになります。
+    このような場合、contentsをヒープにします。
+  </p>
+  <pre>
+create table TBL (
+  id int,
+  title nvarchar(100),
+  contents nvarchar(no limit) hint heap
+);
+</pre>
+  <p>こうすると、固定長ファイルには以下のデータが格納されます。
+  </p>
+  <pre>
+ROWID                   (4byte)
+id                      (4byte)
+contentsへのポインター  (6byte)
+可変長へのポインター    (6byte)
+</pre>
+  <p>可変長ファイルには以下のデータが格納されます。
+  </p>
+  <pre>
+title                   (最大200byte)
+</pre>
+  <p>contentsの値は別のRecordファイルに格納されます。<br>
+    ここで先ほどのSQL文を考えてみます。
+  </p>
+  <pre>
+select id, title from TBL where id between&nbsp;? and&nbsp;?;
+</pre>
+  <p>こんどはtitleだけが取得されるので、無駄な読み込みがなくなり速度が改善されます。
+    ただし、titleとcontentsを同時に取得することが多い場合には逆効果になることもあります。<br>
+    さらに、titleを固定長ファイルに格納してしまうことも可能です。
+  </p>
+  <pre>
+create table TBL (
+  id int,
+  title nvarchar(100) hint 'fixed',
+  contents nvarchar(no limit) hint heap
+);
+</pre>
+  <p>hint 'fixed'のほうは引用符で囲まれていることに注意してください。
+    こうすると、固定長ファイルには以下のデータが格納されます。
+  </p>
+  <pre>
+ROWID                   (4byte)
+id                      (4byte)
+title                   (200byte)
+contentsへのポインター  (6byte)
+</pre>
+  <p>このとき可変長ファイルは作られません。<br>
+    titleに対応する部分は最大長の100文字分=200byteが領域として確保されます。
+    こんどは固定長ファイルしか読まれないので、その分処理は簡単になります。
+    ただし、固定長のデータサイズが著しく増加しています(20⇒214)。
+    このことによりバッファリングの効果が薄れるので、一度に大量のレコードを読み込む場合は逆効果になるおそれがあります。
+    しかし、一般に固定長データと同時に取得されることが分かっている比較的短い可変長データには、hint 'fixed'をつけたほうがいいと予想されます。
+  </p>
+
+  <h3><a id="sec22">2.2 索引定義のコツ</a></h3>
+  <p>索引を効果的につけると、特定のSELECT文が高速に実行できます。
+    しかし、更新操作は索引ファイルにも操作を行うので、むやみに索引をつけると更新操作が遅くなります。
+    また、選択性の悪い列にB+木索引をつけるなど、データのばらつき度合いと索引タイプが合っていないと、更新操作が遅くなるだけでなく、検索操作も逆に遅くなる場合があります。
+    想定される検索操作とデータのばらつき度合いに応じて、効果的な索引定義を心がけるようにしてください。
+  </p>
+  <h3><a id="sec221">2.2.1 索引をつけると効果的な例</a></h3>
+  <dl>
+    <dt class="bold"> 長い文字列データが格納され、中間一致のLIKE条件や自然文検索や関連文書検索のためのCONTAINS条件を使用したい</dt>
+    <dd>
+      このような場合は、その列に全文索引をつけてください。
+      ただし、データのばらつきがほとんどない列に全文索引をつけると、更新操作だけでなく検索操作にも期待される速度が出ないことがあります。
+    <dt class="bold"> 比較の検索条件に使われることが多く、データのばらつきが大きい</dt>
+    <dd>
+      このような場合は、その列にB+木索引をつけると検索操作が速くなることが期待されます。
+      もし同じデータが挿入されることがない列であれば、hint uniqueをつけるとオプティマイザーがそれを情報として利用できるので、さらに効果的です。
+      PRIMARY KEYやUNIQUE制約の宣言をすると、暗黙の索引が作成されるので同じ効果が得られます。
+      <pre>
+select * from TBL where f &lt; 10;
+-- fの値にばらつきが大きい場合、以下のような索引をつけると速くなる。
+create index IDX on TBL(f);
+</pre>
+    </dd>
+    <dt class="bold"> 比較の検索条件に使われることが多いが、データのばらつきが少ない<br>
+      データのばらつきが大きい列の比較の検索条件とANDで組み合わされることが多い</dt>
+    <dd>
+      このような場合は、ばらつきが大きい列との複合索引にすると速くなることがあります。
+      <pre>
+select * from TBL where f &lt; 10 and g = 500;
+-- fの値にばらつきが大きく、gの値は同じものが多い場合、以下のような索引をつけるとよい。
+create index IDX on TBL(f, g);
+</pre>
+      この複合索引はfだけをキーにした索引としても使用できるので、fだけの索引を重複して定義する必要はありません。
+    </dd>
+    <dt class="bold"> 単独で使われることが多い、または全文検索と組み合わされることが多い</dt>
+    <dd>このような場合は、ビットマップ索引を使うと速くなることがあります。
+      <pre>
+select * from TBL where f = 'male' and title like '%senior%';
+-- fの値にばらつきがほとんどない場合、以下のような索引をつけると速くなる。
+create bitmap index IDX on TBL(f);
+</pre>
+      ビットマップ索引は、データのばらつきが大きくなると更新操作が著しく遅くなることがあるため、データの異なり数の上限が予測できない列には使用を避けてください。
+    </dd>
+    <dt class="bold"> ソートキーに使われることが多い</dt>
+    <dd>
+      B+木索引を用いるとキーの順または逆順にレコードを取得することができます。
+      しかし、B+木索引にはキーがNULLであるようなレコードは格納されません。
+      したがって、B+木索引がついている列がソートキーに使われる場合、以下の条件を満たしたときのみレコードの取得にB+木索引が使用されます。
+      <ul>
+        <li>その列にNOT NULL制約がついている。</li>
+        <li>その列がNULL値のときにヒットしないような検索条件がついている。</li>
+        <li>その列が複合索引の第2キーに使用されており、その索引の第1キーにequal条件がついている。</li>
+      </ul>
+      <p>
+        具体的には以下のような場合が該当します。
+      </p>
+      <pre>
+create table TBL (f int NOT NULL, g int, h int);
+create index IDX1 on TBL(f);      -- NOT NULL制約のついた列 f 単独の索引
+create index IDX2 on TBL(g);      -- g 単独の索引
+create index IDX3 on TBL(h, g);   -- h と g の複合索引
+…
+select * from TBL order by f;     -- IDX1を用いてfの昇順にレコードを取得する。
+select * from TBL where g &gt; 10 order by g;
+                                  -- g&gt;10の条件によりNULLが無視できるので、
+                                  -- IDX2を用いてgの昇順にレコードを取得する。
+select * from TBL where h = 100 order by g;
+                                  -- IDX3を用いてh=100を満たすレコードをgの昇順に取得する。
+</pre>
+      create all rows indexを用いると、NULL値を持つ列についてもソートキーとして索引が使用されます。
+    </dd>
+  </dl>
+
+  <hr>
+  <p class="center">Copyright (c) 2023 Ricoh Company, Ltd. All rights reserved.</p>
+
+</body>
+
+</html>

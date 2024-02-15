@@ -1,0 +1,47 @@
+# 算術演算(四則、関数)のテスト
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#表の準備
+Command "create table T (Dummy int)";
+#適当なタプルを入れる
+Command "insert into T values (0)";
+
+# ただの数字を表示
+Rowset "select 1 from T";
+
+#14 is expected
+Rowset "select 1*2+3*4 from T";
+
+#10 is expected
+Rowset "select abs(1*2-3*4) from T";
+
+#14.0 is expected
+Rowset "select 1.0*2.0+3.0*4.0 from T";
+
+#4.0 is expected
+Rowset "select abs((1.0*2.0-3.0*4.0)/2.5) from T";
+
+#14.0 is expected
+Rowset "select 1.0*2+3*4 from T";
+
+#10.0 is expected
+Rowset "select abs(1.0*2.0-3*4) from T";
+
+#Command "drop table T";
+
+Command  "select * from T";
+
+TerminateSession;
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

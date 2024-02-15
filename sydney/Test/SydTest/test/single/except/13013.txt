@@ -1,0 +1,31 @@
+# このスクリプトのファイルアクセス(新たに生成されるファイルのインスタンス)は
+# 以下のようになっている。
+#
+# 初期化
+#	論理ログ		1ファイル
+# 最初のselect文
+#	スキーマ情報		76ファイル
+#	レコードのFixed		3ファイル
+#	レコードのVariable	3ファイル
+# 2番目のselect文
+# 3番目のselect文
+#	B木			3ファイル
+#	ベクター		3ファイル
+
+# スキーマ中でエラー
+
+Begin;
+SetSystemParameter "Exception_FakeError" "Buffer::File::attach count=(20 30 40 50 60 70)";
+
+Initialize;
+InitializeSession "TEST";
+Command "select A from T";
+Command "select B from T";
+Command "select * from T where A = 2";
+Command "select * from T where A = 2";
+Command "select * from T where A = 2";
+TerminateSession;
+Terminate;
+
+SetSystemParameter "Exception_FakeError" "";
+End;

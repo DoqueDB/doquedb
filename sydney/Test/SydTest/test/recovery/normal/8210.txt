@@ -1,0 +1,92 @@
+## -*-Mode: text; tab-width: 4; c-basic-offset: 4;-*-
+## vi:set ts=4 sw=4:
+##
+## 8210.txt -- table 作成のテスト
+##
+##	TEST CONTENTS
+##		table の作成と変更とindexの作成を同時に行う
+##
+##	START CONDITIONS
+##		特に無し
+##		
+##	END CONDITIONS
+##		start 前と同じ
+##
+##	CHECK
+##		
+##
+##	NOTE
+##		マルチスレッド
+##		正常系
+##		Schema の単体テストも兼ねる
+##
+## Copyright (c) 2001-2003 Ricoh Company, Ltd.
+## All rights reserved.
+##
+##		$Author$
+##		$Date$
+##		$Revision$
+##
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+# 準備
+
+InitializeSession "";
+Command "create database DB_xxxx";
+TerminateSession;
+
+InitializeSession "DB_xxxx";
+Command "create area TBL_AREA 'd:\\dm\\area\\table'";
+TerminateSession;
+
+InitializeSession 1 "DB_xxxx";
+InitializeSession 2 "DB_xxxx";
+InitializeSession 3 "DB_xxxx";
+
+# 作成と変更と挿入を同時に行う。
+# alter が先だったり、create が先だったりするので結果は違う場合が多い。
+# デッドロックにならなければ良い。(順序によってERRORが出てもよい)
+
+CreateThread "CreateTable";
+CreateThread "Alter";
+CreateThread "CreateIndex";
+JoinThread "CreateTable";
+JoinThread "Alter";
+JoinThread "CreateIndex";
+
+TerminateSession 1;
+TerminateSession 2;
+TerminateSession 3;
+
+# 後片付け
+#InitializeSession "DB_xxxx";
+#Command "drop database DB_xxxx";
+#TerminateSession;
+
+#System "rm -rf d:\\dm\\area";
+
+# (障害回復を試すためTerminateしない)
+End;
+
+#------------------------------------------------------------------------------
+
+CreateTable
+{
+Command 1 "create table TBL1 (C int)";
+}
+
+Alter
+{
+Command 2 "alter table TBL1 set area TBL_AREA";
+}
+
+CreateIndex
+{
+Command 3 "create index IDX1 on TBL1(C)";
+Command 3 "create index IDX2 on TBL1(C)";
+Command 3 "create index IDX3 on TBL1(C)";
+}
+

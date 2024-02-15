@@ -1,0 +1,266 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Plan_TraceOptimizationOutput
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Plan_TraceOptimizationOutput, 1
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Plan_TraceLevel
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Plan_TraceLevel, 2
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(f char(8))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I on T(f) hint 'compressed'
+Opt::Generator: [DEBUG] Result Plan[0]:
+sequential scan on T.RCD_T to data:{#xx,#xx}
+    execute:
+           xx:insert BMP_I by data:{#xx,#xx}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values 'abc','xyz'
+Opt::Generator: [DEBUG] Result Plan[0]:
+tuples to data:{#xx}
+    execute:
+           xx:generate rowid to data:#xx
+           xx:xxxx
+           xx:xxxx
+           xx:lock tuple
+           xx:write log
+           xx:parallel
+            @0
+                       xx:prepare undolog
+                       xx:insert RCD_T by data:{#xx,#xx,#xx}
+                       xx:store undolog
+                       xx:prepare undolog
+                       xx:insert VCT_T_$$Conversion by data:{#xx,#xx}
+                       xx:store undolog
+            @1
+                       xx:prepare undolog
+                       xx:insert BMP_I by data:{#xx,#xx}
+                       xx:store undolog
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f like 'ab%'
+Opt::Generator: [DEBUG] Result Plan[0]:
+bitset scan on data:#xx to data:#xx
+           xx:iterate once
+                <-- index scan on T.BMP_I[get by bitset] for
+                            T.f like 'ab%' to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx}
+SydTest::Executor: [INFO] {abc     }
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f[] like 'ab%'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Usage of array element reference is invalid.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f[1] like 'ab%'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Usage of array element reference is invalid.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(f char(8))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I on T(f) hint 'compressed'
+Opt::Generator: [DEBUG] Result Plan[0]:
+sequential scan on T.RCD_T to data:{#xx,#xx}
+    execute:
+           xx:insert BMP_I by data:{#xx,#xx}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values 'abc','xyz'
+Opt::Generator: [DEBUG] Result Plan[0]:
+tuples to data:{#xx}
+    execute:
+           xx:generate rowid to data:#xx
+           xx:xxxx
+           xx:xxxx
+           xx:lock tuple
+           xx:write log
+           xx:parallel
+            @0
+                       xx:prepare undolog
+                       xx:insert RCD_T by data:{#xx,#xx,#xx}
+                       xx:store undolog
+                       xx:prepare undolog
+                       xx:insert VCT_T_$$Conversion by data:{#xx,#xx}
+                       xx:store undolog
+            @1
+                       xx:prepare undolog
+                       xx:insert BMP_I by data:{#xx,#xx}
+                       xx:store undolog
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f = 'abc'
+Opt::Generator: [DEBUG] Result Plan[0]:
+bitset scan on data:#xx to data:#xx
+           xx:iterate once
+                <-- index scan on T.BMP_I[get by bitset] for
+                            T.f = 'abc' to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx}
+SydTest::Executor: [INFO] {abc     }
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f[] = 'abc'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Usage of array element reference is invalid.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f[1] = 'abc'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Usage of array element reference is invalid.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(f char(8) array[no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I on T(f) hint 'compressed'
+Opt::Generator: [DEBUG] Result Plan[0]:
+sequential scan on T.RCD_T to data:{#xx,#xx}
+    execute:
+           xx:insert BMP_I by data:{#xx,#xx}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array['abc','xyz'])
+Opt::Generator: [DEBUG] Result Plan[0]:
+tuples to data:{#xx}
+    execute:
+           xx:generate rowid to data:#xx
+           xx:xxxx
+           xx:xxxx
+           xx:lock tuple
+           xx:write log
+           xx:parallel
+            @0
+                       xx:prepare undolog
+                       xx:insert RCD_T by data:{#xx,#xx,#xx}
+                       xx:store undolog
+                       xx:prepare undolog
+                       xx:insert VCT_T_$$Conversion by data:{#xx,#xx}
+                       xx:store undolog
+            @1
+                       xx:prepare undolog
+                       xx:insert BMP_I by data:{#xx,#xx}
+                       xx:store undolog
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f like 'ab%'
+Opt::Generator: [DEBUG] Result Plan[0]:
+bitset scan on data:#xx to data:#xx
+           xx:iterate once
+                <-- index scan on T.BMP_I[get by bitset] for
+                            T.f like 'ab%' to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx}
+SydTest::Executor: [INFO] {{abc     ,xyz     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f[] like 'ab%'
+Opt::Generator: [DEBUG] Result Plan[0]:
+bitset scan on data:#xx to data:#xx
+           xx:iterate once
+                <-- index scan on T.BMP_I[get by bitset] for
+                            T.f[] like 'ab%' to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx}
+SydTest::Executor: [INFO] {{abc     ,xyz     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f[1] like 'ab%'
+Opt::Generator: [DEBUG] Result Plan[0]:
+sequential scan on T.RCD_T to data:{#xx,#xx}
+    execute:
+           xx:data:#xx[data:#xx] to data:#xx
+           xx:do until line xx unless data:#xx like data:#xx
+           xx:continue
+SydTest::Executor: [INFO] {{abc     ,xyz     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(f char(8))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I on T(f) hint 'compressed'
+Opt::Generator: [DEBUG] Result Plan[0]:
+sequential scan on T.RCD_T to data:{#xx,#xx}
+    execute:
+           xx:insert BMP_I by data:{#xx,#xx}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values 'abc','xyz'
+Opt::Generator: [DEBUG] Result Plan[0]:
+tuples to data:{#xx}
+    execute:
+           xx:generate rowid to data:#xx
+           xx:xxxx
+           xx:xxxx
+           xx:lock tuple
+           xx:write log
+           xx:parallel
+            @0
+                       xx:prepare undolog
+                       xx:insert RCD_T by data:{#xx,#xx,#xx}
+                       xx:store undolog
+                       xx:prepare undolog
+                       xx:insert VCT_T_$$Conversion by data:{#xx,#xx}
+                       xx:store undolog
+            @1
+                       xx:prepare undolog
+                       xx:insert BMP_I by data:{#xx,#xx}
+                       xx:store undolog
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f = 'abc'
+Opt::Generator: [DEBUG] Result Plan[0]:
+bitset scan on data:#xx to data:#xx
+           xx:iterate once
+                <-- index scan on T.BMP_I[get by bitset] for
+                            T.f = 'abc' to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx}
+SydTest::Executor: [INFO] {abc     }
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f[] = 'abc'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Usage of array element reference is invalid.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f[1] = 'abc'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Usage of array element reference is invalid.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

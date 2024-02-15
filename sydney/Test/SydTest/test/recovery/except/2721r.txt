@@ -1,0 +1,18 @@
+
+Begin;
+Initialize;
+BeginTimeSpan;
+InitializeSession "AreaTest";
+
+Command "verify database AreaTest cascade continue";
+
+#存在しないテーブルのテスト
+#Command "select * from T";
+
+Command "drop database AreaTest";
+NotExists "d:\\dm\\data\\areatest";
+TerminateSession;
+
+EndTimeSpan;
+Terminate;
+End;

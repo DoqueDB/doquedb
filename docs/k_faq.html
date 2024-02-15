@@ -1,0 +1,865 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<!--
+  Copyright (c) 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the License);
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<html>
+
+<head>
+  <!-- Google Tag Manager -->
+  <script type="text/javascript">(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-KRXS4RS');</script>
+  <!-- End Google Tag Manager -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="css/default.css">
+  <title>FAQ</title>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRXS4RS" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <h1>FAQ</h1>
+  <div class="right"><a href="knowledge.html">[ナレッジに戻る]</a></div>
+  <div class="contents">
+    <dl>
+      <dt>
+        <a href="#sec1">1. スキーマ関連</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec11">1.1 表の一覧を見ることはできますか</a>
+          </dt>
+          <dt>
+            <a href="#sec12">1.3 ステミングさせたいのですが</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec2">2. 検索操作関連</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec21">2.1 LIKEのエスケープ文字について教えてください</a>
+          </dt>
+          <dt>
+            <a href="#sec22">2.2 SELECT文でORDER BYを指定しないときはどういう順序になりますか</a>
+          </dt>
+          <dt>
+            <a href="#sec23">2.3 SELECT文でORDER BYがあるときORDER BYに指定されない列の順序はどうなりますか</a>
+          </dt>
+          <dt>
+            <a href="#sec24">2.4 文字列の並び順はどうなっていますか</a>
+          </dt>
+          <dt>
+            <a href="#sec25">2.5 NULLに対する大小関係はどうなっていますか</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec3">3. チューニング関連</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec31">3.1 十分な性能が出ないのですが</a>
+          </dt>
+          <dt>
+            <a href="#sec32">3.2 ロックの競合が起きるのですが</a>
+          </dt>
+          <dt>
+            <a href="#sec33">3.3 一括挿入が遅いのですが</a>
+          </dt>
+          <dt>
+            <a href="#sec34">3.4 英文のみ入っている列の性能が出ないのですが</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec4">4. ログ関連</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec41">4.1 [ERR] Database 'データベース名' is not available</a>
+          </dt>
+          <dt>
+            <a href="#sec42">4.2 [INFO] Checkpoint occured が長時間出力されないのですが</a>
+          </dt>
+          <dt>
+            <a href="#sec43">4.3 [INFO] Start FullText Index Merge のEndが出力されないのですが</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec5">5. その他</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec51">5.1 Exception::Object でキャッチできない例外があるのですが</a>
+          </dt>
+          <dt>
+            <a href="#sec52">5.2 バックアップをしたいのですが</a>
+          </dt>
+          <dt>
+            <a href="#sec53">5.3 DoqueDBのパラメータを設定したいのですが</a>
+          </dt>
+          <dt>
+            <a href="#sec54">5.4 サロゲートペアを扱えますか</a>
+          </dt>
+        </dl>
+      </dd>
+    </dl>
+  </div>
+
+  <h2><a id="sec1">1. スキーマ関連</a></h2>
+
+  <h3><a id="sec11">1.1 表の一覧を見ることはできますか</a></h3>
+  <p>
+    DoqueDBではスキーマ情報を見るための特殊な組み込み表が用意されています。
+    以下に表定義と索引定義の組み込み表を示します。
+  </p>
+  <pre>
+-- 表定義の組み込み表
+create table SYSTEM_TABLE
+(
+    RowID    int,           -- 表ID
+    Name     nvarchar(50),  -- 表名 
+    AreaID   int array[7]   -- 表を格納するエリアID
+);
+
+-- 索引定義の組み込み表
+create table SYSTEM_INDEX
+(
+    RowID    int,           -- 索引ID
+    ParentID int,           -- 索引が属する表のID
+    Name     nvarchar(50),  -- 索引名 
+    Type     int,           -- 索引の種別(1:B+木索引, 2:全文索引, 3:ビットマップ索引)
+    Flag     int,           -- 索引のプロパティ(奇数:unique, 偶数:非unique)
+    FileID   int,           -- 索引ファイルのID
+    AreaID   int,           -- 索引を格納するエリアID
+    HintString nvarchar(no limit)   -- 索引のヒントに指定された文字列
+);
+</pre>
+  <p>
+    また、組み込みデータベース「$$SystemDB」には、以下のようなデータベース定義の組み込み表が用意されています。
+  </p>
+  <pre>
+-- データベース定義(組み込みDB:$$SystemDBでのみ定義)
+create table SYSTEM_DATABASE
+(
+    RowID    int,           -- データベースID
+    Name     nvarchar(50),  -- データベース名 
+    Flag     int,           -- データベースのオプション
+    Paths    nvarchar(100) ARRAY[3]
+             -- データベースパス([1]:データパス, [2]:論理ログパス, [3]:システムパス)
+);
+</pre>
+  <p>
+    これらの表は通常の表と同様にSELECT文の一部に使用できます。
+    更新操作は行えません。
+  </p>
+  <p>
+    以下は「TBL」で始まる名前を持つ表に属するすべての索引の名前を得るSQL文です。
+  </p>
+  <pre>
+select name from system_index where exists
+    (select * from system_table
+         where name like 'TBL%'
+         and system_table.rowid = system_index.parentid);
+</pre>
+
+  <h3><a id="sec12">1.2 ステミングさせたいのですが</a></h3>
+
+  <p>
+    全文索引のHINT句でstemming=trueと指定してください。
+  </p>
+
+  <h2><a id="sec2">2. 検索操作関連</a></h2>
+
+  <h3><a id="sec21">2.1 LIKEのエスケープ文字について教えてください</a></h3>
+  <p>
+    DoqueDBは、全文索引の有無に関わらずLIKE述語により文字列マッチを行うことができます。
+    構文は以下のようになっています。
+  </p>
+  <pre>
+select * from TBL where f like &lt;パターン文字列&gt; escape &lt;エスケープ文字&gt;;
+</pre>
+  <p>
+    エスケープ文字はパターン文字列中の特殊文字をその文字自体として処理させるために使います。
+    特殊文字とは以下のものです。
+  </p>
+  <pre>
+%                0文字以上の任意の文字にマッチ
+_ (下線)         1文字の任意の文字にマッチ
+エスケープ文字
+</pre>
+  <p>
+    これらの特殊文字の前にエスケープ文字を置くと、特殊文字がその文字自体として処理されます。
+  </p>
+  <p>
+    なお、シングルクオートをエスケープ文字の直後においてもエスケープされません。
+    通常の文字列リテラルと同様に、文字列中のシングルクオートは2つ重ねる必要があります。
+  </p>
+  <p>
+    escape以下を省略したときは、エスケープ文字はないものとして処理されます。
+    エスケープ文字には1文字であれば任意の文字を指定できます。
+    ただし、'%'や'_'をエスケープ文字にするとパターン文字列を書くときに混乱するので避けたほうがよいでしょう。
+  </p>
+  <p>
+    以下に例を書きます。
+  </p>
+  <pre>
+f like '100%'               -- '100'、'1000'、'100%'、'100人力'などにマッチ
+f like '100_'               -- '1000'、'100人'などにマッチ
+f like '100*%'              -- '100*3=300'、'100*****'などにマッチ
+f like '100*%' escape '*'   -- '100%'にのみマッチ
+f like '100**'              -- '100**'にのみマッチ
+f like '100**' escape '*'   -- '100*'にのみマッチ
+</pre>
+
+  <h3><a id="sec22">2.2 SELECT文でORDER BYを指定しないときはどういう順序になりますか</a></h3>
+  <p>
+    端的に答えると「不明」です。
+    レコードの取得順が重要な場合はORDER BY句を使用してください。
+  </p>
+  <p>
+    ORDER BYがないときのレコードの取得順序は更新操作の手順やSELECT文の形により変わるため、内部の構造をある程度知らないと予測できません。
+    それでもどういう順序になるのか知りたい人のために、下記にいくつかの場合について列挙します。
+  </p>
+  <dl>
+    <dt class="bold">表がひとつで索引を使える条件がない場合</dt>
+    <dd>
+      このとき、レコードはRecordファイルの先頭から順に取得されます。
+      そうすると、登録した順なのではないかと思われるかもしれません。
+      たしかに表を定義してから登録または更新しかしていないなら、そのとおりです。
+    </dd>
+    <dt></dt>
+    <dd>
+      しかし、削除操作があるとそうとはいえません。
+      DoqueDBでは、Recordファイルから削除された領域は再利用可能な領域としてフリーリストで管理されます。
+      次に登録操作があるとフリーリストから再利用可能な領域を取り出し、そこにデータを登録します。
+      フリーリストはLIFOで管理されます。
+      つまり、最後に削除された領域から再利用されます。
+    </dd>
+    <dt></dt>
+    <dd>
+      したがって、たとえば表を定義してから3件のレコードを登録し、そのすべてを登録した順に削除し、次に新たな3件のレコードを登録すると、ORDER BYなしで取得したときの順序は登録の逆順になります。
+      さらに続いてレコードを登録していくと、その後は登録順になります。
+      <pre>
+SQL&gt; create table TBL (f int);
+SQL&gt; insert TBL values (1), (2), (3);
+SQL&gt; select f from TBL;               -- 登録した順になる
+{1}
+{2}
+{3}
+SQL&gt; delete TBL;                      -- 登録した順に削除される
+SQL&gt; insert TBL values (4), (5), (6);
+SQL&gt; select f from TBL;               -- 登録と逆順になる
+{6}
+{5}
+{4}
+SQL&gt; insert TBL values (7), (8), (9);
+SQL&gt; select f from TBL;               -- さらに登録したぶんは登録順になる
+{6}
+{5}
+{4}
+{7}
+{8}
+{9}
+</pre>
+    </dd>
+    <dt class="bold">表がひとつでBtree索引が使える条件がひとつの場合</dt>
+    <dd>
+      このときは索引ファイルを走査するので、索引に用いられているキーの昇順になります。
+      同じキーの中では登録順です。
+      削除操作の有無には関係ありません。
+      <pre>
+SQL&gt; create table TBL (f int, g int);
+SQL&gt; create index BIDX on TBL(f);
+SQL&gt; insert TBL values (1, 1), (2, 22), (1, 11), (2, 2);
+SQL&gt; select f, g from TBL where f &gt; 0;  -- fの順になる。fが同じなら登録順
+{1,1}
+{1,11}
+{2,22}
+{2,2}
+</pre>
+    </dd>
+    <dt class="bold">表がひとつで全文索引が使える条件がひとつの場合</dt>
+    <dd>
+      全文索引はROWIDの順に結果を返します。
+      ROWIDは登録ごとに1ずつ増える数値なので、登録順ということになります。
+      削除操作の有無には関係ありません。
+      <pre>
+SQL&gt; create table TBL (f int, t nvarchar(100));
+SQL&gt; create fulltext index FIDX on TBL(t);
+SQL&gt; insert TBL values (1, 'abc'), (2, 'aabbcc'), (1, 'cab'), (2, 'ccaabb');
+SQL&gt; select f, t from TBL where t like '%ab%';  -- 登録順になる
+{1,abc}
+{2,aabbcc}
+{1,cab}
+{2,ccaabb}
+</pre>
+    </dd>
+    <dt class="bold">表がひとつで索引が使える条件が複数の場合</dt>
+    <dd>
+      索引を複数使う場合、一般には登録順になります。
+      これは、複数の索引ファイルからの結果をマージするのにROWIDの順に並べ直しているからです。
+      <pre>
+SQL&gt; create table TBL (f int, t nvarchar(100));
+SQL&gt; create index BIDX on TBL(f);
+SQL&gt; create fulltext index FIDX on TBL(t);
+SQL&gt; insert TBL values (1, 'abc'), (2, 'aabbcc'), (1, 'cab'), (2, 'ccaabb');
+SQL&gt; select f, t from TBL where f &gt; 0 and t like '%ab%';  -- 登録順になる
+{1,abc}
+{2,aabbcc}
+{1,cab}
+{2,ccaabb}
+</pre>
+      ただし、SELECT句にある列がすべてひとつのBtree索引のキー列だった場合は、そのキーの昇順になります。
+      これは、SELECT句に対応した列の値をBtree索引から順次取得しながら、残りの索引と結果を照合するという処理になるからです。
+      <pre>
+SQL&gt; create table TBL (f int, t nvarchar(100));
+SQL&gt; create index BIDX on TBL(f);
+SQL&gt; create fulltext index FIDX on TBL(t);
+SQL&gt; insert TBL values (1, 'abc'), (2, 'aabbcc'), (1, 'cab'), (2, 'ccaabb');
+SQL&gt; select f from TBL where f &gt; 0 and t like '%ab%';  -- f順になる
+{1}
+{1}
+{2}
+{2}
+</pre>
+    </dd>
+    <dt class="bold">表が複数の場合</dt>
+    <dd>
+      FROM句に複数の表がある場合、結合がどう処理されるかによって取得順が変わります。
+    </dd>
+    <dt></dt>
+    <dd>
+      結合条件が索引で処理されるなら、最初に取得される表は上記の表がひとつの場合と同様に考え、次に取得される表は結合条件の処理に使われる列の値が同じものの中では登録順になります。
+      <pre>
+SQL&gt; create table TBL1 (f int, g int);
+SQL&gt; create table TBL2 (h int, t nvarchar(100));
+SQL&gt; create index BIDX2 on TBL2(h);
+SQL&gt; insert TBL1 values (1, 100), (3, 300), (2, 200);
+SQL&gt; insert TBL2 values (1, 'abc'), (1, 'def'), (2, 'xyz'), (3, 'uvw');
+SQL&gt; select * from TBL1, TBL2 where f = h;  -- TBL1→TBL2の順に取得される
+{1,100,1,abc}                                  -- TBL1は条件がないので登録順
+{1,100,1,def}                                  -- TBL2はキーが同じなら登録順
+{3,300,3,uvw}
+{2,200,2,xyz}
+</pre>
+    </dd>
+  </dl>
+
+  <h3><a id="sec23">2.3 SELECT文でORDER BYがあるときORDER BYに指定されない列の順序はどうなりますか</a></h3>
+  <p>
+    ORDER BYが指定されているときはもちろんORDER BYに指定された列の順で取得されますが、その列の値が同じものの間での並び順は不明です。
+  </p>
+  <dl>
+    <dt class="bold">ORDER BYがBtree索引で処理できる場合</dt>
+    <dd>
+      ORDER BYに指定された列にBtree索引がついていて、以下の条件のいずれかを満たす場合は、ORDER BYをBtree索引で処理、つまりBtree索引を走査することでORDER
+      BYで指定された順に取得するという動作をします。
+      <ul>
+        <li>ORDER BYに指定された列にNOT NULL制約がついている</li>
+        <li>またはNULL値がヒットしない条件があり、その条件を索引が処理できる</li>
+      </ul>
+    </dd>
+    <dt></dt>
+    <dd>
+      この場合、キーが同じものに対しては登録順になります。
+      ただし、ORDER BYにDESCが指定されているときは索引を逆順に走査するので、キーが同じものに対して登録の逆順になります。
+    </dd>
+    <dt class="bold">ORDER BYをメモリー上で処理する場合</dt>
+    <dd>
+      Btree索引を使えない場合、ORDER BYで指定された順にレコードを並べ替える処理はメモリー上で行われます。
+      この並べ替えはクイックソートアルゴリズムで行われます。
+    </dd>
+    <dt></dt>
+    <dd>
+      クイックソートへの入力は上記ORDER BYがないときの順序になりますが、クイックソートは入力の順序を保存しないアルゴリズムなので、結果の順序について一般的な予測をすることはできません。
+    </dd>
+  </dl>
+
+  <h3><a id="sec24">2.4 文字列の並び順はどうなっていますか</a></h3>
+  <p>
+    ORDER BYに文字列が指定された場合、Unicode順になります。
+    他の順序(たとえばShiftJIS順)にすることはできません。
+  </p>
+
+  <h3><a id="sec25">2.5 NULLに対する大小関係はどうなっていますか</a></h3>
+  <p>
+    ORDER BYによる並び替えで、NULLはもっとも小さい値として扱われます。
+  </p>
+  <p>
+    ちなみに、比較演算ではNULLとの比較はUnknownなので NULL &lt; 10 はヒットしません。
+    並び替えでのみそのような扱いになります。
+  </p>
+
+  <h2><a id="sec3">3. チューニング関連</a></h2>
+
+  <h3><a id="sec31">3.1 十分な性能が出ないのですが</a></h3>
+  <p>
+    期待に反して十分な性能が出ないとしたら、いろいろな原因が考えられます。
+  </p>
+  <ul>
+    <li>
+      スキーマ定義に工夫の余地がある
+    </li>
+    <li>
+      SQL文に工夫の余地がある
+    </li>
+    <li>
+      扱うデータ量に比べてバッファサイズが小さい
+    </li>
+    <li>
+      RAIDのコンフィギュレーションがDoqueDBに不向き
+    </li>
+    <li>
+      DoqueDB自体に改良の必要がある
+    </li>
+  </ul>
+
+  <dl>
+    <dt class="bold">
+      状況を調べる</dt>
+    <dd>
+    </dd>
+  </dl>
+  <p>
+    まずはどのようなSQL文の発行にどのくらいの時間がかかっているのか調べてみましょう。
+  </p>
+  <p>
+    DoqueDBに渡されているSQL文とその実行にかかる時間は、パラメーター設定によりファイルに出力することができます。
+    &lt;インストールパス&gt;/etc/default.confに以下のキーを追加します。
+  </p>
+  <pre>
+Statement_KeepSQLStatement        "true"
+Server_PrintSQLStatement          "ファイル名"
+Server_PrintParameter             "ファイル名"
+Server_PrintTime                  "ファイル名"
+</pre>
+  <p>
+    このように設定したのちにサーバーを起動すると、サーバーに対して投げられるすべてのSQL文と実行時間が、「ファイル名」で指定されたファイルに以下のように出力されます。
+  </p>
+  <pre>
+(872:2080) Server::worker.cpp 857: [DEBUG] SQL: select f from TBL where g &gt;?
+(872:2080) Server::worker.cpp 883: [DEBUG] Parameter: {100}
+(872:2080) Server::worker.cpp 266: [DEBUG] Optimizer Time: 00:00:00.050
+(872:2080) Server::worker.cpp 266: [DEBUG] Executor Time: 00:00:00.031
+(872:2080) Server::worker.cpp 266: [DEBUG] Worker Time: 00:00:00.094
+</pre>
+  <p>
+    ログの見方は以下の通りです。
+  </p>
+  <dl>
+    <dt class="sub">(872:2080)</dt>
+    <dd>
+      プロセスIDとスレッドIDの組です。
+      ログ上でセッションを区別するのに用いることができます。
+    </dd>
+    <dt class="sub">Server::Worker.cpp 857</dt>
+    <dd>
+      ログを出力しているソースファイルと行番号です。
+      特にユーザーが気にすることはありません。
+    </dd>
+    <dt class="sub">[DEBUG]</dt>
+    <dd>
+      動作解析用に出力ているログであることを示します。
+    </dd>
+    <dt class="sub">SQL: ...</dt>
+    <dd>
+      発行しているSQL文です。
+    </dd>
+    <dt class="sub">Paremeter:</dt>
+    <dd>
+      SQL文で「?」により指定されたパラメーターに与えるデータです。
+    </dd>
+    <dt class="sub">Optimizer Time:</dt>
+    <dd>
+      SQL文の解析および最適化処理にかかった時間です。
+      サーバー起動後初めてデータベースにアクセスするような場合、システム表の読み込みのために数百msの時間がかかることがあります。
+    </dd>
+    <dt class="sub">Executor Time:</dt>
+    <dd>
+      SQL文の実行にかかった時間です。
+      最適化処理の終了から最後のデータをクライアントに返すまでの時間です。
+    </dd>
+    <dt class="sub">Worker Time:</dt>
+    <dd>
+      その他のオーバーヘッドも含んだすべての実行時間です。
+      解析にはこの時間を使用します。
+    </dd>
+  </dl>
+  <p>
+    このようにして出力したログをチェックすることで、時間のかかるSQL文を特定することができます。
+    もし全体的に遅いのであれば環境や設定をチェックすることになります。
+  </p>
+  <p class="sub">
+    注意：上記の設定はオーバーヘッドになるので実運用では削除してください。
+  </p>
+  <p>
+    以降で、主な原因のパターンごとに少し詳しく述べていきます。
+  </p>
+
+  <dl>
+    <dt class="bold">スキーマ定義に工夫の余地がある</dt>
+    <dd>
+      表や索引の定義方法と実際のアクセス方法が合っていないと十分な性能が出ない場合があります。<br>
+      <a href="k_schema.html">スキーマ定義</a>の説明に解決策があるかもしれません。
+    </dd>
+    <dt class="bold">SQL文に工夫の余地がある</dt>
+    <dd>
+      一般的なDBアプリと同様、発行するSQL文の数を減らすことが有効です。
+    </dd>
+    <dt></dt>
+    <dd>
+      何度も同じ検索をしていないか、複数のSQL文で得られるのと同じ結果がひとつのSQL文で実現できないかといった点について検討してみてください。
+    </dd>
+    <dt></dt>
+    <dd>
+      毎回JOINする表があったら、それらをまとめてひとつの表にしてしまうなど、スキーマ定義との組み合わせで改善できることもあります。
+    </dd>
+    <dt class="bold">扱うデータ量に比べてバッファサイズが小さい</dt>
+    <dd>
+      DoqueDBのデフォルトバッファサイズは20MBです。
+      データベース全体のサイズが数百MBから数GBもある場合は、このバッファサイズではファイルI/Oが頻発して速度が著しく低下します。
+    </dd>
+    <dt></dt>
+    <dd>
+      インストール時にconf.shを編集してバッファサイズを大きくすることができます。
+      また、インストールしてしまったあとでも、パラメーターファイルを編集することもできます。
+      <pre>
+※128Mバイトにする場合：
+    &lt;インストールパス&gt;/etc/default.conf に以下の行を追加
+        Buffer_NormalPoolSize         134217728
+    または
+        Buffer_NormalPoolSize         "128M"
+</pre>
+    </dd>
+    <dt class="bold">RAIDのコンフィグレーションがDoqueDBに不向き</dt>
+    <dd>
+      RAIDを使用している場合、RAIDコントローラーの設定により数倍～数十倍の性能差が出ます。
+      これは版管理の仕組み上ランダムアクセスが多くなるという、DoqueDBのファイルアクセスの特性によるものと考えられます。
+    </dd>
+    <dt></dt>
+    <dd>
+      古いデータになりますが、RAID上のベンチマーク結果を記載します。
+      <pre>
+マシン環境
+サーバ: DELL PowerEdge2850
+    CPU: Xeon3.2GHz x 2 (Hyper Threading ON)
+    RAM: 4096MB
+    OS: Windows Server 2003 Standard Edition
+    RAID:
+    RAID5 (146G x 4)
+    コントローラー: PERC 4e/DI
+    メモリー: 256MB
+    ストライプサイズ: 32KB
+    Read Policy: Adaptive Read-Ahead | No Adeah
+    Write Policy: Write-Back | Write-Through
+    Cache Policy: Direct I/O | Cache I/O
+
+10万件(平均20KB)のテキストデータ登録時間
+Read Policy             Write Policy    Cache Policy    実行時間        うちWrite時間   うちRead時間
+--------------------------------------------------------------------------------------------------------------------
+Adaptive Read-Ahead     Write-Back      Cache I/O       2171秒          97秒            207秒
+Adaptive Read-Ahead     Write-Back      Direct I/O      2098秒         101秒            227秒
+No Ahead                Write-Through   Direct I/O      6091秒        4272秒            326秒
+</pre>
+    </dd>
+  </dl>
+
+  <h3><a id="sec32">3.2 ロックの競合が起きるのですが</a></h3>
+  <p>
+    多くのセッションから並行して使用される表に索引をつけることで、競合を起きにくくすることができます。
+  </p>
+  <p>
+    たとえば、列Cがある条件を満たすレコードを削除する場合を考えます。
+    列 C に索引が付いていなければ、削除の処理は全レコードスキャン＆条件判定という処理手順になります。
+    この処理手順のときは全レコードに対して1レコードずつ順番にロックがかけられ、条件判定(さらにTRUEなら削除)後、ロックが外されるという処理になります。
+    したがって、各セッションの列Cに対する条件が異なっていてもロックの競合が起こる可能性があります。
+  </p>
+  <p>
+    そこで、列Cに索引を定義すると、直接条件を満たすレコードのみが取得されるため、削除されるレコードだけがロックされることになり、競合が起きにくくなります。
+  </p>
+  <p>
+    ただし、<a href="k_schema.html">スキーマ定義</a>の説明にあるように、不要な索引は性能を低下させる恐れがありますので注意してください。
+  </p>
+
+  <h3><a id="sec33">3.3 一括挿入が遅いのですが</a></h3>
+  <p>
+    検討できる対策がいくつかあります。
+    以下個別に見ていきます。
+  <dl>
+    <dt class="bold">実行状況を見直す</dt>
+    <dd>
+      挿入している間は1クライアントしか使わないことが分かっているでしょうか？
+      もしそうであれば、挿入部分を以下のトランザクションで囲むとロック情報の管理が減るので速くなります。
+      <pre>
+START TRANSACTION READ WRITE, ISOLATION LEVEL SERIALIZABLE
+（挿入処理）
+COMMIT
+</pre>
+      挿入する表に索引が付いているでしょうか？
+      もし付いているのであれば、挿入前に索引をいった削除して、挿入後に再作成した方が速いかもしれません。
+      新規に挿入する件数が挿入後の全体の件数に対して占める割合が大きいときに有効です。
+    </dd>
+    <dt></dt>
+    <dd>
+      クライアントの使い方に適切ではないところはありませんか？
+      一般的なことも含みますが、以下の内容を確認してみてください。
+      <ul>
+        <li>
+          ループ内で new/delete を繰り返していないでしょうか？
+          ループの外に出せるか検討してみてください。
+        </li>
+        <li>
+          一括挿入データを作成するためにSydney::Common::DataArrayDataを毎回newして、さらにその各要素もnewして入れていないでしょうか？
+          あらかじめSydney::Common::DataArrayDataをメンバとして保持しておき、さらにその各要素については(初回のnewを除いて)setValueを使ってみてください。
+          ただし、getElementしたデータをstatic_castしたうえでsetValueする必要があります。
+          また、要素が配列型の場合は、その配列の中身については毎回newする必要があるので注意してください。
+        </li>
+        <li>
+          もっと効率のよい関数が使えないでしょうか？
+          たとえば、先ほどのsetValue()について言えば、DateTimeData型のsetValueは年月日時分秒を数値で設定できるものもあります。
+        </li>
+        <li>
+          文字列の値は制限されているでしょうか？
+          もし、ASCII、ShiftJIS、UTF-8に限定できて、それがnull
+          terminateされたchar*文字列であれば、ModUnicodeStringのコンストラクターに第2引数として対応するenum値を渡すことで直接変換できます。
+        </li>
+      </ul>
+      <pre>
+ASCII    ... ModKanjiCode::unknown
+ShiftJIS ... ModKanjiCode::shiftJis
+UTF-8    ... ModKanjiCode::utf8
+</pre>
+      <ul>
+        <li>
+          旧式機能のI/Fを使っていないでしょうか？
+          たとえばDataSource::createPrepareStatementがそうです。
+          Session::createPrepareStatementを使ってください。
+          旧式のものは、状況を調べる際の妨げにもなりかねませんし、将来のバージョンアップで削除されるかもしれません。
+        </li>
+      </ul>
+    </dd>
+    <dt class="bold">スキーマとデータと操作を確認する</dt>
+    <dd>
+      そのスキーマは、挿入データやそのデータに対する操作に対して適切に定義されているでしょうか？
+      その特性が合っていないと十分な性能が出ない場合があります。
+    </dd>
+    <dt></dt>
+    <dd>
+      たとえば、ビットマップ索引は、異なり数の少ないデータ(逆に言うと同じ値を持つレコードが多いデータ)に対して有利な索引です。
+      そのため、異なり数が100程度であれば問題ない速度で挿入できますが、それ以上になると著しく性能が低下する可能性があります。
+    </dd>
+    <dt></dt>
+    <dd>
+      他には、全件DELETEしてからINSERTするという処理もビットマップ索引には向いていない操作になります。
+      差分だけ更新できるならそうしてください。
+      そうできない場合は、状況にもよりますがDROP TABLEしてCREATE TABLEした方がよい場合もあります。
+    </dd>
+    <dt></dt>
+    <dd>
+      その他の注意点については、<a href="k_schema.html">スキーマ定義</a>の説明に解決策があるかもしれません。
+    </dd>
+    <dt class="bold">SQL文を工夫する</dt>
+    <dd>
+      複数のINSERT文をまとめることで速くなります。
+      以下のような書き方です。
+      <pre>
+INSERT INTO T1 VALUES
+                  ('aaa', 10, 'zzz', ..., 100),
+                  ('bbb', 20, 'yyy', ..., 200),
+                  ...
+                  ('zzz', 270, 'aaa', ..., 2700);
+</pre>
+      加えて、以下のようなSQL文をPrepareして使いまわすことでさらに速くなります。
+      <pre>
+INSERT INTO T1 VALUES
+                  (?,?, ...,?),
+                  (?,?, ...,?),
+                  ...
+                  (?,?, ...,?);
+</pre>
+      たとえば1000件ずつ挿入する場合に、挿入する件数が1000で割り切れない場合は、余りの分だけ別のSQL文にするといいでしょう。
+    </dd>
+    <dt></dt>
+    <dd>
+      一度に挿入するのに最適な件数ですが、一般的な解はありません。
+      実際のデータで、100件の場合、1000件の場合など実験していただくのが確実だと思います。
+    </dd>
+    <dt></dt>
+    <dd>
+      というのも、一度に挿入する数が多くなると、サーバークライアント間の通信オーバーヘッドやSQL文ごとの処理オーバーヘッドは少なくなりますが、多くのメモリーを消費することになるため、メモリー確保が遅くなっていきます。
+      このトレードオフの最適値は、表を構成する列の数や型、実際のデータ、バッファサイズに依存しているからです。
+    </dd>
+    <dt class="bold">ログ無しモードで実行する</dt>
+    <dd>
+      論理ログおよび物理ログを取らないモードにして実行すると速くなります。
+      ただし、エラーが起きてもロールバックはできませんし、途中で電源断などで落ちたらデータベースが壊れることになりますので、最悪の場合いちから作り直してもいいケースに限定されます。
+    </dd>
+    <dt></dt>
+    <dd>
+      方法は以下の通りです。
+      <ol>
+        <li class="nomargin">&lt;インストールパス&gt;/etc/default.confに以下のキーを追加する。
+          <pre>
+Trans_NoLogicalLog  "true"
+Version_NoVersion   "true"
+</pre>
+        </li>
+        <li class="nomargin">サービスを再起動する。</li>
+        <li class="nomargin">一括insertを実施する。</li>
+        <li class="nomargin">上記のパラメーターを両方falseにするか、削除する。</li>
+        <li class="nomargin">サービスを再起動する。</li>
+      </ol>
+    </dd>
+    <dt class="bold">
+      バッチインサートを利用する</dt>
+    <dd>
+    <dd>
+      ファイル上のデータを一括挿入する、バッチインサートという手段が用意されています。
+      実行方法については<a href="k_batchinsert.html">バッチインサート</a>を参照してください。
+    </dd>
+  </dl>
+
+  <h3><a id="sec34">3.4 英文のみ入っている列の性能が出ないのですが</a></h3>
+  <p>
+    どんな索引を使っているでしょうか？
+  </p>
+  <p>
+    もし索引に uni-gramを使っているのでしたら、変更した方がいいでしょう。
+    データサイズが大きくなるようなら性能がまったく出ないおそれもあります。
+    特別な理由がなければindexing=wordをお勧めします。
+  </p>
+  <p>
+    網羅性が気になるのでしたら、これにstemming=trueを付けるといいでしょう。
+  </p>
+
+  <h2><a id="sec4">4. ログ関連</a></h2>
+
+  <h3><a id="sec41">4.1 [ERR] Database 'データベース名' is not available</a></h3>
+  <p>
+    <a href="k_recovery.html">自動復旧について</a>の<a href="k_recovery.html#notavailable">3.1 Not
+      available</a>にあるように、そのデータベースは一切の操作を受け付けない状態になっています。
+    しかし、そのデータベースは壊れておらず、データ保護のために利用制限しているだけの場合もあります。
+  </p>
+  <p>
+    たとえば、下記のようなログが事前に出ていた場合です。
+  </p>
+  <pre>
+[INFO] (Checkpoint) Database synchronization failed.
+</pre>
+  <p>
+    このログは、不正なメモリーを参照したために出力される場合があるので、利用制限しているだけかもしれません。
+    サービスを再起動してみてください。
+  </p>
+  <p>
+    ちなみに、この「不正なメモリーを参照」する原因ですが、データベース全体のデータとデータ操作のすべてのログがあれば、解明できる可能性は高くなります。
+    しかし、データ操作のログの量は下手をすると数百GBになるかもしれませんし、動作速度も低下します。
+  </p>
+
+  <h3><a id="sec42">4.2 [INFO] Checkpoint occurred が長時間出力されないのですが</a></h3>
+  <p>
+    このログは、<a href="k_recovery.html">自動復旧について</a>にあるように、定期ジョブで実行されているので、通常は定期的に出力されます。
+    ただし、SQL文が実行されているあいだはこのログは出力されません。
+    したがって、このログが出ていないことから、SQL文の実行に時間がかかっていることは推測できますが、何らかの障害が起きていることを示せるわけではありません。
+  </p>
+
+  <h3><a id="sec43">4.3 [INFO] Start FullText Index Merge のEndが出力されないのですが</a></h3>
+  <p>
+    このログは、全文索引の小転置ファイルを大転置ファイルにマージする処理が起動したことを示しています。
+    これは、小転置の大きさがある程度大きくなった場合に起動されます。
+    完了するまでのあいだ、ほかの操作の割り込みは可能なので、状況によっては時間がかかります。
+    したがって、Endのログが出ないことから、全文索引の更新処理に非常に時間がかかっていることは推測できますが、何らかの障害が起きていることを示せるわけではありません。
+  </p>
+  <p>
+    しかし、たとえば6時間もマージ処理が実行しっぱなしということになると、通常では考えられないため、何らかの障害が起きている可能性があります。
+  </p>
+
+  <h2><a id="sec5">5. その他</a></h2>
+
+  <h3><a id="sec51">5.1 Exception::Object でキャッチできない例外があるのですが</a></h3>
+  <p>
+    DoqueDBには2つの例外クラスがあります。
+  </p>
+  <ul>
+    <li>
+      Exception::Object
+    </li>
+    <li>
+      ModException
+    </li>
+  </ul>
+  <p>
+    ほとんどの場合、Exception::Objectの例外がスローされますが、メモリー確保に失敗した場合などには、下位ライブラリであるlibcommonからModExceptionがスローされる可能性があります。
+  </p>
+
+  <h3><a id="sec52">5.2 バックアップをしたいのですが</a></h3>
+  <p>
+    オンラインバックアップとオフラインバックアップをサポートしています。
+    詳細はユーザーズマニュアルをご覧ください。
+    サービスを停止しているあいだにファイルを直接コピーすることも可能です。
+  </p>
+
+  <h3><a id="sec53">5.3 DoqueDBのパラメータを設定したいのですが</a></h3>
+  <p>
+    サービス起動時の設定が使われます。
+  </p>
+  <p>
+    たとえばパラメータの設定とバックアップとを同時に実行したいときは、以下のような手順になります。
+  </p>
+  <ol>
+    <li class="nomargin">サービスを停止する。</li>
+    <li class="nomargin">データベースをコピーする。</li>
+    <li class="nomargin">パラメータを設定する。</li>
+    <li class="nomargin">サービスを起動する。</li>
+  </ol>
+
+  <h3><a id="sec54">5.4 サロゲートペアを扱えますか</a></h3>
+  <p>
+    サロゲートペアは、16ビットに収まらないUnicode文字を16ビット2文字で表現する仕組みです。
+    たとえば上が「土」になった「吉」は、Unicodeではサロゲートペア文字になります。
+  </p>
+  <p>
+    DoqueDBでは、入出力の文字コードをUTF-8とすることで、
+    サロゲートペアを格納し、検索し、取り出すことができます。
+    ただし、サロゲートペアは内部的には2文字として扱われるため、
+    たとえばSUBSTRING関数でサロゲートペアの一方が切り出されることがあり、
+    またLIKE述語では連続する2個の下線(_)とマッチします。
+    サロゲートペアの断片は、UTF-8で出力するときに置換文字
+    (U+FFFD, UTF-8では0xEF 0xBF 0xBD)に変換されます。
+  </p>
+
+  <hr>
+  <p class="center">Copyright (c) 2023 Ricoh Company, Ltd. All rights reserved.</p>
+
+</body>
+
+</html>

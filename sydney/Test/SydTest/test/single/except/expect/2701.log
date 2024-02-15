@@ -1,0 +1,177 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database IndexTest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] IndexTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f1 int, f2 ntext, f3 ntext array [NO LIMIT])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_FTS_f1 on T(f1)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid schema operation - invalid column 'f1' is specified for the index 'T_FTS_f1'.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\FTS_T_FTS_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f1_f3 on T(f1,f3)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid schema operation - invalid column 'f3' is specified for the index 'T_f1_f3'.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f1_f3
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f1_f3 has not created.
+Executor: [ERR] (SydTest) So created it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f2_f3 on T(f2,f3)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid schema operation - invalid column 'f3' is specified for the index 'T_f2_f3'.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f2_f3
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f2_f3 has not created.
+Executor: [ERR] (SydTest) So created it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f3_f1 on T(f3,f1)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid schema operation - invalid column 'f3' is specified for the index 'T_f3_f1'.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f3_f1
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f3_f1 has not created.
+Executor: [ERR] (SydTest) So created it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f3_f2 on T(f3,f2)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid schema operation - invalid column 'f3' is specified for the index 'T_f3_f2'.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f3_f2
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f3_f2 has not created.
+Executor: [ERR] (SydTest) So created it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f1_f3
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f1_f3
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f1_f3 remains.
+Executor: [ERR] (SydTest) So removed it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f2_f3
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f2_f3
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f2_f3 remains.
+Executor: [ERR] (SydTest) So removed it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f3_f1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f3_f1
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f3_f1 remains.
+Executor: [ERR] (SydTest) So removed it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f3_f2
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f3_f2
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f3_f2 remains.
+Executor: [ERR] (SydTest) So removed it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f1_f2_f3 on T(f1,f2,f3)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid schema operation - invalid column 'f3' is specified for the index 'T_f1_f2_f3'.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f1_f2_f3
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f1_f2_f3 has not created.
+Executor: [ERR] (SydTest) So created it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f1_f3_f2 on T(f1,f3,f2)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid schema operation - invalid column 'f3' is specified for the index 'T_f1_f3_f2'.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f1_f3_f2
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f1_f3_f2 has not created.
+Executor: [ERR] (SydTest) So created it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f2_f1_f3 on T(f2,f1,f3)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid schema operation - invalid column 'f3' is specified for the index 'T_f2_f1_f3'.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f2_f1_f3
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f2_f1_f3 has not created.
+Executor: [ERR] (SydTest) So created it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f2_f3_f1 on T(f2,f3,f1)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid schema operation - invalid column 'f3' is specified for the index 'T_f2_f3_f1'.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f2_f3_f1
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f2_f3_f1 has not created.
+Executor: [ERR] (SydTest) So created it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f3_f1_f2 on T(f3,f1,f2)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid schema operation - invalid column 'f3' is specified for the index 'T_f3_f1_f2'.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f3_f1_f2
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f3_f1_f2 has not created.
+Executor: [ERR] (SydTest) So created it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f3_f2_f1 on T(f3,f2,f1)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid schema operation - invalid column 'f3' is specified for the index 'T_f3_f2_f1'.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f3_f2_f1
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f3_f2_f1 has not created.
+Executor: [ERR] (SydTest) So created it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f1_f2_f3
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f1_f2_f3
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f1_f2_f3 remains.
+Executor: [ERR] (SydTest) So removed it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f1_f3_f2
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f1_f3_f2
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f1_f3_f2 remains.
+Executor: [ERR] (SydTest) So removed it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f2_f1_f3
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f2_f1_f3
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f2_f1_f3 remains.
+Executor: [ERR] (SydTest) So removed it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f2_f3_f1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f2_f3_f1
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f2_f3_f1 remains.
+Executor: [ERR] (SydTest) So removed it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f3_f1_f2
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f3_f1_f2
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f3_f1_f2 remains.
+Executor: [ERR] (SydTest) So removed it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_f3_f2_f1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\IndexTest\T\BTR_T_f3_f2_f1
+Executor: [ERR] (SydTest) Directory d:\dm\data\IndexTest\T\BTR_T_f3_f2_f1 remains.
+Executor: [ERR] (SydTest) So removed it.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database IndexTest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

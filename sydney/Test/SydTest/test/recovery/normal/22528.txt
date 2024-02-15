@@ -1,0 +1,17 @@
+# 障害票 1243
+
+Begin;
+System "cp -f \"c:\\Program Files\\Ricoh\\TRMeister\\user.pswd\" \"c:\\Program Files\\Ricoh\\TRMeister\\test.pswd\"";
+SetSystemParameter "Server_PasswordFilePath" "c:\\Program Files\\Ricoh\\TRMeister\\test.pswd";
+Initialize;
+InitializeSession "TESTDB" "root" "doqadmin";
+Command "create database TESTDB";
+CreateUser "user1" "password1";
+CreateUser "user2" "password2";
+CreateUser "user3" "password3";
+Command "grant reference_operations to user1";
+Command "grant data_operations to user2";
+Command "grant database_operations, data_operations to user3";
+TerminateSession;
+Terminate;
+End;

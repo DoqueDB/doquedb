@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+  MessageDefinition.xml : メッセージ定義ファイル
+
+  Copyright (c) 2001, 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+   
+      http://www.apache.org/licenses/LICENSE-2.0
+   
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE MessageDefine [
+  <!ELEMENT MessageDefine (Message)*>
+
+  <!ELEMENT Message (Name, Number, Format, Argument*)>
+  <!ELEMENT Name (#PCDATA)>
+  <!ELEMENT Number (#PCDATA)>
+
+  <!ELEMENT Format (English, Japanese)>
+  <!ELEMENT Argument (#PCDATA)>
+
+  <!ELEMENT English (#PCDATA)>
+  <!ELEMENT Japanese (#PCDATA)>
+]>
+
+<!--
+★メッセージ定義に関する注意★
+
+	【メッセージ定義ファイル自体について】
+		・ファイルの文字コードを SJIS から変更してはいけない
+
+	【メッセージ作成の方針について】
+
+	【メッセージ番号について】
+		・Number は16 進8 桁で定義し、
+
+		  上位 2 桁は 0x01
+		  次の 2 桁は モジュールを識別する値
+		  下位 4 桁は モジュール内でのメッセージを一意に識別する値
+		
+		  にすること
+		・決して、Exception/ErrorDefinition.xml の
+		  エラー番号と重なってはならない
+
+	【フォーマットについて】
+		・日本語メッセージは「ですます」調で統一すること
+		・Format に %1 などで挿入されるものが文字列である場合、
+		  できる限り言語に左右されない文字列
+		  (SQL 文、表名、数値など)にすること
+-->
+
+<MessageDefine>
+
+  <Message>
+    <Name>VerifyFailed</Name>
+	<Number>0x01340001</Number>
+	<Format>
+	  <English>Verification has been failed.</English>
+	  <Japanese>整合性検査に失敗しました。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>DiscordObjectNum</Name>
+	<Number>0x01340002</Number>
+	<Format>
+	  <English>The number of objects is inconsistent with sum of the number objects in all pages. (header=%1, sum=%2)</English>
+	  <Japanese>オブジェクト数がページごとの合計と一致しません。(header=%1, sum=%2)</Japanese>
+	</Format>
+	<Argument>%llu</Argument>
+	<Argument>%llu</Argument>
+  </Message>
+
+  <Message>
+    <Name>ExistTopObject</Name>
+	<Number>0x01340003</Number>
+	<Format>
+	  <English>An object has been found in front of the first object. (first=%1, found=%2)</English>
+	  <Japanese>先頭オブジェクトよりも前にオブジェクトが存在します。(first=%1, found=%2)</Japanese>
+	</Format>
+	<Argument>%llx</Argument>
+	<Argument>%llx</Argument>
+  </Message>
+
+  <Message>
+    <Name>ExistLastObject</Name>
+	<Number>0x01340004</Number>
+	<Format>
+	  <English>An object has been found behind the last object. (last=%1, found=%2)</English>
+	  <Japanese>最終オブジェクトよりも後ろにオブジェクトが存在します。(last=%1, found=%2)</Japanese>
+	</Format>
+	<Argument>%llx</Argument>
+	<Argument>%llx</Argument>
+  </Message>
+
+  <Message>
+    <Name>InconsistentHeader</Name>
+	<Number>0x01340005</Number>
+	<Format>
+	  <English>Data in the header page is inconsistent. (#obj=%1, first=%2, last=%3)</English>
+	  <Japanese>ヘッダー情報が矛盾しています。(#obj=%1, first=%2, last=%3)</Japanese>
+	</Format>
+	<Argument>%lld</Argument>
+	<Argument>%llx</Argument>
+	<Argument>%llx</Argument>
+  </Message>
+
+  <Message>
+    <Name>ObjectNotFound</Name>
+	<Number>0x01340006</Number>
+	<Format>
+	  <English>Object was not found. (ID=%1)</English>
+	  <Japanese>存在しているはずのオブジェクトが存在していません。(ID=%1)</Japanese>
+	</Format>
+	<Argument>%llx</Argument>
+  </Message>
+
+  <Message>
+    <Name>InconsistentPageObjectNumber</Name>
+	<Number>0x01340007</Number>
+	<Format>
+	  <English>The number of objects in page is inconsistent with bitmap. (pageID=%1, number=%2, bitmap=%3)</English>
+	  <Japanese>ページのオブジェクト数がビットマップと一致しません。(pageID=%1, number=%2, bitmap=%3)</Japanese>
+	</Format>
+	<Argument>%lx</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>BadFreeObjectID</Name>
+	<Number>0x01340008</Number>
+	<Format>
+	  <English>Free objectID links to inserted object. (ID=%1)</English>
+	  <Japanese>削除オブジェクトIDが削除されていないデータを指しています。(ID=%1)</Japanese>
+	</Format>
+	<Argument>%llx</Argument>
+  </Message>
+
+  <Message>
+    <Name>InconsistentVariableSize</Name>
+	<Number>0x01340009</Number>
+	<Format>
+	  <English>The sum of variable field sizes is inconsistent with actual data size. (ID=%1, sum=%2, size=%3)</English>
+	  <Japanese>可変長オブジェクトのヘッダーに書かれたサイズと実際のサイズが一致しません。(ID=%1, sum=%2, size=%3)</Japanese>
+	</Format>
+	<Argument>%llx</Argument>
+	<Argument>%lu</Argument>
+	<Argument>%lu</Argument>
+  </Message>
+
+<!--
+	途中経過を出力するためのメッセージ
+-->
+
+  <Message>
+    <Name>VerifyPhysicalFileStarted</Name>
+	<Number>0x01340901</Number>
+	<Format>
+	  <English>Verify physical file started.</English>
+	  <Japanese>物理ファイルの整合性検査を開始しました。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>VerifyPhysicalFileFinished</Name>
+	<Number>0x01340902</Number>
+	<Format>
+	  <English>Verify physical file finished.</English>
+	  <Japanese>物理ファイルの整合性検査が完了しました。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>VerifyOnGoing</Name>
+	<Number>0x01340903</Number>
+	<Format>
+	  <English>Verify %1 (%2/%3).</English>
+	  <Japanese>%1の検査中 (%2/%3)</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+</MessageDefine>
+
+<!--
+  Copyright (c) 2001, 2023 Ricoh Company, Ltd.
+  All rights reserved.
+-->

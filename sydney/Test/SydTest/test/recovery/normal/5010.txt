@@ -1,0 +1,74 @@
+# スレッドから孫スレッドを呼び、4つのコマンドを同時に実行する
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+InitializeSession "";
+Command "create database DB0010";
+TerminateSession;
+InitializeSession "DB0010";
+Command "create table T (C int)";
+TerminateSession;
+
+CreateThread "threadA";
+CreateThread "threadB";
+JoinThread "threadA";
+JoinThread "threadB";
+
+InitializeSession "DB0010";
+Command "select * from T";
+#Command "drop table T";
+TerminateSession;
+#InitializeSession "";
+#Command "drop database DB0010";
+#TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;
+
+threadA
+{
+CreateThread "thread1";
+CreateThread "thread2";
+JoinThread "thread1";
+JoinThread "thread2";
+}
+
+threadB
+{
+CreateThread "thread3";
+CreateThread "thread4";
+JoinThread "thread3";
+JoinThread "thread4";
+}
+
+thread1
+{
+InitializeSession 1 "DB0010";
+Command 1 "select * from T";
+TerminateSession 1;
+}
+
+thread2
+{
+InitializeSession 2 "DB0010";
+Command 2 "select * from T";
+TerminateSession 2;
+}
+
+thread3
+{
+InitializeSession 3 "DB0010";
+Command 3 "select * from T";
+TerminateSession 3;
+}
+
+thread4
+{
+InitializeSession 4 "DB0010";
+Command 4 "select * from T";
+TerminateSession 4;
+}
+

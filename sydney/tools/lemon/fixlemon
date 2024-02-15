@@ -1,0 +1,28 @@
+#!/usr/local/bin/perl5
+
+if (@ARGV != 2) {
+    print STDERR "Usage: fixlemon source dest\n";
+    exit(1);
+}
+
+my ($src, $dst) = @ARGV;
+
+open(IN, "<$src") or die "$src: $!";
+open(OUT, ">$dst") or die "$dst: $!";
+
+while (<IN>) {
+    if (s[^void \*(\w+)\QAlloc(void *(*mallocProc)(size_t))]
+	 [void *$1Alloc(void *(*mallocProc)(ModSize n, const char* file, int line))]) {
+	$engineName = $1;
+    }
+    s[^\Q  void (*freeProc)(void*)]
+	[  void (*freeProc)(void* pMem, const char* file, int)];
+    s[^\Qstatic void yy_accept();]
+	[static void yy_accept(yyParser* yypParser $engineName ANSIARGDECL);] &&
+	    s/ ANSIARG/ANSIARG/; # to keep emacs happy
+    s[^\Qstatic char *yyTokenName[]][static const char *yyTokenName[]];
+    s[^(#line\s*\d+\s+)"($src)"][$1"../lemon/$2pp"];
+    s[^(#line\s*\d+\s+)"(\w+\.lemon)"][$1"../src/$2"];
+} continue {
+    print OUT;
+}

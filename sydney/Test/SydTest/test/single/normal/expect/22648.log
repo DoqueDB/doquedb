@@ -1,0 +1,106 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB recovery full
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(ID int, F nvarchar(64), primary key(ID))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (1, 'aaa'), (2, 'bbb'), (3, 'ccc')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] checkpoint 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB offline
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] ..\..\switchcopy.bat d:\dm\data\TESTDB d:\dm\data\TESTDB1
+
+d:\proj\sydney\vX.X\Test\SydTest\test\single\normal>echo off 
+13 個のファイルをコピーしました
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] ..\..\switchcopy.bat d:\dm\system\TESTDB d:\dm\system\TESTDB1
+
+d:\proj\sydney\vX.X\Test\SydTest\test\single\normal>echo off 
+68 個のファイルをコピーしました
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB online with discard logicallog
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set F = 'AAA' where ID = 1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (4, 'ddd')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where ID = 2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_F on T(F)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB user system
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {1,AAA}
+SydTest::Executor: [INFO] {3,ccc}
+SydTest::Executor: [INFO] {4,ddd}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB user all
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB offline
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm -rf d:\dm\data\TESTDB1\LOGICALLOG.SYD
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm -rf d:\dm\data\TESTDB1\LOGICALLOGDIR
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] ..\..\switchcopy.bat d:\dm\data\TESTDB\LOGICALLOG.SYD d:\dm\data\TESTDB1
+
+d:\proj\sydney\vX.X\Test\SydTest\test\single\normal>echo off 
+1 個のファイルをコピーしました
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] ..\..\switchcopy.bat d:\dm\data\TESTDB\LOGICALLOGDIR d:\dm\data\TESTDB1\LOGICALLOGDIR
+
+d:\proj\sydney\vX.X\Test\SydTest\test\single\normal>echo off 
+1 個のファイルをコピーしました
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB online with discard logicallog
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB1
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] mount TESTDB1 path 'd:\dm\data\TESTDB1' logicallog 'd:\dm\data\TESTDB1' system 'd:\dm\system\TESTDB1' with recovery
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {1,AAA}
+SydTest::Executor: [INFO] {3,ccc}
+SydTest::Executor: [INFO] {4,ddd}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_F
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

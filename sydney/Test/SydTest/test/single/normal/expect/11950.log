@@ -1,0 +1,240 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1 (f1 int, f2 int, f3 int, f4 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?), (?,?,?,?), (?,?,?,?), (?,?,?,?), (?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,50,300,2000,(null),40,500,4000,3,(null),200,1000,4,20,(null),3000,5,10,100,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1 on T1(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T1(f2,f3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2 (f1 int not null, f2 int not null, f3 int, f4 int not null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T2 values (?,?,?,?), (?,?,?,?), (?,?,?,?), (?,?,?,?), (?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,50,300,2000,2,40,500,4000,3,30,200,1000,4,20,400,3000,5,10,100,5000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I3 on T2(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I4 on T2(f2,f3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f4 from T1 X  order by f4 asc limit 4
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {1000}
+SydTest::Executor: [INFO] {2000}
+SydTest::Executor: [INFO] {3000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1,f2 from T2 X where f1 > 0 order by f1 desc limit 4
+SydTest::Executor: [INFO] {5,10}
+SydTest::Executor: [INFO] {4,20}
+SydTest::Executor: [INFO] {3,30}
+SydTest::Executor: [INFO] {2,40}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f3,f4 from T2 X  order by f4 asc limit 4) as X 
+SydTest::Executor: [INFO] {200,1000}
+SydTest::Executor: [INFO] {300,2000}
+SydTest::Executor: [INFO] {400,3000}
+SydTest::Executor: [INFO] {500,4000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1 from T1 X where f1 > 0 order by f1 desc limit 4) as X 
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1,f4 from T1 X where f2 > 0 order by f2 asc, f3 asc limit 4) as X order by X.f1 asc
+SydTest::Executor: [INFO] {(null),4000}
+SydTest::Executor: [INFO] {1,2000}
+SydTest::Executor: [INFO] {4,3000}
+SydTest::Executor: [INFO] {5,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1,f2,f3 from T2 X  order by f4 desc limit 4) as X order by X.f1 desc
+SydTest::Executor: [INFO] {5,10,100}
+SydTest::Executor: [INFO] {4,20,400}
+SydTest::Executor: [INFO] {2,40,500}
+SydTest::Executor: [INFO] {1,50,300}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f2,f3 from T2 X  order by f2 desc, f3 desc limit 4) as X natural inner join T2 
+SydTest::Executor: [INFO] {50,300,1,2000}
+SydTest::Executor: [INFO] {40,500,2,4000}
+SydTest::Executor: [INFO] {30,200,3,1000}
+SydTest::Executor: [INFO] {20,400,4,3000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 natural inner join (select f4 from T2 X where f4 > 0 order by f4 asc limit 4) as X 
+SydTest::Executor: [INFO] {2000,1,50,300}
+SydTest::Executor: [INFO] {4000,2,40,500}
+SydTest::Executor: [INFO] {1000,3,30,200}
+SydTest::Executor: [INFO] {3000,4,20,400}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 natural left join (select f1,f2,f3 from T1 X where f2 > 0 order by f2 desc, f3 desc limit 4) as X 
+SydTest::Executor: [INFO] {1,50,300,2000}
+SydTest::Executor: [INFO] {2,40,500,4000}
+SydTest::Executor: [INFO] {3,30,200,1000}
+SydTest::Executor: [INFO] {4,20,400,3000}
+SydTest::Executor: [INFO] {5,10,100,5000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 natural left join (select f1,f2,f3 from T2 X  order by f4 asc limit 4) as X 
+SydTest::Executor: [INFO] {1,50,300,2000}
+SydTest::Executor: [INFO] {2,40,500,4000}
+SydTest::Executor: [INFO] {3,30,200,1000}
+SydTest::Executor: [INFO] {4,20,400,3000}
+SydTest::Executor: [INFO] {5,10,100,5000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 natural left join (select f3,f4 from T1 X where f4 > 0 order by f4 desc limit 4) as X order by X.f3 desc
+SydTest::Executor: [INFO] {500,4000,2,40}
+SydTest::Executor: [INFO] {300,2000,1,50}
+SydTest::Executor: [INFO] {200,1000,3,30}
+SydTest::Executor: [INFO] {400,3000,4,20}
+SydTest::Executor: [INFO] {100,5000,5,10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 natural left join (select f1,f4 from T2 X  order by f2 asc, f3 asc limit 4) as X order by X.f1 asc
+SydTest::Executor: [INFO] {1,2000,50,300}
+SydTest::Executor: [INFO] {2,4000,40,500}
+SydTest::Executor: [INFO] {3,1000,30,200}
+SydTest::Executor: [INFO] {4,3000,20,400}
+SydTest::Executor: [INFO] {5,5000,10,100}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1,f4 from T2 X where f2 > 0 order by f2 asc, f3 asc limit 4
+SydTest::Executor: [INFO] {5,5000}
+SydTest::Executor: [INFO] {4,3000}
+SydTest::Executor: [INFO] {3,1000}
+SydTest::Executor: [INFO] {2,4000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1,f4 from T1 X  order by f2 desc, f3 desc limit 4) as X 
+SydTest::Executor: [INFO] {1,2000}
+SydTest::Executor: [INFO] {(null),4000}
+SydTest::Executor: [INFO] {4,3000}
+SydTest::Executor: [INFO] {5,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1 from T2 X where f1 > 0 order by f1 asc limit 4) as X order by X.f1 asc
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1,f2,f3 from T2 X  order by f2 asc, f3 asc limit 4) as X natural inner join T2 order by X.f1 asc
+SydTest::Executor: [INFO] {2,40,500,4000}
+SydTest::Executor: [INFO] {3,30,200,1000}
+SydTest::Executor: [INFO] {4,20,400,3000}
+SydTest::Executor: [INFO] {5,10,100,5000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 natural left join (select f1 from T1 X  order by f1 asc limit 4) as X 
+SydTest::Executor: [INFO] {1,50,300,2000}
+SydTest::Executor: [INFO] {2,40,500,4000}
+SydTest::Executor: [INFO] {3,30,200,1000}
+SydTest::Executor: [INFO] {4,20,400,3000}
+SydTest::Executor: [INFO] {5,10,100,5000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 natural left join (select f1 from T2 X where f1 > 0 order by f1 desc limit 4) as X order by X.f1 desc
+SydTest::Executor: [INFO] {5,10,100,5000}
+SydTest::Executor: [INFO] {4,20,400,3000}
+SydTest::Executor: [INFO] {3,30,200,1000}
+SydTest::Executor: [INFO] {2,40,500,4000}
+SydTest::Executor: [INFO] {1,50,300,2000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f1,f2 from T1 X  order by f1 desc limit 4) as X order by X.f1 desc
+SydTest::Executor: [INFO] {5,10}
+SydTest::Executor: [INFO] {4,20}
+SydTest::Executor: [INFO] {3,(null)}
+SydTest::Executor: [INFO] {1,50}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from (select f4 from T2 X where f4 > 0 order by f1 asc limit 4) as X natural inner join (select * from T2 order by f1) as T2 order by X.f4 asc
+SydTest::Executor: [INFO] {1000,3,30,200}
+SydTest::Executor: [INFO] {2000,1,50,300}
+SydTest::Executor: [INFO] {3000,4,20,400}
+SydTest::Executor: [INFO] {4000,2,40,500}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

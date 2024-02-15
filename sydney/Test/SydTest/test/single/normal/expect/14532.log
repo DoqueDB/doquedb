@@ -1,0 +1,598 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Plan_TraceOptimizationOutput
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Plan_TraceOptimizationOutput, 1
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Plan_TraceLevel
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Plan_TraceLevel, 2
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(C1 int, C2 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values
+		(0, null),
+		(1, 20),
+		(2, 8),
+		(3, 16),
+		(4, 2),
+		(5, 1),
+		(6, 3),
+		(7, 7),
+		(8, 10),
+		(9, 0),
+		(10, 3),
+		(11, 7),
+		(12, 8),
+		(13, null),
+		(14, 0),
+		(15, 10),
+		(16, 16),
+		(17, 18),
+		(18, 2),
+		(19, 12),
+		(20, 0),
+		(21, 11),
+		(22, 8),
+		(23, 3),
+		(24, 18),
+		(25, 10),
+		(26, 16),
+		(27, 2),
+		(28, 7),
+		(29, null)
+Opt::Generator: [DEBUG] Result Plan[0]:
+tuples to data:{#xx,#xx}
+    execute:
+           xx:generate rowid to data:#xx
+           xx:xxxx
+           xx:xxxx
+           xx:xxxx
+           xx:xxxx
+           xx:lock tuple
+           xx:write log
+           xx:prepare undolog
+          xx:insert RCD_T by data:{#xx,#xx,#xx,#xx}
+          xx:store undolog
+          xx:prepare undolog
+          xx:insert VCT_T_$$Conversion by data:{#xx,#xx}
+          xx:store undolog
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ROWID, C1, C2 from T where ROWID = 10
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.VCT_T_$$Conversion for
+        T.ROWID = 10 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {10,10,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ROWID, C1, C2 from T where 10 = ROWID
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.VCT_T_$$Conversion for
+        10 = T.ROWID to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {10,10,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I_1 on T(C2)
+Opt::Generator: [DEBUG] Result Plan[0]:
+sequential scan on T.RCD_T to data:{#xx,#xx}
+    execute:
+           xx:do until line xx unless check data:{#xx} is null
+           xx:insert BTR_I_1 by data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C2 > ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        T.C2 > 10 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {21,11}
+SydTest::Executor: [INFO] {19,12}
+SydTest::Executor: [INFO] {3,16}
+SydTest::Executor: [INFO] {16,16}
+SydTest::Executor: [INFO] {26,16}
+SydTest::Executor: [INFO] {17,18}
+SydTest::Executor: [INFO] {24,18}
+SydTest::Executor: [INFO] {1,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C2 < ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        T.C2 < 10 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {9,0}
+SydTest::Executor: [INFO] {14,0}
+SydTest::Executor: [INFO] {20,0}
+SydTest::Executor: [INFO] {5,1}
+SydTest::Executor: [INFO] {4,2}
+SydTest::Executor: [INFO] {18,2}
+SydTest::Executor: [INFO] {27,2}
+SydTest::Executor: [INFO] {6,3}
+SydTest::Executor: [INFO] {10,3}
+SydTest::Executor: [INFO] {23,3}
+SydTest::Executor: [INFO] {7,7}
+SydTest::Executor: [INFO] {11,7}
+SydTest::Executor: [INFO] {28,7}
+SydTest::Executor: [INFO] {2,8}
+SydTest::Executor: [INFO] {12,8}
+SydTest::Executor: [INFO] {22,8}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C2 >= ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        T.C2 >= 10 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {8,10}
+SydTest::Executor: [INFO] {15,10}
+SydTest::Executor: [INFO] {25,10}
+SydTest::Executor: [INFO] {21,11}
+SydTest::Executor: [INFO] {19,12}
+SydTest::Executor: [INFO] {3,16}
+SydTest::Executor: [INFO] {16,16}
+SydTest::Executor: [INFO] {26,16}
+SydTest::Executor: [INFO] {17,18}
+SydTest::Executor: [INFO] {24,18}
+SydTest::Executor: [INFO] {1,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C2 <= ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        T.C2 <= 10 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {9,0}
+SydTest::Executor: [INFO] {14,0}
+SydTest::Executor: [INFO] {20,0}
+SydTest::Executor: [INFO] {5,1}
+SydTest::Executor: [INFO] {4,2}
+SydTest::Executor: [INFO] {18,2}
+SydTest::Executor: [INFO] {27,2}
+SydTest::Executor: [INFO] {6,3}
+SydTest::Executor: [INFO] {10,3}
+SydTest::Executor: [INFO] {23,3}
+SydTest::Executor: [INFO] {7,7}
+SydTest::Executor: [INFO] {11,7}
+SydTest::Executor: [INFO] {28,7}
+SydTest::Executor: [INFO] {2,8}
+SydTest::Executor: [INFO] {12,8}
+SydTest::Executor: [INFO] {22,8}
+SydTest::Executor: [INFO] {8,10}
+SydTest::Executor: [INFO] {15,10}
+SydTest::Executor: [INFO] {25,10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C2 = ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        T.C2 = 10 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {8,10}
+SydTest::Executor: [INFO] {15,10}
+SydTest::Executor: [INFO] {25,10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C2 >= ? and C2 <> ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {5,10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        (T.C2 >= 5 and T.C2 != 10) to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {7,7}
+SydTest::Executor: [INFO] {11,7}
+SydTest::Executor: [INFO] {28,7}
+SydTest::Executor: [INFO] {2,8}
+SydTest::Executor: [INFO] {12,8}
+SydTest::Executor: [INFO] {22,8}
+SydTest::Executor: [INFO] {21,11}
+SydTest::Executor: [INFO] {19,12}
+SydTest::Executor: [INFO] {3,16}
+SydTest::Executor: [INFO] {16,16}
+SydTest::Executor: [INFO] {26,16}
+SydTest::Executor: [INFO] {17,18}
+SydTest::Executor: [INFO] {24,18}
+SydTest::Executor: [INFO] {1,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C2 >= ? and C2 != ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {5,10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        (T.C2 >= 5 and T.C2 != 10) to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {7,7}
+SydTest::Executor: [INFO] {11,7}
+SydTest::Executor: [INFO] {28,7}
+SydTest::Executor: [INFO] {2,8}
+SydTest::Executor: [INFO] {12,8}
+SydTest::Executor: [INFO] {22,8}
+SydTest::Executor: [INFO] {21,11}
+SydTest::Executor: [INFO] {19,12}
+SydTest::Executor: [INFO] {3,16}
+SydTest::Executor: [INFO] {16,16}
+SydTest::Executor: [INFO] {26,16}
+SydTest::Executor: [INFO] {17,18}
+SydTest::Executor: [INFO] {24,18}
+SydTest::Executor: [INFO] {1,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where ? < C2
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        10 < T.C2 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {21,11}
+SydTest::Executor: [INFO] {19,12}
+SydTest::Executor: [INFO] {3,16}
+SydTest::Executor: [INFO] {16,16}
+SydTest::Executor: [INFO] {26,16}
+SydTest::Executor: [INFO] {17,18}
+SydTest::Executor: [INFO] {24,18}
+SydTest::Executor: [INFO] {1,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where ? > C2
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        10 > T.C2 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {9,0}
+SydTest::Executor: [INFO] {14,0}
+SydTest::Executor: [INFO] {20,0}
+SydTest::Executor: [INFO] {5,1}
+SydTest::Executor: [INFO] {4,2}
+SydTest::Executor: [INFO] {18,2}
+SydTest::Executor: [INFO] {27,2}
+SydTest::Executor: [INFO] {6,3}
+SydTest::Executor: [INFO] {10,3}
+SydTest::Executor: [INFO] {23,3}
+SydTest::Executor: [INFO] {7,7}
+SydTest::Executor: [INFO] {11,7}
+SydTest::Executor: [INFO] {28,7}
+SydTest::Executor: [INFO] {2,8}
+SydTest::Executor: [INFO] {12,8}
+SydTest::Executor: [INFO] {22,8}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where ? <= C2
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        10 <= T.C2 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {8,10}
+SydTest::Executor: [INFO] {15,10}
+SydTest::Executor: [INFO] {25,10}
+SydTest::Executor: [INFO] {21,11}
+SydTest::Executor: [INFO] {19,12}
+SydTest::Executor: [INFO] {3,16}
+SydTest::Executor: [INFO] {16,16}
+SydTest::Executor: [INFO] {26,16}
+SydTest::Executor: [INFO] {17,18}
+SydTest::Executor: [INFO] {24,18}
+SydTest::Executor: [INFO] {1,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where ? >= C2
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        10 >= T.C2 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {9,0}
+SydTest::Executor: [INFO] {14,0}
+SydTest::Executor: [INFO] {20,0}
+SydTest::Executor: [INFO] {5,1}
+SydTest::Executor: [INFO] {4,2}
+SydTest::Executor: [INFO] {18,2}
+SydTest::Executor: [INFO] {27,2}
+SydTest::Executor: [INFO] {6,3}
+SydTest::Executor: [INFO] {10,3}
+SydTest::Executor: [INFO] {23,3}
+SydTest::Executor: [INFO] {7,7}
+SydTest::Executor: [INFO] {11,7}
+SydTest::Executor: [INFO] {28,7}
+SydTest::Executor: [INFO] {2,8}
+SydTest::Executor: [INFO] {12,8}
+SydTest::Executor: [INFO] {22,8}
+SydTest::Executor: [INFO] {8,10}
+SydTest::Executor: [INFO] {15,10}
+SydTest::Executor: [INFO] {25,10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where ? = C2
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        10 = T.C2 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {8,10}
+SydTest::Executor: [INFO] {15,10}
+SydTest::Executor: [INFO] {25,10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where ? >= C2 and ? <> C2
+SydTest::Executor: [INFO] [[SQL Parameter]] {5,10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        (5 >= T.C2 and 10 != T.C2) to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {9,0}
+SydTest::Executor: [INFO] {14,0}
+SydTest::Executor: [INFO] {20,0}
+SydTest::Executor: [INFO] {5,1}
+SydTest::Executor: [INFO] {4,2}
+SydTest::Executor: [INFO] {18,2}
+SydTest::Executor: [INFO] {27,2}
+SydTest::Executor: [INFO] {6,3}
+SydTest::Executor: [INFO] {10,3}
+SydTest::Executor: [INFO] {23,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where ? >= C2 and ? != C2
+SydTest::Executor: [INFO] [[SQL Parameter]] {5,10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+index scan on T.BTR_I_1 for
+        (5 >= T.C2 and 10 != T.C2) to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {9,0}
+SydTest::Executor: [INFO] {14,0}
+SydTest::Executor: [INFO] {20,0}
+SydTest::Executor: [INFO] {5,1}
+SydTest::Executor: [INFO] {4,2}
+SydTest::Executor: [INFO] {18,2}
+SydTest::Executor: [INFO] {27,2}
+SydTest::Executor: [INFO] {6,3}
+SydTest::Executor: [INFO] {10,3}
+SydTest::Executor: [INFO] {23,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I_1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I_2 on T(C2) hint 'compressed'
+Opt::Generator: [DEBUG] Result Plan[0]:
+sequential scan on T.RCD_T to data:{#xx,#xx}
+    execute:
+           xx:insert BMP_I_2 by data:{#xx,#xx}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C2 <> ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+bitset scan on data:#xx to data:#xx
+           xx:iterate once
+                <-- index scan on T.BMP_I_2[get by bitset] for
+                            T.C2 != 10 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {1,20}
+SydTest::Executor: [INFO] {2,8}
+SydTest::Executor: [INFO] {3,16}
+SydTest::Executor: [INFO] {4,2}
+SydTest::Executor: [INFO] {5,1}
+SydTest::Executor: [INFO] {6,3}
+SydTest::Executor: [INFO] {7,7}
+SydTest::Executor: [INFO] {9,0}
+SydTest::Executor: [INFO] {10,3}
+SydTest::Executor: [INFO] {11,7}
+SydTest::Executor: [INFO] {12,8}
+SydTest::Executor: [INFO] {14,0}
+SydTest::Executor: [INFO] {16,16}
+SydTest::Executor: [INFO] {17,18}
+SydTest::Executor: [INFO] {18,2}
+SydTest::Executor: [INFO] {19,12}
+SydTest::Executor: [INFO] {20,0}
+SydTest::Executor: [INFO] {21,11}
+SydTest::Executor: [INFO] {22,8}
+SydTest::Executor: [INFO] {23,3}
+SydTest::Executor: [INFO] {24,18}
+SydTest::Executor: [INFO] {26,16}
+SydTest::Executor: [INFO] {27,2}
+SydTest::Executor: [INFO] {28,7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C2 = ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+bitset scan on data:#xx to data:#xx
+           xx:iterate once
+                <-- index scan on T.BMP_I_2[get by bitset] for
+                            T.C2 = 10 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {8,10}
+SydTest::Executor: [INFO] {15,10}
+SydTest::Executor: [INFO] {25,10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C2 >= ? and C2 <> ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {5,10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+bitset scan on data:#xx to data:#xx
+           xx:iterate once
+                <-- index scan on T.BMP_I_2[get by bitset] for
+                            (T.C2 >= 5 and T.C2 != 10) to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {1,20}
+SydTest::Executor: [INFO] {2,8}
+SydTest::Executor: [INFO] {3,16}
+SydTest::Executor: [INFO] {7,7}
+SydTest::Executor: [INFO] {11,7}
+SydTest::Executor: [INFO] {12,8}
+SydTest::Executor: [INFO] {16,16}
+SydTest::Executor: [INFO] {17,18}
+SydTest::Executor: [INFO] {19,12}
+SydTest::Executor: [INFO] {21,11}
+SydTest::Executor: [INFO] {22,8}
+SydTest::Executor: [INFO] {24,18}
+SydTest::Executor: [INFO] {26,16}
+SydTest::Executor: [INFO] {28,7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where ? <> C2
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+bitset scan on data:#xx to data:#xx
+           xx:iterate once
+                <-- index scan on T.BMP_I_2[get by bitset] for
+                            10 != T.C2 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {1,20}
+SydTest::Executor: [INFO] {2,8}
+SydTest::Executor: [INFO] {3,16}
+SydTest::Executor: [INFO] {4,2}
+SydTest::Executor: [INFO] {5,1}
+SydTest::Executor: [INFO] {6,3}
+SydTest::Executor: [INFO] {7,7}
+SydTest::Executor: [INFO] {9,0}
+SydTest::Executor: [INFO] {10,3}
+SydTest::Executor: [INFO] {11,7}
+SydTest::Executor: [INFO] {12,8}
+SydTest::Executor: [INFO] {14,0}
+SydTest::Executor: [INFO] {16,16}
+SydTest::Executor: [INFO] {17,18}
+SydTest::Executor: [INFO] {18,2}
+SydTest::Executor: [INFO] {19,12}
+SydTest::Executor: [INFO] {20,0}
+SydTest::Executor: [INFO] {21,11}
+SydTest::Executor: [INFO] {22,8}
+SydTest::Executor: [INFO] {23,3}
+SydTest::Executor: [INFO] {24,18}
+SydTest::Executor: [INFO] {26,16}
+SydTest::Executor: [INFO] {27,2}
+SydTest::Executor: [INFO] {28,7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where ? = C2
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+bitset scan on data:#xx to data:#xx
+           xx:iterate once
+                <-- index scan on T.BMP_I_2[get by bitset] for
+                            10 = T.C2 to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {8,10}
+SydTest::Executor: [INFO] {15,10}
+SydTest::Executor: [INFO] {25,10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where ? >= C2 and ? <> C2
+SydTest::Executor: [INFO] [[SQL Parameter]] {5,10}
+Opt::Generator: [DEBUG] Result Plan[0]:
+bitset scan on data:#xx to data:#xx
+           xx:iterate once
+                <-- index scan on T.BMP_I_2[get by bitset] for
+                            (5 >= T.C2 and 10 != T.C2) to data:{#xx}
+    execute:
+           xx:file fetch on VCT_T_$$Conversion by data:#xx to data:{#xx}
+           xx:file fetch on RCD_T by data:#xx to data:{#xx,#xx}
+SydTest::Executor: [INFO] {4,2}
+SydTest::Executor: [INFO] {5,1}
+SydTest::Executor: [INFO] {6,3}
+SydTest::Executor: [INFO] {9,0}
+SydTest::Executor: [INFO] {10,3}
+SydTest::Executor: [INFO] {14,0}
+SydTest::Executor: [INFO] {18,2}
+SydTest::Executor: [INFO] {20,0}
+SydTest::Executor: [INFO] {23,3}
+SydTest::Executor: [INFO] {27,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

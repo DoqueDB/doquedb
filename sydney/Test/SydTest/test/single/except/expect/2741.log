@@ -1,0 +1,262 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(C int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I on T(C)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area A 'd:\dm\area\a'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB offline
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values (777)
+Worker: [ERR] (Server) [TESTDB] SQL=insert into T (C) values (777)
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2 (C int)
+Worker: [ERR] (Server) [TESTDB] SQL=create table T2 (C int)
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T(C)
+Worker: [ERR] (Server) [TESTDB] SQL=create index I2 on T(C)
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area A2 'd:\dm\area\a2'
+Worker: [ERR] (Server) [TESTDB] SQL=create area A2 'd:\dm\area\a2'
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table T set area A
+Worker: [ERR] (Server) [TESTDB] SQL=alter table T set area A
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter index I set area A
+Worker: [ERR] (Server) [TESTDB] SQL=alter index I set area A
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area A modify 'd:\dm\area\aa'
+Worker: [ERR] (Server) [TESTDB] SQL=alter area A modify 'd:\dm\area\aa'
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB set path 'd:\dm\area\db'
+Worker: [ERR] (Server) [TESTDB] SQL=alter database TESTDB set path 'd:\dm\area\db'
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+Worker: [ERR] (Server) [TESTDB] SQL=drop table T
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I
+Worker: [ERR] (Server) [TESTDB] SQL=drop index I
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area A
+Worker: [ERR] (Server) [TESTDB] SQL=drop area A
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+Worker: [ERR] (Server) [TESTDB] SQL=drop database TESTDB
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C from T
+Worker: [ERR] (Server) [TESTDB] SQL=select C from T
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB online
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB read only
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values (777)
+Worker: [ERR] (Server) [TESTDB] SQL=insert into T (C) values (777)
+Worker: [ERR] (Server) Object No=262155 (Analysis::InsertStatement_Base) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Analysis::InsertStatement_Base) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2 (C int)
+Worker: [ERR] (Server) [TESTDB] SQL=create table T2 (C int)
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T(C)
+Worker: [ERR] (Server) [TESTDB] SQL=create index I2 on T(C)
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area A2 'd:\dm\area\a2'
+Worker: [ERR] (Server) [TESTDB] SQL=create area A2 'd:\dm\area\a2'
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table T set area A
+Worker: [ERR] (Server) [TESTDB] SQL=alter table T set area A
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter index I set area A
+Worker: [ERR] (Server) [TESTDB] SQL=alter index I set area A
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area A modify 'd:\dm\area\aa'
+Worker: [ERR] (Server) [TESTDB] SQL=alter area A modify 'd:\dm\area\aa'
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB set path 'd:\dm\area\db'
+Worker: [ERR] (Server) [TESTDB] SQL=alter database TESTDB set path 'd:\dm\area\db'
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+Worker: [ERR] (Server) [TESTDB] SQL=drop table T
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I
+Worker: [ERR] (Server) [TESTDB] SQL=drop index I
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area A
+Worker: [ERR] (Server) [TESTDB] SQL=drop area A
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+Worker: [ERR] (Server) [TESTDB] SQL=drop database TESTDB
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB offline
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values (777)
+Worker: [ERR] (Server) [TESTDB] SQL=insert into T (C) values (777)
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C from T
+Worker: [ERR] (Server) [TESTDB] SQL=select C from T
+Worker: [ERR] (Server) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+Executor: [ERR] (SydTest) Object No=262156 (Server::Worker) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2 (C int)
+Worker: [ERR] (Server) [TESTDB] SQL=create table T2 (C int)
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T(C)
+Worker: [ERR] (Server) [TESTDB] SQL=create index I2 on T(C)
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area A2 'd:\dm\area\a2'
+Worker: [ERR] (Server) [TESTDB] SQL=create area A2 'd:\dm\area\a2'
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table T set area A
+Worker: [ERR] (Server) [TESTDB] SQL=alter table T set area A
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter index I set area A
+Worker: [ERR] (Server) [TESTDB] SQL=alter index I set area A
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area A modify 'd:\dm\area\aa'
+Worker: [ERR] (Server) [TESTDB] SQL=alter area A modify 'd:\dm\area\aa'
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB set path 'd:\dm\area\db'
+Worker: [ERR] (Server) [TESTDB] SQL=alter database TESTDB set path 'd:\dm\area\db'
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+Worker: [ERR] (Server) [TESTDB] SQL=drop table T
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I
+Worker: [ERR] (Server) [TESTDB] SQL=drop index I
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area A
+Worker: [ERR] (Server) [TESTDB] SQL=drop area A
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+Worker: [ERR] (Server) [TESTDB] SQL=drop database TESTDB
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+Worker: [ERR] (Server) [TESTDB] SQL=drop table T
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I
+Worker: [ERR] (Server) [TESTDB] SQL=drop index I
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area A
+Worker: [ERR] (Server) [TESTDB] SQL=drop area A
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+Worker: [ERR] (Server) [] SQL=drop database TESTDB
+Worker: [ERR] (Server) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+Executor: [ERR] (SydTest) Object No=262155 (Server::Worker) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB online
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

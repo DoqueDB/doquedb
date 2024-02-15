@@ -1,0 +1,37 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Exception_FakeError
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Exception_FakeError, Checkpoint::FileSynchronizer::execute count=1
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TEST
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(F int, primary key(F))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values 1,2,3,4,5
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] sync 1
+FileSynchronizer: [ERR] (Checkpoint) Database synchronization failed. Object No=xxx (XXX::XXX) Unexpected error occurred.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] sync 1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

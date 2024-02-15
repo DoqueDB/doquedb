@@ -1,0 +1,82 @@
+# blobファイルのテスト
+
+Begin;
+SetSystemParameter "SydTest_ShowBinary" "True";
+Initialize;
+
+
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T1(C1 nclob)";
+
+Command "select C1 from T1";
+Command "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\rnd1k-a.txt"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [textsjisfile "..\\..\\doc\\rnd1k-b.txt"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [textsjisfile "..\\..\\doc\\rnd1k-c.txt"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from   10) from T1";
+Command "select substring(C1 from    1 for 20) from T1";
+Command "select substring(C1 from 1491 for 20) from T1";
+Command "select substring(C1 from 2981 for 20) from T1";
+Command "update T1 set C1 = overlay(C1 placing ? from    1)" ["wwwwwwwww"]; # utf-16と解釈される
+Command "update T1 set C1 = overlay(C1 placing ? from 1491)" ["wwwwwwwww"];
+Command "update T1 set C1 = overlay(C1 placing ? from 2981)" ["wwwwwwwww"];
+Command "select substring(C1 from   10) from T1";
+Command "select substring(C1 from    1 for 20) from T1";
+Command "select substring(C1 from 1491 for 20) from T1";
+Command "select substring(C1 from 2981 for 20) from T1";
+Command "select C1 from T1";
+Command "update T1 set C1 = ?" [textsjisfile "..\\..\\doc\\rnd1k-a.txt"];
+Command "select char_length(C1) from T1";
+Command "select C1 from T1";
+Command "update T1 set C1 = ''";
+Command "select char_length(C1) from T1";
+Command "select C1 from T1";
+
+Command "drop table T1";
+
+Command "create table T1(C1 blob)";
+
+Command "select C1 from T1";
+Command "insert into T1(C1) values ('ABC')";
+Command "select C1 from T1";
+Command "update T1 set C1 = C1||'EFG'";
+Command "select C1 from T1";
+Command "update T1 set C1 = ''";
+Command "select C1 from T1";
+Command "select substring(C1 from 1 for 10) from T1";
+Command "select substring(C1 from 1) from T1";
+
+Command "drop table T1";
+
+Command "create table T1(C1 blob hint 'compressed')";
+
+Command "select C1 from T1";
+Command "insert into T1(C1) values ('ABC')";
+Command "select C1 from T1";
+Command "update T1 set C1 = C1||'EFG'";
+Command "select C1 from T1";
+Command "update T1 set C1 = ''";
+Command "select C1 from T1";
+Command "select substring(C1 from 1 for 10) from T1";
+Command "select substring(C1 from 1) from T1";
+
+Command "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+SetSystemParameter "SydTest_ShowBinary" "False";
+End;
+

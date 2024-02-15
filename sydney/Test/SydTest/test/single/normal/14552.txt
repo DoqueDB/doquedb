@@ -1,0 +1,41 @@
+Begin;
+Initialize;
+InitializeSession "";
+
+Command "create table T(c varchar(8) array[1])";
+Command "create bitmap index I on T(c) hint 'compressed'";
+
+Command "insert T values (array['abc
+'])";
+Command "insert T values (array['abc'])";
+Command "insert T values (array['abcxyz'])";
+Command "insert T values (array['abc
+'])";
+Command "insert T values (array['abc'])";
+Command "insert T values (array['abc xyz'])";
+
+Command "insert T values (array['
+'])";
+Command "insert T values (array[''])";
+Command "insert T values (array['xyz'])";
+Command "insert T values (array['
+'])";
+Command "insert T values (array[''])";
+Command "insert T values (array[' xyz'])";
+
+Command "select * from T where c[] like 'abc%'";
+Command "select * from T where c[] like 'abc%xyz'";
+Command "select * from T where c[] like 'abc%'";
+Command "select * from T where c[] like 'abc%xyz'";
+
+Command "select * from T where c[] like '%'";
+Command "select * from T where c[] like '%xyz'";
+
+Command "verify table T cascade continue";
+
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;
+

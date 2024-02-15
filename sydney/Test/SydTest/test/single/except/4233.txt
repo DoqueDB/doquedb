@@ -1,0 +1,23 @@
+Begin;
+
+SetSystemParameter "Exception_FakeError" "Checkpoint::FileSynchronizer::execute count=1";
+
+Initialize;
+
+InitializeSession "TEST";
+Command "create database TEST";
+Command "create table T(F int, primary key(F))";
+Command "insert into T values 1,2,3,4,5";
+
+# ここでFakeErrorが発生する
+Command "sync 1";
+
+Command "sync 1";
+
+Command "select * from T";
+
+TerminateSession;
+
+Terminate;
+
+End;

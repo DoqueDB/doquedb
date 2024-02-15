@@ -1,0 +1,27 @@
+# Bug report 1588
+
+# Vectorのテスト
+# Vector2のテスト
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+Command "create database TEST";
+
+Command "create table T(C int)";
+Command "insert T values 1";
+
+Command "select * from T where rowid = 0";
+Command "select * from T where rowid = 1";
+# [BUG]
+#  Vector2: 存在しないページを参照しようとしてエラー
+Command "select * from T where rowid = 2147483647";
+# [BUG]
+#  Vector2: 存在しないページを参照しようとしてエラー
+#  Vector: 0x80000000以上の値のキャストに失敗してエラー
+Command "select * from T where rowid = 2147483648";
+
+Command "drop database TEST";
+TerminateSession;
+Terminate;
+End;

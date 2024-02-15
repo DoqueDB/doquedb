@@ -1,0 +1,55 @@
+# 1450.txt: 1400.txtの縮小版
+Begin;
+
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (N int, C ntext, L language)";
+
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, textsjisfile "..\\..\\doc\\kenpou.txt", "ja"];
+PreparedCommand "ins" [1, textsjisfile "..\\..\\doc\\Teihon.txt", "en"];
+ErasePreparedCommand "ins";
+
+Command "select N from T where C like ? language ? and C like ? language ?"
+["%の%", "ja", "%the%", "en"];
+Command "select N from T where C like ? language ? or C like ? language ?"
+["%の%", "ja", "%the%", "en"];
+
+CreatePreparedCommand "sel" "select N from T where C like ? language ?";
+PreparedCommand "sel" ["%の%", "ja"];
+PreparedCommand "sel" ["%the%", "en"];
+PreparedCommand "sel" ["%主権%", "ja"];
+PreparedCommand "sel" ["%主権%", "en"];
+PreparedCommand "sel" ["%EU%", "en"];
+PreparedCommand "sel" ["%EU%", "ja"];
+
+# 索引作成
+Command "create fulltext index FTIndex on T(C) language column L
+	hint 'delayed, inverted=(normalized=true, indexing=word,
+	tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+Command "select N from T where C like ? language ? and C like ? language ?"
+["%の%", "ja", "%the%", "en"];
+Command "select N from T where C like ? language ? or C like ? language ?"
+["%の%", "ja", "%the%", "en"];
+PreparedCommand "sel" ["%の%", "ja"];
+PreparedCommand "sel" ["%the%", "en"];
+PreparedCommand "sel" ["%主権%", "ja"];
+PreparedCommand "sel" ["%主権%", "en"];
+PreparedCommand "sel" ["%EU%", "en"];
+PreparedCommand "sel" ["%EU%", "ja"];
+ErasePreparedCommand "sel";
+
+# verify
+Command "verify index FTIndex cascade continue";
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;
+

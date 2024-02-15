@@ -1,0 +1,22 @@
+# 一時表をverifyする
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table #1 (C1 ntext, C2 int)";
+Command "verify table #1";
+Command "insert into #1 values ('あ', 1), ('い', 2), ('う', 3)";
+Command "verify table #1";
+Command "drop table #1";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

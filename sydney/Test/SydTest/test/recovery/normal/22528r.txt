@@ -1,0 +1,49 @@
+#
+
+Begin;
+Initialize;
+InitializeSession "TESTDB" "user1" "password1";
+#期待結果:成功
+Command "create table #1 (f int)";
+#期待結果:成功
+Command "insert #1 values 1,2,3";
+#期待結果:成功
+Command "select * from #1";
+#期待結果:成功
+Command "drop table #1";
+#期待結果:エラー(privilege is not allowed)
+Command "create table TBL (f int)";
+TerminateSession;
+InitializeSession "TESTDB" "user2" "password2";
+#期待結果:エラー(privilege is not allowed)
+Command "create table #1 (f int)";
+#期待結果:エラー(privilege is not allowed)
+Command "insert #1 values 1,2,3";
+#期待結果:エラー(privilege is not allowed)
+Command "select * from #1";
+#期待結果:エラー(privilege is not allowed)
+Command "drop table #1";
+#期待結果:エラー(privilege is not allowed)
+Command "create table TBL (f int)";
+TerminateSession;
+InitializeSession "TESTDB" "user3" "password3";
+#期待結果:エラー(privilege is not allowed)
+Command "create table #1 (f int)";
+#期待結果:エラー(privilege is not allowed)
+Command "insert #1 values 1,2,3";
+#期待結果:エラー(privilege is not allowed)
+Command "select * from #1";
+#期待結果:エラー(privilege is not allowed)
+Command "drop table #1";
+#期待結果:成功
+Command "create table TBL (f int)";
+#期待結果:成功
+Command "insert TBL values 1,2,3";
+#期待結果:エラー(privilege is not allowed)
+Command "select * from TBL";
+#期待結果:成功
+Command "drop table TBL";
+TerminateSession;
+Terminate;
+System "rm -f \"c:\\Program Files\\Ricoh\\TRMeister\\test.pswd\"";
+End;

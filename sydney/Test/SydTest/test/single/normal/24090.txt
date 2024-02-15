@@ -1,0 +1,130 @@
+# Genie対応 IS SUBSTRING OF テスト
+# 障害票 2477
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+Command "create table TBL(f int array[no limit], g ntext array[no limit])";
+Command "insert TBL values (?, ?)" [[1], ["abc"]];
+Command "insert TBL values (?, ?)" [[2], ["bcd"]];
+Command "insert TBL values (?, ?)" [[3], ["cde"]];
+Command "insert TBL values (?, ?)" [[99], ["xyz"]];
+Command "insert TBL select t1.f || t2.f, t1.g || t2.g from TBL t1, TBL t2";
+Command "insert TBL select t1.f || t2.f, t1.g || t2.g from TBL t1, TBL t2";
+Command "insert TBL values (?, ?)" [[], []];
+Command "insert TBL values (null, null)";
+
+Command "create array index IDX_f on TBL(f)";
+
+Command "select * from TBL where f[] = 1 and array[1,2,3] is substring of f";
+# ↑期待結果
+#{{1,2,3},{abc,bcd,cde}}
+#{{1,1,2,3},{abc,abc,bcd,cde}}
+#{{1,2,3},{abc,bcd,cde}}
+#{{1,2,3,1},{abc,bcd,cde,abc}}
+#{{1,2,3,2},{abc,bcd,cde,bcd}}
+#{{1,2,3,3},{abc,bcd,cde,cde}}
+#{{1,2,3,99},{abc,bcd,cde,xyz}}
+#{{2,1,2,3},{bcd,abc,bcd,cde}}
+#{{3,1,2,3},{cde,abc,bcd,cde}}
+#{{99,1,2,3},{xyz,abc,bcd,cde}}
+
+Command "select * from TBL where f[] = 2 and array[2,2,3] is substring of f";
+# ↑期待結果
+#{{2,2,3},{bcd,bcd,cde}}
+#{{1,2,2,3},{abc,bcd,bcd,cde}}
+#{{2,2,3},{bcd,bcd,cde}}
+#{{2,2,2,3},{bcd,bcd,bcd,cde}}
+#{{2,2,3,1},{bcd,bcd,cde,abc}}
+#{{2,2,3,2},{bcd,bcd,cde,bcd}}
+#{{2,2,3,3},{bcd,bcd,cde,cde}}
+#{{2,2,3,99},{bcd,bcd,cde,xyz}}
+#{{3,2,2,3},{cde,bcd,bcd,cde}}
+#{{99,2,2,3},{xyz,bcd,bcd,cde}}
+
+Command "select * from TBL where g[] = 'abc' and array['abc', 'bcd', 'cde'] is substring of g";
+# ↑期待結果
+#{{1,2,3},{abc,bcd,cde}}
+#{{1,1,2,3},{abc,abc,bcd,cde}}
+#{{1,2,3},{abc,bcd,cde}}
+#{{1,2,3,1},{abc,bcd,cde,abc}}
+#{{1,2,3,2},{abc,bcd,cde,bcd}}
+#{{1,2,3,3},{abc,bcd,cde,cde}}
+#{{1,2,3,99},{abc,bcd,cde,xyz}}
+#{{2,1,2,3},{bcd,abc,bcd,cde}}
+#{{3,1,2,3},{cde,abc,bcd,cde}}
+#{{99,1,2,3},{xyz,abc,bcd,cde}}
+
+Command "select * from TBL where g[] = 'bcd' and array['bcd', 'bcd', 'cde'] is substring of g";
+# ↑期待結果
+#{{2,2,3},{bcd,bcd,cde}}
+#{{1,2,2,3},{abc,bcd,bcd,cde}}
+#{{2,2,3},{bcd,bcd,cde}}
+#{{2,2,2,3},{bcd,bcd,bcd,cde}}
+#{{2,2,3,1},{bcd,bcd,cde,abc}}
+#{{2,2,3,2},{bcd,bcd,cde,bcd}}
+#{{2,2,3,3},{bcd,bcd,cde,cde}}
+#{{2,2,3,99},{bcd,bcd,cde,xyz}}
+#{{3,2,2,3},{cde,bcd,bcd,cde}}
+#{{99,2,2,3},{xyz,bcd,bcd,cde}}
+
+Command "select * from TBL where f is substring of array[1,1,2,2,3,3,1,2,3]";
+# ↑期待結果
+#{{1},{abc}}
+#{{2},{bcd}}
+#{{3},{cde}}
+#{{1,1},{abc,abc}}
+#{{1,2},{abc,bcd}}
+#{{2,2},{bcd,bcd}}
+#{{2,3},{bcd,cde}}
+#{{3,1},{cde,abc}}
+#{{3,3},{cde,cde}}
+#{{1,1},{abc,abc}}
+#{{1,2},{abc,bcd}}
+#{{1,1,2},{abc,abc,bcd}}
+#{{1,2,2},{abc,bcd,bcd}}
+#{{1,2,3},{abc,bcd,cde}}
+#{{2,2},{bcd,bcd}}
+#{{2,3},{bcd,cde}}
+#{{2,2,3},{bcd,bcd,cde}}
+#{{2,3,3},{bcd,cde,cde}}
+#{{3,1},{cde,abc}}
+#{{3,3},{cde,cde}}
+#{{3,1,2},{cde,abc,bcd}}
+#{{3,3,1},{cde,cde,abc}}
+#{{1,1,2},{abc,abc,bcd}}
+#{{1,1,2,2},{abc,abc,bcd,bcd}}
+#{{1,2,2},{abc,bcd,bcd}}
+#{{1,2,3},{abc,bcd,cde}}
+#{{1,2,2,3},{abc,bcd,bcd,cde}}
+#{{2,2,3},{bcd,bcd,cde}}
+#{{2,2,3,3},{bcd,bcd,cde,cde}}
+#{{2,3,3},{bcd,cde,cde}}
+#{{2,3,3,1},{bcd,cde,cde,abc}}
+#{{3,1,2},{cde,abc,bcd}}
+#{{3,1,2,3},{cde,abc,bcd,cde}}
+#{{3,3,1},{cde,cde,abc}}
+#{{3,3,1,2},{cde,cde,abc,bcd}}
+
+Command "select * from TBL where f is substring of g";
+# ↑期待結果
+# 結果なし
+
+Command "select * from TBL where g is substring of f";
+# ↑期待結果
+# 結果なし
+
+Command "select * from TBL where 1 is substring of f";
+# ↑期待結果
+# SQL syntax error - Operands of 'is substring of' should be array type.
+
+Command "select * from TBL where 'abc' is substring of g";
+# ↑期待結果
+# SQL syntax error - Operands of 'is substring of' should be array type.
+
+TerminateSession;
+Terminate;
+End;

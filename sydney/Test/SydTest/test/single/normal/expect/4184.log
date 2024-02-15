@@ -1,0 +1,95 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DefaultDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (N int, C1 ntext array [no limit], 
+			 C2 ntext array [no limit], L language array [no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FT1 on T(C1) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FT2 on T(C2) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C1, C2, L) values (?, ?, ?, ?)
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 138591]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 138591]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 138591]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 138591]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C1) from T where C1 like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,ja}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C1) from T where C1 like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,en}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C1) from T where C1 like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%improve%,ja}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C1) from T where C1 like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%improve%,en}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C2) from T where C2 like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,ja}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C2) from T where C2 like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,en}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C2) from T where C2 like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%improve%,ja}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C2) from T where C2 like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%improve%,en}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index FT1 cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index FT2 cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify table T cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,255 @@
+# select * from T where〈 列リスト1個 〉in〈 table value constructor 〉--索引き無し
+#
+# in構文テスト
+# 索引
+# --索引無し
+# --同種テスト 104[0,1]0
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+
+# int型
+# メインテーブル
+Command  "create table T(C1 int, C2 int)";
+Command  "insert into T (C1, C2) values (?, ?)" [1, 111 ];
+Command  "insert into T (C1, C2) values (?, ?)" [2, 222 ];
+Command  "insert into T (C1, C2) values (?, ?)" [3, 222 ];
+Command  "insert into T (C1, C2) values (?, ?)" [4, 222 ];
+Command  "insert into T (C1, C2) values (?, ?)" [1, null];
+Command  "insert into T (C1, C2) values (?, ?)" [2, 333 ];
+Command  "insert into T (C1, C2) values (?, ?)" [3, 333 ];
+Command  "insert into T (C1, C2) values (?, ?)" [4, 333 ];
+Command  "insert into T (C1, C2) values (?, ?)" [1, 444 ];
+Command  "insert into T (C1, C2) values (?, ?)" [2, null];
+Command  "insert into T (C1, C2) values (?, ?)" [3, 444 ];
+Command  "insert into T (C1, C2) values (?, ?)" [4, 111 ];
+
+
+# --in (?) 
+Command  "select * from T where C1 in (?)" [null];
+Command  "select * from T where C1 in (?)" [1];
+Command  "select * from T where C1 in (?)" [9];
+
+Command  "select * from T where C2 in (?)" [null];
+Command  "select * from T where C2 in (?)" [333];
+Command  "select * from T where C2 in (?)" [999];
+
+# --in (?, ?)
+Command  "select * from T where C1 in (?, ?)" [null, null];
+Command  "select * from T where C1 in (?, ?)" [1, null];
+Command  "select * from T where C1 in (?, ?)" [1, 1];
+Command  "select * from T where C1 in (?, ?)" [1, 2];
+Command  "select * from T where C1 in (?, ?)" [1, 9];
+
+Command  "select * from T where C2 in (?, ?)" [null, null];
+Command  "select * from T where C2 in (?, ?)" [333, null];
+Command  "select * from T where C2 in (?, ?)" [333, 333];
+Command  "select * from T where C2 in (?, ?)" [333, 444];
+Command  "select * from T where C2 in (?, ?)" [333, 999];
+
+# --in (?, ?, ?)
+Command  "select * from T where C1 in (?, ?, ?)" [null, 1, 2];
+Command  "select * from T where C1 in (?, ?, ?)" [1, null, 2];
+Command  "select * from T where C1 in (?, ?, ?)" [1, 2, null];
+Command  "select * from T where C1 in (?, ?, ?)" [1, 2, 3];
+
+Command  "select * from T where C2 in (?, ?, ?)" [null, 333, 444];
+Command  "select * from T where C2 in (?, ?, ?)" [333, null, 444];
+Command  "select * from T where C2 in (?, ?, ?)" [333, 444, null];
+Command  "select * from T where C2 in (?, ?, ?)" [222, 333, 444];
+
+# --in (?) and in (?)
+Command  "select * from T where C1 in (?) and C1 in (?)" [1, 2];
+
+Command  "select * from T where C2 in (?) and C2 in (?)" [333, 444];
+
+Command  "select * from T where C1 in (?) and C2 in (?)" [2, 333];
+
+# --in (?, ?) and in (?, ?)
+Command  "select * from T where C1 in (?, ?) and C1 in (?, ?)" [1, 2, 1, 2];
+Command  "select * from T where C1 in (?, ?) and C1 in (?, ?)" [1, 2, 3, 4];
+
+Command  "select * from T where C2 in (?, ?) and C2 in (?, ?)" [333, 444, 333, 444];
+Command  "select * from T where C2 in (?, ?) and C2 in (?, ?)" [111, 222, 333, 444];
+
+Command  "select * from T where C1 in (?, ?) and C2 in (?, ?)" [1, 2, 333, 444];
+
+Command  "drop table T";
+
+
+# char型
+# メインテーブル
+Command  "create table T(C1 varchar(2), C2 nvarchar(4))";
+Command  "insert into T (C1, C2) values (?, ?)" ["1", "ほげ"];
+Command  "insert into T (C1, C2) values (?, ?)" ["2", "ホゲ"];
+Command  "insert into T (C1, C2) values (?, ?)" ["3", "ホゲ"];
+Command  "insert into T (C1, C2) values (?, ?)" ["4", "ホゲ"];
+Command  "insert into T (C1, C2) values (?, ?)" ["1",  null ];
+Command  "insert into T (C1, C2) values (?, ?)" ["2", "ぴよ"];
+Command  "insert into T (C1, C2) values (?, ?)" ["3", "ぴよ"];
+Command  "insert into T (C1, C2) values (?, ?)" ["4", "ぴよ"];
+Command  "insert into T (C1, C2) values (?, ?)" ["1", "ピヨ"];
+Command  "insert into T (C1, C2) values (?, ?)" ["2",  null ];
+Command  "insert into T (C1, C2) values (?, ?)" ["3", "ピヨ"];
+Command  "insert into T (C1, C2) values (?, ?)" ["4", "ほげ"];
+
+
+# --in (?) 
+Command  "select * from T where C1 in (?)" [null];
+Command  "select * from T where C1 in (?)" ["1"];
+Command  "select * from T where C1 in (?)" ["9"];
+
+Command  "select * from T where C2 in (?)" [null];
+Command  "select * from T where C2 in (?)" ["ぴよ"];
+Command  "select * from T where C2 in (?)" ["プウ"];
+
+# --in (?, ?)
+Command  "select * from T where C1 in (?, ?)" [null, null];
+Command  "select * from T where C1 in (?, ?)" ["1", null];
+Command  "select * from T where C1 in (?, ?)" ["1", "1"];
+Command  "select * from T where C1 in (?, ?)" ["1", "2"];
+Command  "select * from T where C1 in (?, ?)" ["1", "9"];
+
+Command  "select * from T where C2 in (?, ?)" [null, null];
+Command  "select * from T where C2 in (?, ?)" ["ぴよ", null];
+Command  "select * from T where C2 in (?, ?)" ["ぴよ", "ぴよ"];
+Command  "select * from T where C2 in (?, ?)" ["ぴよ", "ピヨ"];
+Command  "select * from T where C2 in (?, ?)" ["ぴよ", "プウ"];
+
+# --in (?, ?, ?)
+Command  "select * from T where C1 in (?, ?, ?)" [null, "ほげ", "ホゲ"];
+Command  "select * from T where C1 in (?, ?, ?)" ["ほげ", null, "ホゲ"];
+Command  "select * from T where C1 in (?, ?, ?)" ["ほげ", "ホゲ", null];
+Command  "select * from T where C1 in (?, ?, ?)" ["1", "2", "3"];
+
+Command  "select * from T where C2 in (?, ?, ?)" [null, "ぴよ", "ピヨ"];
+Command  "select * from T where C2 in (?, ?, ?)" ["ぴよ", null, "ピヨ"];
+Command  "select * from T where C2 in (?, ?, ?)" ["ぴよ", "ピヨ", null];
+Command  "select * from T where C2 in (?, ?, ?)" ["ホゲ", "ぴよ", "ほげ"];
+
+# --in (?) and in (?)
+Command  "select * from T where C1 in (?) and C1 in (?)" ["1", "2"];
+
+Command  "select * from T where C2 in (?) and C2 in (?)" ["ぴよ", "ピヨ"];
+
+Command  "select * from T where C1 in (?) and C2 in (?)" ["2", "ぴよ"];
+
+# --in (?, ?) and in (?, ?)
+Command  "select * from T where C1 in (?, ?) and C1 in (?, ?)" ["1", "2", "1", "2"];
+Command  "select * from T where C1 in (?, ?) and C1 in (?, ?)" ["1", "2", "3", "4"];
+
+Command  "select * from T where C2 in (?, ?) and C2 in (?, ?)" ["ぴよ", "ピヨ", "ぴよ", "ピヨ"];
+Command  "select * from T where C2 in (?, ?) and C2 in (?, ?)" ["ほげ", "ホゲ", "ぴよ", "ピヨ"];
+
+Command  "select * from T where C1 in (?, ?) and C2 in (?, ?)" ["1", "2", "ぴよ", "ピヨ"];
+
+Command  "drop table T";
+
+
+# nvarchar - text型
+# メインテーブル
+Command  "create table T(C1 nvarchar(448))";
+Command  "insert into T (C1) values (?)" [textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T (C1) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1) values (?)" [null                                 ];
+Command  "insert into T (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1) values (?)" [textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T (C1) values (?)" [null                                 ];
+Command  "insert into T (C1) values (?)" [textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T (C1) values (?)" [textsjisfile "..\\..\\doc\\lab.txt"   ];
+
+
+# --in (?) 
+Command  "select * from T where C1 in (?)" [null];
+Command  "select * from T where C1 in (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select * from T where C1 in (?)" [textsjisfile "..\\..\\doc\\hikaku.txt"];
+
+# --in (?, ?)
+Command  "select * from T where C1 in (?, ?)" [null, null];
+Command  "select * from T where C1 in (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", null];
+Command  "select * from T where C1 in (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select * from T where C1 in (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "select * from T where C1 in (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\hikaku.txt"];
+
+# --in (?, ?, ?)
+Command  "select * from T where C1 in (?, ?, ?)" [null, textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "select * from T where C1 in (?, ?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", null, textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "select * from T where C1 in (?, ?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt", null];
+
+Command  "select * from T where C1 in (?, ?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\in_lab.txt"];
+
+# --in (?) and in (?)
+Command  "select * from T where C1 in (?) and C1 in (?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"];
+
+# --in (?, ?) and in (?, ?)
+Command  "select * from T where C1 in (?, ?) and C1 in (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"];
+
+Command  "select * from T where C1 in (?, ?) and C1 in (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\in_lab.txt", textsjisfile "..\\..\\doc\\lab.txt"];
+
+Command  "drop table T";
+
+
+#異なる型でin() and in()テスト
+Command  "create table T(C1 int, C2 int, C3 varchar(2), C4 nvarchar(4), C5 nvarchar(448))";
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, 111,  "1", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 222,  "2", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 222,  "3", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 222,  "4", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, null, "1",  null,  null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 333,  "2", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 333,  "3", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 333,  "4", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, 444,  "1", "ピヨ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, null, "2",  null,  null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 444,  "3", "ピヨ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 111,  "4", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, null, "1", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 111,  "2",  null,  textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 222,  "3", "ほげ", null                                 ];
+
+
+# --in (?) and in (?)
+Command  "select * from T where C1 in (?) and C3 in (?)" [1, "1"];
+Command  "select * from T where C1 in (?) and C4 in (?)" [1, "ぴよ"];
+Command  "select * from T where C1 in (?) and C5 in (?)" [1, textsjisfile "..\\..\\doc\\hello.txt"];
+
+Command  "select * from T where C2 in (?) and C3 in (?)" [333, "1"];
+Command  "select * from T where C2 in (?) and C4 in (?)" [333, "ぴよ"];
+Command  "select * from T where C2 in (?) and C5 in (?)" [333, textsjisfile "..\\..\\doc\\hello.txt"];
+
+Command  "select * from T where C3 in (?) and C5 in (?)" ["ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select * from T where C4 in (?) and C5 in (?)" ["ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+
+# --in (?, ?) and in (?, ?)
+Command  "select * from T where C1 in (?, ?) and C3 in (?, ?)" [1, 2, "1", "2"];
+Command  "select * from T where C1 in (?, ?) and C4 in (?, ?)" [1, 2, "ぴよ", "ピヨ"];
+Command  "select * from T where C1 in (?, ?) and C5 in (?, ?)" [1, 2, textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"];
+
+Command  "select * from T where C2 in (?, ?) and C3 in (?, ?)" [333, 444, "1", "2"];
+Command  "select * from T where C2 in (?, ?) and C4 in (?, ?)" [333, 444, "ぴよ", "ピヨ"];
+Command  "select * from T where C2 in (?, ?) and C5 in (?, ?)" [333, 444, textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"];
+
+Command  "select * from T where C3 in (?, ?) and C5 in (?, ?)" ["1", "2", textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "select * from T where C4 in (?, ?) and C5 in (?, ?)" ["ぴよ", "ピヨ", textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"];
+
+Command  "drop table T";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

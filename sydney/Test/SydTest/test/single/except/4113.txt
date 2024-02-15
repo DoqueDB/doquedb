@@ -1,0 +1,65 @@
+# lang情報のついた全文索引のテスト(scalar, delayed, fixed lang)
+
+Begin;
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (N int, C ntext, L language)";
+
+# 索引作成
+Command "create fulltext index FTIndex on T(C) language column L hint 'delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, textucsfile "..\\..\\doc\\takekurabe.txt", "ja+en"];
+PreparedCommand "ins" [1, textucsfile "..\\..\\doc\\takekurabe.txt", "ja+en"];
+PreparedCommand "ins" [2, textucsfile "..\\..\\doc\\takekurabe.txt", "ja+en"];
+PreparedCommand "ins" [3, null, "ja+en"];
+ErasePreparedCommand "ins";
+
+CreatePreparedCommand "langs" "select (N, L) from T";
+PreparedCommand "langs";
+CreatePreparedCommand "sel" "select N from T where C like ? or C like ?";
+PreparedCommand "sel" ["%Google%", "%google%"];
+
+CreatePreparedCommand "upd1" "update T set L=?";
+PreparedCommand "upd1" ["ja"]; #これを省くと再現しない
+PreparedCommand "upd1" ["ko"]; #unsupported language
+Command "verify index FTIndex cascade continue";
+
+#update(1)
+# 失敗するはず
+PreparedCommand "upd1" [null];
+
+PreparedCommand "langs";
+PreparedCommand "sel" ["%Google%", "%google%"];
+Command "verify index FTIndex cascade continue";
+ErasePreparedCommand "upd1";
+
+#update(2)
+CreatePreparedCommand "upd2" "update T set L=? where N=?";
+
+# 将来韓国語(ko)やポルトガル語(pt)をサポートすることが
+# あった場合、"ko"や"pt"は適宜差し替えること
+PreparedCommand "upd2" ["pt", 0];
+PreparedCommand "upd2" ["ko", 1];
+PreparedCommand "upd2" ["ko+nl", 2];
+PreparedCommand "upd2" ["ja+pt", 3];
+PreparedCommand "langs";
+PreparedCommand "sel" ["%Google%", "%google%"];
+Command "verify index FTIndex cascade continue";
+
+ErasePreparedCommand "upd2";
+ErasePreparedCommand "langs";
+ErasePreparedCommand "sel";
+
+Command "update T set C=? where N=3" [textucsfile "..\\..\\doc\\takekurabe.txt"];
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;
+

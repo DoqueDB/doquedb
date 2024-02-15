@@ -1,0 +1,33 @@
+# 障害票 1188
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+
+Command "create table TBL(f int, g ntext, primary key(f))";
+Command "create table TBL2(f int, g ntext, primary key(f))";
+Command "create table TBL3(f int, g ntext, primary key(f))";
+
+Command "insert TBL values (1, 'aaa'), (2, 'bbb'), (3, 'ccc')";
+Command "insert TBL2 values (1, 'aaa'), (2, 'bbb'), (3, 'ccc')";
+Command "insert TBL3 values (1, 'aaa'), (2, 'bbb'), (3, 'ccc')";
+
+Command "create fulltext index IDX on TBL(g)";
+Command "create fulltext index IDX2 on TBL2(g)";
+Command "create fulltext index IDX3 on TBL3(g)";
+
+Command "select * from TBL where (g contains 'a'|'b'|'c'
+				or exists (select * from TBL2, TBL3 where TBL2.f = TBL.f
+								and TBL2.f = TBL3.f
+					)
+				)
+			and (g contains 'x'|'y'|'z'
+				or exists (select * from TBL2 where f = TBL.f)
+				)
+";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

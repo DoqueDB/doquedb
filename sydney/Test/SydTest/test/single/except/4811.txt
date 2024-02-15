@@ -1,0 +1,26 @@
+# エラーを起こす算術演算(四則、関数)のテスト
+# 今は足し算だけ
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#表の準備
+Command "create table T (Dummy int)";
+#大きな適当なタプルを入れる
+Command "insert T values (2147483647), (2147483647)";
+
+# Data exception - numeric value out of rangeのエラーが起こる
+Command "select sum(Dummy) from T";
+
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

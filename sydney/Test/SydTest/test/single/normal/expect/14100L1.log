@@ -1,0 +1,702 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] LogicalFile_BtreeFileDriver
+SydTest::Executor: [INFO] [SydTest Parameter and Value] LogicalFile_BtreeFileDriver, SyDrvBtr2
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database IndexHintTest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] IndexHintTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C1 nvarchar(32))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T2(C1) hint 'normalized'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('ABC')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ab%'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'abc'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('xyz')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'XY%'
+SydTest::Executor: [INFO] {xyz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'XYZ'
+SydTest::Executor: [INFO] {xyz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('ＡＢＣ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'AB%'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] {ＡＢＣ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ABC'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] {ＡＢＣ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('！＠＃')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like '!@%'
+SydTest::Executor: [INFO] {！＠＃}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like '!@#'
+SydTest::Executor: [INFO] {！＠＃}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('イロハ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ｲﾛ%'
+SydTest::Executor: [INFO] {イロハ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ｲﾛﾊ'
+SydTest::Executor: [INFO] {イロハ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'バガ%'
+SydTest::Executor: [INFO] {ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'バカ%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'バガボンドノパパ'
+SydTest::Executor: [INFO] {ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('ABC')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ＡＢ%'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] {ＡＢＣ}
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ＡＢＣ'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] {ＡＢＣ}
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('!@#')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like '！＠%'
+SydTest::Executor: [INFO] {！＠＃}
+SydTest::Executor: [INFO] {!@#}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like '！＠＃'
+SydTest::Executor: [INFO] {！＠＃}
+SydTest::Executor: [INFO] {!@#}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('ｲﾛﾊ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'イロ%'
+SydTest::Executor: [INFO] {イロハ}
+SydTest::Executor: [INFO] {ｲﾛﾊ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'イロハ'
+SydTest::Executor: [INFO] {イロハ}
+SydTest::Executor: [INFO] {ｲﾛﾊ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('バガボンドノパパ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ﾊﾞｶﾞ%'
+SydTest::Executor: [INFO] {ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] {バガボンドノパパ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ﾊﾞｶ%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ'
+SydTest::Executor: [INFO] {ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] {バガボンドノパパ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C1 int, C2 nvarchar(32))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T2(C1, C2) hint 'normalized'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'ABC')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ab%'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'abc'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'xyz')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'XY%'
+SydTest::Executor: [INFO] {1,xyz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'XYZ'
+SydTest::Executor: [INFO] {1,xyz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'ＡＢＣ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'AB%'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] {1,ＡＢＣ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ABC'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] {1,ＡＢＣ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, '！＠＃')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like '!@%'
+SydTest::Executor: [INFO] {1,！＠＃}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like '!@#'
+SydTest::Executor: [INFO] {1,！＠＃}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'イロハ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ｲﾛ%'
+SydTest::Executor: [INFO] {1,イロハ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ｲﾛﾊ'
+SydTest::Executor: [INFO] {1,イロハ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'バガ%'
+SydTest::Executor: [INFO] {1,ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'バカ%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'バガボンドノパパ'
+SydTest::Executor: [INFO] {1,ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'ABC')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ＡＢ%'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] {1,ＡＢＣ}
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ＡＢＣ'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] {1,ＡＢＣ}
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, '!@#')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like '！＠%'
+SydTest::Executor: [INFO] {1,！＠＃}
+SydTest::Executor: [INFO] {1,!@#}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like '！＠＃'
+SydTest::Executor: [INFO] {1,！＠＃}
+SydTest::Executor: [INFO] {1,!@#}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'ｲﾛﾊ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'イロ%'
+SydTest::Executor: [INFO] {1,イロハ}
+SydTest::Executor: [INFO] {1,ｲﾛﾊ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'イロハ'
+SydTest::Executor: [INFO] {1,イロハ}
+SydTest::Executor: [INFO] {1,ｲﾛﾊ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'バガボンドノパパ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶﾞ%'
+SydTest::Executor: [INFO] {1,ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] {1,バガボンドノパパ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶ%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ'
+SydTest::Executor: [INFO] {1,ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] {1,バガボンドノパパ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1 on T1(C1) hint 'normalized'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C1 nvarchar(32))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T2(C1) hint 'normalized'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] IndexHintTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 values (1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('ABC')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ab%'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'abc'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('xyz')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'XY%'
+SydTest::Executor: [INFO] {xyz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'XYZ'
+SydTest::Executor: [INFO] {xyz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('ＡＢＣ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'AB%'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] {ＡＢＣ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ABC'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] {ＡＢＣ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('！＠＃')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like '!@%'
+SydTest::Executor: [INFO] {！＠＃}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like '!@#'
+SydTest::Executor: [INFO] {！＠＃}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('イロハ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ｲﾛ%'
+SydTest::Executor: [INFO] {イロハ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ｲﾛﾊ'
+SydTest::Executor: [INFO] {イロハ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'バガ%'
+SydTest::Executor: [INFO] {ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'バカ%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'バガボンドノパパ'
+SydTest::Executor: [INFO] {ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('ABC')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ＡＢ%'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] {ＡＢＣ}
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ＡＢＣ'
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] {ＡＢＣ}
+SydTest::Executor: [INFO] {ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('!@#')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like '！＠%'
+SydTest::Executor: [INFO] {！＠＃}
+SydTest::Executor: [INFO] {!@#}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like '！＠＃'
+SydTest::Executor: [INFO] {！＠＃}
+SydTest::Executor: [INFO] {!@#}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('ｲﾛﾊ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'イロ%'
+SydTest::Executor: [INFO] {イロハ}
+SydTest::Executor: [INFO] {ｲﾛﾊ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'イロハ'
+SydTest::Executor: [INFO] {イロハ}
+SydTest::Executor: [INFO] {ｲﾛﾊ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('バガボンドノパパ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ﾊﾞｶﾞ%'
+SydTest::Executor: [INFO] {ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] {バガボンドノパパ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ﾊﾞｶ%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 like 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ'
+SydTest::Executor: [INFO] {ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] {バガボンドノパパ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 int, C2 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1 on T1(C1, C2) hint 'normalized'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C1 int, C2 nvarchar(32))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T2(C1, C2) hint 'normalized'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] IndexHintTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 values (1, 1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'ABC')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ab%'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'abc'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'xyz')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'XY%'
+SydTest::Executor: [INFO] {1,xyz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'XYZ'
+SydTest::Executor: [INFO] {1,xyz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'ＡＢＣ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'AB%'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] {1,ＡＢＣ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ABC'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] {1,ＡＢＣ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, '！＠＃')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like '!@%'
+SydTest::Executor: [INFO] {1,！＠＃}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like '!@#'
+SydTest::Executor: [INFO] {1,！＠＃}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'イロハ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ｲﾛ%'
+SydTest::Executor: [INFO] {1,イロハ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ｲﾛﾊ'
+SydTest::Executor: [INFO] {1,イロハ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'バガ%'
+SydTest::Executor: [INFO] {1,ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'バカ%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'バガボンドノパパ'
+SydTest::Executor: [INFO] {1,ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'ABC')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ＡＢ%'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] {1,ＡＢＣ}
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ＡＢＣ'
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] {1,ＡＢＣ}
+SydTest::Executor: [INFO] {1,ABC}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, '!@#')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like '！＠%'
+SydTest::Executor: [INFO] {1,！＠＃}
+SydTest::Executor: [INFO] {1,!@#}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like '！＠＃'
+SydTest::Executor: [INFO] {1,！＠＃}
+SydTest::Executor: [INFO] {1,!@#}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'ｲﾛﾊ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'イロ%'
+SydTest::Executor: [INFO] {1,イロハ}
+SydTest::Executor: [INFO] {1,ｲﾛﾊ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'イロハ'
+SydTest::Executor: [INFO] {1,イロハ}
+SydTest::Executor: [INFO] {1,ｲﾛﾊ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'バガボンドノパパ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶﾞ%'
+SydTest::Executor: [INFO] {1,ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] {1,バガボンドノパパ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶ%'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ'
+SydTest::Executor: [INFO] {1,ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ}
+SydTest::Executor: [INFO] {1,バガボンドノパパ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database IndexHintTest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

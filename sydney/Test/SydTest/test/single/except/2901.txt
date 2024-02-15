@@ -1,0 +1,28 @@
+#verify index (異常系)
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#列や索引の指定はなるべく複雑なものを選んでみた
+Command "create table T (F ntext array[no limit] hint heap 'compressed')";
+Command "create fulltext index I on T(F) hint 'sectionized, delayed'";
+
+#read onlyなのでcorrectできない、よってエラー
+Command "start transaction read only, using snapshot";
+Command "verify index I correct";
+Command "verify index I cascade correct";
+Command "verify index I continue correct";
+Command "verify index I cascade continue correct";
+Command "commit";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

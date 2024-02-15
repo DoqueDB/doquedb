@@ -1,0 +1,55 @@
+# 暗黙の型変換のテスト
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T (I1 int, F1 float, NVC nvarchar(256))";
+
+#real->integer
+Command "insert T (I1) values (3.14159)";
+Command "insert T (I1) values (2.71828)";
+Rowset "select I1 from T";
+Command "delete from T";
+
+#integer->real
+Command "insert T (F1) values (14159)";
+Rowset "select F1 from T";
+Command "delete from T";
+
+#string->integer
+Command "insert T (I1) values ('aaa')";
+Rowset "select I1 from T";
+Command "delete from T";
+
+#string->real
+Command "insert T (F1) values ('aaa')";
+Rowset "select F1 from T";
+Command "delete from T";
+
+#real->string
+Command "insert T (NVC) values (3.14159)";
+Rowset "select NVC from T";
+Command "delete from T";
+
+#integer->string
+Command "insert T (NVC) values (14159)";
+Rowset "select NVC from T";
+Command "delete from T";
+
+#Command "drop table T";
+
+Command  "select * from T";
+
+TerminateSession;
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+

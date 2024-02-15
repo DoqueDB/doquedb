@@ -1,0 +1,89 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Prepare begin.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB if exists
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL1(f int, g ntext, primary key(f))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL2(f int, primary key(f))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (1, 'abc'), (2, 'def')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 select rowid from TBL1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 select f+2, g||'x' from TBL1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 select f+4, g||'y' from TBL1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 select f+8, g||'z' from TBL1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Prepare end.
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Test begin.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where TBL1.rowid = TBL2.f
+SydTest::Executor: [INFO] {1,abc,0}
+SydTest::Executor: [INFO] {2,def,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where TBL1.rowid = TBL2.rowid
+SydTest::Executor: [INFO] {1,abc,0}
+SydTest::Executor: [INFO] {2,def,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where TBL1.f = TBL2.rowid
+SydTest::Executor: [INFO] {1,abc,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where TBL1.rowid = TBL2.f and TBL1.f < 2
+SydTest::Executor: [INFO] {1,abc,0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where TBL1.rowid = TBL2.rowid and TBL1.f < 2
+SydTest::Executor: [INFO] {1,abc,0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where TBL1.f = TBL2.rowid and TBL1.f < 2
+SydTest::Executor: [INFO] {1,abc,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Test end.
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Finish
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Finish begin.
+SydTest::Executor: [INFO] [Finish] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Finish end.
+SydTest::Executor: [INFO] [SydTest Option] Finish
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

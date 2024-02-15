@@ -1,0 +1,483 @@
+# 
+#配列データへの検索
+#
+#2006.01.24 tajima
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDBA";
+TerminateSession;
+
+InitializeSession "TESTDBA";
+#
+#int
+#
+Command "create table IntArrayTable (NUM int, ARRAYVALUE int array[8])";
+Command "create bitmap index I_DX on IntArrayTable(ARRAYVALUE)";
+
+Command "insert into IntArrayTable values (1, array[1, 2, 5000, 200])";
+Command "insert into IntArrayTable values (2, array[2, NULL, 89, 300])";
+Command "insert into IntArrayTable values (3, array[300, NULL, NULL, -1234567,NULL,-765432])";
+Command "insert into IntArrayTable values (4, array[0, 200, -3566, 9876])";
+Command "insert into IntArrayTable values (5, array[-1, 24, 2147483647, 300])";
+Command "insert into IntArrayTable values (6, array[2, -250, -2148, 812345])";
+Command "insert into IntArrayTable values (7, array[3, -750, 483648, 12345])";
+Command "insert into IntArrayTable values (8, array[4, -503, -23648, 612345])";
+Command "insert into IntArrayTable values (9, array[25, -520, -83648,2147483643])";
+Command "insert into IntArrayTable values (10, array[26, -150, -2147483648, 912345])";
+
+#障害表0730に対応NULLを入れるとBadArgument
+#index あり
+Command "insert into IntArrayTable values (11, NULL)";
+
+Command "verify table IntArrayTable";
+Command "verify index  I_DX cascade continue";
+
+Command "select * from IntArrayTable order by NUM";
+
+Command "select * from IntArrayTable where ARRAYVALUE[] = 0 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = -2147483648 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 3000000000 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345 order by NUM";
+Command "select * from IntArrayTable where NUM < 3 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 1 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = 2147483647";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = 2147483650";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = -150 and ARRAYVALUE[] = 2147483650 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 1 and ARRAYVALUE[] = 300 or ARRAYVALUE[] = -250 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] is NULL order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE is NULL order by NUM";
+
+#index
+
+Command "drop index I_DX";
+
+Command "select * from IntArrayTable order by NUM";
+
+Command "select * from IntArrayTable where ARRAYVALUE[] = 0 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = -2147483648 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 3000000000 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345 order by NUM";
+Command "select * from IntArrayTable where NUM < 3 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 1 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = 2147483647";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = 2147483650";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = -150 and ARRAYVALUE[] = 2147483650 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] = 1 and ARRAYVALUE[] = 300 or ARRAYVALUE[] = -250 order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE[] is NULL order by NUM";
+Command "select * from IntArrayTable where ARRAYVALUE is NULL order by NUM";
+
+########################
+#
+#float
+#
+#
+Command "create table floatArrayTable (NUM int, ARRAYVALUE float array[8])";
+Command "create bitmap index I_DX1 on floatArrayTable(ARRAYVALUE)";
+
+Command "insert into floatArrayTable values (1, array[-1, 2.3987, 100.0, 1])";
+Command "insert into floatArrayTable values (2, array[NULL, NULL, 3.141592, 2])";
+Command "insert into floatArrayTable values (3, array[NULL, NULL, 50.5687, 3])";
+Command "insert into floatArrayTable values (4, array[3.141592, 3.141592,61, 4])";
+Command "insert into floatArrayTable values (5, array[0.5687, 50.5687, 52,5])";
+Command "insert into floatArrayTable values (6, array[5950.5687, -50.5687, 2,200])";
+Command "insert into floatArrayTable values (7, array[9850.56, 14.23550, 758,NULL])";
+Command "insert into floatArrayTable values (8, array[12.87, 0.5687, 2,10000])";
+Command "insert into floatArrayTable values (9, array[9.1234, 0, 20,1])";
+Command "insert into floatArrayTable values (10, array[50.567, NULL, -20000,12345.0])";
+Command "insert into floatArrayTable values (11, array[0.0, NULL, -320000,182345.0])";
+#障害表0730に対応NULLを入れるとBadArgument
+Command "insert into floatArrayTable values (12, NULL)";
+
+Command "verify table floatArrayTable";
+Command "verify index  I_DX1 cascade continue";
+
+Command "select * from floatArrayTable order by NUM";
+
+Command "select * from floatArrayTable where ARRAYVALUE[] = 0.0 order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE[] = 0.5687 order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE[] = 9223372036854775810.9223372036854775810 order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345.0 order by NUM";
+Command "select * from floatArrayTable where NUM < 8 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE[] = -1 and ARRAYVALUE[] = 3.141592 or ARRAYVALUE[] = 50.567 order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE[] is NULL order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE is NULL order by NUM";
+
+
+#index
+
+Command "drop index I_DX1";
+
+Command "select * from floatArrayTable where ARRAYVALUE[] = 0.0 order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE[] = 0.5687 order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE[] = 9223372036854775810.9223372036854775810 order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345.0 order by NUM";
+Command "select * from floatArrayTable where NUM < 8 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE[] = -1 and ARRAYVALUE[] = 3.141592 or ARRAYVALUE[] = 50.567 order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE[] is NULL order by NUM";
+Command "select * from floatArrayTable where ARRAYVALUE is NULL order by NUM";
+
+################################
+#
+#bigint
+#
+
+Command "create table bigintArrayTable (NUM int, ARRAYVALUE bigint array[8])";
+Command "create bitmap index I_DX2 on bigintArrayTable(ARRAYVALUE)";
+
+Command "insert into bigintArrayTable values (1, array[NULL, 3, 100, 1])";
+Command "insert into bigintArrayTable values (2, array[NULL, NULL, 100, 2867940])";
+Command "insert into bigintArrayTable values (3, array[NULL, NULL, NULL, -123940567])";
+Command "insert into bigintArrayTable values (4, array[NULL, NULL, NULL, -123940567,NULL,9238475637,NULL])";
+Command "insert into bigintArrayTable values (5, array[100, 45000, 5555, -1])";
+Command "insert into bigintArrayTable values (6, array[1, -1000000, 9223372036854775807, 2])";
+Command "insert into bigintArrayTable values (7, array[2, 5100, -9223372036854775808, 3])";
+Command "insert into bigintArrayTable values (8, array[3, 4100, -36854580, 4])";
+Command "insert into bigintArrayTable values (9, array[4, 3100, -9, 5])";
+Command "insert into bigintArrayTable values (10, array[5, 1100, 808, 63])";
+Command "insert into bigintArrayTable values (11, array[1, 0, 808, 63])";
+#障害表0730に対応NULLを入れるとBadArgument
+Command "insert into bigintArrayTable values (12, NULL)";
+
+Command "verify table bigintArrayTable";
+Command "verify index  I_DX2 cascade continue";
+
+Command "select * from bigintArrayTable order by NUM";
+
+Command "select * from bigintArrayTable where ARRAYVALUE[] = 0 order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE[] = 100 order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE[] = 9223372036854775810 order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345.0 order by NUM";
+Command "select * from bigintArrayTable where NUM>=5 and ARRAYVALUE[] = 5100 and ARRAYVALUE[] = -9223372036854775808 order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE[] = -9 and ARRAYVALUE[] = 3 or ARRAYVALUE[] = 63 order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE[] is NULL order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE is NULL order by NUM";
+
+#index
+
+Command "drop index I_DX2";
+
+Command "select * from bigintArrayTable order by NUM";
+
+Command "select * from bigintArrayTable where ARRAYVALUE[] = 0 order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE[] = 100 order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE[] = 9223372036854775810 order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345.0 order by NUM";
+Command "select * from bigintArrayTable where NUM>=5 and ARRAYVALUE[] = 5100 and ARRAYVALUE[] = -9223372036854775808 order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE[] = -9 and ARRAYVALUE[] = 3 or ARRAYVALUE[] = 63 order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE[] is NULL order by NUM";
+Command "select * from bigintArrayTable where ARRAYVALUE is NULL order by NUM";
+
+################################################
+#
+#char
+#
+Command "create table c8at (id int,c char(8) array[no limit])";
+Command "create bitmap index I_DX3 on c8at(c)";
+
+Command "insert into c8at values (1,array['abcd', 'xyz'])";
+Command "insert into c8at values (2,array['XYXYX', NULL, 'ABAB'])";
+Command "insert into c8at values (3,array['B', 'OPQ', NULL])";
+Command "insert into c8at values (4,array[NULL, 'wedenesday', 'ABC'])";
+Command "insert into c8at values (5,array['', 'desk', ''])";
+#障害表0730に対応NULLを入れるとBadArgument
+Command "insert into c8at values (6, NULL)";
+
+Command "verify table c8at";
+Command "verify index  I_DX3 cascade continue";
+
+Command "select * from c8at order by id";
+
+Command "select * from c8at where  c[] = 'B' and  c[] = 'OPQ' ";
+Command "select * from c8at where  c[] = 'wedenesday' or  c[] = 'abcd' ";
+Command "select * from c8at where  c[] = 'wedenesday' and  c[] = 'ABC' or c[] = 'xyz' ";
+Command "select * from c8at where  c[] like 'ABC'";
+Command "select * from c8at where  c[] like 'ABC%'";
+Command "select * from c8at where  c[] = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'";
+Command "select * from c8at where  c[] = '' ";
+Command "select * from c8at where  c[] is NULL ";
+Command "select * from c8at where  c is NULL ";
+
+#index
+
+Command "drop index I_DX3";
+
+Command "select * from c8at order by id";
+
+Command "select * from c8at where  c[] = 'B' and  c[] = 'OPQ' ";
+Command "select * from c8at where  c[] = 'wedenesday' or  c[] = 'abcd' ";
+Command "select * from c8at where  c[] = 'wedenesday' and  c[] = 'ABC' or c[] = 'xyz' ";
+Command "select * from c8at where  c[] like 'ABC'";
+Command "select * from c8at where  c[] like 'ABC%'";
+Command "select * from c8at where  c[] = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'";
+Command "select * from c8at where  c[] = '' ";
+Command "select * from c8at where  c[] is NULL ";
+Command "select * from c8at where  c is NULL ";
+
+###########################################
+#
+#varchar
+#
+Command "create table v8at (id int,vc varchar(20) array[no limit])";
+Command "create bitmap index I_DX4 on v8at(vc)";
+
+Command "select * from c8at order by id";
+
+Command "insert into v8at values (1,array['abcd', 'xyz'])";
+Command "insert into v8at values (2,array['XYXYX', NULL, 'ABAB'])";
+Command "insert into v8at values (3,array['B', 'OPQ', NULL])";
+Command "insert into v8at values (4,array[NULL, 'abcdef', 'ABC'])";
+Command "insert into v8at values (5,array[NULL, 'spring has come', ''])";
+#障害表0730に対応NULLを入れるとBadArgument
+Command "insert into v8at values (6, NULL)";
+
+Command "select * from v8at where  vc[] = 'B' and  vc[] = 'OPQ' ";
+Command "select * from v8at where  vc[] = 'abcd' or  vc[] = 'ABC' ";
+Command "select * from v8at where  vc[] = 'abcd' and  vc[] = 'ABC' or vc[] = 'ABAB' ";
+Command "select * from v8at where  vc[] like 'xyz'";
+Command "select * from v8at where  vc[] like 'xyz%'";
+Command "select * from v8at where  vc[] is NULL ";
+Command "select * from v8at where  vc is NULL ";
+
+Command "select * from v8at where  vc[] = '' ";
+
+#index
+
+Command "drop index I_DX4";
+
+Command "select * from v8at where  vc[] = 'B' and  vc[] = 'OPQ' ";
+Command "select * from v8at where  vc[] = 'abcd' or  vc[] = 'ABC' ";
+Command "select * from v8at where  vc[] = 'abcd' and  vc[] = 'ABC' or vc[] = 'ABAB' ";
+Command "select * from v8at where  vc[] like 'xyz'";
+Command "select * from v8at where  vc[] like 'xyz%'";
+Command "select * from v8at where  vc[] is NULL ";
+Command "select * from v8at where  vc is NULL ";
+
+Command "select * from v8at where  vc[] = '' ";
+
+###############################################
+#
+#nchar
+#
+Command "create table nc8at (id int,nc nchar(20) array[no limit])";
+Command "create bitmap index I_DX5 on nc8at(nc)";
+
+Command "insert into nc8at values (1,array['abcd', 'xyz'])";
+Command "insert into nc8at values (2,array['XYXYX', NULL, 'ABAB'])";
+Command "insert into nc8at values (3,array['B', 'OPQ', NULL])";
+Command "insert into nc8at values (4,array[NULL, 'abcdef', 'ABC'])";
+Command "insert into nc8at values (5,array['あいうえお', 'abcdef', '一週間'])";
+Command "insert into nc8at values (6,array['今日は金曜日', '', '一週間'])";
+#障害表0730に対応NULLを入れるとBadArgument
+Command "insert into nc8at values (7, NULL)";
+
+Command "select * from nc8at where  nc[] = 'B' and  nc[] = 'OPQ' ";
+Command "select * from nc8at where  nc[] = 'B' or  nc[] = '一週間' ";
+Command "select * from nc8at where  nc[] = 'B' and  nc[] = '一週間' or nc[] = 'ABAB'";
+Command "select * from nc8at where  id = 6 or nc[] = 'B' and  nc[] = 'OPQ' ";
+
+Command "select * from nc8at where  nc[] like 'B'";
+Command "select * from nc8at where  nc[] like 'B%'";
+Command "select * from nc8at where  nc[] is NULL";
+Command "select * from nc8at where  nc is NULL";
+Command "select * from nc8at where  nc[] = ''";
+
+#index
+
+Command "drop index I_DX5";
+
+Command "select * from nc8at where  nc[] = 'B' and  nc[] = 'OPQ' ";
+Command "select * from nc8at where  nc[] = 'B' or  nc[] = '一週間' ";
+Command "select * from nc8at where  nc[] = 'B' and  nc[] = '一週間' or nc[] = 'ABAB'";
+Command "select * from nc8at where  id = 6 or nc[] = 'B' and  nc[] = 'OPQ' ";
+
+Command "select * from nc8at where  nc[] like 'B'";
+Command "select * from nc8at where  nc[] like 'B%'";
+Command "select * from nc8at where  nc[] is NULL";
+Command "select * from nc8at where  nc is NULL";
+Command "select * from nc8at where  nc[] = ''";
+
+##################################################
+#
+#nvarchar
+#
+Command "create table nv8at (id int,nc nvarchar(20) array[no limit])";
+Command "create bitmap index I_DX6 on nv8at(nc)";
+Command "insert into nv8at values (1,array['abcd', 'xyz'])";
+Command "insert into nv8at values (2,array['XYXYX', NULL, 'ABAB'])";
+Command "insert into nv8at values (3,array['B', 'OPQ', NULL])";
+Command "insert into nv8at values (4,array[NULL, 'abcdef', 'ABC'])";
+Command "insert into nv8at values (5,array['time is money', '', 'ABC'])";
+#障害表0730に対応NULLを入れるとBadArgument
+Command "insert into nv8at values (6, NULL)";
+
+Command "select * from nv8at where  nc[] = 'B' and  nc[] = 'OPQ' ";
+Command "select * from nv8at where  nc[] = 'xyz' or  nc[] = 'ABC' ";
+Command "select * from nv8at where  nc[] = 'xyz' and  nc[] = 'ABC' or nc[] = 'OPQ' ";
+Command "select * from nv8at where  nc[] like 'XYXYX'";
+Command "select * from nv8at where  nc[] like 'XYXYX%'";
+
+#index
+
+Command "drop index I_DX6";
+
+Command "select * from nv8at where  nc[] = 'B' and  nc[] = 'OPQ' ";
+Command "select * from nv8at where  nc[] = 'xyz' or  nc[] = 'ABC' ";
+Command "select * from nv8at where  nc[] = 'xyz' and  nc[] = 'ABC' or nc[] = 'OPQ' ";
+Command "select * from nv8at where  nc[] like 'XYXYX'";
+Command "select * from nv8at where  nc[] like 'XYXYX%'";
+
+#####################################################
+#
+#ntext
+#
+#Command "create table n8at(id int,nt ntext array[8])";
+#Command "create bitmap index I_DX7 on n8at(nt)";
+#Command "insert into n8at values (1,array['ミートソース','カルボナーラ','ボンゴレ','ジェノベーゼ','たらこ','ツナ大根お#ろし','アンチョビ','じゃがバタ'])";
+#Command "insert into n8at values (2,array['バター','しょうゆ','砂糖','塩','味噌','酒','みりん','鰹節'])";
+#Command "insert into n8at values (3,array['紅茶','煎茶','番茶','新茶','ウーロン茶','黒豆茶','コーヒー','ココア'])";
+#Command "insert into n8at values (4,array['キリマンジャロ','モカ','炭火焼','ブルーマウンテン','コロンビア','マンデリン#'])";
+#Command "insert into n8at values (5,array['アップルパイ','シュークリーム','プリン','ババロア','ショコラ','エクレア','#チーズケーキ'])";
+#Command "select * from n8at where  nt[] = 'アップルパイ' and  nt[] = 'シュークリーム' ";
+#Command "select id from n8at where  nt[] = '紅茶' or  nt[] = 'カルボナーラ' ";
+#Command "select id from n8at where  nt[] like 'カルボナーラ' ";
+
+#index
+
+#Command "drop index I_DX7";
+#Command "select * from n8at where  nt[] = 'アップルパイ' and  nt[] = 'シュークリーム' ";
+#Command "select id from n8at where  nt[] = '紅茶' or  nt[] = 'カルボナーラ' ";
+#Command "select id from n8at where  nt[] like 'カルボナーラ' ";
+
+
+
+
+#
+#fulltext
+#
+#Command "create table f8at(id int,f fulltext array[8])";
+#Command "create bitmap index I_DX8 on f8at(f)";
+#Command "insert into f8at values (1,array['ミートソース','カルボナーラ','ボンゴレ','ジェノベーゼ','たらこ','ツナ大根お#ろし','アンチョビ','じゃがバタ'])";
+#Command "insert into f8at values (2,array['バター','しょうゆ','砂糖','塩','味噌','酒','みりん','鰹節'])";
+#Command "insert into f8at values (3,array['紅茶','煎茶','番茶','新茶','ウーロン茶','黒豆茶','コーヒー','ココア'])";
+#Command "insert into f8at values (4,array['キリマンジャロ','モカ','炭火焼','ブルーマウンテン','コロンビア','マンデリン#'])";
+#Command "insert into f8at values (5,array['アップルパイ','シュークリーム','プリン','ババロア','ショコラ','エクレア','#チーズケーキ'])";
+#Command "select id from f8at where  f[] = 'アップルパイ' and  f[] = 'シュークリーム' ";
+#Command "select * from f8at where  f[] = 'キリマンジャロ' or  f[] = 'カルボナーラ' ";
+#Command "select * from f8at where  f[] like '紅茶'";
+
+
+#
+#datetime
+#
+Command "create table d8at(id int,d datetime array[8])";
+Command "create bitmap index I_DX11 on d8at(d)";
+
+Command "insert into d8at values (1,array['2001-01-07 10:34:56.123'])";
+Command "insert into d8at values (2,array['2002-02-01 11:34:56.456','2002-04-01 11:34:56.456','2002-05-01 11:34:56.456','2002-05-01 11:34:56.456'])";
+Command "insert into d8at values (3,array['2003-03-10 12:34:56.789','2003-04-10 12:34:56.789','2003-05-10 12:34:56.789','2003-06-10 12:34:56.789'])";
+Command "insert into d8at values (4,array['2004-04-11 13:34:56.123','2004-05-11 13:34:56.123','2004-06-11 13:34:56.123','2004-07-11 13:34:56.123'])";
+Command "insert into d8at values (5,array['2005-04-11 13:34:56.123','2005-05-11 13:34:56.123','2005-06-11 13:34:56.123','2004-07-11 13:34:56.123'])";
+Command "insert into d8at values (6,array[NULL,NULL,'2005-06-11 13:34:56.123','2004-07-11 13:34:56.123'])";
+#障害表0730に対応NULLを入れるとBadArgument
+Command "insert into d8at values (7, NULL)";
+
+Command "select * from d8at where  d[] = '2004-04-11 13:34:56.123' ";
+Command "select id from d8at where  d[] = '2001-01-07 10:34:56.123' and  d[] = '2001-02-07 10:34:56.123' ";
+Command "select * from d8at where  d[] = '2004-05-11 13:34:56.123' or  d[] = '2003-04-10 12:34:56.789' ";
+Command "select * from d8at where  d[] = '2004-05-11 13:34:56.123' and  d[] = '2003-04-10 12:34:56.789' or  d[] = '2003-06-10 12:34:56.789' ";
+
+Command "select * from d8at where  d[] is NULL ";
+Command "select * from d8at where  d is NULL ";
+
+#index
+
+Command "drop index I_DX11";
+
+Command "select * from d8at where  d[] = '2004-04-11 13:34:56.123' ";
+Command "select id from d8at where  d[] = '2001-01-07 10:34:56.123' and  d[] = '2001-02-07 10:34:56.123' ";
+Command "select * from d8at where  d[] = '2004-05-11 13:34:56.123' or  d[] = '2003-04-10 12:34:56.789' ";
+Command "select * from d8at where  d[] = '2004-05-11 13:34:56.123' and  d[] = '2003-04-10 12:34:56.789' or  d[] = '2003-06-10 12:34:56.789' ";
+
+Command "select * from d8at where  d[] is NULL ";
+Command "select * from d8at where  d is NULL ";
+
+#############################################
+#
+#uniqueidentifier
+#
+Command "create table u8at(id int,u uniqueidentifier array[8])";
+Command "create bitmap index I_DX12 on u8at(u)";
+
+Command "insert into u8at values (1,array['Monday','Tuesday','Wedenesday'])";
+Command "insert into u8at values (2,array['thursday','Friday','Saturday','Sunday'])";
+Command "insert into u8at values (3,array['abc','def','yyyyy','pppp'])";
+Command "insert into u8at values (4,array['opq',NULL,'xxx','January'])";
+Command "insert into u8at values (5,array['England','Austraria','America','France'])";
+Command "insert into u8at values (6,array['summer','','winter','autumn'])";
+#障害表0730に対応NULLを入れるとBadArgument
+Command "insert into u8at values (7, NULL)";
+
+Command "select id from u8at where  u[] = 'opq' and  u[] = 'pppp' ";
+Command "select * from u8at where  u[] = 'abc' or  u[] = 'England' ";
+Command "select * from u8at where  u[] = 'abc' and  u[] = 'England' or u[] = 'France' ";
+Command "select * from u8at where  u[] like 'pppp' ";
+Command "select * from u8at where  u[] like 'pppp%' ";
+Command "select * from u8at where  u[] is NULL ";
+Command "select * from u8at where  u[] = '' ";
+
+#index
+
+Command "drop index I_DX12";
+
+Command "select id from u8at where  u[] = 'opq' and  u[] = 'pppp' ";
+Command "select * from u8at where  u[] = 'abc' or  u[] = 'England' ";
+Command "select * from u8at where  u[] = 'abc' and  u[] = 'England' or u[] = 'France' ";
+Command "select * from u8at where  u[] like 'pppp' ";
+Command "select * from u8at where  u[] like 'pppp%' ";
+Command "select * from u8at where  u[] is NULL ";
+Command "select * from u8at where  u[] = '' ";
+
+##############################################
+#
+#Language
+#
+Command "create table l8at(id int,L language array[8])";
+Command "create bitmap index I_DX13 on l8at(L)";
+
+Command "insert into l8at values (1,array['de','fr','es','ja'])";
+Command "insert into l8at values (2,array['en','ja','fr','nl','en'])";
+Command "insert into l8at values (3,array['ja+en','zh','zh-tw','es'])";
+Command "insert into l8at values (4,array['de','ja','zh','zh-cn','fr'])";
+Command "insert into l8at values (5,array['zh','de','es','nl'])";
+Command "insert into l8at values (6,array['zh',NULL,'es',''])";
+#障害表0730に対応NULLを入れるとBadArgument
+Command "insert into l8at values (7, NULL)";
+
+Command "select * from l8at where  L[] = 'nl'";
+Command "select id from l8at where  L[] = 'ja' and  L[] = 'zh' ";
+Command "select * from l8at where  L[] = 'de' or  L[] = 'es' ";
+Command "select * from l8at where  L[] = 'de' and  L[] = 'es' or L[] = 'ja' ";
+Command "select * from l8at where  L[] is NULL";
+Command "select * from l8at where  L is NULL";
+
+#index
+
+Command "drop index I_DX13";
+
+Command "select * from l8at where  L[] = 'nl'";
+Command "select id from l8at where  L[] = 'ja' and  L[] = 'zh' ";
+Command "select * from l8at where  L[] = 'de' or  L[] = 'es' ";
+Command "select * from l8at where  L[] = 'de' and  L[] = 'es' or L[] = 'ja' ";
+Command "select * from l8at where  L[] is NULL";
+Command "select * from l8at where  L is NULL";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDBA";
+TerminateSession;
+Terminate;
+End;

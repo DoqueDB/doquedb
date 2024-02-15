@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+  MessageDefinition.xml : メッセージ定義ファイル
+
+  Copyright (c) 2001, 2007, 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+   
+      http://www.apache.org/licenses/LICENSE-2.0
+   
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE MessageDefine [
+  <!ELEMENT MessageDefine (Message)*>
+
+  <!ELEMENT Message (Name, Number, Format, Argument*)>
+  <!ELEMENT Name (#PCDATA)>
+  <!ELEMENT Number (#PCDATA)>
+
+  <!ELEMENT Format (English, Japanese)>
+  <!ELEMENT Argument (#PCDATA)>
+
+  <!ELEMENT English (#PCDATA)>
+  <!ELEMENT Japanese (#PCDATA)>
+]>
+
+<!--
+★メッセージ定義に関する注意★
+
+	【メッセージ定義ファイル自体について】
+		・ファイルの文字コードを SJIS から変更してはいけない
+
+	【メッセージ作成の方針について】
+
+	【メッセージ番号について】
+		・Number は16 進8 桁で定義し、
+
+		  上位 2 桁は 0x01
+		  次の 2 桁は モジュールを識別する値
+		  下位 4 桁は モジュール内でのメッセージを一意に識別する値
+		
+		  にすること
+		・決して、Exception/ErrorDefinition.xml の
+		  エラー番号と重なってはならない
+
+	【フォーマットについて】
+		・日本語メッセージは「ですます」調で統一すること
+		・Format に %1 などで挿入されるものが文字列である場合、
+		  できる限り言語に左右されない文字列
+		  (SQL 文、表名、数値など)にすること
+-->
+
+<MessageDefine>
+
+  <Message>
+    <Name>InitializeFailed</Name>
+	<Number>0x01140001</Number>
+	<Format>
+	  <English>Initialize of verification has been failed.</English>
+	  <Japanese>整合性検査の前処理が失敗しました。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>CanNotFixHeaderPage</Name>
+	<Number>0x01140002</Number>
+	<Format>
+	  <English>Can't fix header page.</English>
+	  <Japanese>ヘッダページをフィックスできませんでした。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>CanNotFixAreaManageTable</Name>
+	<Number>0x01140003</Number>
+	<Format>
+	  <English>Can't fix area manage table.</English>
+	  <Japanese>空き領域管理表をフィックスできませんでした。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>CanNotFixPageTable</Name>
+	<Number>0x01140004</Number>
+	<Format>
+	  <English>Can't fix page table.</English>
+	  <Japanese>物理ページ表をフィックスできませんでした。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>NotManagePage</Name>
+	<Number>0x01140005</Number>
+	<Format>
+	  <English>Physical page use situation is inconsistent. (pageID=%1 is not manage.)</English>
+	  <Japanese>物理ページの使用状況が矛盾しています。以下の物理ページは管理していません。(pageID=%1)</Japanese>
+	</Format>
+    <Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordPageUseSituation1</Name>
+    <Number>0x01140006</Number>
+	<Format>
+	  <English>Physical page use situation is inconsistent.</English>
+	  <Japanese>物理ページの使用状況が一致しません。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>DiscordPageUseSituation2</Name>
+	<Number>0x01140007</Number>
+	<Format>
+	  <English>Physical page use situation is inconsistent. (pageID=%1 is use.)</English>
+	  <Japanese>物理ページの使用状況が矛盾しています。以下の物理ページは使用中です。(pageID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordPageUseSituation3</Name>
+	<Number>0x01140008</Number>
+	<Format>
+	  <English>Physical page use situation is inconsistent. (pageID=%1 is unuse.)</English>
+	  <Japanese>物理ページの使用状況が矛盾しています。以下の物理ページは未使用です。(pageID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CanNotCorrectPageUseSituation</Name>
+	<Number>0x01140009</Number>
+	<Format>
+	  <English>Can't corrected page use situation. (pageID=%1)</English>
+	  <Japanese>物理ページの使用状況を修復できませんでした。(pageID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorrectedPageUseSituation</Name>
+	<Number>0x0114000A</Number>
+	<Format>
+	  <English>Corrected page use situation. (pageID=%1)</English>
+	  <Japanese>物理ページの使用状況を修復しました。(pageID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordAreaUseSituation1</Name>
+	<Number>0x0114000B</Number>
+	<Format>
+	  <English>Physical area use situation is inconsistent. (pageID=%1, areaID=%2 is use.)</English>
+	  <Japanese>物理エリアの使用状況が矛盾しています。以下の物理エリアは使用中です。(pageID=%1, areaID=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordAreaUseSituation2</Name>
+	<Number>0x0114000C</Number>
+	<Format>
+	  <English>Physical area use situation is inconsistent. (pageID=%1, areaID=%2 is unuse.)</English>
+	  <Japanese>物理エリアの使用状況が矛盾しています。以下の物理エリアは未使用です。(pageID=%1, areaID=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CanNotCorrectAreaUseSituation</Name>
+	<Number>0x0114000D</Number>
+	<Format>
+	  <English>Can't corrected area use situation. (pageID=%1, areaID=%2)</English>
+	  <Japanese>物理エリアの使用状況を修復できませんでした。(pageID=%1, areaID=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorrectedAreaUseSituation</Name>
+	<Number>0x0114000E</Number>
+	<Format>
+	  <English>Corrected area use situation. (pageID=%1, areaID=%2)</English>
+	  <Japanese>物理エリアの使用状況を修復しました。(pageID=%1, areaID=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordManagePageNum</Name>
+	<Number>0x0114000F</Number>
+	<Format>
+	  <English>The number of manage pages is inconsistent with sum of the number pages in all manage tables.  (header=%1, sum=%2)</English>
+	  <Japanese>ファイルヘッダに書かれた管理している物理ページ数が管理表ごとの合計と一致しません。(header=%1, sum=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordUsePageNum</Name>
+	<Number>0x01140010</Number>
+	<Format>
+	  <English>The number of use pages is inconsistent with sum of the number pages in all manage tables. (header=%1, sum=%2)</English>
+	  <Japanese>ファイルヘッダに書かれた使用中の物理ページ数と管理表ごとの合計と一致しません。(header=%1, sum=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordManagePageNumInTable</Name>
+	<Number>0x01140011</Number>
+	<Format>
+	  <English>The number of manage pages is inconsistent with array. (header=%1, unusearray=%2, freearray=%3)</English>
+	  <Japanese>ヘッダに書かれた空き領域管理表で管理している物理ページ数が物理ページ数配列と一致しません。(header=%1, unusearray=%2, freearray=%3)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordUnuseAreaRate</Name>
+	<Number>0x01140012</Number>
+	<Format>
+	  <English>The unuse area rate is inconsistent with bitmap. (pageID=%1, page=%2, bitmap=%3)</English>
+	  <Japanese>ページの未使用領域率がビットマップと一致しません。(pageID=%1, page=%2, bitmap=%3)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordFreeAreaRate</Name>
+	<Number>0x01140013</Number>
+	<Format>
+	  <English>The free area rate is inconsistent with bitmap. (pageID=%1, page=%2, bitmap=%3)</English>
+	  <Japanese>ページの空き領域率がビットマップと一致しません。(pageID=%1, page=%2, bitmap=%3)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordPageArray</Name>
+	<Number>0x01140014</Number>
+	<Format>
+	  <English>The array of the number pages is inconsistent. (tableID=%1, index=%2, header=%3, element=%4)</English>
+	  <Japanese>物理ページ数配列の要素に矛盾があります。(tableID=%1, index=%2, header=%3, element=%4)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>ExistProtrusiveArea</Name>
+	<Number>0x01140015</Number>
+	<Format>
+	  <English>Exist protrusive physical area. (pageID=%1, areaID=%2, areaOffset=%3, areaSize=%4)</English>
+	  <Japanese>物理ページから突出した物理エリアが存在します。(pageID=%1, areaID=%2, areaOffset=%3, areaSize=%4)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>ExistDuplicateArea</Name>
+	<Number>0x01140016</Number>
+	<Format>
+	  <English>Exist duplicate physical area. (pageID=%1, areaID#1=%2, areaOffset#1=%3, areaSize#1=%4, areaID#2=%5, areaOffset#2=%6, areaSize#2=%7)</English>
+	  <Japanese>重複した物理エリアが存在します。(pageID=%1, areaID#1=%2, areaOffset#1=%3, areaSize#1=%4, areaID#2=%5, areaOffset#2=%6, areaSize#2=%7)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordUsePageNumInTable</Name>
+	<Number>0x01140017</Number>
+	<Format>
+	  <English>The number of use pages in page table header is inconsistent with bitmap. (header=%1, bitmap=%2)</English>
+	  <Japanese>物理ページ表のヘッダに書かれた使用中の物理ページ数がビットマップと一致しません。(header=%1, bitmap=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordUnusePageNumInTable</Name>
+	<Number>0x01140018</Number>
+	<Format>
+	  <English>The number of unuse pages in page table header is inconsistent with bitmap. (header=%1, bitmap=%2)</English>
+	  <Japanese>物理ページ表のヘッダに書かれた未使用の物理ページ数がビットマップと一致しません。(header=%1, bitmap=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CanNotFixNode</Name>
+	<Number>0x01140019</Number>
+	<Format>
+	  <English>Can't fix node.</English>
+	  <Japanese>ノードをフィックスできませんでした。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>DiscordAreaUseSituation3</Name>
+	<Number>0x0114001A</Number>
+	<Format>
+	  <English>Physical area use situation is inconsistent. (pageID=%1)</English>
+	  <Japanese>物理エリアの使用状況が矛盾しています。(pageID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorrectedAreaUseSituation2</Name>
+	<Number>0x0114001B</Number>
+	<Format>
+	  <English>Corrected area use situation. (pageID=%1)</English>
+	  <Japanese>物理エリアの使用状況を修復しました。(pageID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordLeafNodeFreeAreaRate</Name>
+	<Number>0x0114001C</Number>
+	<Format>
+	  <English>The free area rate in leaf node is inconsistent with page contents. (leafID=%1, pageID=%2)</English>
+	  <Japanese>リーフノードに書かれた物理ページの空き領域率が物理ページの内容と一致しません。(leafID=%1, pageID=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorrectedLeafNodeFreeAreaRate</Name>
+	<Number>0x0114001D</Number>
+	<Format>
+	  <English>Corrected page free area rate in leaf node. (leafID=%1, pageID=%2)</English>
+	  <Japanese>リーフノードに書かれている物理ページの空き領域率を修復しました。(leafID=%1, pageID=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordNodeFreeAreaRate</Name>
+	<Number>0x0114001E</Number>
+	<Format>
+	  <English>The free area rate in parent node is inconsistent with child node. (parentNodeID=%1, childNodeID=%2)</English>
+	  <Japanese>親ノードに書かれた空き領域率が子ノードと一致しません。(parentNodeID=%1, childNodeID=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorrectedNodeFreeAreaRate</Name>
+	<Number>0x0114001F</Number>
+	<Format>
+	  <English>Corrected free area rate in parent node. (parentNodeID=%1, childNodeID=%2)</English>
+	  <Japanese>親ノードに書かれている子ノードの空き領域率を修復しました。(parentNodeID=%1, childNodeID=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordNodeFreeArea</Name>
+	<Number>0x01140020</Number>
+	<Format>
+	  <English>The free area size in parent node is inconsistent with child node. (parentNodeID=%1, parentIndex=%2, parentSize=%3, childNodeID=%4, childSize=%5)</English>
+	  <Japanese>親ノードに書かれた空き領域が子ノードと一致しません。(parentNodeID=%1, parentInde=%2, parentSize=%3, childNodeID=%4, childSize=%5)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorrectedNodeFreeArea</Name>
+	<Number>0x01140021</Number>
+	<Format>
+	  <English>Corrected free area size in parent node with the size obtained from the child node. (parentNodeID=%1, parentIndex=%2, parentSize=%3, childNodeID=%4, childSize=%5)</English>
+	  <Japanese>親ノードに書かれている子ノードの空き領域を、子ノードをスキャンして得られた空き領域で修復しました。(parentNodeID=%1, parentInde=%2, parentSize=%3, childNodeID=%4, childSize=%5)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordLeafHeader</Name>
+	<Number>0x01140022</Number>
+	<Format>
+	  <English>The number of area and the offset of free space is inconsistent in the leaf header. (leafPageID=%1, areaNum=%2, lastLeafIndexPos=%3, freeSpaceOffset=%4)</English>
+	  <Japanese>リーフヘッダに書かれているリーフ管理エリア数と空き領域のオフセットが矛盾します。(leafPageID=%1, areaNum=%2, lastLeafIndexPos=%3, freeSpaceOffset=%4)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DisorderedLeafIndexKey</Name>
+	<Number>0x01140023</Number>
+	<Format>
+	  <English>The leaf index key is disorderd or overlapped. (leafPageID=%1, index=%2, indexKey=%3, prevIndexKey=%4)</English>
+	  <Japanese>リーフインデックスに書かれているインデックスキーが、整列されていない、もしくは重複しています。(leafPageID=%1, index=%2, indexKey=%3, prevIndexKey=%4)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DisorderedLeafIndexOffset</Name>
+	<Number>0x01140024</Number>
+	<Format>
+	  <English>The area offset in leaf index is disorderd or overlapped. (leafPageID=%1, index=%2, offest=%3, prevOffset=%4)</English>
+	  <Japanese>リーフインデックスに書かれているエリアのオフセットが、整列されていない、もしくは重複しています。(leafPageID=%1, index=%2, offest=%3, prevOffset=%4)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordAreaOffset</Name>
+	<Number>0x01140025</Number>
+	<Format>
+	  <English>The area offset in last leaf index is inconsistent with leaf header's. (leafPageID=%1, lastIndex=%2, lastAreaOffest=%3, freeSpaceOffset=%4)</English>
+	  <Japanese>最後のリーフインデックスに書かれているエリアのオフセットが、ヘッダに書かれている空き領域のオフセットと矛盾します。(leafPageID=%1, lastIndex=%2, lastAreaOffest=%3, freeSpaceOffset=%4)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorrectedAreaUseSituation3</Name>
+	<Number>0x01140026</Number>
+	<Format>
+	  <English>Corrected area use situation. Unused area is freed. (pageID=%1, areaID=%2)</English>
+	  <Japanese>物理エリアの使用状況を修復しました。未使用のエリアを削除しました。(pageID=%1, areaID=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordLeafHeaderOffset</Name>
+	<Number>0x01140027</Number>
+	<Format>
+	  <English>The offset of free space is invalid in the leaf header. (leafPageID=%1, areaNum=%2, freeSpaceOffset=%3)</English>
+	  <Japanese>リーフヘッダに書かれている空き領域のオフセットが、不適切な値になっています。(leafPageID=%1, areaNum=%2, freeSpaceOffset=%3)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorrectedLeafHeaderOffset</Name>
+	<Number>0x01140028</Number>
+	<Format>
+	  <English>Corrected the offset of free space in the leaf header. (leafPageID=%1, areaNum=%2, freeSpaceOffset=%3)</English>
+	  <Japanese>リーフヘッダに書かれている空き領域のオフセットを修復しました。(leafPageID=%1, areaNum=%2, freeSpaceOffset=%3)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordLeafIndexOffset</Name>
+	<Number>0x01140029</Number>
+	<Format>
+	  <English>The area offset in leaf index is invalid. (leafPageID=%1, index=%2, offest=%3)</English>
+	  <Japanese>リーフインデックスに書かれているエリアのオフセットが、不適切な値になっています。(leafPageID=%1, index=%2, offest=%3)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+</MessageDefine>
+
+<!--
+  Copyright (c) 2001, 2007, 2023 Ricoh Company, Ltd.
+  All rights reserved.
+-->

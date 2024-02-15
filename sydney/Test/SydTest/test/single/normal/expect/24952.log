@@ -1,0 +1,80 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL(f int, g int, h int, primary key(f))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (1,2,3), (2,2,3), (3,2,3), (4,2,3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+4,h,g from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+8,g+1,h-2 from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+16,(g+h)/2,(g*h) from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f,g,h,case when g > h then g else h end from TBL order by f,g,h
+SydTest::Executor: [INFO] {1,2,3,3}
+SydTest::Executor: [INFO] {2,2,3,3}
+SydTest::Executor: [INFO] {3,2,3,3}
+SydTest::Executor: [INFO] {4,2,3,3}
+SydTest::Executor: [INFO] {5,3,2,3}
+SydTest::Executor: [INFO] {6,3,2,3}
+SydTest::Executor: [INFO] {7,3,2,3}
+SydTest::Executor: [INFO] {8,3,2,3}
+SydTest::Executor: [INFO] {9,3,1,3}
+SydTest::Executor: [INFO] {10,3,1,3}
+SydTest::Executor: [INFO] {11,3,1,3}
+SydTest::Executor: [INFO] {12,3,1,3}
+SydTest::Executor: [INFO] {13,4,0,4}
+SydTest::Executor: [INFO] {14,4,0,4}
+SydTest::Executor: [INFO] {15,4,0,4}
+SydTest::Executor: [INFO] {16,4,0,4}
+SydTest::Executor: [INFO] {17,2,6,6}
+SydTest::Executor: [INFO] {18,2,6,6}
+SydTest::Executor: [INFO] {19,2,6,6}
+SydTest::Executor: [INFO] {20,2,6,6}
+SydTest::Executor: [INFO] {21,2,6,6}
+SydTest::Executor: [INFO] {22,2,6,6}
+SydTest::Executor: [INFO] {23,2,6,6}
+SydTest::Executor: [INFO] {24,2,6,6}
+SydTest::Executor: [INFO] {25,2,3,3}
+SydTest::Executor: [INFO] {26,2,3,3}
+SydTest::Executor: [INFO] {27,2,3,3}
+SydTest::Executor: [INFO] {28,2,3,3}
+SydTest::Executor: [INFO] {29,2,0,2}
+SydTest::Executor: [INFO] {30,2,0,2}
+SydTest::Executor: [INFO] {31,2,0,2}
+SydTest::Executor: [INFO] {32,2,0,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f,g,h,case when g > h then g else h end from TBL order by f,g,h limit 10
+SydTest::Executor: [INFO] {1,2,3,3}
+SydTest::Executor: [INFO] {2,2,3,3}
+SydTest::Executor: [INFO] {3,2,3,3}
+SydTest::Executor: [INFO] {4,2,3,3}
+SydTest::Executor: [INFO] {5,3,2,3}
+SydTest::Executor: [INFO] {6,3,2,3}
+SydTest::Executor: [INFO] {7,3,2,3}
+SydTest::Executor: [INFO] {8,3,2,3}
+SydTest::Executor: [INFO] {9,3,1,3}
+SydTest::Executor: [INFO] {10,3,1,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

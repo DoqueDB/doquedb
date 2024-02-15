@@ -1,0 +1,21 @@
+# Bug report 2296
+Begin;
+Initialize;
+InitializeSession  "TESTDB";
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession  "TESTDB";
+Command "create table T1(f1_index int, g1 int, h1 int, i1 int, j1_array int ARRAY[10])";
+Command "create index I_T1_f1 on T1(f1_index)";
+Command "insert T1 values (?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?)" [null,-34567890,null,2147483647,[1,null,1,null,null],0,null,2147483647,null,[null,1,null,-1,1,-34567890],null,2147483647,null,-2147483648,[-1,null,null,null,null,1,null],1,null,-2147483648,6543210,[null,-1,0,1,-1,null,null,-1],null,-2147483648,6543210,null,[-34567890,null,null,null,null,-1,-1,null,null],-1,6543210,null,0,[null,-34567890,1,-1,-34567890,null,null,-34567890,2147483647,6543210],null,null,0,null,[null],-34567890,0,null,1,[0,null],null,null,1,null,[null,0,null],2147483647,1,null,-1,[1,null,1,null]];
+
+Command "select f1_index from t1";
+Command "select case when f1_index = null then null when f1_index = -2147483648 then 6543210 when f1_index = -34567890 then 2147483647 else -34567890 end from t1";
+Command "select case f1_index when null then null when -2147483648 then 6543210 when -34567890 then 2147483647 else -34567890 end from t1";
+Command "select case when f1_index between 0 and 10 then 1 else -34567890 end from t1";
+
+TerminateSession;
+Terminate;
+End;

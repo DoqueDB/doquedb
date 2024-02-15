@@ -1,0 +1,160 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I1_1 on T1(C1) hint 'delayed ,inverted=(nolocation=true, notf=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {株式会社リコー
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 46555]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where C1=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {株式会社リコー
+,hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where C1=?
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12256]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] <length = 12246>
+SydTest::Executor: [INFO] <length = 46555>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 ntext array [no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I1_1 on T1(C1) hint 'delayed ,inverted=(nolocation=true, notf=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{hello world
+konnnitiha.
+,株式会社リコー
+}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {{hello world
+konnnitiha.
+,株式会社リコー
+}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {{株式会社リコー
+,hello world
+konnnitiha.
+}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12275]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where C1=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {{株式会社リコー
+,hello world
+konnnitiha.
+},{hello world
+konnnitiha.
+,株式会社リコー
+}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where C1=?
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12314]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] <length = 12275>
+SydTest::Executor: [INFO] <length = 12275>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] Main End.
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify database TESTDB cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] <length = 12275>
+SydTest::Executor: [INFO] <length = 12275>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

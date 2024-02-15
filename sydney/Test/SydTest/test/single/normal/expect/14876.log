@@ -1,0 +1,1093 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(c char(8) array[2] not null hint heap)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[null])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[''])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array['abc'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[' abc'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array['abc '])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[' abc '])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[null, null])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[null, 'def'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array['ghi', null])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array['jkl', 'mno'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index I on T(c)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[null])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[''])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array['abc'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[' abc'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array['abc '])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[' abc '])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[null, null])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array[null, 'def'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array['ghi', null])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (array['jkl', 'mno'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] = null
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] = ''
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] = 'abc'
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] = 'xyz'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] > null
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] > ''
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] > 'abc'
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] > 'xyz'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] >= null
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] >= ''
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] >= 'abc'
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] >= 'xyz'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] < null
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] < ''
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] < 'abc'
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] < 'xyz'
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] <= null
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] <= ''
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] <= 'abc'
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] <= 'xyz'
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] like null
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] like ''
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] like 'abc'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] like 'ab%'
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] like 'a%c'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] like 'xyz'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] like 'ab_'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] like 'a_c'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between null and null
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between '' and null
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between 'abc' and null
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between 'xyz' and null
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between null and ''
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between '' and ''
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between 'abc' and ''
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between 'xyz' and ''
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between null and 'abc'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between '' and 'abc'
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between 'abc' and 'abc'
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between 'xyz' and 'abc'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between null and 'xyz'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between '' and 'xyz'
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between 'abc' and 'xyz'
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] between 'xyz' and 'xyz'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] is null
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] is not null
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c is not null
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] = null or c[] = 'abc'
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] = '' or c[] = 'abc'
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c[] = 'abc' or c[] = 'abc'
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array['']) where c[] = ''
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array['jkl', 'mno']) where c[] = 'jkl'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array['na->d']) where c is null
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (null) where c[] = 'na->d'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array[null]) where c[] = ''
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),def     }}
+SydTest::Executor: [INFO] {{ghi     ,(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array['']) where c[] is null
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array[null]) where c is null
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array['a1a2->a1']) where c[] = 'jkl'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{a1a2->a1}}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{a1a2->a1}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array['jkl', 'mno']) where c[] = 'a1a2->a1'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{        }}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array[null]) where c[] = ''
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array[null, null]) where c[] is null
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array[null]) where c[] is null
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array['jkl', 'mno']) where c is null
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array[null, null]) where c[] is null
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array[null, null]) where c is null
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{jkl     ,mno     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array['jkl',null]) where c[] = 'jkl'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{jkl     ,(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{jkl     ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set c = (array[null, 'jkl']) where c[] = 'jkl'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),jkl     }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),jkl     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify table T cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),jkl     }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),(null)}}
+SydTest::Executor: [INFO] {{(null),jkl     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where c[] is null
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] {{abc     }}
+SydTest::Executor: [INFO] {{ abc    }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where c[] >= ''
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify table T cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,1200 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(f1 nvarchar(200), f2 int, f3 float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I_f1 on T(f1) score column f3 hint 'delayed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create  index I_f2 on T(f2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 3064]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel1
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel1
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel1
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel1
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel1
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains ? calculator 'TfIdf' average length 120 df 10 score function 'Sum' expand (from (select f1 from T where f2 > 0 limit 10)) extractor 'EstimateDf' or f3 > 0 limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 contains '全文検索' average length 120 df ? score function ? expand (from (select f1 from T where f2 > ? limit 10)) extractor ?)
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Parameter]] {10,Sum,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Parameter]] {10,Sum,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Parameter]] {10,Sum,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel4
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains '全文検索' calculator 'TfIdf' score function 'Sum' extractor ? or f3 > 0 limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel4
+SydTest::Executor: [INFO] [[SQL Parameter]] {EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel4
+SydTest::Executor: [INFO] [[SQL Parameter]] {EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel4
+SydTest::Executor: [INFO] [[SQL Parameter]] {EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel4
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains freetext(?) average length ? df 10 expand (from (select f1 from T where f2 > ? limit 10)) extractor 'EstimateDf' limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,120,0}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,120,0}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,120,0}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel6
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 contains freetext(?) calculator 'TfIdf' average length ? df ? score function ? expand (from (select f1 from T where f2 > 0 limit 10)))
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel6
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,120,10,Sum}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel6
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,120,10,Sum}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel6
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,120,10,Sum}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel6
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel7
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 contains freetext('全文検索の最新動向') calculator ? df 10 score function ? extractor 'EstimateDf')
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel7
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf,Sum}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel7
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf,Sum}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel7
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf,Sum}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel7
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel8
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains freetext('全文検索の最新動向') calculator ? average length 120 expand (from (select f1 from T where f2 > 0 limit 10)) or f3 > 0 limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel8
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel8
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel8
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel8
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist('索引','ファイル') calculator ? average length ? df ? score function 'Sum' expand (from (select f1 from T where f2 > ? limit 10)) extractor ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf,120,10,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf,120,10,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf,120,10,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist('索引','ファイル') df ? expand (from (select f1 from T where f2 > 0 limit 10)) extractor 'EstimateDf' or f3 > 0 limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel11
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist(?,'ファイル') calculator 'TfIdf' average length ? score function ? expand (from (select f1 from T where f2 > ? limit 10)) extractor 'EstimateDf' or f3 > 0
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel11
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,120,Sum,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel11
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,120,Sum,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel11
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,120,Sum,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel11
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel12
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 contains wordlist(?,'ファイル') average length 120 df 10 score function 'Sum') limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel12
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel12
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel12
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel12
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist(?,'ファイル') calculator 'TfIdf' average length 120 df ? expand (from (select f1 from T where f2 > 0 limit 10)) extractor ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,10,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,10,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,10,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist(?,'ファイル') calculator ? average length ? df 10 score function ? expand (from (select f1 from T where f2 > ? limit 10)) or f3 > 0 limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,TfIdf,120,Sum,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,TfIdf,120,Sum,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,TfIdf,120,Sum,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel15
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist('索引',?) average length ? score function ? extractor ? limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel15
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,120,Sum,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel15
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,120,Sum,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel15
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,120,Sum,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel15
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel16
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 contains wordlist('索引',?) calculator 'TfIdf' df 10 expand (from (select f1 from T where f2 > ? limit 10)) extractor ?)
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel16
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,0,EstimateDf}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel16
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,0,EstimateDf}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel16
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,0,EstimateDf}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel16
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel17
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist(?,'ファイル') calculator ? df ? score function 'Sum' limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel17
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,TfIdf,10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel17
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,TfIdf,10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel17
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,TfIdf,10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel17
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel18
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 contains wordlist(?,'ファイル') average length 120 score function ? expand (from (select f1 from T where f2 > 0 limit 10)) extractor 'EstimateDf')
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel18
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,Sum}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel18
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,Sum}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel18
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,Sum}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel18
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel19
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 contains ? calculator ? average length ? df ? score function ? expand (from (select f1 from T where f2 > ? limit 10)) extractor ?) limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel19
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索,TfIdf,120,10,Sum,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel19
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索,TfIdf,120,10,Sum,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel19
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索,TfIdf,120,10,Sum,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel19
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel20
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains '全文検索' calculator ? average length ? df 10 expand (from (select f1 from T where f2 > 0 limit 10)) extractor 'EstimateDf'
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel20
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf,120}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel20
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf,120}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel20
+SydTest::Executor: [INFO] [[SQL Parameter]] {TfIdf,120}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel20
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel21
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains freetext(?) calculator ? average length 120 score function 'Sum' extractor ? or f3 > 0
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel21
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,TfIdf,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel21
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,TfIdf,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel21
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,TfIdf,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel21
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel22
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains freetext('全文検索の最新動向') calculator 'TfIdf' average length ? df ? score function 'Sum' expand (from (select f1 from T where f2 > ? limit 10)) extractor ? limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel22
+SydTest::Executor: [INFO] [[SQL Parameter]] {120,10,0,EstimateDf}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel22
+SydTest::Executor: [INFO] [[SQL Parameter]] {120,10,0,EstimateDf}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel22
+SydTest::Executor: [INFO] [[SQL Parameter]] {120,10,0,EstimateDf}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel22
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel23
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 contains wordlist('索引','ファイル') calculator 'TfIdf' average length 120 score function ?) limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel23
+SydTest::Executor: [INFO] [[SQL Parameter]] {Sum}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel23
+SydTest::Executor: [INFO] [[SQL Parameter]] {Sum}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel23
+SydTest::Executor: [INFO] [[SQL Parameter]] {Sum}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel23
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel24
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist(?,'ファイル') calculator ? df ? expand (from (select f1 from T where f2 > 0 limit 10)) extractor ? limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel24
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,TfIdf,10,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel24
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,TfIdf,10,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel24
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,TfIdf,10,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel24
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel25
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 contains wordlist(?,'ファイル') score function 'Sum' extractor 'EstimateDf')
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel25
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel25
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel25
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel25
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel26
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist('索引',?) calculator ? average length 120 df ? score function 'Sum' expand (from (select f1 from T where f2 > 0 limit 10)) extractor 'EstimateDf' or f3 > 0
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel26
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,TfIdf,10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel26
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,TfIdf,10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel26
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,TfIdf,10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel26
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel27
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist(?,'ファイル') calculator 'TfIdf' average length ? df 10 expand (from (select f1 from T where f2 > ? limit 10)) extractor ? or f3 > 0
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel27
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,120,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel27
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,120,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel27
+SydTest::Executor: [INFO] [[SQL Parameter]] {索引,120,0,EstimateDf}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel27
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel28
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains '全文検索' df ? score function ? expand (from (select f1 from T where f2 > ? limit 10)) or f3 > 0 limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel28
+SydTest::Executor: [INFO] [[SQL Parameter]] {10,Sum,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel28
+SydTest::Executor: [INFO] [[SQL Parameter]] {10,Sum,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel28
+SydTest::Executor: [INFO] [[SQL Parameter]] {10,Sum,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel28
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel29
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 contains freetext(?) expand (from (select f1 from T where f2 > ? limit 10))) limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel29
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel29
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel29
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索の最新動向,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel29
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel30
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains freetext('全文検索の最新動向') average length 120 df ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel30
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel30
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel30
+SydTest::Executor: [INFO] [[SQL Parameter]] {10}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel30
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel31
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist('索引','ファイル') average length ? df 10 score function ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel31
+SydTest::Executor: [INFO] [[SQL Parameter]] {120,Sum}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel31
+SydTest::Executor: [INFO] [[SQL Parameter]] {120,Sum}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel31
+SydTest::Executor: [INFO] [[SQL Parameter]] {120,Sum}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-2147483648,0E0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,0,3.141592E0}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,1,3.776E3}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-1,1.797693134862E308}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,6543210,-1.79769313486231E308}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,2147483647,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,-2147483648,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel31
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel32
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 contains wordlist('索引',?) calculator 'TfIdf' average length 120 df 10 score function 'Sum' expand (from (select f1 from T where f2 > ? limit 10)) limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel32
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel32
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel32
+SydTest::Executor: [INFO] [[SQL Parameter]] {ファイル,0}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,-34567890,2.225073858507E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel32
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

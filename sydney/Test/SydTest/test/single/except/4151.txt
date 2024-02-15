@@ -1,0 +1,66 @@
+# lang情報のついた全文索引のテスト(sectionized, delayed, irregular)
+
+# 補足 (040818 horibe)
+# 「v15から配列要素にnullが含まれていても挿入できるように変更しました。」
+# (takuya) とのことなので、insert,updateに成功するようになった。
+
+Begin;
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (N int, C ntext array [no limit], L language array [no limit])";
+Command "create index T_I on T(N)";
+
+# 索引作成
+Command "create fulltext index FTIndex on T(C) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [4, [textsjisfile "..\\..\\doc\\introduction.txt",
+		      textsjisfile "..\\..\\doc\\RainyNight.txt"], [null, "ja+en"]];
+PreparedCommand "ins" [5, [null, textsjisfile "..\\..\\doc\\kenpou.txt"], 
+		      [null, "ja+en"]];
+PreparedCommand "ins" [6, [textsjisfile "..\\..\\doc\\rasyoumon.txt", null], 
+		      [null, "ja+en"]];
+PreparedCommand "ins" [7, [null, null], [null, "ja+en"]];
+PreparedCommand "ins" [8, [textsjisfile "..\\..\\doc\\introduction.txt",
+		      textsjisfile "..\\..\\doc\\RainyNight.txt"], ["ja+en", null]];
+PreparedCommand "ins" [9, [null, textsjisfile "..\\..\\doc\\kenpou.txt"],
+		      ["ja+en", null]];
+PreparedCommand "ins" [10, [textsjisfile "..\\..\\doc\\rasyoumon.txt", null],
+		      ["ja+en", null]];
+PreparedCommand "ins" [11, [null, null], ["ja+en", null]];
+PreparedCommand "ins" [12, [textsjisfile "..\\..\\doc\\introduction.txt",
+		      textsjisfile "..\\..\\doc\\RainyNight.txt"], [null, null]];
+PreparedCommand "ins" [13, [null, textsjisfile "..\\..\\doc\\kenpou.txt"],
+		      [null, null]];
+PreparedCommand "ins" [14, [textsjisfile "..\\..\\doc\\rasyoumon.txt", null],
+		      [null, null]];
+PreparedCommand "ins" [15, [null, null], [null, null]];
+ErasePreparedCommand "ins";
+
+# 7, 11, 12, 13, 14, 15がinsertに成功する【注意】補足を参照のこと
+Command "select N from T";
+# verify
+Command "verify index FTIndex cascade continue";
+
+CreatePreparedCommand "upd" "update T set C=? where N=?";
+# 7, 11へのupdateは失敗するが、15へのは成功する【注意】補足を参照のこと
+PreparedCommand "upd" [[textsjisfile "..\\..\\doc\\introduction.txt",
+		        textsjisfile "..\\..\\doc\\RainyNight.txt"], 7];
+PreparedCommand "upd" [[textsjisfile "..\\..\\doc\\introduction.txt", null], 11];
+
+PreparedCommand "upd" [[null, textsjisfile "..\\..\\doc\\RainyNight.txt"], 15];
+ErasePreparedCommand "upd";
+
+Command "select C from T";
+# verify
+Command "verify index FTIndex cascade continue";
+
+#- 全文ファイルテスト用の表を消去
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,180 @@
+# 障害票 1368
+# 主キー制約が正しく処理しているか確認するテスト
+
+Begin;
+Initialize;
+InitializeSession "DBTableTest";
+Command "create database DBTableTest";
+
+Command "create table T1 (f int, h int)";
+Command "alter table T1 add primary key(f)";
+Command "insert T1 values (1,10),(2,20),(3,30)";
+Command "select * from T1";
+AssureCount 3;
+Command "insert T1 values (1,100)";
+Command "select * from T1";
+AssureCount 3;
+Command "insert T1 values (2,200)";
+Command "select * from T1";
+AssureCount 3;
+Command "insert T1 values (3,300)";
+Command "select * from T1";
+AssureCount 3;
+Command "insert T1 values (4,400)";
+Command "select * from T1";
+AssureCount 4;
+Command "insert T1 values (5,500)";
+Command "select * from T1";
+AssureCount 5;
+Command "insert T1 values (null, 100)";
+Command "select * from T1";
+AssureCount 5;
+
+Command "select rowid, s.* from system_constraint s";
+AssureCount 1;
+Command "select rowid, s.* from system_index s";
+AssureCount 1;
+
+Command "create table T2 (g int)";
+Command "alter table T2 add foreign key(g) references T1";
+Command "insert T2 values 1,2,3,4";
+Command "select * from T2";
+AssureCount 4;
+Command "insert T2 values 99";
+Command "select * from T2";
+AssureCount 4;
+
+Command "update T1 set f = 99 where f = 1";
+Command "select * from T1 where f = 3";
+AssureCount 1;
+Command "select * from T1 where f = 1";
+AssureCount 1;
+
+Command "update T1 set h = 9999 where f = 1";
+Command "select * from T1 where h = 9999";
+AssureCount 1;
+
+Command "delete T1 where f = 2";
+Command "select * from T1 where f = 2";
+AssureCount 1;
+
+Command "select rowid, s.* from system_constraint s";
+AssureCount 3;
+Command "select rowid, s.* from system_index s";
+AssureCount 2;
+
+Command "drop table T1";
+Command "select * from system_table where name = 'T1'";
+AssureCount 1;
+Command "drop table T2";
+Command "select * from system_table where name = 'T2'";
+AssureCount 0;
+Command "drop table T1";
+Command "select * from system_table where name = 'T1'";
+AssureCount 0;
+
+Command "create table T1 (f int, h int)";
+Command "insert T1 values (1,10),(2,20),(3,30),(1,10)";
+#error
+Command "alter table T1 add primary key(f)";
+Command "select * from T1";
+AssureCount 4;
+Command "insert T1 values (1,100)";
+Command "select * from T1";
+AssureCount 5;
+Command "insert T1 values (2,200)";
+Command "select * from T1";
+AssureCount 6;
+Command "insert T1 values (3,300)";
+Command "select * from T1";
+AssureCount 7;
+Command "insert T1 values (4,400)";
+Command "select * from T1";
+AssureCount 8;
+Command "insert T1 values (5,500)";
+Command "select * from T1";
+AssureCount 9;
+Command "insert T1 values (null, 100)";
+Command "select * from T1";
+AssureCount 10;
+
+Command "select rowid, s.* from system_constraint s";
+AssureCount 0;
+Command "select rowid, s.* from system_index s";
+AssureCount 0;
+
+Command "create table T2 (g int)";
+Command "insert T2 values 1,2,3,4,null";
+#error
+Command "alter table T2 add primary key(g)";
+Command "select * from T2";
+AssureCount 5;
+Command "insert T2 values null";
+Command "select * from T2";
+AssureCount 6;
+
+Command "select rowid, s.* from system_constraint s";
+AssureCount 0;
+Command "select rowid, s.* from system_index s";
+AssureCount 0;
+
+Command "drop table T1";
+Command "select * from system_table where name = 'T1'";
+AssureCount 0;
+Command "drop table T2";
+Command "select * from system_table where name = 'T2'";
+AssureCount 0;
+
+Command "create table T1 (f int, h int, primary key(f))";
+Command "insert T1 values (1,10),(2,20),(3,30)";
+Command "select * from T1";
+AssureCount 3;
+Command "insert T1 values (1,100)";
+Command "select * from T1";
+AssureCount 3;
+Command "insert T1 values (2,200)";
+Command "select * from T1";
+AssureCount 3;
+Command "insert T1 values (3,300)";
+Command "select * from T1";
+AssureCount 3;
+Command "insert T1 values (4,400)";
+Command "select * from T1";
+AssureCount 4;
+Command "insert T1 values (5,500)";
+Command "select * from T1";
+AssureCount 5;
+Command "insert T1 values (null, 100)";
+Command "select * from T1";
+AssureCount 5;
+
+Command "select rowid, s.* from system_constraint s";
+AssureCount 1;
+Command "select rowid, s.* from system_index s";
+AssureCount 1;
+
+Command "create table T2 (g int, primary key(g))";
+Command "insert T2 values 1,2,3,4";
+Command "select * from T2";
+AssureCount 4;
+Command "insert T2 values null";
+Command "select * from T2";
+AssureCount 4;
+
+Command "select rowid, s.* from system_constraint s";
+AssureCount 2;
+Command "select rowid, s.* from system_index s";
+AssureCount 2;
+
+Command "drop table T1";
+Command "select * from system_table where name = 'T1'";
+AssureCount 0;
+Command "drop table T2";
+Command "select * from system_table where name = 'T2'";
+AssureCount 0;
+
+Command "drop database DBTableTest";
+
+TerminateSession;
+Terminate;
+End;

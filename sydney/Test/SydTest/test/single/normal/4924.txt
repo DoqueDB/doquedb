@@ -1,0 +1,15 @@
+Begin;
+Initialize;
+InitializeSession "TEST";
+Command "create database TEST";
+Command "create table t (sn int)";
+
+IsServerAvailable;
+IsDatabaseAvailable;
+IsDatabaseAvailable 1;
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

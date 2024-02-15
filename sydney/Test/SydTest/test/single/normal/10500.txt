@@ -1,0 +1,92 @@
+# select * from T where〈 列リスト2個 〉in〈 table value constructor 〉--索引き無し
+#
+# in構文テスト
+# 索引
+# --索引無し
+# --同種テスト 105[0,1]0
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+
+# メインテーブル
+Command  "create table T(C1 int, C2 int, C3 varchar(2), C4 nvarchar(4), C5 nvarchar(448))";
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, 111,  "1", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 222,  "2", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 222,  "3", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 222,  "4", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, null, "1",  null,  null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 333,  "2", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 333,  "3", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 333,  "4", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, 444,  "1", "ピヨ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, null, "2",  null,  null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 444,  "3", "ピヨ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 111,  "4", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, null, "1", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 111,  "2",  null,  textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 222,  "3", "ほげ", null                                 ];
+
+
+
+# - in ( (?, ?), (?, ?) ) - null有
+Command  "select * from T where (C1, C1) in ((?, ?), (?, ?))" [1, 1, null, null];
+Command  "select * from T where (C1, C2) in ((?, ?), (?, ?))" [1, 333, null, null];
+Command  "select * from T where (C1, C3) in ((?, ?), (?, ?))" [1, "1", null, null];
+Command  "select * from T where (C1, C4) in ((?, ?), (?, ?))" [1, "ぴよ", null, null];
+Command  "select * from T where (C1, C5) in ((?, ?), (?, ?))" [1, textsjisfile "..\\..\\doc\\hello.txt", null, null];
+
+Command  "select * from T where (C2, C2) in ((?, ?), (?, ?))" [333, 333, null, null];
+Command  "select * from T where (C2, C3) in ((?, ?), (?, ?))" [333, "1", null, null];
+Command  "select * from T where (C2, C4) in ((?, ?), (?, ?))" [333, "ぴよ", null, null];
+Command  "select * from T where (C2, C5) in ((?, ?), (?, ?))" [333, textsjisfile "..\\..\\doc\\hello.txt", null, null];
+
+Command  "select * from T where (C3, C3) in ((?, ?), (?, ?))" ["1", "1", null, null];
+Command  "select * from T where (C3, C4) in ((?, ?), (?, ?))" ["1", "ぴよ", null, null];
+Command  "select * from T where (C3, C5) in ((?, ?), (?, ?))" ["1", textsjisfile "..\\..\\doc\\hello.txt", null, null];
+
+Command  "select * from T where (C4, C4) in ((?, ?), (?, ?))" ["ぴよ", "ぴよ", null, null];
+Command  "select * from T where (C4, C5) in ((?, ?), (?, ?))" ["ぴよ", textsjisfile "..\\..\\doc\\hello.txt", null, null];
+
+Command  "select * from T where (C5, C5) in ((?, ?), (?, ?))" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\hello.txt", null, null];
+
+
+# - in ( (?, ?), (?, ?) ) - null値無
+Command  "select * from T where (C1, C1) in ((?, ?), (?, ?))" [1, 1, 2, 2];
+Command  "select * from T where (C1, C2) in ((?, ?), (?, ?))" [1, 333, 2, 444];
+Command  "select * from T where (C1, C3) in ((?, ?), (?, ?))" [1, "1", 2, "2"];
+Command  "select * from T where (C1, C4) in ((?, ?), (?, ?))" [1, "ぴよ", 2, "ピヨ"];
+Command  "select * from T where (C1, C5) in ((?, ?), (?, ?))" [1, textsjisfile "..\\..\\doc\\hello.txt", 2, textsjisfile "..\\..\\doc\\ricoh.txt"];
+
+
+Command  "select * from T where (C2, C2) in ((?, ?), (?, ?))" [333, 333, 444, 444];
+Command  "select * from T where (C2, C3) in ((?, ?), (?, ?))" [333, "1", 444, "2"];
+Command  "select * from T where (C2, C4) in ((?, ?), (?, ?))" [333, "ぴよ", 444, "ピヨ"];
+Command  "select * from T where (C2, C5) in ((?, ?), (?, ?))" [333, textsjisfile "..\\..\\doc\\hello.txt", 444, textsjisfile "..\\..\\doc\\ricoh.txt"];
+
+
+Command  "select * from T where (C3, C3) in ((?, ?), (?, ?))" ["1", "1", "2", "2"];
+Command  "select * from T where (C3, C4) in ((?, ?), (?, ?))" ["1", "ぴよ", "2", "ピヨ"];
+Command  "select * from T where (C3, C5) in ((?, ?), (?, ?))" ["1", textsjisfile "..\\..\\doc\\hello.txt", "2", textsjisfile "..\\..\\doc\\ricoh.txt"];
+
+Command  "select * from T where (C4, C4) in ((?, ?), (?, ?))" ["ぴよ", "ぴよ", "ピヨ", "ピヨ"];
+Command  "select * from T where (C4, C5) in ((?, ?), (?, ?))" ["ぴよ", textsjisfile "..\\..\\doc\\hello.txt", "ピヨ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+
+Command  "select * from T where (C5, C5) in ((?, ?), (?, ?))" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\ricoh.txt"];
+
+Command  "drop table T";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

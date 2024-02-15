@@ -1,0 +1,47 @@
+# lang情報のない全文索引
+
+Begin;
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (N int, C ntext array [no limit], L language array [no limit])";
+
+# 索引作成
+
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, [null, null], ["ja", "en"]];
+PreparedCommand "ins" [1, [null, textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+PreparedCommand "ins" [2, [textucsfile "..\\..\\doc\\takekurabe.txt", null], 
+			  ["ja", "en"]];
+PreparedCommand "ins" [3, [textucsfile "..\\..\\doc\\takekurabe.txt",
+		           textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+ErasePreparedCommand "ins";
+
+Command "select N from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+Command "select N from T where C like ?" ["%improve%"]; # 「improving」の原形
+
+Command "create fulltext index FT on T(C) hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+#一部のタプルのみ取れることを期待
+Command "select N, sectionized(C) from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+Command "select N, sectionized(C) from T where C like ?" ["%improve%"]; # 「improving」の原形
+
+Command "verify index FT cascade continue";
+Command "verify table T cascade continue";
+
+Command "drop index FT";
+
+Command "select N from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+Command "select N from T where C like ?" ["%improve%"]; # 「improving」の原形
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;
+

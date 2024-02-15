@@ -1,0 +1,46 @@
+# Linux のみ
+
+Begin;
+
+System "rm -f $(TestDir)/result/$(TestNum)_cs.log";
+SetSystemParameter "Os_PrintCriticalSection" "$(TestDir)/result/$(TestNum)_cs.log";
+
+Initialize;
+
+# 起動直後の初期状態でログを出力
+PrintCriticalSection;
+
+# ログを正規化
+System "perl ../../cs_log_normalizer.pl $(TestDir)/result/$(TestNum)_cs.log";
+
+InitializeSession "TestDB";
+
+Command "drop database TestDB if exists";
+Command "create database TestDB";
+Command "create table T(C1 int, C2 ntext)";
+Command "insert into T values (1, 'test text')";
+Command "create fulltext index T_C2 on T(C2)";
+
+# 全文索引を定義した後でログを出力
+PrintCriticalSection;
+
+# ログを正規化
+System "perl ../../cs_log_normalizer.pl $(TestDir)/result/$(TestNum)_cs.log";
+
+Command "create table T2(C1 int, C2 ntext)";
+Command "insert into T2 values (1, 'test text')";
+Command "create fulltext index T2_C2 on T2(C2)";
+Command "drop database TestDB";
+TerminateSession;
+
+# もう一度
+PrintCriticalSection;
+
+# ログを正規化
+System "perl ../../cs_log_normalizer.pl $(TestDir)/result/$(TestNum)_cs.log";
+
+Terminate;
+
+End;
+
+

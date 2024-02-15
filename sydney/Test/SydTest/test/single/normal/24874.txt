@@ -1,0 +1,1377 @@
+# 障害票 1993
+# SELECT OUTPUT TO 機能のテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T (int1 int, int2 int, int3 int)";
+Command "create table T2 (int1 int, int2 int, int3 int)";
+Command "insert T input from  path '../../doc/bulk_2_data1.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (int1 int ARRAY [10] DEFAULT NULL, float2 float ARRAY [10] DEFAULT NULL, float3 float ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (int1 int ARRAY [10] DEFAULT NULL, float2 float ARRAY [10] DEFAULT NULL, float3 float ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data2.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float DEFAULT 3.776E3, int2 int ARRAY [10] DEFAULT ARRAY[10,100,1000], float3 float DEFAULT 3.776E3)";
+Command "create table T2 (float1 float DEFAULT 3.776E3, int2 int ARRAY [10] DEFAULT ARRAY[10,100,1000], float3 float DEFAULT 3.776E3)";
+Command "insert T input from  path '../../doc/bulk_2_data3.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float ARRAY [10], float2 float DEFAULT NULL, int3 int ARRAY [10] DEFAULT ARRAY[10,100,1000])";
+Command "create table T2 (float1 float ARRAY [10], float2 float DEFAULT NULL, int3 int ARRAY [10] DEFAULT ARRAY[10,100,1000])";
+Command "insert T input from  path '../../doc/bulk_2_data4.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime ARRAY [10] DEFAULT NULL, datetime2 datetime ARRAY [10], datetime3 datetime)";
+Command "create table T2 (datetime1 datetime ARRAY [10] DEFAULT NULL, datetime2 datetime ARRAY [10], datetime3 datetime)";
+Command "insert T input from  path '../../doc/bulk_2_data5.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', bigint2 bigint DEFAULT NULL, bigint3 bigint ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (datetime1 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', bigint2 bigint DEFAULT NULL, bigint3 bigint ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data6.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint ARRAY [10], datetime2 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', bigint3 bigint DEFAULT NULL)";
+Command "create table T2 (bigint1 bigint ARRAY [10], datetime2 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', bigint3 bigint DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data7.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint DEFAULT NULL, bigint2 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], datetime3 datetime ARRAY [10])";
+Command "create table T2 (bigint1 bigint DEFAULT NULL, bigint2 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], datetime3 datetime ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data8.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'], char2 char(10) ARRAY [10], char3 char(10) ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (char1 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'], char2 char(10) ARRAY [10], char3 char(10) ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data9.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) DEFAULT NULL, varchar2 varchar(1000) DEFAULT NULL, varchar3 varchar(1000) DEFAULT 'with spaces   ')";
+Command "create table T2 (char1 char(10) DEFAULT NULL, varchar2 varchar(1000) DEFAULT NULL, varchar3 varchar(1000) DEFAULT 'with spaces   ')";
+Command "insert T input from  path '../../doc/bulk_2_data10.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000), char2 char(10) ARRAY [10], varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '])";
+Command "create table T2 (varchar1 varchar(1000), char2 char(10) ARRAY [10], varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '])";
+Command "insert T input from  path '../../doc/bulk_2_data11.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '], varchar2 varchar(1000) DEFAULT 'with spaces   ', char3 char(10))";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '], varchar2 varchar(1000) DEFAULT 'with spaces   ', char3 char(10))";
+Command "insert T input from  path '../../doc/bulk_2_data12.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) HINT nontruncate, varchar2 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, varchar3 varchar(1000) HINT nontruncate)";
+Command "create table T2 (varchar1 varchar(1000) HINT nontruncate, varchar2 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, varchar3 varchar(1000) HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data13.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, nchar2 nchar(10), nchar3 nchar(10) ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, nchar2 nchar(10), nchar3 nchar(10) ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data14.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'], varchar2 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, nchar3 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'])";
+Command "create table T2 (nchar1 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'], varchar2 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, nchar3 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'])";
+Command "insert T input from  path '../../doc/bulk_2_data15.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10), nchar2 nchar(10) DEFAULT 'あいう', varchar3 varchar(1000) DEFAULT NULL HINT nontruncate)";
+Command "create table T2 (nchar1 nchar(10), nchar2 nchar(10) DEFAULT 'あいう', varchar3 varchar(1000) DEFAULT NULL HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data16.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT NULL, nvarchar2 nvarchar(1000), nvarchar3 nvarchar(1000) DEFAULT '末尾に空白を含む   ')";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT NULL, nvarchar2 nvarchar(1000), nvarchar3 nvarchar(1000) DEFAULT '末尾に空白を含む   ')";
+Command "insert T input from  path '../../doc/bulk_2_data17.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '], nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, nvarchar3 nvarchar(1000) ARRAY [10] HINT nontruncate)";
+Command "create table T2 (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '], nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, nvarchar3 nvarchar(1000) ARRAY [10] HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data18.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) HINT nontruncate, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '], nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate)";
+Command "create table T2 (nvarchar1 nvarchar(1000) HINT nontruncate, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '], nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data19.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate, nvarchar2 nvarchar(1000) HINT nontruncate, nvarchar3 nvarchar(1000))";
+Command "create table T2 (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate, nvarchar2 nvarchar(1000) HINT nontruncate, nvarchar3 nvarchar(1000))";
+Command "insert T input from  path '../../doc/bulk_2_data20.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image DEFAULT NULL, image2 image DEFAULT 'binary data', image3 image ARRAY [10])";
+Command "create table T2 (image1 image DEFAULT NULL, image2 image DEFAULT 'binary data', image3 image ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data21.txt'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], int2 int ARRAY [10] DEFAULT NULL, varchar3 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate)";
+Command "create table T2 (image1 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], int2 int ARRAY [10] DEFAULT NULL, varchar3 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data22.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image, float2 float ARRAY [10], nchar3 nchar(10))";
+Command "create table T2 (image1 image, float2 float ARRAY [10], nchar3 nchar(10))";
+Command "insert T input from  path '../../doc/bulk_2_data23.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (int1 int ARRAY [10] DEFAULT ARRAY[10,100,1000], image2 image ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '])";
+Command "create table T2 (int1 int ARRAY [10] DEFAULT ARRAY[10,100,1000], image2 image ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '])";
+Command "insert T input from  path '../../doc/bulk_2_data24.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float DEFAULT 3.776E3, datetime2 datetime ARRAY [10] DEFAULT NULL, image3 image ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (float1 float DEFAULT 3.776E3, datetime2 datetime ARRAY [10] DEFAULT NULL, image3 image ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data25.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float ARRAY [10] DEFAULT NULL, bigint2 bigint, nvarchar3 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate)";
+Command "create table T2 (float1 float ARRAY [10] DEFAULT NULL, bigint2 bigint, nvarchar3 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data26.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime ARRAY [10], char2 char(10) DEFAULT 'abc', image3 image DEFAULT 'binary data')";
+Command "create table T2 (datetime1 datetime ARRAY [10], char2 char(10) DEFAULT 'abc', image3 image DEFAULT 'binary data')";
+Command "insert T input from  path '../../doc/bulk_2_data27.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint DEFAULT 123456789012345678, varchar2 varchar(1000) ARRAY [10], int3 int ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (bigint1 bigint DEFAULT 123456789012345678, varchar2 varchar(1000) ARRAY [10], int3 int ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data28.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) ARRAY [10], varchar2 varchar(1000) HINT nontruncate, float3 float ARRAY [10])";
+Command "create table T2 (char1 char(10) ARRAY [10], varchar2 varchar(1000) HINT nontruncate, float3 float ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data29.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) DEFAULT 'with spaces   ', nchar2 nchar(10) DEFAULT NULL, datetime3 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987')";
+Command "create table T2 (varchar1 varchar(1000) DEFAULT 'with spaces   ', nchar2 nchar(10) DEFAULT NULL, datetime3 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987')";
+Command "insert T input from  path '../../doc/bulk_2_data30.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL, bigint3 bigint)";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL, bigint3 bigint)";
+Command "insert T input from  path '../../doc/bulk_2_data31.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10) DEFAULT NULL, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, char3 char(10) DEFAULT 'abc')";
+Command "create table T2 (nchar1 nchar(10) DEFAULT NULL, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, char3 char(10) DEFAULT 'abc')";
+Command "insert T input from  path '../../doc/bulk_2_data32.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) ARRAY [10], image2 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], varchar3 varchar(1000) DEFAULT NULL)";
+Command "create table T2 (nvarchar1 nvarchar(1000) ARRAY [10], image2 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], varchar3 varchar(1000) DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data33.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT NULL HINT nontruncate, char2 char(10) DEFAULT NULL, bigint3 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432])";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT NULL HINT nontruncate, char2 char(10) DEFAULT NULL, bigint3 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432])";
+Command "insert T input from  path '../../doc/bulk_2_data34.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint ARRAY [10] DEFAULT NULL, nvarchar2 nvarchar(1000) HINT nontruncate, varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate)";
+Command "create table T2 (bigint1 bigint ARRAY [10] DEFAULT NULL, nvarchar2 nvarchar(1000) HINT nontruncate, varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data35.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT NULL, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate, int3 int DEFAULT NULL)";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT NULL, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate, int3 int DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data36.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) HINT nontruncate, float2 float DEFAULT 3.776E3, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (varchar1 varchar(1000) HINT nontruncate, float2 float DEFAULT 3.776E3, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data37.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10) ARRAY [10], int2 int, datetime3 datetime ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (nchar1 nchar(10) ARRAY [10], int2 int, datetime3 datetime ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data38.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (int1 int DEFAULT NULL, varchar2 varchar(1000) DEFAULT 'with spaces   ' HINT nontruncate, varchar3 varchar(1000) DEFAULT NULL)";
+Command "create table T2 (int1 int DEFAULT NULL, varchar2 varchar(1000) DEFAULT 'with spaces   ' HINT nontruncate, varchar3 varchar(1000) DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data39.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) ARRAY [10], nchar2 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'], image3 image)";
+Command "create table T2 (char1 char(10) ARRAY [10], nchar2 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'], image3 image)";
+Command "insert T input from  path '../../doc/bulk_2_data40.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], datetime2 datetime, varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '])";
+Command "create table T2 (image1 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], datetime2 datetime, varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '])";
+Command "insert T input from  path '../../doc/bulk_2_data41.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint, image2 image DEFAULT NULL, char3 char(10))";
+Command "create table T2 (bigint1 bigint, image2 image DEFAULT NULL, char3 char(10))";
+Command "insert T input from  path '../../doc/bulk_2_data42.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float, varchar2 varchar(1000) ARRAY [10] DEFAULT NULL, nchar3 nchar(10) ARRAY [10])";
+Command "create table T2 (float1 float, varchar2 varchar(1000) ARRAY [10] DEFAULT NULL, nchar3 nchar(10) ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data43.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] HINT nontruncate, bigint2 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], varchar3 varchar(1000))";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] HINT nontruncate, bigint2 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], varchar3 varchar(1000))";
+Command "insert T input from  path '../../doc/bulk_2_data44.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) DEFAULT 'with spaces   ' HINT nontruncate, char2 char(10) DEFAULT 'abc', float3 float DEFAULT 3.776E3)";
+Command "create table T2 (varchar1 varchar(1000) DEFAULT 'with spaces   ' HINT nontruncate, char2 char(10) DEFAULT 'abc', float3 float DEFAULT 3.776E3)";
+Command "insert T input from  path '../../doc/bulk_2_data45.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10) DEFAULT 'あいう', float2 float ARRAY [10], bigint3 bigint)";
+Command "create table T2 (nchar1 nchar(10) DEFAULT 'あいう', float2 float ARRAY [10], bigint3 bigint)";
+Command "insert T input from  path '../../doc/bulk_2_data46.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime, nvarchar2 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate, nchar3 nchar(10) ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (datetime1 datetime, nvarchar2 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate, nchar3 nchar(10) ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data47.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT NULL, int2 int, image3 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'])";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT NULL, int2 int, image3 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'])";
+Command "insert T input from  path '../../doc/bulk_2_data48.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, image2 image ARRAY [10], nchar3 nchar(10) DEFAULT 'あいう')";
+Command "create table T2 (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, image2 image ARRAY [10], nchar3 nchar(10) DEFAULT 'あいう')";
+Command "insert T input from  path '../../doc/bulk_2_data49.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime ARRAY [10] DEFAULT NULL, nvarchar2 nvarchar(1000), char3 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'])";
+Command "create table T2 (datetime1 datetime ARRAY [10] DEFAULT NULL, nvarchar2 nvarchar(1000), char3 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'])";
+Command "insert T input from  path '../../doc/bulk_2_data50.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', nchar2 nchar(10) ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) HINT nontruncate)";
+Command "create table T2 (datetime1 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', nchar2 nchar(10) ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data51.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) DEFAULT NULL, datetime2 datetime ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) ARRAY [10])";
+Command "create table T2 (char1 char(10) DEFAULT NULL, datetime2 datetime ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data52.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) DEFAULT NULL, int2 int DEFAULT 100, nvarchar3 nvarchar(1000) ARRAY [10] HINT nontruncate)";
+Command "create table T2 (varchar1 varchar(1000) DEFAULT NULL, int2 int DEFAULT 100, nvarchar3 nvarchar(1000) ARRAY [10] HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data53.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image DEFAULT NULL, char2 char(10) ARRAY [10] DEFAULT NULL, int3 int)";
+Command "create table T2 (image1 image DEFAULT NULL, char2 char(10) ARRAY [10] DEFAULT NULL, int3 int)";
+Command "insert T input from  path '../../doc/bulk_2_data54.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (int1 int ARRAY [10], varchar2 varchar(1000) DEFAULT 'with spaces   ', datetime3 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987')";
+Command "create table T2 (int1 int ARRAY [10], varchar2 varchar(1000) DEFAULT 'with spaces   ', datetime3 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987')";
+Command "insert T input from  path '../../doc/bulk_2_data55.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (int1 int ARRAY [10] DEFAULT NULL, nchar2 nchar(10), bigint3 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432])";
+Command "create table T2 (int1 int ARRAY [10] DEFAULT NULL, nchar2 nchar(10), bigint3 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432])";
+Command "insert T input from  path '../../doc/bulk_2_data56.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float ARRAY [10] DEFAULT ARRAY[3.14,3.776E3,1.09E-8], varchar2 varchar(1000) ARRAY [10] HINT nontruncate, datetime3 datetime ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (float1 float ARRAY [10] DEFAULT ARRAY[3.14,3.776E3,1.09E-8], varchar2 varchar(1000) ARRAY [10] HINT nontruncate, datetime3 datetime ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data57.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], float2 float DEFAULT 3.776E3, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate)";
+Command "create table T2 (bigint1 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], float2 float DEFAULT 3.776E3, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data58.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'], bigint2 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], int3 int DEFAULT 100)";
+Command "create table T2 (char1 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'], bigint2 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], int3 int DEFAULT 100)";
+Command "insert T input from  path '../../doc/bulk_2_data59.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000), datetime2 datetime DEFAULT NULL, float3 float ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (varchar1 varchar(1000), datetime2 datetime DEFAULT NULL, float3 float ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data60.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10) DEFAULT NULL, bigint2 bigint ARRAY [10] DEFAULT NULL, float3 float ARRAY [10])";
+Command "create table T2 (nchar1 nchar(10) DEFAULT NULL, bigint2 bigint ARRAY [10] DEFAULT NULL, float3 float ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data61.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT NULL, varchar2 varchar(1000), varchar3 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate)";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT NULL, varchar2 varchar(1000), varchar3 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data62.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000), varchar2 varchar(1000) DEFAULT NULL HINT nontruncate, char3 char(10) DEFAULT NULL)";
+Command "create table T2 (nvarchar1 nvarchar(1000), varchar2 varchar(1000) DEFAULT NULL HINT nontruncate, char3 char(10) DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data63.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) HINT nontruncate, bigint2 bigint DEFAULT 123456789012345678, varchar3 varchar(1000) HINT nontruncate)";
+Command "create table T2 (nvarchar1 nvarchar(1000) HINT nontruncate, bigint2 bigint DEFAULT 123456789012345678, varchar3 varchar(1000) HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data64.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate, datetime2 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', char3 char(10) ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate, datetime2 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', char3 char(10) ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data65.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image ARRAY [10], nvarchar2 nvarchar(1000) DEFAULT '末尾に空白を含む   ', float3 float DEFAULT NULL)";
+Command "create table T2 (image1 image ARRAY [10], nvarchar2 nvarchar(1000) DEFAULT '末尾に空白を含む   ', float3 float DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data66.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float ARRAY [10] DEFAULT ARRAY[3.14,3.776E3,1.09E-8], nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL, varchar3 varchar(1000) ARRAY [10])";
+Command "create table T2 (float1 float ARRAY [10] DEFAULT ARRAY[3.14,3.776E3,1.09E-8], nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL, varchar3 varchar(1000) ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data67.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '], bigint2 bigint DEFAULT NULL, nchar3 nchar(10) ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '], bigint2 bigint DEFAULT NULL, nchar3 nchar(10) ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data68.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, image2 image, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate)";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, image2 image, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data69.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (int1 int ARRAY [10] DEFAULT ARRAY[10,100,1000], datetime2 datetime ARRAY [10], varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate)";
+Command "create table T2 (int1 int ARRAY [10] DEFAULT ARRAY[10,100,1000], datetime2 datetime ARRAY [10], varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data70.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float ARRAY [10], char2 char(10) DEFAULT 'abc', nvarchar3 nvarchar(1000) DEFAULT NULL)";
+Command "create table T2 (float1 float ARRAY [10], char2 char(10) DEFAULT 'abc', nvarchar3 nvarchar(1000) DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data71.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT NULL, float2 float ARRAY [10] DEFAULT NULL, datetime3 datetime ARRAY [10])";
+Command "create table T2 (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT NULL, float2 float ARRAY [10] DEFAULT NULL, datetime3 datetime ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data72.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], varchar2 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, image3 image DEFAULT 'binary data')";
+Command "create table T2 (bigint1 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], varchar2 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, image3 image DEFAULT 'binary data')";
+Command "insert T input from  path '../../doc/bulk_2_data73.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) ARRAY [10], int2 int DEFAULT NULL, bigint3 bigint DEFAULT NULL)";
+Command "create table T2 (char1 char(10) ARRAY [10], int2 int DEFAULT NULL, bigint3 bigint DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data74.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '], image2 image, bigint3 bigint)";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '], image2 image, bigint3 bigint)";
+Command "insert T input from  path '../../doc/bulk_2_data75.txt'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, varchar2 varchar(1000) DEFAULT NULL HINT nontruncate, int3 int ARRAY [10])";
+Command "create table T2 (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, varchar2 varchar(1000) DEFAULT NULL HINT nontruncate, int3 int ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data76.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (int1 int ARRAY [10], nvarchar2 nvarchar(1000) HINT nontruncate, image3 image ARRAY [10])";
+Command "create table T2 (int1 int ARRAY [10], nvarchar2 nvarchar(1000) HINT nontruncate, image3 image ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data77.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float ARRAY [10] DEFAULT NULL, nchar2 nchar(10) ARRAY [10], char3 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'])";
+Command "create table T2 (float1 float ARRAY [10] DEFAULT NULL, nchar2 nchar(10) ARRAY [10], char3 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'])";
+Command "insert T input from  path '../../doc/bulk_2_data78.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) DEFAULT 'with spaces   ' HINT nontruncate, varchar2 varchar(1000) ARRAY [10], image3 image DEFAULT 'binary data')";
+Command "create table T2 (varchar1 varchar(1000) DEFAULT 'with spaces   ' HINT nontruncate, varchar2 varchar(1000) ARRAY [10], image3 image DEFAULT 'binary data')";
+Command "insert T input from  path '../../doc/bulk_2_data79.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image DEFAULT 'binary data', bigint2 bigint, nvarchar3 nvarchar(1000) DEFAULT '末尾に空白を含む   ')";
+Command "create table T2 (image1 image DEFAULT 'binary data', bigint2 bigint, nvarchar3 nvarchar(1000) DEFAULT '末尾に空白を含む   ')";
+Command "insert T input from  path '../../doc/bulk_2_data80.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000), char2 char(10) DEFAULT 'abc', bigint3 bigint ARRAY [10])";
+Command "create table T2 (nvarchar1 nvarchar(1000), char2 char(10) DEFAULT 'abc', bigint3 bigint ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data81.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10), varchar2 varchar(1000) ARRAY [10], nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate)";
+Command "create table T2 (nchar1 nchar(10), varchar2 varchar(1000) ARRAY [10], nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data82.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10) DEFAULT 'あいう', nvarchar2 nvarchar(1000), image3 image DEFAULT NULL)";
+Command "create table T2 (nchar1 nchar(10) DEFAULT 'あいう', nvarchar2 nvarchar(1000), image3 image DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data83.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (int1 int DEFAULT NULL, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '], nchar3 nchar(10) DEFAULT NULL)";
+Command "create table T2 (int1 int DEFAULT NULL, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '], nchar3 nchar(10) DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data84.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime ARRAY [10] DEFAULT NULL, int2 int ARRAY [10] DEFAULT ARRAY[10,100,1000], nvarchar3 nvarchar(1000) DEFAULT NULL)";
+Command "create table T2 (datetime1 datetime ARRAY [10] DEFAULT NULL, int2 int ARRAY [10] DEFAULT ARRAY[10,100,1000], nvarchar3 nvarchar(1000) DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data85.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) DEFAULT NULL, float2 float ARRAY [10] DEFAULT ARRAY[3.14,3.776E3,1.09E-8], varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate)";
+Command "create table T2 (char1 char(10) DEFAULT NULL, float2 float ARRAY [10] DEFAULT ARRAY[3.14,3.776E3,1.09E-8], varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data86.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT NULL, float2 float ARRAY [10] DEFAULT NULL, image3 image DEFAULT NULL)";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT NULL, float2 float ARRAY [10] DEFAULT NULL, image3 image DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data87.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate, varchar2 varchar(1000), float3 float)";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate, varchar2 varchar(1000), float3 float)";
+Command "insert T input from  path '../../doc/bulk_2_data88.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10) ARRAY [10], image2 image DEFAULT NULL, int3 int ARRAY [10])";
+Command "create table T2 (nchar1 nchar(10) ARRAY [10], image2 image DEFAULT NULL, int3 int ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data89.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT NULL HINT nontruncate, nchar2 nchar(10) DEFAULT NULL, varchar3 varchar(1000) DEFAULT 'with spaces   ')";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT NULL HINT nontruncate, nchar2 nchar(10) DEFAULT NULL, varchar3 varchar(1000) DEFAULT 'with spaces   ')";
+Command "insert T input from  path '../../doc/bulk_2_data90.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float DEFAULT 3.776E3, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate, bigint3 bigint ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (float1 float DEFAULT 3.776E3, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate, bigint3 bigint ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data91.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime, image2 image ARRAY [10], float3 float DEFAULT NULL)";
+Command "create table T2 (datetime1 datetime, image2 image ARRAY [10], float3 float DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data92.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint ARRAY [10], char2 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'], nchar3 nchar(10) ARRAY [10])";
+Command "create table T2 (bigint1 bigint ARRAY [10], char2 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'], nchar3 nchar(10) ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data93.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image ARRAY [10], varchar2 varchar(1000) ARRAY [10] DEFAULT NULL, bigint3 bigint)";
+Command "create table T2 (image1 image ARRAY [10], varchar2 varchar(1000) ARRAY [10] DEFAULT NULL, bigint3 bigint)";
+Command "insert T input from  path '../../doc/bulk_2_data94.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint, nchar2 nchar(10) ARRAY [10], nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '])";
+Command "create table T2 (bigint1 bigint, nchar2 nchar(10) ARRAY [10], nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '])";
+Command "insert T input from  path '../../doc/bulk_2_data95.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) DEFAULT 'abc', nvarchar2 nvarchar(1000) DEFAULT NULL HINT nontruncate, datetime3 datetime DEFAULT NULL)";
+Command "create table T2 (char1 char(10) DEFAULT 'abc', nvarchar2 nvarchar(1000) DEFAULT NULL HINT nontruncate, datetime3 datetime DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data96.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT NULL, varchar2 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, nvarchar3 nvarchar(1000) DEFAULT NULL)";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT NULL, varchar2 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, nvarchar3 nvarchar(1000) DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data97.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) ARRAY [10], datetime2 datetime ARRAY [10] DEFAULT ARRAY[TIMESTAMP '1987-06-05 04:32:10.987',TIMESTAMP '2109-08-07',TIMESTAMP '2345-06-07 08:09:10'], int3 int ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (nvarchar1 nvarchar(1000) ARRAY [10], datetime2 datetime ARRAY [10] DEFAULT ARRAY[TIMESTAMP '1987-06-05 04:32:10.987',TIMESTAMP '2109-08-07',TIMESTAMP '2345-06-07 08:09:10'], int3 int ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data98.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate, int2 int ARRAY [10], nchar3 nchar(10) DEFAULT NULL)";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate, int2 int ARRAY [10], nchar3 nchar(10) DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data99.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (int1 int DEFAULT 100, bigint2 bigint DEFAULT NULL, char3 char(10) DEFAULT NULL)";
+Command "create table T2 (int1 int DEFAULT 100, bigint2 bigint DEFAULT NULL, char3 char(10) DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data100.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime DEFAULT NULL, varchar2 varchar(1000) ARRAY [10], varchar3 varchar(1000) DEFAULT NULL HINT nontruncate)";
+Command "create table T2 (datetime1 datetime DEFAULT NULL, varchar2 varchar(1000) ARRAY [10], varchar3 varchar(1000) DEFAULT NULL HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data101.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime, float2 float ARRAY [10] DEFAULT ARRAY[3.14,3.776E3,1.09E-8], varchar3 varchar(1000) ARRAY [10])";
+Command "create table T2 (datetime1 datetime, float2 float ARRAY [10] DEFAULT ARRAY[3.14,3.776E3,1.09E-8], varchar3 varchar(1000) ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data102.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint ARRAY [10] DEFAULT NULL, nvarchar2 nvarchar(1000) DEFAULT NULL, int3 int DEFAULT NULL)";
+Command "create table T2 (bigint1 bigint ARRAY [10] DEFAULT NULL, nvarchar2 nvarchar(1000) DEFAULT NULL, int3 int DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data103.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) DEFAULT 'with spaces   ', nvarchar2 nvarchar(1000), varchar3 varchar(1000) DEFAULT NULL HINT nontruncate)";
+Command "create table T2 (varchar1 varchar(1000) DEFAULT 'with spaces   ', nvarchar2 nvarchar(1000), varchar3 varchar(1000) DEFAULT NULL HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data104.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] HINT nontruncate, datetime2 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', nvarchar3 nvarchar(1000) ARRAY [10] HINT nontruncate)";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] HINT nontruncate, datetime2 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', nvarchar3 nvarchar(1000) ARRAY [10] HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data105.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image, nchar2 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'], datetime3 datetime ARRAY [10])";
+Command "create table T2 (image1 image, nchar2 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'], datetime3 datetime ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data106.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', varchar2 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, nvarchar3 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate)";
+Command "create table T2 (datetime1 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', varchar2 varchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, nvarchar3 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data107.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, int2 int DEFAULT NULL, char3 char(10) ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, int2 int DEFAULT NULL, char3 char(10) ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data108.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float ARRAY [10] DEFAULT NULL, image2 image ARRAY [10], varchar3 varchar(1000) DEFAULT NULL HINT nontruncate)";
+Command "create table T2 (float1 float ARRAY [10] DEFAULT NULL, image2 image ARRAY [10], varchar3 varchar(1000) DEFAULT NULL HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data109.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10) ARRAY [10], datetime2 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', varchar3 varchar(1000))";
+Command "create table T2 (nchar1 nchar(10) ARRAY [10], datetime2 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', varchar3 varchar(1000))";
+Command "insert T input from  path '../../doc/bulk_2_data110.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000), bigint2 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], nchar3 nchar(10) ARRAY [10])";
+Command "create table T2 (varchar1 varchar(1000), bigint2 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], nchar3 nchar(10) ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data111.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT NULL, nchar2 nchar(10) DEFAULT NULL, float3 float DEFAULT NULL)";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT NULL, nchar2 nchar(10) DEFAULT NULL, float3 float DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data112.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], nvarchar2 nvarchar(1000) ARRAY [10] HINT nontruncate, char3 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'])";
+Command "create table T2 (image1 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], nvarchar2 nvarchar(1000) ARRAY [10] HINT nontruncate, char3 char(10) ARRAY [10] DEFAULT ARRAY['abc','1234567890','ABCDEFGHIJKLMNOPQRSTUVWXYZ'])";
+Command "insert T input from  path '../../doc/bulk_2_data113.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) DEFAULT 'with spaces   ' HINT nontruncate, nvarchar2 nvarchar(1000) HINT nontruncate, int3 int ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (varchar1 varchar(1000) DEFAULT 'with spaces   ' HINT nontruncate, nvarchar2 nvarchar(1000) HINT nontruncate, int3 int ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data114.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' from T";
+Command "insert T2 input from path 'temp.out'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image ARRAY [10], varchar2 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, bigint3 bigint ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (image1 image ARRAY [10], varchar2 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, bigint3 bigint ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data115.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' from T";
+Command "insert T2 input from path 'temp.out'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT NULL HINT nontruncate, float2 float ARRAY [10] DEFAULT NULL, char3 char(10) DEFAULT 'abc')";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT NULL HINT nontruncate, float2 float ARRAY [10] DEFAULT NULL, char3 char(10) DEFAULT 'abc')";
+Command "insert T input from  path '../../doc/bulk_2_data116.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) ARRAY [10] DEFAULT NULL, image2 image DEFAULT NULL, nchar3 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'])";
+Command "create table T2 (char1 char(10) ARRAY [10] DEFAULT NULL, image2 image DEFAULT NULL, nchar3 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'])";
+Command "insert T input from  path '../../doc/bulk_2_data117.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (int1 int DEFAULT 100, char2 char(10) ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate)";
+Command "create table T2 (int1 int DEFAULT 100, char2 char(10) ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data118.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) ARRAY [10], nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL, datetime3 datetime ARRAY [10] DEFAULT ARRAY[TIMESTAMP '1987-06-05 04:32:10.987',TIMESTAMP '2109-08-07',TIMESTAMP '2345-06-07 08:09:10'])";
+Command "create table T2 (char1 char(10) ARRAY [10], nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL, datetime3 datetime ARRAY [10] DEFAULT ARRAY[TIMESTAMP '1987-06-05 04:32:10.987',TIMESTAMP '2109-08-07',TIMESTAMP '2345-06-07 08:09:10'])";
+Command "insert T input from  path '../../doc/bulk_2_data119.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10) DEFAULT 'あいう', char2 char(10) DEFAULT NULL, varchar3 varchar(1000) DEFAULT 'with spaces   ' HINT nontruncate)";
+Command "create table T2 (nchar1 nchar(10) DEFAULT 'あいう', char2 char(10) DEFAULT NULL, varchar3 varchar(1000) DEFAULT 'with spaces   ' HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data120.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], int2 int DEFAULT NULL, varchar3 varchar(1000))";
+Command "create table T2 (bigint1 bigint ARRAY [10] DEFAULT ARRAY[12345,123456789012345678,-987654321098765432], int2 int DEFAULT NULL, varchar3 varchar(1000))";
+Command "insert T input from  path '../../doc/bulk_2_data121.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, char2 char(10) DEFAULT NULL, datetime3 datetime ARRAY [10])";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, char2 char(10) DEFAULT NULL, datetime3 datetime ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data122.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate, datetime2 datetime DEFAULT NULL, datetime3 datetime)";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ' HINT nontruncate, datetime2 datetime DEFAULT NULL, datetime3 datetime)";
+Command "insert T input from  path '../../doc/bulk_2_data123.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate, image2 image DEFAULT NULL, image3 image ARRAY [10])";
+Command "create table T2 (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate, image2 image DEFAULT NULL, image3 image ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data124.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (char1 char(10) DEFAULT 'abc', datetime2 datetime DEFAULT NULL, nvarchar3 nvarchar(1000) HINT nontruncate)";
+Command "create table T2 (char1 char(10) DEFAULT 'abc', datetime2 datetime DEFAULT NULL, nvarchar3 nvarchar(1000) HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data125.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nchar1 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'], datetime2 datetime ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '])";
+Command "create table T2 (nchar1 nchar(10) ARRAY [10] DEFAULT ARRAY['あいう','壱弐参四五六七八九零','とりなくこゑすゆめさませ'], datetime2 datetime ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白がある   '])";
+Command "insert T input from  path '../../doc/bulk_2_data126.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], varchar2 varchar(1000) ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) ARRAY [10])";
+Command "create table T2 (image1 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], varchar2 varchar(1000) ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data127.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (image1 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], image2 image ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate)";
+Command "create table T2 (image1 image ARRAY [10] DEFAULT ARRAY['binary data','IMAGE DATA','Default Binary Data'], image2 image ARRAY [10] DEFAULT NULL, nvarchar3 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate)";
+Command "insert T input from  path '../../doc/bulk_2_data128.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (datetime1 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', bigint2 bigint DEFAULT NULL, int3 int DEFAULT 100)";
+Command "create table T2 (datetime1 datetime DEFAULT TIMESTAMP '1987-06-05 04:32:10.987', bigint2 bigint DEFAULT NULL, int3 int DEFAULT 100)";
+Command "insert T input from  path '../../doc/bulk_2_data129.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (bigint1 bigint DEFAULT 123456789012345678, bigint2 bigint ARRAY [10], float3 float DEFAULT NULL)";
+Command "create table T2 (bigint1 bigint DEFAULT 123456789012345678, bigint2 bigint ARRAY [10], float3 float DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data130.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ', nchar2 nchar(10) DEFAULT NULL, int3 int)";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ', nchar2 nchar(10) DEFAULT NULL, int3 int)";
+Command "insert T input from  path '../../doc/bulk_2_data131.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '])";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '] HINT nontruncate, nvarchar2 nvarchar(1000) ARRAY [10] DEFAULT NULL HINT nontruncate, varchar3 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '])";
+Command "insert T input from  path '../../doc/bulk_2_data132.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (float1 float ARRAY [10] DEFAULT ARRAY[3.14,3.776E3,1.09E-8], nvarchar2 nvarchar(1000) DEFAULT NULL HINT nontruncate, float3 float ARRAY [10])";
+Command "create table T2 (float1 float ARRAY [10] DEFAULT ARRAY[3.14,3.776E3,1.09E-8], nvarchar2 nvarchar(1000) DEFAULT NULL HINT nontruncate, float3 float ARRAY [10])";
+Command "insert T input from  path '../../doc/bulk_2_data133.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate, bigint2 bigint ARRAY [10] DEFAULT NULL, image3 image ARRAY [10] DEFAULT NULL)";
+Command "create table T2 (nvarchar1 nvarchar(1000) ARRAY [10] DEFAULT ARRAY['末尾に空白を含む   ','空白は末尾にない','末尾に空白を含む   '] HINT nontruncate, bigint2 bigint ARRAY [10] DEFAULT NULL, image3 image ARRAY [10] DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data134.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '], image2 image ARRAY [10], datetime3 datetime DEFAULT NULL)";
+Command "create table T2 (varchar1 varchar(1000) ARRAY [10] DEFAULT ARRAY['with spaces   ','without spaces','with spaces   '], image2 image ARRAY [10], datetime3 datetime DEFAULT NULL)";
+Command "insert T input from  path '../../doc/bulk_2_data135.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ', datetime2 datetime DEFAULT NULL, nchar3 nchar(10) DEFAULT 'あいう')";
+Command "create table T2 (nvarchar1 nvarchar(1000) DEFAULT '末尾に空白を含む   ', datetime2 datetime DEFAULT NULL, nchar3 nchar(10) DEFAULT 'あいう')";
+Command "insert T input from  path '../../doc/bulk_2_data136.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+TerminateSession;
+InitializeSession "TESTDB";
+System "rm temp.out";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,27 @@
+#unmount->terminate->initialize->mount(3)
+#unmount/mount
+#空ではないDBをunmountしたのち、terminate->initializeしてからmountする
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "mount TESTDB path 'd:\\dm\\data\\TESTDB' using snapshot";
+Command "mount TESTDB path 'd:\\dm\\data\\TESTDB' using snapshot";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "start transaction read write";
+Command "verify database TESTDB cascade continue";
+Command "commit";
+
+Command "select * from T1";
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

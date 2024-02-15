@@ -1,0 +1,740 @@
+# transaction read write repeatable readset transaction rollback compensation
+# commitあるいはrollbackの動作確認をする。
+# 各々のスクリプトごとに各種の論理ファイルを試す。
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "DefaultDB";
+
+Command  "create table T1(C1 ntext array [no limit])";
+# 補償コマンドの動作確認
+
+# insert->delete->rollbackの動作確認
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# もう1つタプルを追加
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+# insert->delete->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 後始末
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+# 補償コマンドの動作確認
+
+# insert->delete->rollbackの動作確認
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# もう1つタプルを追加
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+# insert->delete->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 後始末
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1)";
+# 補償コマンドの動作確認
+
+# insert->delete->rollbackの動作確認
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# もう1つタプルを追加
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+# insert->delete->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 後始末
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1)";
+# 補償コマンドの動作確認
+
+# insert->delete->rollbackの動作確認
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# もう1つタプルを追加
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+# insert->delete->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 後始末
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'sectionized'";
+# 補償コマンドの動作確認
+
+# insert->delete->rollbackの動作確認
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# もう1つタプルを追加
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+# insert->delete->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 後始末
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'sectionized'";
+# 補償コマンドの動作確認
+
+# insert->delete->rollbackの動作確認
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# もう1つタプルを追加
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+# insert->delete->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 後始末
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'delayed'";
+# 補償コマンドの動作確認
+
+# insert->delete->rollbackの動作確認
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# もう1つタプルを追加
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+# insert->delete->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 後始末
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'delayed'";
+# 補償コマンドの動作確認
+
+# insert->delete->rollbackの動作確認
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# もう1つタプルを追加
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+# insert->delete->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 後始末
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(normalized=true)'";
+# 補償コマンドの動作確認
+
+# insert->delete->rollbackの動作確認
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# もう1つタプルを追加
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+# insert->delete->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 後始末
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(normalized=true)'";
+# 補償コマンドの動作確認
+
+# insert->delete->rollbackの動作確認
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# もう1つタプルを追加
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+# insert->delete->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 打ち消しあうupdateの対->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\takekurabe.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# delete->insert->rollbackの動作確認
+Command  "set transaction read write, isolation level repeatable read";
+Command  "start transaction read write";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "rollback";
+Command  "select * from T1";
+
+# 後始末
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+
+#Command  "drop table T1";
+
+TerminateSession "DefaultDB";
+# (障害回復を試すためTerminateしない)
+End;

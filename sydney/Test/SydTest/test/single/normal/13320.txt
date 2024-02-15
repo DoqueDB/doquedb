@@ -1,0 +1,21 @@
+# 障害票 1974
+# DatabaseやAreaに相対パスを指定した時の仕様変更にともなったテスト
+
+Begin;
+Initialize;
+
+#mountの対象となるデータベースの作成
+InitializeSession "";
+Command "create database DBMountTest";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create table T (f1 int)";
+Command "create index T_f1 on T(f1)";
+NotExists "d:\\dm\\data\\DBMountTest\\T";
+NotExists "d:\\dm\\data\\DBMountTest\\T\\BTR_T_f1";
+Command "insert T values (1), (2)";
+Exists "d:\\dm\\data\\DBMountTest\\T";
+Exists "d:\\dm\\data\\DBMountTest\\T\\BTR_T_f1";
+TerminateSession;
+Terminate;
+End;

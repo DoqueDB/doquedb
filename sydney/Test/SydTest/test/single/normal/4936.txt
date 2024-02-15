@@ -1,0 +1,54 @@
+#743 
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T (f varchar(10), primary key(f))";
+Command "create table X (f varchar(10))";
+Command "create table Tnon (f varchar(10) hint nontruncate, primary key(f))";
+Command "create table Xnon (f varchar(10) hint nontruncate)";
+
+Command "insert T values 'aaa  '"; #-- 末尾空白2つ
+Command "insert X values 'aaa  '";
+Command "insert Tnon values 'aaa  '";
+Command "insert Xnon values 'aaa  '";
+
+#-- 索引を使ったFetch(両方nontruncateなし)
+Command "select * from T natural join X";	#-- 1件ヒット
+#-- 索引を使ったFetch(両方nontruncateあり)
+Command "select * from Tnon natural join Xnon"; #-- 1件ヒット
+
+#-- 索引を使ったFetch(索引側nontruncateなし)
+Command "select * from T natural join Xnon";	#-- 1件ヒット ⇒ ヒットしない
+#-- 索引を使ったFetch(索引側nontruncateあり)
+Command "select * from Tnon natural join X";	#-- ヒットしない
+
+#-- 索引を使わないJoin(一方のみnontruncateあり)
+Command "select * from X natural join Xnon";	#-- 1件ヒット ⇒ ヒットしない
+
+#-- 末尾の空白の数が違うデータでの検索
+#-- (索引使用、nontruncateなし)
+Command "select * from T where f = 'aaa '"; #-- ヒットしない ⇒ 1件ヒット
+#-- (索引非使用、nontruncateなし)
+Command "select * from X where f = 'aaa '"; #-- 1件ヒット
+#-- (索引使用、nontruncateあり)
+Command "select * from Tnon where f = 'aaa '"; #-- ヒットしない
+#-- (索引非使用、nontruncateあり)
+Command "select * from Xnon where f = 'aaa '"; #-- 1件ヒット ⇒ ヒットしない
+
+# tableの後始末
+Command  "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

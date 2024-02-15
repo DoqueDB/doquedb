@@ -1,0 +1,311 @@
+# select * from T1 natural       inner join T2
+# select * from T1               inner join T2 on <条件, 列1個>
+# select * from T1               inner join T2 using <条件, 列1個>
+#                           left outer
+#                          right outer
+#
+# Join条件の列のうち索引のついているものが1個(T1のみ、T2のみ)で, 索引のついている列が
+#   1) 固定長文字列型(char(10), nchar(10))で比較対象の列が最大長の短い文字列型(char(5), nchar(5), varchar(5), nvarchar(5))
+# select文をstart transaction read write;とcommit;で囲んだもの
+#
+# T2が固定長文字列型, T1が文字列型
+#
+# 単索引
+# --T1索引無し, T2索引有り
+# --同種テスト 1170[4,6]
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# 固定長文字列型(char(10))
+# テーブルT1
+Command  "create table T2(C1 char(10), C2 int)";
+Command  "create index I2_1 on T2(C1)";
+Command  "create index I2_2 on T2(C2)";
+Command  "insert into T2 (C1, C2) values (?, ?)" ["piyo", 1   ];
+Command  "insert into T2 (C1, C2) values (?, ?)" ["puu",  null];
+Command  "insert into T2 (C1, C2) values (?, ?)" ["hoge", 2   ];
+Command  "insert into T2 (C1, C2) values (?, ?)" ["PIYO", 3   ];
+Command  "insert into T2 (C1, C2) values (?, ?)" ["HOGE", 4   ];
+Command  "insert into T2 (C1, C2) values (?, ?)" [ null,  5   ];
+Command  "insert into T2 (C1, C2) values (?, ?)" [ null,  null];
+
+# テーブルT2 --char型
+Command  "create table T1(C1 char(5))";
+Command  "insert into T1 (C1) values (?)" ["piyo"];
+Command  "insert into T1 (C1) values (?)" [ null ];
+Command  "insert into T1 (C1) values (?)" ["hoge"];
+Command  "insert into T1 (C1) values (?)" ["PUU" ];
+
+Command  "start transaction read write";
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 left outer join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 right outer join T2 on T1.C1 = T2.C1";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C1)";
+Command  "select * from T1 left outer join T2 using (C1)";
+Command  "select * from T1 right outer join T2 using (C1)";
+
+Command  "commit";
+
+Command  "drop table T1";
+
+
+# テーブルT2 --nchar型
+Command  "create table T1(C1 nchar(5))";
+Command  "insert into T1 (C1) values (?)" ["piyo"];
+Command  "insert into T1 (C1) values (?)" [ null ];
+Command  "insert into T1 (C1) values (?)" ["hoge"];
+Command  "insert into T1 (C1) values (?)" ["PUU" ];
+
+Command  "start transaction read write";
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 left outer join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 right outer join T2 on T1.C1 = T2.C1";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C1)";
+Command  "select * from T1 left outer join T2 using (C1)";
+Command  "select * from T1 right outer join T2 using (C1)";
+
+Command  "commit";
+
+Command  "drop table T1";
+
+
+# テーブルT2 --varchar型
+Command  "create table T1(C1 varchar(5))";
+Command  "insert into T1 (C1) values (?)" ["piyo"];
+Command  "insert into T1 (C1) values (?)" [ null ];
+Command  "insert into T1 (C1) values (?)" ["hoge"];
+Command  "insert into T1 (C1) values (?)" ["PUU" ];
+
+Command  "start transaction read write";
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 left outer join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 right outer join T2 on T1.C1 = T2.C1";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C1)";
+Command  "select * from T1 left outer join T2 using (C1)";
+Command  "select * from T1 right outer join T2 using (C1)";
+
+Command  "commit";
+
+Command  "drop table T1";
+
+
+# テーブルT2 --nvarchar型
+Command  "create table T1(C1 nvarchar(5))";
+Command  "insert into T1 (C1) values (?)" ["piyo"];
+Command  "insert into T1 (C1) values (?)" [ null ];
+Command  "insert into T1 (C1) values (?)" ["hoge"];
+Command  "insert into T1 (C1) values (?)" ["PUU" ];
+
+Command  "start transaction read write";
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 left outer join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 right outer join T2 on T1.C1 = T2.C1";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C1)";
+Command  "select * from T1 left outer join T2 using (C1)";
+Command  "select * from T1 right outer join T2 using (C1)";
+
+Command  "commit";
+
+Command  "drop table T1";
+
+Command  "drop table T2";
+
+
+# 固定長文字列型(nchar(10))
+# テーブルT1
+Command  "create table T2(C1 nchar(10), C2 int)";
+Command  "create index I2_1 on T2(C1)";
+Command  "create index I2_2 on T2(C2)";
+Command  "insert into T2 (C1, C2) values (?, ?)" ["piyo", 1   ];
+Command  "insert into T2 (C1, C2) values (?, ?)" ["puu ", null];
+Command  "insert into T2 (C1, C2) values (?, ?)" ["hoge", 2   ];
+Command  "insert into T2 (C1, C2) values (?, ?)" ["PIYO", 3   ];
+Command  "insert into T2 (C1, C2) values (?, ?)" ["HOGE", 4   ];
+Command  "insert into T2 (C1, C2) values (?, ?)" [ null,  5   ];
+Command  "insert into T2 (C1, C2) values (?, ?)" [ null,  null];
+
+
+# テーブルT2 --char型
+Command  "create table T1(C1 char(5))";
+Command  "insert into T1 (C1) values (?)" ["piyo"];
+Command  "insert into T1 (C1) values (?)" [ null ];
+Command  "insert into T1 (C1) values (?)" ["hoge"];
+Command  "insert into T1 (C1) values (?)" ["PUU" ];
+
+Command  "start transaction read write";
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 left outer join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 right outer join T2 on T1.C1 = T2.C1";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C1)";
+Command  "select * from T1 left outer join T2 using (C1)";
+Command  "select * from T1 right outer join T2 using (C1)";
+
+Command  "commit";
+
+Command  "drop table T1";
+
+
+# テーブルT2 --nchar型
+Command  "create table T1(C1 nchar(5))";
+Command  "insert into T1 (C1) values (?)" ["piyo"];
+Command  "insert into T1 (C1) values (?)" [ null ];
+Command  "insert into T1 (C1) values (?)" ["hoge"];
+Command  "insert into T1 (C1) values (?)" ["PUU" ];
+
+Command  "start transaction read write";
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 left outer join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 right outer join T2 on T1.C1 = T2.C1";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C1)";
+Command  "select * from T1 left outer join T2 using (C1)";
+Command  "select * from T1 right outer join T2 using (C1)";
+
+Command  "commit";
+
+Command  "drop table T1";
+
+
+# テーブルT2 --varchar型
+Command  "create table T1(C1 varchar(5))";
+Command  "insert into T1 (C1) values (?)" ["piyo"];
+Command  "insert into T1 (C1) values (?)" [ null ];
+Command  "insert into T1 (C1) values (?)" ["hoge"];
+Command  "insert into T1 (C1) values (?)" ["PUU" ];
+
+Command  "start transaction read write";
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 left outer join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 right outer join T2 on T1.C1 = T2.C1";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C1)";
+Command  "select * from T1 left outer join T2 using (C1)";
+Command  "select * from T1 right outer join T2 using (C1)";
+
+Command  "commit";
+
+Command  "drop table T1";
+
+
+# テーブルT2 --nvarchar型
+Command  "create table T1(C1 nvarchar(5))";
+Command  "insert into T1 (C1) values (?)" ["piyo"];
+Command  "insert into T1 (C1) values (?)" [ null ];
+Command  "insert into T1 (C1) values (?)" ["hoge"];
+Command  "insert into T1 (C1) values (?)" ["PUU" ];
+
+Command  "start transaction read write";
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 left outer join T2 on T1.C1 = T2.C1";
+Command  "select * from T1 right outer join T2 on T1.C1 = T2.C1";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C1)";
+Command  "select * from T1 left outer join T2 using (C1)";
+Command  "select * from T1 right outer join T2 using (C1)";
+
+Command  "commit";
+
+Command  "drop table T1";
+
+Command  "drop table T2";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

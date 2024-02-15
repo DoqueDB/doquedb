@@ -1,0 +1,60 @@
+# 障害票 1984
+# Row Subqueryの中に外部参照があった時
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+
+Command "create table T1(C1 int, C2 int)";
+Command "create index T1_C1 on T1(C1)";
+Command "insert into T1 values (?, ?), (?, ?), (?, ?), (?, ?)" [1, 2, 2, 4, 3, 6, 4, 8];
+
+Command "create table T2(C3 int, C4 int)";
+Command "insert into T2 values (?, ?), (?, ?), (?, ?)" [1, 1, 2, 8, 4, 4];
+
+Command "update T1 set (C1, C2) =
+	(select case when C2 is null then 0 else C2 end,
+		case when C3 is null then 0 else C3 end
+		 from T2
+		 where T2.C3 = T1.C1)
+	 where C1 > 0";
+Command "select * from T1";
+#expected:
+#{2,1}
+#{4,2}
+#{(null),(null)}
+#{8,4}
+
+Command "update T1 set (C1, C2) =
+	(select case when C2 is null then 0 else C2 end,
+		case when C3 is null then 0 else C3 end
+		 from T2
+		 where T2.C4 = T1.C2)";
+Command "select * from T1";
+#expected:
+#{1,1}
+#{(null),(null)}
+#{(null),(null)}
+#{4,4}
+
+Command "update T1 set (C1, C2) =
+	(select case when C2 is null then 0 else C2 end,
+		case when C3 is null then 0 else C3 end
+		 from T2
+		 where T2.C4 = (select count(*) from T1))
+	 where C1 is null";
+Command "select * from T1";
+#expected:
+#{1,1}
+#{0,4}
+#{0,4}
+#{4,4}
+
+Command  "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

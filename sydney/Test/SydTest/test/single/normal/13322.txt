@@ -1,0 +1,19 @@
+#パスを指定したデータベースのunmount-mount
+Begin;
+Initialize;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+TerminateSession;
+InitializeSession "";
+#------------------------------------
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+Command "unmount DBMountTest";
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+Command "create area area1 'area1'";
+#------------------------------------
+TerminateSession;
+#Terminate;
+End;

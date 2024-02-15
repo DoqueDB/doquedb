@@ -1,0 +1,27 @@
+# lang情報のついた全文索引のテスト(scalar, delayed, あとづけ)
+
+Begin;
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (N int, C ntext, L language)";
+
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, null, null];
+PreparedCommand "ins" [1, textucsfile "..\\..\\doc\\takekurabe.txt", null];
+ErasePreparedCommand "ins";
+
+# これは通る(2003-03-17)
+Command "create fulltext index FTIndex on T(C) language column L hint 'delayed, inverted=(normalized=true, indexing=word, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+Command "verify table T cascade continue";
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;
+

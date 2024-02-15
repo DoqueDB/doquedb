@@ -1,0 +1,40 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# XA START -- 『待機中』のトランザクションブランチへ合流
+# XA START -- 『中断中』のトランザクションブランチへ合流
+# XA END -- トランザクションブランチを中断する
+#
+# 現状 JOIN, RESUME, SUSPEND, SUSPEND FOR MIGRATE はサポートしていない
+#
+
+# JOIN
+Command "xa start X'00' join";
+
+# RESUME
+Command "xa start X'00' resume";
+
+# SUSPEND
+Command "xa start X'00'";
+Command "xa end X'00' suspend";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# SUSPEND FOR MIGRATE
+Command "xa start X'00'";
+Command "xa end X'00' suspend for migrate";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,289 @@
+#!/usr/bin/perl
+# 
+# Copyright (c) 2000,2002, 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+#
+# mkgokousei - makes gokousei lines of common dictionary
+
+=head1 NAME
+
+ mkgokousei - 語構成候補作成ツール
+
+=head1 SYNOPSIS
+
+ mkgokousei [オプション] ファイル >出力ファイル
+
+=head1 DESCRIPTION
+
+ common辞書の複合語について、語構成の候補を付け加える。
+ 付け加えた結果は、標準出力に出力される。
+
+ 付け加えた語構成情報は、g行であるが、先頭に"#"(コメント)マークを
+ 入れるため、使用するためには、このコメントを人手ではずす必要がある。
+
+ mkgokouseiは、common辞書の他に、同じcommon辞書から作られた単語リスト
+ ファイルを必要とする。
+ 単語リストファイル(デフォルトは uwork/unaword.utf8)は、
+ mkmodic によって以下のようにして作られる。
+
+    mkmodic -v -p h0m0f0 -b '<hyouki:unite> <wid><ino> ' -a '<hin> <info:f> <hyouki0> <info0:f>' -O uwork/unaword.utf8 -L '' -H '' -C ''
+
+ 実行例は以下の通り。
+
+    mkgokousei -v ../src-data/una/common.dic >common.dic.NEW
+
+ オプションは以下の通り。
+
+=item -l I<単語リストファイル>
+
+ 指定した単語リストァイルを使用する。デフォルトは、uwork/unaword.utf8
+ である。
+
+=item -v
+
+ 不必要な詳細な情報を出力する(Verbose)。
+
+=item -D
+
+ デバッグ用の情報を出力する(Debug)。ただし、現バージョンでは未使用。
+
+=item -h
+
+ 簡単なヘルプを出力する(Help)。
+
+=head1 HISTORY
+
+ Ver.1.11 2000/11/30 PL化後の最初の動作版。
+ Ver.1.12 2000/11/30 NLP->UNAに変更
+ Ver.2.01 2001/12/14 /proj/una/local/binからコピーしパスを変更
+ Ver.2.02 2002/02/20 デフォルトの参照ファイルを変更(mkunadataの変更に伴う)
+ Ver.2.03 2002/03/14 データ所在の変更に対応(mkunadataの変更に伴う)
+ Ver.5.00 2002/04/30 UNA-WorkToolsとしてRCS管理に
+ Ver.5.01 2002/08/20 ツールの実行環境を/proj/nlp/tools/UNA-CmnTools/v1.2.dist
+                     に変更
+
+=head1 BUG
+
+ 語構成中の語の中に、活用が異なるだけの同表記同単語IDの語があった場合、
+ 別々の語として、候補が出力される。(もっとも実際にはこのような場合は、
+ 語構成の対応がとれなくなるため、mkmodicでエラーになるはずである。)
+
+=cut
+
+$Wordlist_file = "uwork/unaword.utf8";
+
+use utf8; 
+use open IN  => ":utf8";
+use open OUT => ":utf8";
+
+# 引数の評価
+use Getopt::Std;
+getopts('l:vDh');
+if ($#ARGV != 0 || $opt_h) {
+    die <<EOU;
+mkgokousei
+Usage: mkgokousei [OPTIONS] FILE
+   -l FILE  wordList file ($Wordlist_file)
+   -v       Verbose
+   -D       Debug
+   -h       Help
+EOU
+}
+print STDERR "mkgokousei\n" if $opt_v;
+
+$Wordlist_file = $opt_l if $opt_l;
+
+&read_wordlist($Wordlist_file);
+&convert_dic;
+
+# 単語リストファイルを読み込む
+sub read_wordlist {
+    my($file) = @_;
+    print STDERR "reading $file\n" if $opt_v;
+    %WordInfo = ();
+    open(IN, $file) || die "can't open $file: $!\n";
+    while (<IN>) {
+	chomp;
+	s/^\s+//;		# 行頭の空白を削除
+	s/\s+$//;		# 行の後ろの空白を削除
+	s/(^|\s+)\#.*$//;	# コメントを除去
+	next if !$_;		# 空行は無視
+	if (!s/^(\S+)\s+(\S+)\s(.+)//) {
+	    die "bad format: $file($.): $_\n";
+	}
+	my($hyouki, $wid, $info) = ($1, $2, $3);
+	print STDERR "($hyouki, $wid, $info)\n" if $opt_D;
+	$info =~ s/\s/:/g;	# 空白は別のものに変える
+	push(@{$WordInfo{$hyouki}}, "$wid:$hyouki:$info");
+    }
+    close IN;
+}
+
+# common辞書を変換する
+sub convert_dic {
+    print STDERR "converting dictionary\n" if $opt_v;
+    my $prev_wid = -1;		# 一つ前の単語ID
+    my @lines = ();		# ひとつの単語を行毎に全て持つ
+    my %mark2i = ();		# マークから何番目の行かを引く
+    while (<>) {
+        chomp;
+	my $line = $_;
+        s/\s+$//;
+	s/(^|\s+)\#.*$//;	# コメントを除去
+	if (!$_) {
+	    print "$line\n";	# 空行はそのまま出力
+	    next;
+	}
+	if (!/^([\*fgmshbtcyza])([0-9]) ([0-9]{8})([0-9]{2})(.*)/) {
+	    # 全く形式に合わない
+	    die "not common dic format: $.: $_\n";
+	}
+	# 実情報の前に空白が無いかチェック
+	if ($info) {
+	    if (!($info =~ s/^\s+//)) {
+		die "bad info field (no space): $.: $_\n";
+	    }
+	}
+	# マーク、マーク番号、単語ID、異表記番号、実情報を設定
+	my($mark, $mno, $wid, $ino, $info) = ($1, $2, $3, $4, $5);
+	if ($mno != '0') {
+	    die "mark number $mno is not supported: $.: $_\n";
+	}
+	if ($wid != $prev_wid) {
+	    if (@lines) {
+		&convert_lines(\@lines, \%mark2i); # まとめて変換
+		for $line (@lines) { # まとめて出力
+		    print "$line\n";
+		}
+	    }
+	    @lines = ();
+	    %mark2i = ();
+	    $prev_wid = $wid;
+	}
+	push(@lines, $line);
+	$mark2i{"$mark$ino"} = $#lines;
+    }
+    if (@lines) {
+	&convert_lines(\@lines, \%mark2i); # まとめて変換
+	for $line (@lines) { # まとめて出力
+	    print "$line\n";
+	}
+    }
+}
+
+# ひとつの"単語"エントリを変換する
+sub convert_lines {
+    my($lines, $mark2i) = @_;
+    my $hyouki = &get_info_n($lines, $mark2i, '*00', 0); # 代表表記を得る
+    &convert_1hyouki($lines, $mark2i, $hyouki, '00');
+    my $ino = '01';
+    while (1) {
+	my $hyouki = &get_info($lines, $mark2i, "h$ino"); # 異表記を得る
+	last if !$hyouki;
+	&convert_1hyouki($lines, $mark2i, $hyouki, $ino);
+	$ino++;
+    }
+}
+
+# 1表記分変換する
+sub convert_1hyouki {
+    my($lines, $mark2i, $hyouki, $ino) = @_;
+    if ($hyouki =~ /^.+｜/) { # 複合語なら
+	my @strs = split(/｜/, $hyouki); # 語構成に分割
+	my @a = ();
+	for $str (@strs) {
+	    $str =~ s/＾//g if $str ne '＾'; # 活用の記号を取る
+	    my @b = sort @{$WordInfo{$str}};
+	    @b = ("----------::X") if !@b;
+	    push(@a, \@b);	# 二重配列を作る
+	}
+	my $all = &extend_array(@a); # 組合わせの数だけばらす
+	my $hin = &get_info_n($lines, $mark2i, '*00', 1); # 品詞を得る
+	my $wid = &get_wid($lines, $mark2i);
+	for $line (@$all) {
+	    # 新しいinfoを作る
+	    my @a = split / /, $line;
+	    my $newinfo = "$hin ";
+	    $newinfo .= join(' ', map {(split /:/)[0]} @a);
+	    $newinfo .= " # $hyouki ";
+	    $newinfo .= join(' ', map {(split /:/, $_, 3)[2]} @a);
+	    # 追加する。
+	    push(@$lines, "#g0 $wid$ino $newinfo");
+	}
+    }
+}
+
+# 二重配列をばらす
+sub extend_array {
+    my($head, @tail) = @_;
+    if (!@tail) {
+	$head;
+    }
+    else { # 再帰的に
+	my $tail = &extend_array(@tail);
+	my @a;
+	for $h (@$head) {
+	    for $t (@$tail) {
+		push(@a, "$h $t");
+	    }
+	}
+	\@a;
+    }
+}
+
+# n(n>=0)番目のinfoを得る
+sub get_info_n {
+    my($lines, $mark2i, $mark, $n) = @_;
+    my $info = &get_info($lines, $mark2i, $mark);
+    my @info = split /\s+/, $info;
+    $info[$n];
+}
+
+# infoを得る
+sub get_info {
+    my($lines, $mark2i, $mark) = @_;
+    if (!defined $mark2i->{$mark}) {
+	return undef;		# 行自体が無い
+    }
+    $_ = $lines->[$mark2i->{$mark}]; # その行
+    s/\s+$//;
+    s/(^|\s+)\#.*$//;	# コメントを除去
+    if (!/^[\*fgmshbtcyza][0-9] [0-9]{8}[0-9]{2}(.*)/) {
+	die "bad format($.): $_";
+    }
+    my $info = $1;
+    $info =~ s/^\s+//;
+    $info;
+}
+
+sub get_wid {
+    my($lines, $mark2i) = @_;
+    $_ = $lines->[$mark2i->{'*00'}]; # 代表行
+    if (!/^([\*fgmshbtcyza])([0-9]) ([0-9]{8})([0-9]{2})(.*)/) {
+	die "Internal Error"; # すでにチェック済のはず
+    }
+    my($mark0, $mno, $wid, $ino, $info) = ($1, $2, $3, $4, $5);
+    $wid;
+}
+
+=head1 SEE ALSO
+
+L<unamk>, L<UNA::Cmn>, L<mkmodic>, L<mkunadata>
+
+=head1 COPYRIGHT
+
+ Copyright 2000,2002, 2023 RICOH Co, Ltd. All rights reserved.
+
+=cut

@@ -1,0 +1,532 @@
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create database FullTextTest
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create table T1 (N int, C ntext array [no limit] hint heap 'compressed')
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create fulltext index FTIndex1 on T1(C) hint 'sectionized, delayed ,inverted=(nolocation=true)'
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create table T2 (N int, C ntext array [no limit] hint heap 'compressed')
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create fulltext index FTIndex2 on T2(C) hint 'sectionized, delayed ,inverted=(nolocation=true)'
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] select T1.N, T2.N from T1, T2 where T1.N=7 or T2.N=7 order by T1.N, T2.N
+SydTest::Executor: [INFO] <<0>> {3,7}
+SydTest::Executor: [INFO] <<0>> {6,7}
+SydTest::Executor: [INFO] <<0>> {7,3}
+SydTest::Executor: [INFO] <<0>> {7,6}
+SydTest::Executor: [INFO] <<0>> {7,7}
+SydTest::Executor: [INFO] <<0>> {7,9}
+SydTest::Executor: [INFO] <<0>> {7,10}
+SydTest::Executor: [INFO] <<0>> {9,7}
+SydTest::Executor: [INFO] <<0>> {10,7}
+SydTest::Executor: [INFO] <<0>> End Of Data.
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (1, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter]] {{良書紹介
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (2, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 1145]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (3, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 11444]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (4, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (5, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 6308]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (6, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (7, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 14481]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (8, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (9, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 46557]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (10, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 60955]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (11, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter]] {{良書紹介
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (12, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 1
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 2
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 3
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 4
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 5
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 6
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 7
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 8
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 9
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N=10
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N=11
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N=12
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (1, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter]] {{良書紹介
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (2, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 1145]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (3, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 11444]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (4, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (5, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 6308]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (6, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (7, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 14481]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (8, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (9, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 46557]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (10, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 60955]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T1 (N, C) values (11, ?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select count(*) from T1
+SydTest::Executor: [INFO] <<1>> {11}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%内閣総理大臣%'
+SydTest::Executor: [INFO] <<1>> {3}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%老婆%'
+SydTest::Executor: [INFO] <<1>> {10}
+SydTest::Executor: [INFO] <<1>> {5}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%foo%'
+SydTest::Executor: [INFO] <<1>> {11}
+SydTest::Executor: [INFO] <<1>> {10}
+SydTest::Executor: [INFO] <<1>> {7}
+SydTest::Executor: [INFO] <<1>> {4}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%ls%'
+SydTest::Executor: [INFO] <<1>> {11}
+SydTest::Executor: [INFO] <<1>> {10}
+SydTest::Executor: [INFO] <<1>> {8}
+SydTest::Executor: [INFO] <<1>> {7}
+SydTest::Executor: [INFO] <<1>> {6}
+SydTest::Executor: [INFO] <<1>> {4}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%オプション%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%打者%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%cryptography%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%ディレクトリ%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%address%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%RFC%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 1
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 8
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 2
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 4
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N= 5
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] delete from T1 where N=11
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select count(*) from T1
+SydTest::Executor: [INFO] <<1>> {5}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%内閣総理大臣%'
+SydTest::Executor: [INFO] <<1>> {3}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%老婆%'
+SydTest::Executor: [INFO] <<1>> {10}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%foo%'
+SydTest::Executor: [INFO] <<1>> {10}
+SydTest::Executor: [INFO] <<1>> {7}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%ls%'
+SydTest::Executor: [INFO] <<1>> {10}
+SydTest::Executor: [INFO] <<1>> {7}
+SydTest::Executor: [INFO] <<1>> {6}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%オプション%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%打者%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%cryptography%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%ディレクトリ%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%address%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%RFC%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] update T1 set C=? where N= 3
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter]] {{良書紹介
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] update T1 set C=? where N= 6
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 1145]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] update T1 set C=? where N= 7
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] update T1 set C=? where N= 9
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 6308]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] update T1 set C=? where N=10
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select count(*) from T1
+SydTest::Executor: [INFO] <<1>> {5}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%内閣総理大臣%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%老婆%'
+SydTest::Executor: [INFO] <<1>> {9}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%foo%'
+SydTest::Executor: [INFO] <<1>> {7}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%ls%'
+SydTest::Executor: [INFO] <<1>> {10}
+SydTest::Executor: [INFO] <<1>> {7}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%オプション%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%打者%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%cryptography%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%ディレクトリ%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%address%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] select N from T1 where C like '%RFC%'
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (1, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter]] {{良書紹介
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (2, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 1145]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (3, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 11444]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (4, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (5, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 6308]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (6, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (7, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 14481]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (8, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (9, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 46557]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (10, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 60955]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (11, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter]] {{良書紹介
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (12, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 1
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 2
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 3
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 4
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 5
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 6
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 7
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 8
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 9
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N=10
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N=11
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N=12
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (1, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter]] {{良書紹介
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (2, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 1145]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (3, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 11444]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (4, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (5, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 6308]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (6, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (7, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 14481]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (8, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (9, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 46557]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (10, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 60955]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T2 (N, C) values (11, ?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select count(*) from T2
+SydTest::Executor: [INFO] <<2>> {11}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%内閣総理大臣%'
+SydTest::Executor: [INFO] <<2>> {3}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%老婆%'
+SydTest::Executor: [INFO] <<2>> {10}
+SydTest::Executor: [INFO] <<2>> {5}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%foo%'
+SydTest::Executor: [INFO] <<2>> {11}
+SydTest::Executor: [INFO] <<2>> {10}
+SydTest::Executor: [INFO] <<2>> {7}
+SydTest::Executor: [INFO] <<2>> {4}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%ls%'
+SydTest::Executor: [INFO] <<2>> {11}
+SydTest::Executor: [INFO] <<2>> {10}
+SydTest::Executor: [INFO] <<2>> {8}
+SydTest::Executor: [INFO] <<2>> {7}
+SydTest::Executor: [INFO] <<2>> {6}
+SydTest::Executor: [INFO] <<2>> {4}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%オプション%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%打者%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%cryptography%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%ディレクトリ%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%address%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%RFC%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 1
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 8
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 2
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 4
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N= 5
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T2 where N=11
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select count(*) from T2
+SydTest::Executor: [INFO] <<2>> {5}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%内閣総理大臣%'
+SydTest::Executor: [INFO] <<2>> {3}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%老婆%'
+SydTest::Executor: [INFO] <<2>> {10}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%foo%'
+SydTest::Executor: [INFO] <<2>> {10}
+SydTest::Executor: [INFO] <<2>> {7}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%ls%'
+SydTest::Executor: [INFO] <<2>> {10}
+SydTest::Executor: [INFO] <<2>> {7}
+SydTest::Executor: [INFO] <<2>> {6}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%オプション%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%打者%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%cryptography%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%ディレクトリ%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%address%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%RFC%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] update T2 set C=? where N= 3
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter]] {{良書紹介
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] update T2 set C=? where N= 6
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 1145]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] update T2 set C=? where N= 7
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 4396]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] update T2 set C=? where N= 9
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 6308]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] update T2 set C=? where N=10
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter: length = 12248]] 
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select count(*) from T2
+SydTest::Executor: [INFO] <<2>> {5}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%内閣総理大臣%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%老婆%'
+SydTest::Executor: [INFO] <<2>> {9}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%foo%'
+SydTest::Executor: [INFO] <<2>> {7}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%ls%'
+SydTest::Executor: [INFO] <<2>> {10}
+SydTest::Executor: [INFO] <<2>> {7}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%オプション%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%打者%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%cryptography%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%ディレクトリ%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%address%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select N from T2 where C like '%RFC%'
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] FullTextTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] verify database FullTextTest cascade continue
+SydTest::Executor: [INFO] <<0>> End Of Data.
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

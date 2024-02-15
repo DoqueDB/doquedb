@@ -1,0 +1,51 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Exception_FakeError
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Exception_FakeError, Buffer::File::attach count=(103)
+SydTest::Executor: [INFO] [Main] Initialize
+Trans::TimeStamp: [INFO] TimeStamp: d:\dm\system\TIMESTAMP.SYD
+Server::Manager: [INFO] Server initialized (vX.X.X.X)
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TEST
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TEST
+Schema::Reorganize: [INFO] create database TEST
+LogicalLog::File: [INFO] Create: d:\dm\data\TEST\LOGICALLOGDIR\LOGFILE1.SYD
+Version::VersionLog: [INFO] rethrow exception
+Version::File: [INFO] rethrow exception
+Executor: [ERR] (Checkpoint) Checkpoint failed. Database 'TEST' is not available.
+Server::Worker: [INFO] rethrow exception
+Worker: [ERR] (Server) std::exception occurred. bad allocation
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Can't allocate memory.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TT (A int, B ntext, primary key(A))
+Server::Worker: [INFO] rethrow exception
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TEST' is not available.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into TT values (1, 'abc')
+Server::Worker: [INFO] rethrow exception
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TEST' is not available.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into TT values (2, 'ABC')
+Server::Worker: [INFO] rethrow exception
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TEST' is not available.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify database TEST cascade continue
+Admin::Manager: [INFO] rethrow exception
+Server::Worker: [INFO] rethrow exception
+SydTest::Executor: [INFO] {Admin,..\Manager.cpp,XXX,,,5,Database 'TEST' is not available.}
+SydTest::Executor: [INFO] End Of Data.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TEST' is not available.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+Server::Manager: [INFO] Going shutdown...
+Server::Manager: [INFO] Worker stopped.
+Server::Manager: [INFO] Connection stopped.
+Checkpoint::Executor: [INFO] Checkpoint occurred
+Server::Manager: [INFO] Server terminated
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Exception_FakeError
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Exception_FakeError, 
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,482 @@
+# delete[2]/record/heap
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 nvarchar(32) hint heap, C2 ntext hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "delete from T1 where C1=? and C2=?" ["ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(32) array [no limit] hint heap, C2 ntext array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [["ほげ", "ホゲ"], [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], ["ホゲ", "ほげ"], [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [["ほげ", "ホゲ"], [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=? and C2=?" [["ホゲ", "ほげ"], [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext hint heap, C2 fulltext hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "delete from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap, C2 fulltext array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command  "delete from T1 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 fulltext hint heap, C2 int hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [textsjisfile "..\\..\\doc\\kenpou.txt", 777, textsjisfile "..\\..\\doc\\rasyoumon.txt", 555];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\kenpou.txt", 777];
+Command  "delete from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\rasyoumon.txt", 555];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 fulltext array [no limit] hint heap, C2 int array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"], [777, 555], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"], [555, 777]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"], [777, 555]];
+Command  "delete from T1 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"], [555, 777]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 int hint heap, C2 float hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [777, 3.141592, 555, 2.718281];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [777, 3.141592];
+Command  "delete from T1 where C1=? and C2=?" [555, 2.718281];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 int array [no limit] hint heap, C2 float array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[777, 555], [3.141592, 2.718281], [555, 777], [2.718281, 3.141592]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[777, 555], [3.141592, 2.718281]];
+Command  "delete from T1 where C1=? and C2=?" [[555, 777], [2.718281, 3.141592]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 float hint heap, C2 datetime hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [3.141592, time "2001-07-07 12:34:56.789", 2.718281, time "2001-09-09 00:00:00.000"];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "delete from T1 where C1=? and C2=?" [2.718281, time "2001-09-09 00:00:00.000"];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 float array [no limit] hint heap, C2 datetime array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[3.141592, 2.718281], [time "2001-07-07 12:34:56.789", time "2001-09-09 00:00:00.000"], [2.718281, 3.141592], [time "2001-09-09 00:00:00.000", time "2001-07-07 12:34:56.789"]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[3.141592, 2.718281], [time "2001-07-07 12:34:56.789", time "2001-09-09 00:00:00.000"]];
+Command  "delete from T1 where C1=? and C2=?" [[2.718281, 3.141592], [time "2001-09-09 00:00:00.000", time "2001-07-07 12:34:56.789"]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 datetime hint heap, C2 image hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [time "2001-07-07 12:34:56.789", binaryfile "..\\..\\doc\\rnd10k", time "2001-09-09 00:00:00.000", binaryfile "..\\..\\doc\\rnd20k"];
+# 1つずつ消す
+Command  "delete from T1 where C1=?" [time "2001-07-07 12:34:56.789"];
+Command  "delete from T1 where C1=?" [time "2001-09-09 00:00:00.000"];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 datetime array [no limit] hint heap, C2 image array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[time "2001-07-07 12:34:56.789", time "2001-09-09 00:00:00.000"], [binaryfile "..\\..\\doc\\rnd10k", binaryfile "..\\..\\doc\\rnd20k"], [time "2001-09-09 00:00:00.000", time "2001-07-07 12:34:56.789"], [binaryfile "..\\..\\doc\\rnd20k", binaryfile "..\\..\\doc\\rnd10k"]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[time "2001-07-07 12:34:56.789", time "2001-09-09 00:00:00.000"], [binaryfile "..\\..\\doc\\rnd10k", binaryfile "..\\..\\doc\\rnd20k"]];
+Command  "delete from T1 where C1=? and C2=?" [[time "2001-09-09 00:00:00.000", time "2001-07-07 12:34:56.789"], [binaryfile "..\\..\\doc\\rnd20k", binaryfile "..\\..\\doc\\rnd10k"]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 image hint heap, C2 nvarchar(32) hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [binaryfile "..\\..\\doc\\rnd10k", "ほげ", binaryfile "..\\..\\doc\\rnd20k", "ホゲ"];
+# 1つずつ消す
+Command  "delete from T1 where C2=?" ["ほげ"];
+Command  "delete from T1 where C2=?" ["ホゲ"];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 image array [no limit] hint heap, C2 nvarchar(32) array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[binaryfile "..\\..\\doc\\rnd10k", binaryfile "..\\..\\doc\\rnd20k"], ["ほげ", "ホゲ"], [binaryfile "..\\..\\doc\\rnd20k", binaryfile "..\\..\\doc\\rnd10k"], ["ホゲ", "ほげ"]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[binaryfile "..\\..\\doc\\rnd10k", binaryfile "..\\..\\doc\\rnd20k"], ["ほげ", "ホゲ"]];
+Command  "delete from T1 where C1=? and C2=?" [[binaryfile "..\\..\\doc\\rnd20k", binaryfile "..\\..\\doc\\rnd10k"], ["ホゲ", "ほげ"]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(32) hint heap, C2 ntext hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [null, null, "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 1つずつ消す
+Command  "delete from T1 where C1 is null and C2 is null" [];
+Command  "delete from T1 where C1=? and C2=?" ["ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(32) array [no limit] hint heap, C2 ntext array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[null, "ほげ"], [null, textsjisfile "..\\..\\doc\\hello.txt"], ["ホゲ", "ほげ"], [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[null, "ほげ"], [null, textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "delete from T1 where C1=? and C2=?" [["ホゲ", "ほげ"], [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext hint heap, C2 fulltext hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [null, null, textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"];
+# 1つずつ消す
+Command  "delete from T1 where C1 is null and C2 is null" [];
+Command  "delete from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap, C2 fulltext array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[null, textsjisfile "..\\..\\doc\\hello.txt"], [null, textsjisfile "..\\..\\doc\\kenpou.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[null, textsjisfile "..\\..\\doc\\hello.txt"], [null, textsjisfile "..\\..\\doc\\kenpou.txt"]];
+Command  "delete from T1 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 fulltext hint heap, C2 int hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [null, null, textsjisfile "..\\..\\doc\\rasyoumon.txt", 555];
+# 1つずつ消す
+Command  "delete from T1 where C1 is null and C2 is null" [];
+Command  "delete from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\rasyoumon.txt", 555];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 fulltext array [no limit] hint heap, C2 int array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[null, textsjisfile "..\\..\\doc\\kenpou.txt"], [null, 777], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"], [555, 777]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[null, textsjisfile "..\\..\\doc\\kenpou.txt"], [null, 777]];
+Command  "delete from T1 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"], [555, 777]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 int hint heap, C2 float hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [null, null, 555, 2.718281];
+# 1つずつ消す
+Command  "delete from T1 where C1 is null and C2 is null" [];
+Command  "delete from T1 where C1=? and C2=?" [555, 2.718281];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 int array [no limit] hint heap, C2 float array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[null, 777], [null, 3.141592], [555, 777], [2.718281, 3.141592]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[null, 777], [null, 3.141592]];
+Command  "delete from T1 where C1=? and C2=?" [[555, 777], [2.718281, 3.141592]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 float hint heap, C2 datetime hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [null, null, 2.718281, time "2001-09-09 00:00:00.000"];
+# 1つずつ消す
+Command  "delete from T1 where C1 is null and C2 is null" [];
+Command  "delete from T1 where C1=? and C2=?" [2.718281, time "2001-09-09 00:00:00.000"];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 float array [no limit] hint heap, C2 datetime array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[null, 3.141592], [null, time "2001-07-07 12:34:56.789"], [2.718281, 3.141592], [time "2001-09-09 00:00:00.000", time "2001-07-07 12:34:56.789"]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[null, 3.141592], [null, time "2001-07-07 12:34:56.789"]];
+Command  "delete from T1 where C1=? and C2=?" [[2.718281, 3.141592], [time "2001-09-09 00:00:00.000", time "2001-07-07 12:34:56.789"]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 datetime hint heap, C2 image hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [null, null, time "2001-09-09 00:00:00.000", binaryfile "..\\..\\doc\\rnd20k"];
+# 1つずつ消す
+Command  "delete from T1 where C1 is null" [];
+Command  "delete from T1 where C1=?" [time "2001-09-09 00:00:00.000"];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 datetime array [no limit] hint heap, C2 image array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[null, time "2001-07-07 12:34:56.789"], [null, binaryfile "..\\..\\doc\\rnd10k"], [time "2001-09-09 00:00:00.000", time "2001-07-07 12:34:56.789"], [binaryfile "..\\..\\doc\\rnd20k", binaryfile "..\\..\\doc\\rnd10k"]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[null, time "2001-07-07 12:34:56.789"], [null, binaryfile "..\\..\\doc\\rnd10k"]];
+Command  "delete from T1 where C1=? and C2=?" [[time "2001-09-09 00:00:00.000", time "2001-07-07 12:34:56.789"], [binaryfile "..\\..\\doc\\rnd20k", binaryfile "..\\..\\doc\\rnd10k"]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 image hint heap, C2 nvarchar(32) hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [null, null, binaryfile "..\\..\\doc\\rnd20k", "ホゲ"];
+# 1つずつ消す
+Command  "delete from T1 where C2 is null" [];
+Command  "delete from T1 where C2=?" ["ホゲ"];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 image array [no limit] hint heap, C2 nvarchar(32) array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[null, binaryfile "..\\..\\doc\\rnd10k"], [null, "ほげ"], [binaryfile "..\\..\\doc\\rnd20k", binaryfile "..\\..\\doc\\rnd10k"], ["ホゲ", "ほげ"]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[null, binaryfile "..\\..\\doc\\rnd10k"], [null, "ほげ"]];
+Command  "delete from T1 where C1=? and C2=?" [[binaryfile "..\\..\\doc\\rnd20k", binaryfile "..\\..\\doc\\rnd10k"], ["ホゲ", "ほげ"]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(32) hint heap, C2 ntext hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt", null, null];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "delete from T1 where C1 is null and C2 is null" [];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(32) array [no limit] hint heap, C2 ntext array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [["ほげ", "ホゲ"], [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], ["ほげ", null], [textsjisfile "..\\..\\doc\\hello.txt", null]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [["ほげ", "ホゲ"], [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=? and C2=?" [["ほげ", null], [textsjisfile "..\\..\\doc\\hello.txt", null]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext hint heap, C2 fulltext hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt", null, null];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "delete from T1 where C1 is null and C2 is null" [];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap, C2 fulltext array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"], [textsjisfile "..\\..\\doc\\hello.txt", null], [textsjisfile "..\\..\\doc\\kenpou.txt", null]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command  "delete from T1 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\hello.txt", null], [textsjisfile "..\\..\\doc\\kenpou.txt", null]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 fulltext hint heap, C2 int hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [textsjisfile "..\\..\\doc\\kenpou.txt", 777, null, null];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\kenpou.txt", 777];
+Command  "delete from T1 where C1 is null and C2 is null" [];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 fulltext array [no limit] hint heap, C2 int array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"], [777, 555], [textsjisfile "..\\..\\doc\\kenpou.txt", null], [777, null]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"], [777, 555]];
+Command  "delete from T1 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\kenpou.txt", null], [777, null]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 int hint heap, C2 float hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [777, 3.141592, null, null];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [777, 3.141592];
+Command  "delete from T1 where C1 is null and C2 is null" [];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 int array [no limit] hint heap, C2 float array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[777, 555], [3.141592, 2.718281], [777, null], [3.141592, null]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[777, 555], [3.141592, 2.718281]];
+Command  "delete from T1 where C1=? and C2=?" [[777, null], [3.141592, null]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 float hint heap, C2 datetime hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [3.141592, time "2001-07-07 12:34:56.789", null, null];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "delete from T1 where C1 is null and C2 is null" [];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 float array [no limit] hint heap, C2 datetime array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[3.141592, 2.718281], [time "2001-07-07 12:34:56.789", time "2001-09-09 00:00:00.000"], [3.141592, null], [time "2001-07-07 12:34:56.789", null]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[3.141592, 2.718281], [time "2001-07-07 12:34:56.789", time "2001-09-09 00:00:00.000"]];
+Command  "delete from T1 where C1=? and C2=?" [[3.141592, null], [time "2001-07-07 12:34:56.789", null]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 datetime hint heap, C2 image hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [time "2001-07-07 12:34:56.789", binaryfile "..\\..\\doc\\rnd10k", null, null];
+# 1つずつ消す
+Command  "delete from T1 where C1=?" [time "2001-07-07 12:34:56.789"];
+Command  "delete from T1 where C1 is null" [];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 datetime array [no limit] hint heap, C2 image array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[time "2001-07-07 12:34:56.789", time "2001-09-09 00:00:00.000"], [binaryfile "..\\..\\doc\\rnd10k", binaryfile "..\\..\\doc\\rnd20k"], [time "2001-07-07 12:34:56.789", null], [binaryfile "..\\..\\doc\\rnd10k", null]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[time "2001-07-07 12:34:56.789", time "2001-09-09 00:00:00.000"], [binaryfile "..\\..\\doc\\rnd10k", binaryfile "..\\..\\doc\\rnd20k"]];
+Command  "delete from T1 where C1=? and C2=?" [[time "2001-07-07 12:34:56.789", null], [binaryfile "..\\..\\doc\\rnd10k", null]];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 image hint heap, C2 nvarchar(32) hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [binaryfile "..\\..\\doc\\rnd10k", "ほげ", null, null];
+# 1つずつ消す
+Command  "delete from T1 where C2=?" ["ほげ"];
+Command  "delete from T1 where C2 is null" [];
+# 正常にいけば浮ヘ空になっているはず
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 image array [no limit] hint heap, C2 nvarchar(32) array [no limit] hint heap)";
+Command  "select C1, C2 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1, C2) values (?, ?), (?, ?)" [[binaryfile "..\\..\\doc\\rnd10k", binaryfile "..\\..\\doc\\rnd20k"], ["ほげ", "ホゲ"], [binaryfile "..\\..\\doc\\rnd10k", null], ["ほげ", null]];
+# 1つずつ消す
+Command  "delete from T1 where C1=? and C2=?" [[binaryfile "..\\..\\doc\\rnd10k", binaryfile "..\\..\\doc\\rnd20k"], ["ほげ", "ホゲ"]];
+Command  "delete from T1 where C1=? and C2=?" [[binaryfile "..\\..\\doc\\rnd10k", null], ["ほげ", null]];
+# 正常にいけば浮ヘ空になっているはず
+#Command  "select C1, C2 from T1";
+#Command  "drop table T1";
+
+Command  "select * from T1";
+
+TerminateSession;
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

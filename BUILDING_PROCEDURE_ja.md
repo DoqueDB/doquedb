@@ -1,0 +1,106 @@
+## DoqueDBをソースコードからビルドする
+
+この文書ではDoqueDBをソースコードからビルドする手順を説明しています。
+
+## 必要条件
+
+ここではCentOS7上でgcc 4.8を使ってビルドすることを想定しています。  
+作業には、それに加えて以下の開発ツールが必要です。  
+zlib-develは、環境によってはlibz-devのこともあります。
+* JDK 8 以降
+* ant
+* libuuid
+* libuuid-devel
+* zlib-devel
+
+上記開発ツールをインストールするため、以下の手順を実行してください。
+```
+$ sudo yum install java-1.8.0-openjdk-devel
+$ export JAVA_HOME=<directory where you installed JDK>
+$ sudo yum install ant
+$ export ANT_HOME=<directory where you installed ant>
+$ sudo yum install libuuid libuuid-devel
+$ sudo yum install zlib-devel
+```
+さらに、MODライブラリ、UNAライブラリをビルドするためには  
+いくつかのUnicodeデータファイルが必要です。  
+Unicode.orgから以下のようにファイルを取得してください。
+```
+$ cd mod/1.0/tools/src
+$ wget https://www.unicode.org/Public/1.1-Update/UnicodeData-1.1.5.txt
+$ cd ../../../../una/1.0/resource/src-data/norm
+$ wget https://www.unicode.org/Public/1.1-Update/UnicodeData-1.1.5.txt
+$ wget https://www.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0201.TXT
+$ wget https://www.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0208.TXT
+$ wget https://www.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0212.TXT
+$ cd ../../../../..
+```
+
+## ビルド手順
+
+DoqueDBをソースコードからビルドするには、MODライブラリ、UNAライブラリ、  
+DoqueDBをその順にビルドする必要があります。
+
+### MODライブラリ (C++ヘルパーライブラリ)
+
+```
+$ export OSTYPE=linux
+$ cd mod/1.0
+$ ../../common/tools/build/mkconfdir O48-64
+$ cd c.O48-64
+$ make conf-r
+$ make buildall
+$ make install-r
+$ make package
+$ cd ../../..
+```
+
+### UNAライブラリ (日本語形態素解析器)
+
+```
+$ cd una/1.0
+$ ../../common/tools/build/mkconfdir O48-64
+$ cd c.O48-64
+$ make conf-r
+$ make buildall
+$ make install-r
+$ make package
+$ cd ../../..
+```
+
+### UNAリソース (UNA辞書)
+
+```
+$ cd una/1.0/resource
+$ mkdir work
+$ cd work
+$ make -f ../tools/make/make-tools install
+$ export LD_LIBRARY_PATH=`pwd`/../tools/bin:$LD_LIBRARY_PATH
+$ make -f ../tools/make/make-stem install
+$ make -f ../tools/make/make-norm install
+$ make -f ../tools/make/make-una install
+$ make -f ../tools/make/make-una package
+$ cd ../../../..
+```
+
+### DoqueDB
+
+```
+$ cd sydney
+$ ../common/tools/build/mkconfdir O48-64
+$ cd c.O48-64
+$ make conf-r
+$ make buildall
+$ make package
+```
+次に、パッケージをrootユーザーでインストールします。
+> [!CAUTION]
+> 既存のデータベースはこの手順で削除されます。
+```
+# cd doquedb
+# ./unsetup.sh
+# ./uninstall.sh
+# ./install.sh
+# ./setup.sh
+# ./dump.sh
+```

@@ -1,0 +1,203 @@
+# blob/nvarcharファイルのnullテスト
+
+Begin;
+SetSystemParameter "SydTest_ShowBinary" "True";
+Initialize;
+
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#
+# blob 
+#
+# overlay placeing from 
+#
+Command "create table T1(N int, C1 nclob)";
+Command "create index I1 on T1(N)";
+Command "select C1 from T1";
+Command  "insert into T1 (N, C1) values (?, ?)" [ 1, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 2, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 3, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 4, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 5, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 6, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 7, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 8, null ];
+
+Command "select char_length(C1) from T1";
+
+Command "select * from T1";
+
+Command "select substring(C1 from  ? for ? ) from T1" [1, 3];
+Command "select substring(C1 from  ? for ? ) from T1" [null, 5];
+Command "select substring(C1 from  ? for ? ) from T1" [2, null];
+Command "select substring(C1 from  ? for ? ) from T1" [null, null];
+
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=1" [null, 1];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=2" ["12345", null];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=3" [null, null];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=4" ["123", 3];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=5" ["12345", 3];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=6" ["あいうえお", 2];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=7" ["OPQRST", 5];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=8" ["デド", 4];
+
+Command "select * from T1";
+Command  "drop table T1";
+
+#
+# update T1 set C1 = C1 || "*"　
+# replace to null & string
+#
+Command "create table T1(N int, C1 nclob)";
+Command "create index I1 on T1(N)";
+Command  "insert into T1 (N, C1) values (?, ?)" [ 1, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 2, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 3, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 4, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 5, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 6, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 7, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 8, null ];
+
+Command "update T1 set C1=C1||? where N=1" [null];
+Command "update T1 set C1=C1||? where N=2" ["12345"];
+Command "update T1 set C1=C1||? where N=3" [null];
+Command "update T1 set C1=C1||? where N=4" ["123"];
+Command "update T1 set C1=C1||? where N=5" ["12345"];
+Command "update T1 set C1=C1||? where N=6" ["あいうえお"];
+Command "update T1 set C1=C1||? where N=7" ["OPQRST"];
+Command "update T1 set C1=C1||? where N=8" ["デド"];
+Command "select * from T1";
+
+Command  "drop table T1";
+
+#
+# update T1 set C1 = C1 || "*"
+# replace to null
+#
+Command "create table T1(N int, C1 nclob, C2 nclob)";
+Command "create index I1 on T1(N)";
+Command  "insert into T1 (N, C1, C2) values (?, ?, ?)" [ 1, "abcde", "xyz" ];
+Command  "insert into T1 (N, C1, C2) values (?, ?, ?)" [ 2, "abcde", "xyz" ];
+Command  "insert into T1 (N, C1, C2) values (?, ?, ?)" [ 3, "abcde", "xyz" ];
+Command  "insert into T1 (N, C1, C2) values (?, ?, ?)" [ 4, "abcde", "xyz" ];
+Command "update T1 set C1=C1||? where N=1" [null];
+Command "update T1 set C2=C2||? where N=1" [null];
+Command "update T1 set C1=C1||? where N=2" [null];
+Command "update T1 set C2=C2||? where N=3" [null];
+Command "select * from T1";
+Command "select char_length(C1) from T1";
+Command "select char_length(C2) from T1";
+Command  "drop table T1";
+
+#
+# nvarchar(32)
+#
+# overlay placeing from 
+# overlay placeing from for
+#
+Command "create table T1(N int, C1 nvarchar(32))";
+Command "create index I1 on T1(N)";
+Command "select C1 from T1";
+Command  "insert into T1 (N, C1) values (?, ?)" [ 1, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 2, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 3, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 4, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 5, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 6, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 7, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 8, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 9, "defgh" ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 10, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 11, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 12, "あいうえお" ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 13, "タチツテト" ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 14, "はひふへほ" ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 15, "はひふへほ" ];
+
+Command "select char_length(C1) from T1";
+
+Command "select * from T1";
+
+Command "select substring(C1 from  ? for ? ) from T1" [1, 3];
+Command "select substring(C1 from  ? for ? ) from T1" [null, 5];
+Command "select substring(C1 from  ? for ? ) from T1" [2, null];
+Command "select substring(C1 from  ? for ? ) from T1" [null, null];
+
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=1" [null, 1];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=2" ["12345", null];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=3" [null, null];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=4" ["123", 3];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=5" ["12345", 3];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=6" ["あいうえお", 2];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=7" ["OPQRST", 5];
+Command "update T1 set C1 = overlay(C1 placing ? from ? ) where N=8" ["デド", 4];
+Command "update T1 set C1 = overlay(C1 placing ? from ? for ? ) where N=9" [null, 1, null];
+Command "update T1 set C1 = overlay(C1 placing ? from ? for ? ) where N=10" ["12345",null, 3];
+Command "update T1 set C1 = overlay(C1 placing ? from ? for ? ) where N=11" ["びぶぺ", 2, 3];
+Command "update T1 set C1 = overlay(C1 placing ? from ? for ? ) where N=12" ["defgh", 2, 0];
+Command "update T1 set C1 = overlay(C1 placing ? from ? for ? ) where N=13" [null, 2, null];
+Command "update T1 set C1 = overlay(C1 placing ? from ? for ? ) where N=14" ["びぶぺ", null, 3];
+Command "update T1 set C1 = overlay(C1 placing ? from ? for ? ) where N=15" ["defgh", 1, 6];
+Command "select * from T1";
+Command  "drop table T1";
+
+# 
+# update T1 set C1 = C1 || "*"　
+# replace to null & string
+#
+Command "create table T1(N int, C1 nvarchar(32))";
+Command "create index I1 on T1(N)";
+Command  "insert into T1 (N, C1) values (?, ?)" [ 1, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 2, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 3, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 4, "abcde"];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 5, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 6, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 7, null ];
+Command  "insert into T1 (N, C1) values (?, ?)" [ 8, null ];
+
+Command "update T1 set C1=C1||? where N=1" [null];
+Command "update T1 set C1=C1||? where N=2" ["12345"];
+Command "update T1 set C1=C1||? where N=3" [null];
+Command "update T1 set C1=C1||? where N=4" ["123"];
+Command "update T1 set C1=C1||? where N=5" ["12345"];
+Command "update T1 set C1=C1||? where N=6" ["あいうえお"];
+Command "update T1 set C1=C1||? where N=7" ["OPQRST"];
+Command "update T1 set C1=C1||? where N=8" ["デド"];
+Command "select * from T1";
+
+Command  "drop table T1";
+
+# 
+# update T1 set C1 = C1 || "*"　
+# replace to null
+#
+Command "create table T1(N int, C1 nvarchar(32), C2 nvarchar(32))";
+Command "create index I1 on T1(N)";
+Command  "insert into T1 (N, C1, C2) values (?, ?, ?)" [ 1, "abcde", "xyz" ];
+Command  "insert into T1 (N, C1, C2) values (?, ?, ?)" [ 2, "abcde", "xyz" ];
+Command  "insert into T1 (N, C1, C2) values (?, ?, ?)" [ 3, "abcde", "xyz" ];
+Command  "insert into T1 (N, C1, C2) values (?, ?, ?)" [ 4, "abcde", "xyz" ];
+Command "update T1 set C1=C1||? where N=1" [null];
+Command "update T1 set C2=C2||? where N=1" [null];
+Command "update T1 set C1=C1||? where N=2" [null];
+Command "update T1 set C2=C2||? where N=3" [null];
+Command "select * from T1";
+Command "select char_length(C1) from T1";
+Command "select char_length(C2) from T1";
+Command  "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+SetSystemParameter "SydTest_ShowBinary" "False";
+End;

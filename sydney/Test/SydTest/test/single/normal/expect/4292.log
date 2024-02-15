@@ -1,0 +1,134 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TEST
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(ID int, F nvarchar(512), primary key(ID))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_F on T(F) hint 'inverted=(indexing=word, tokenizer=DUAL:JAP @UNARSCID:1 @NORMRSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (1, 'リコーの環境への取り組み')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (2, 'リコウの環境への取り決め')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (3, 'リコーの環状への取り組み')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (4, 'リコーの環境へも取り組み')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (5, 'ソコーの環境への取り組み')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains wordhead('環')
+SydTest::Executor: [INFO] {1,1.315172029168E-1}
+SydTest::Executor: [INFO] {2,1.315172029168E-1}
+SydTest::Executor: [INFO] {3,1.315172029168E-1}
+SydTest::Executor: [INFO] {4,1.315172029168E-1}
+SydTest::Executor: [INFO] {5,1.315172029168E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains wordhead('環境')
+SydTest::Executor: [INFO] {1,1.609640474436E-1}
+SydTest::Executor: [INFO] {2,1.609640474436E-1}
+SydTest::Executor: [INFO] {4,1.609640474436E-1}
+SydTest::Executor: [INFO] {5,1.609640474436E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains wordhead('環境への')
+SydTest::Executor: [INFO] {1,2.075187496394E-1}
+SydTest::Executor: [INFO] {2,2.075187496394E-1}
+SydTest::Executor: [INFO] {5,2.075187496394E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains wordhead('環境への取り')
+SydTest::Executor: [INFO] {1,2.075187496394E-1}
+SydTest::Executor: [INFO] {2,2.075187496394E-1}
+SydTest::Executor: [INFO] {5,2.075187496394E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains wordhead('環') & wordhead('リ')
+SydTest::Executor: [INFO] {1,2.924812503605E-1}
+SydTest::Executor: [INFO] {2,2.924812503605E-1}
+SydTest::Executor: [INFO] {3,2.924812503605E-1}
+SydTest::Executor: [INFO] {4,2.924812503605E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains wordhead('環境') & wordhead('リコーの')
+SydTest::Executor: [INFO] {1,3.684827970831E-1}
+SydTest::Executor: [INFO] {4,3.684827970831E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains wordhead('環境への') & wordhead('リコ')
+SydTest::Executor: [INFO] {1,3.684827970831E-1}
+SydTest::Executor: [INFO] {2,3.684827970831E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains wordhead('環境への取り') & wordhead('リコーの環')
+SydTest::Executor: [INFO] {1,4.150374992788E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains within(wordhead('リ') wordhead('環') upper 10)
+SydTest::Executor: [INFO] {1,1.609640474436E-1}
+SydTest::Executor: [INFO] {2,1.609640474436E-1}
+SydTest::Executor: [INFO] {3,1.609640474436E-1}
+SydTest::Executor: [INFO] {4,1.609640474436E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains within(wordhead('リコーの') wordhead('環境') upper 10)
+SydTest::Executor: [INFO] {1,2.924812503605E-1}
+SydTest::Executor: [INFO] {4,2.924812503605E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains within(wordhead('リコ') wordhead('環境への') upper 10)
+SydTest::Executor: [INFO] {1,2.924812503605E-1}
+SydTest::Executor: [INFO] {2,2.924812503605E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains within(synonym(wordhead('リ') wordhead('ソ')) wordhead('環') upper 10)
+SydTest::Executor: [INFO] {1,1.315172029168E-1}
+SydTest::Executor: [INFO] {2,1.315172029168E-1}
+SydTest::Executor: [INFO] {3,1.315172029168E-1}
+SydTest::Executor: [INFO] {4,1.315172029168E-1}
+SydTest::Executor: [INFO] {5,1.315172029168E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains within(synonym(wordhead('リコーの') wordhead('リコーも')) wordhead('環境') upper 10)
+SydTest::Executor: [INFO] {1,2.924812503605E-1}
+SydTest::Executor: [INFO] {4,2.924812503605E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id, score(F) from T where F contains within(synonym(wordhead('リコ') wordhead('ソコ')) wordhead('環境への') upper 10)
+SydTest::Executor: [INFO] {1,2.075187496394E-1}
+SydTest::Executor: [INFO] {2,2.075187496394E-1}
+SydTest::Executor: [INFO] {5,2.075187496394E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

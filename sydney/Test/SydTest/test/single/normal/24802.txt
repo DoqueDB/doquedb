@@ -1,0 +1,90 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# 障害票 No.1247 に対応
+# partiton by & order by のテスト拡充
+#
+Command "create table T1(C1 int, C2 datetime, C3 ntext, C4 varchar(14), primary key(C1))";
+
+Command "insert into T1 (C1, C2, C3, C4) values (1, '2009-04-10 00:00:00.000', '東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', 'Aa')";
+Command "insert into T1 (C1, C2, C3, C4) values (2, '2009-04-20 00:00:00.000', '京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', 'Zz')";
+Command "insert into T1 (C1, C2, C3, C4) values (3, '2009-04-30 00:00:00.000', '北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。', (null))";
+Command "insert into T1 (C1, C2, C3, C4) values (4, '2009-04-30 00:00:00.000', '東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', (null))";
+Command "insert into T1 (C1, C2, C3, C4) values (5, '2009-04-10 00:00:00.000', '京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', 'Aa')";
+Command "insert into T1 (C1, C2, C3, C4) values (6, '2009-04-20 00:00:00.000', '北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。', 'Zz')";
+Command "insert into T1 (C1, C2, C3, C4) values (7, '2009-04-30 00:00:00.000', '東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', (null))";
+Command "insert into T1 (C1, C2, C3, C4) values (8, '2009-04-30 00:00:00.000', '京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', (null))";
+Command "insert into T1 (C1, C2, C3, C4) values (9, '2009-04-10 00:00:00.000', '北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。', 'Aa')";
+Command "insert into T1 (C1, C2, C3, C4) values (10, '2009-04-20 00:00:00.000', '東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', 'Zz')";
+Command "insert into T1 (C1, C2, C3, C4) values (11, '2009-04-30 00:00:00.000', '京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', (null))";
+Command "insert into T1 (C1, C2, C3, C4) values (12, '2009-04-30 00:00:00.000', '北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。', (null))";
+
+Command "create fulltext index I1 on T1(C3) hint 'inverted=(clustered=(feature=10))'";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by score(C3) desc partition by cluster(C3).id";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by score(C3) desc partition by cluster(C3).id limit 1";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C2";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C2 limit 1";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C4";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C4 limit 1";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 desc partition by cluster(C3).id";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 desc partition by cluster(C3).id limit 1 offset 1";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C2";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C2 limit 1 offset 1";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4 limit 1 offset 1";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 asc partition by cluster(C3).id";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 asc partition by cluster(C3).id limit 1 offset 2";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C2";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C2 limit 1 offset 2";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C4";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C4 limit 1 offset 2";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C2";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C2 limit 2";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by score(C3) desc partition by cluster(C3).id";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by score(C3) desc partition by cluster(C3).id limit 2";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C4";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C4 limit 2";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 desc partition by cluster(C3).id";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 desc partition by cluster(C3).id limit 2 offset 1";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C2";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C2 limit 2 offset 1";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4 limit 2 offset 1";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 asc partition by cluster(C3).id";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 asc partition by cluster(C3).id limit 2 offset 2";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C2";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C2 limit 2 offset 2";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4 limit 2 offset 2";
+
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C4";
+Command "select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C4 limit 1 offset 1";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

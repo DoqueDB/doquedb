@@ -1,0 +1,64 @@
+# Bug report 2436
+# 全文索引が定義されていない列に全文索引を前提とする関数を使用したテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+Command "create table TBL(f int, g nvarchar(20), h ntext)";
+
+Command "insert TBL values (?, ?, ?)" [1, "test", "This is a pen."];
+Command "insert TBL values (?, ?, ?)" [2, "estimate", "He likes playing tennis."];
+Command "insert TBL values (?, ?, ?)" [3, "altimate", "She is a dog."];
+
+Command "create index TBL_f on TBL(f)";
+Command "create index TBL_g on TBL(g)";
+Command "create fulltext index TBL_h on TBL(h)";
+
+##########################
+# Not Supported
+Command "select * from TBL where g like '%est%' order by score(g)";
+Command "select g, score(g) from TBL where g like '%est%'";
+Command "select g, kwic(g for 5) from TBL where g like '%est%'"; # kwic needs contains
+Command "select g, cluster(g).id from TBL where g like '%est%'";
+
+Command "select * from TBL where g like 'tes%' order by score(g)";
+Command "select g, score(g) from TBL where g like 'tes%'";
+Command "select g, kwic(g for 5) from TBL where g like 'tes%'"; # kwic needs contains
+Command "select g, cluster(g).id from TBL where g like 'tes%'";
+
+Command "select * from TBL where g contains 'tes' order by score(g)";
+Command "select g, score(g) from TBL where g contains 'tes'";
+Command "select g, kwic(g for 5) from TBL where g contains 'tes'"; # kwic needs contains
+Command "select g, cluster(g).id from TBL where g contains 'tes'";
+
+Command "select avg(fulltext_length(g)) from TBL";
+##########################
+
+
+##########################
+# succeed
+Command "select * from TBL where h like '%en%' order by score(h)";
+Command "select h, score(h) from TBL where h like '%en%'";
+Command "select h, kwic(h for 5) from TBL where h like '%en%'"; # kwic needs contains
+Command "select h, cluster(h).id from TBL where h like '%en%'";
+
+Command "select * from TBL where h like 'He%' order by score(h)";
+Command "select h, score(h) from TBL where h like 'He%'";
+Command "select h, kwic(h for 5) from TBL where h like 'He%'"; # kwic needs contains
+Command "select h, cluster(h).id from TBL where h like 'He%'";
+
+Command "select * from TBL where h contains 'is' order by score(h)";
+Command "select h, score(h) from TBL where h contains 'is'";
+Command "select h, kwic(h for 5) from TBL where h contains 'is'";
+Command "select h, cluster(h).id from TBL where h contains 'is'";
+
+Command "select avg(fulltext_length(h)) from TBL";
+##########################
+
+
+TerminateSession;
+Terminate;
+End;

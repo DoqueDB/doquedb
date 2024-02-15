@@ -1,0 +1,205 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table IntArrayTable (NUM int, ARRAYVALUE int array[8])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (1, array[NULL, 2, 5000, 200])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (2, array[NULL, NULL, 89, 300])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (3, array[NULL, NULL, NULL, -1234567,NULL,-765432])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (4, array[0, 200, -3566, 9876])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (5, array[-1, 2, 2147483647, 300])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (6, array[2, -50, -2147483648, 500])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (7, array[3, 12345, -2147483649, -400])
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (8, array[4, 12345, 2147483648, null])
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable order by NUM
+SydTest::Executor: [INFO] {1,{(null),2,5000,200}}
+SydTest::Executor: [INFO] {2,{(null),(null),89,300}}
+SydTest::Executor: [INFO] {3,{(null),(null),(null),-1234567,(null),-765432}}
+SydTest::Executor: [INFO] {4,{0,200,-3566,9876}}
+SydTest::Executor: [INFO] {5,{-1,2,2147483647,300}}
+SydTest::Executor: [INFO] {6,{2,-50,-2147483648,500}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table floatArrayTable (NUM int, ARRAYVALUE float array[8])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (1, array[null, 2.3987, 100.0, 1])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (2, array[null, 2.3987, 2])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (3, array[null, 3.141592, 2])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (4, array[null, 3.141592, 2.0])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (5, array[null, 50.5687, 2])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (6, array[null, 50.5687, 2.0])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (7, array[3.141592, 1,1, 2])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (8, array[50.5687, 2, 2,1])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (9, array[-1.0, 100.4877, -0.789878, 3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (10, array[null, 100.4877, 1, 3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (11, array[2.0, -9803.123, null, 3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (12, array[null, -9803.123, 2, 3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (13, array[3.0, 999.1234, -100, -3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (14, array[null, 999.1234, 3, -3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (15, array[4.0, 100.4444, -8349506.01, null])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable order by NUM
+SydTest::Executor: [INFO] {1,{(null),2.3987E0,1E2,1E0}}
+SydTest::Executor: [INFO] {2,{(null),2.3987E0,2E0}}
+SydTest::Executor: [INFO] {3,{(null),3.141592E0,2E0}}
+SydTest::Executor: [INFO] {4,{(null),3.141592E0,2E0}}
+SydTest::Executor: [INFO] {5,{(null),5.05687E1,2E0}}
+SydTest::Executor: [INFO] {6,{(null),5.05687E1,2E0}}
+SydTest::Executor: [INFO] {7,{3.141592E0,1E0,1E0,2E0}}
+SydTest::Executor: [INFO] {8,{5.05687E1,2E0,2E0,1E0}}
+SydTest::Executor: [INFO] {9,{-1E0,1.004877E2,-7.89878E-1,3E0}}
+SydTest::Executor: [INFO] {10,{(null),1.004877E2,1E0,3E0}}
+SydTest::Executor: [INFO] {11,{2E0,-9.803123E3,(null),3E0}}
+SydTest::Executor: [INFO] {12,{(null),-9.803123E3,2E0,3E0}}
+SydTest::Executor: [INFO] {13,{3E0,9.991234E2,-1E2,-3E0}}
+SydTest::Executor: [INFO] {14,{(null),9.991234E2,3E0,-3E0}}
+SydTest::Executor: [INFO] {15,{4E0,1.004444E2,-8.34950601E6,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table bigintArrayTable (NUM int, ARRAYVALUE bigint array[8])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (1, array[null, 3, 100, 1])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (2, array[null, null, 100, 2867940])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (3, array[null, null, null, -123940567])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (4, array[null, null, null, -123940567,null,9238475637,null])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (5, array[100, 45000, 5555, -1])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (6, array[1, -10, 9223372036854775807, 2])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (7, array[-2, 100, -9223372036854775808, 3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (8, array[3, 100, -9223372036854775809, -4])
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (9, array[4, 10, 9223372036854775808, -5])
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable order by NUM
+SydTest::Executor: [INFO] {1,{(null),3,100,1}}
+SydTest::Executor: [INFO] {2,{(null),(null),100,2867940}}
+SydTest::Executor: [INFO] {3,{(null),(null),(null),-123940567}}
+SydTest::Executor: [INFO] {4,{(null),(null),(null),-123940567,(null),9238475637,(null)}}
+SydTest::Executor: [INFO] {5,{100,45000,5555,-1}}
+SydTest::Executor: [INFO] {6,{1,-10,9223372036854775807,2}}
+SydTest::Executor: [INFO] {7,{-2,100,-9223372036854775808,3}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table c8at (c char(8) array[no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into c8at values (array['abcd', 'xyz'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into c8at values (array['XYXYX', null, 'ABAB'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into c8at values (array['B', 'OPQ', null])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into c8at values (array[null, 'abcdef', 'ABC'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at
+SydTest::Executor: [INFO] {{abcd    ,xyz     }}
+SydTest::Executor: [INFO] {{XYXYX   ,(null),ABAB    }}
+SydTest::Executor: [INFO] {{B       ,OPQ     ,(null)}}
+SydTest::Executor: [INFO] {{(null),abcdef  ,ABC     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table IntArrayTable
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table floatArrayTable
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table bigintArrayTable
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table c8at
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

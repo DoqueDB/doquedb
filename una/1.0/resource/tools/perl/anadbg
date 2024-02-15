@@ -1,0 +1,457 @@
+#!/usr/bin/perl
+# 
+# Copyright (c) 2000,2002, 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+
+# anadbg - 形態素解析結果デバッグ情報解析ツール
+
+=head1 NAME
+
+ anadbg - 形態素解析結果デバッグ情報解析ツール
+
+=head1 SYNOPSIS
+
+ anadbg [オプション] 解析デバッグファイル >出力ファイル
+
+=head1 DESCRIPTION
+
+ このツールはUNAの出力結果を元にデバッグファイルを作成する。
+
+ オプションは以下の通り。
+
+=item -r I<ディレクトリ>
+
+ データの置かれるディレクトリのデフォルトを指定する。
+ ファイルの指定において、相対パスが指定された場合、このディレクトリからの
+ 相対パスとして扱われる。-rオプションが指定されない場合のデフォルトは、
+ uworkである。
+
+=item -d I<FILE>
+
+ UNA用辞書ソースファイルを指定する。デフォルトはunadic.dbgである。
+
+=item -c I<FILE>
+
+ UNA用接続表ソースファイルを指定する。デフォルトはunacon.utf8である。
+
+=item -l I<FILE>
+
+ UNA用品詞リストファイルを指定する。デフォルトはunahin.utf8である。
+
+=item -m I<FILE>
+
+ UNA用実行辞書および実行接続表を作成したときのコストの最大値を持つ
+ costmaxファイルを指定する。デフォルトではcostmax.datである。
+ この値が正しくないと、分析時のコストが正しく表示されなくなる。
+
+=item -v
+
+ 詳細な情報を出力する(Verbose)。
+
+=item -h
+
+ 簡単なヘルプを出力する(Help)。
+
+=head2 Debug File
+
+ デバッグファイルでは、一行がひとつのノードを表している。
+ ノードの意味は次のとおり。
+
+ 例:
+
+    `一覧' [22] +135(Q)+225=1610 41156:一覧:いちらん:名詞サ変
+
+   インデント幅           その形態素の開始位置
+   `文字列'               表記
+   [数字]                 ノード番号(内部的な値)
+   +数字(シンボル)        接続コストと接続シンボル
+   +数字                  単語コスト
+   =数字                  累積コスト
+   数字:                  単語ID(UNA辞書ソースにおける行番号)
+   文字列:文字列:文字列   代表表記とよみと品詞
+
+=head1 HISTORY
+
+ Ver.1.01 2000/11/30 PL化後の動作版
+ Ver.1.02 2000/11/30 NLP->UNAに変更
+ Ver.1.03 2000/11/30 ディレクトリをdata/eucからdata/debugに変更
+ Ver.1.04 2000/12/05 ディレクトリを指定できるようにした。
+ Ver.1.08 2001/07/23 costmax.logの場所をsrc/に変更
+ Ver.2.01 2001/12/14 /proj/una/local/binからコピーしパスを変更
+ Ver.2.02 2002/02/20 デフォルトの参照ファイルを変更(mkunadataの変更に伴う)
+ Ver.2.03 2002/03/14 データ所在の変更に対応(mkunadataの変更に伴う)
+ Ver.5.00 2002/04/30 UNA-WorkToolsとしてRCS管理に
+ Ver.5.01 2002/08/20 ツールの実行環境を/proj/nlp/tools/UNA-CmnTools/v1.2.distに変更
+
+=head1 BUG
+
+ 文番号は5桁まで。
+
+=cut
+
+use utf8;
+use warnings;
+use strict;
+binmode STDIN,  ":utf8";
+binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
+use open IO => ":utf8";
+
+use lib "../tools/perl/lib";
+my $rsc_dir = "./uwork";
+#my $dicfile = "unadic.dbg";
+my $confile = "unacon.utf8";
+my $hinfile = "unahin.utf8";
+my $costmaxfile = "costmax.dat";
+my $void_hin_no   = 65535;		# ラティス上の無効語の品詞番号
+my $void_hin_name = "無効語";		# 無効語の品詞名
+
+# 引数の評価
+use Getopt::Std;
+my %opt;
+getopts('ir:e:d:c:l:m:vDh', \%opt);
+if ($#ARGV != 0 && exists $opt{h}) {
+	die <<EOU;
+Usage: perl anadbg [OPTIONS] DBGFILE >OUTFILE
+Usage: perl anadbg -r uwork -v *.dbg
+   -r RSCDIR  resource directory ($rsc_dir)
+   -c FILE    UNA Connect table source (default is RSCDIR/$confile)
+   -l FILE    UNA hinshi header file (default is RSCDIR/$hinfile)
+   -m FILE    cost Max file (default is RSCDIR/$costmaxfile)
+   -v         Verbose
+   -h         Help
+EOU
+}
+print STDERR "anadbg\n" if exists $opt{v};
+
+$rsc_dir = $opt{r} if exists $opt{r};
+#$dicfile = $opt{d} if exists $opt{d};
+$confile = $opt{c} if exists $opt{c};
+$hinfile = $opt{l} if exists $opt{l};
+$costmaxfile = $opt{m} if exists $opt{m};
+my $dbgfile = shift @ARGV;
+
+use UNA::CostMax;
+
+my $costmax;
+if (-f &mkfile($rsc_dir, $costmaxfile)) {
+	print STDERR "reading $costmaxfile...\n" if exists $opt{v};
+	$costmax = get_costmax(&mkfile($rsc_dir, $costmaxfile));
+}
+else {
+	$costmax = 17.2;
+}
+# 複数辞書化に伴い、アプリ情報を使うのをやめたため、unadic.eucは読まない
+#if (!$opt{i}) {
+#	print STDERR "reading $dicfile...\n" if $opt{v};
+#	&read_dic(&mkfile($rsc_dir, $dicfile));
+#}
+print STDERR "reading $hinfile...\n" if exists $opt{v};
+&read_hin(&mkfile($rsc_dir, $hinfile));
+print STDERR "reading $confile...\n" if exists $opt{v};
+&read_con(&mkfile($rsc_dir, $confile));
+
+my ($BunNoMin, $BunNoMax, @Bun2Str, @Bun2Pos, @Lat2Str, @Lat2Pos, @NodeInfo);
+my (@Head, @Tail, @Connected, @Chosen, @ConCost, @ConSym);
+my ($latno, %HinNoHash, %WNum, %Hindo);
+my ($BunNo, $BunStr, @BunStr, @BunLine);
+my (@Line, $LastN, @HinNo, @AcumC, @Parent, @Depth, @Sort, @Hin);
+print STDERR "processing $dbgfile...\n" if exists $opt{v};
+&process_dbgfile($dbgfile);
+exit;
+
+sub process_dbgfile {
+	my($file) = @_;
+	$BunNo = 1;		# 文番号
+	$BunStr = '';		# 一行分の文字列
+	my $last = 0;		# 最後のラティスか?
+	open(IN, $file) || die "can't read $file: $!\n";
+	while (<IN>) {
+		chomp;
+		if (/^\[/) {
+			&parse_node($_);
+		}
+		elsif (/^---/) {
+			&set_lattice if @Line;
+			&show_bun if @BunLine && $last;
+			$last = (/^-.*because text end/);
+		}
+	}
+	close IN;
+	&set_lattice if @Line;
+	&show_bun if @BunLine;
+}
+
+sub set_lattice {
+	$BunStr .= $BunStr[$LastN];
+	for (sort @Line) {
+		my $line = $_;
+		$line =~ s/^\S+ //;
+		push(@BunLine, $line);
+	}
+	push(@BunLine, "---");
+	@HinNo = ();
+	@AcumC = ();
+	@Parent = ();
+	@Depth = ();
+	@Sort = ();
+	@BunStr = ();
+	@Line = ();
+	$LastN = -1;
+}
+
+sub show_bun {
+	printf qq|\n%05d."%s"\n\n|, $BunNo, $BunStr;
+	$BunNo++;
+	for (@BunLine) {
+		print "$_\n";
+	}
+	$BunStr = '';
+	@BunLine = ();
+}
+
+# ひとつのノード分パースする
+sub parse_node {
+	my($line) = @_;
+	# dounamkの出力形式変更(prio追加)に対応 (2017/11/30)
+	# dounamkの出力形式変更(unaHin追加)に対応 (2019/10/16)
+	if (/^\[(\d+)\](.*):hin=(\d+)\sunaHin=[0-9a-f]+\scost=(\d+)\s+acumCost=(\d+)\s\S+?=\[(\d+)\]\s\S+?=\[(\d+)\]\sappI=([\dA-F]+)\ssubI=([\dA-F]+)\sprio=(\d+)/ ||
+		/^\[(\d+)\](.*):hin=(\d+)\scost=(\d+)\s+acumCost=(\d+)\s\S+?=\[(\d+)\]\s\S+?=\[(\d+)\]\sappI=([\dA-F]+)\ssubI=([\dA-F]+)\sprio=(\d+)/) {
+		my($n, $hyouki, $hin, $cost, $acum_c, $pn, $bn, $appi, $subi, $prio) =
+			($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);
+		$appi = hex $appi;
+# widの処理を元に戻した (2017/11/30)
+#		my $wid = 0;
+		my $wid = $appi & 0xffffff;
+		my $dicno = ($appi & 0xff000000) >> 24;
+		my $app = ':';
+# unadic由来のアプリ情報は使わないようにした (2017/11/30)
+## 辞書を圧縮したためかwidが取得できないためコメントアウト
+#		if ($dicno == 0 && $wid > 0) {
+#			$hyouki = $Hyouki[$wid];
+#			$app = $Dic[$wid];
+#		}
+		$BunStr[$n] = $BunStr[$pn];
+		$BunStr[$n] .= $hyouki if $hyouki;
+		$hyouki = '？' if $dicno > 0 && $hyouki eq '';
+		$HinNo[$n] = $hin;
+		$hin = $Hin[$hin];
+		$AcumC[$n] = $acum_c;
+		$Parent[$pn]++;
+		my $consym = 0;
+		my $concost = 0;
+		$Depth[$n] = 0;
+		if ($pn != 255) {
+			$consym = $ConSym[$HinNo[$pn]][$HinNo[$n]];
+			$concost = $AcumC[$n] - $cost - $AcumC[$pn];
+			$Sort[$n] = $Sort[$pn].".".sprintf("%03d", $n);
+			$Depth[$n] += $Depth[$pn] if $Depth[$pn];
+			$Depth[$n] += &getlength($hyouki) if $hyouki;
+			$Line[$n] = $Sort[$n]." ";
+			if (defined $Depth[$pn]) {
+				# 無効語(品詞番号0)はインデントしない (2017/12/28)
+				if ($HinNo[$n] != $void_hin_no) {
+					$Line[$n] .= " " x $Depth[$pn];
+				}
+			}
+		} else {
+			$Sort[$n] = ".".sprintf("%03d", $n);
+			$Depth[$n] += $Depth[$pn] if $Depth[$pn];
+			$Depth[$n] += &getlength($hyouki) if $hyouki;
+			$Line[$n] = $Sort[$n]." ";
+		}
+# アプリ情報のかわりに辞書番号を表示する (2017/11/30)
+#		$Line[$n] .= "`$hyouki' [$n] +$concost($consym)+$cost=$acum_c $wid:$app:$hin";
+		$Line[$n] .= "`$hyouki' [$n] +$concost($consym)+$cost=$acum_c $dicno:$wid:$prio:$hin";
+		$LastN = $n;
+	}
+	else {
+		die "bad line($.): $line\n";
+	}
+}
+
+# 複数辞書化によりunadic.eucの情報は使わないよう変更 (2017/11/30)
+#
+#sub read_dic {
+#	my($file) = @_;
+#	my $n = 0;
+#	open(DIC, $file) || die "can't read $file: $!\n";
+#	while (<DIC>) {
+#		chomp;
+#		my($uniqid, $hyouki, $hin, $cost, $app) = split / /, $_, 5;
+#		if ($app !~ /^(\S+)\((\S+) (.*) \S+\)/) {
+#			die "Bad Dic Application Information: $file($.): $_\n";
+#		}
+#		my($h, $shuu, $yomi) = ($1, $2, $3);
+#		$yomi =~ s/ /,/g;	# 読み中の空白は","に変更
+#		$Hyouki[$n] = $h;
+#		$Dic[$n] = "$shuu:$yomi";
+#		$n++;
+#	}
+#	close DIC;
+#}
+
+sub read_con {
+	my($file) = @_;
+	open(CON, $file) || die "can't read $file: $!\n";
+	while (<CON>) {
+		chomp;
+		my($hin1, $hin2, $sym, $cost) = split / /;
+		if (!$HinNoHash{$hin1}) {
+			die "bad left hin name: $hin1\n";
+		}
+		$hin1 = $HinNoHash{$hin1};
+		if (!$HinNoHash{$hin2}) {
+			# left→right (2017/11/30)
+			die "bad right hin name: $hin2\n";
+		}
+		$hin2 = $HinNoHash{$hin2};
+		$ConSym[$hin1][$hin2] = $sym;
+		if ($cost < 0) {
+			$cost = 65535;
+		}
+		else {
+			$cost = int($cost / $costmax * 254 + 0.5);
+			$cost = 254 if $cost > 254;
+		}
+		$ConCost[$hin1][$hin2] = $cost;
+	}
+	close CON;
+}
+
+sub read_hin {
+	# ハッシュ版のHinNoの名前をHinNoHashに変更 (2017/11/30)
+	# 品詞名が空文字列だったときのHinNoHash, WNum, Hindoを設定 (2017/11/30)
+	$HinNoHash{""} = 0;
+	$WNum{""} = 0;
+	$Hindo{""} = 0;
+
+	my($file) = @_;
+	my $n = 0;
+	open(HIN, $file) || die "can't read $file: $!\n";
+	while (<HIN>) {
+		chomp;
+		my($hin, $no, $code, $wnum, $hindo) = split;
+		$Hin[$no] = $hin;
+		$HinNoHash{$hin} = $no;
+		$WNum{$hin} = $wnum;
+		$Hindo{$hin} = $hindo;
+	}
+	close HIN;
+
+	# 無効語(ラティス上のローカル品詞番号65535)の品詞データを追加 (2017/12/27 太田)
+	$Hin[$void_hin_no] = $void_hin_name;
+	$HinNoHash{$void_hin_name} = $void_hin_no;
+	$WNum{$void_hin_name} = 0;
+	$Hindo{$void_hin_name} = 0;
+
+	&check_hinlst;
+}
+
+# 機能語の平均頻度を調べておく(MkMoConn.pmから流用)
+sub check_hinlst {
+	my $sum = 0;
+	my $count = 0;
+	for my $hin (@Hin) {
+		next if !$hin;
+		my($maehin, $atohin) = &hin2maeato($hin);
+		my($basehin, $feature) = &hin2basefea($maehin || $atohin);
+		next if $hin ne $basehin; # 基本品詞のみカウントする
+		my $wnum = $WNum{$hin};
+		my $hindo = $Hindo{$hin};
+		next if $wnum > 20;	## 品詞内単語数が20以下なら機能語と判断する
+		next if $hindo <= $wnum; ## 頻度が単語数以下の場合、未測定と判断する
+		$count += $wnum;
+		$sum += $hindo;
+	}
+	my $hindo_avg = 0;
+	$hindo_avg = $sum / $count if $count > 0;
+	print STDERR "hindo_avg=$hindo_avg\n" if exists $opt{v};
+	# 頻度をつけ直す
+	for my $hin (@Hin) {
+		next if !$hin;
+		my $wnum = $WNum{$hin};
+		my $hindo = $Hindo{$hin};
+		next if $wnum > 20;	## 品詞内単語数が20以下なら機能語と判断する
+		if ($hindo <= $wnum) { ## 頻度が単語数以下の場合、未測定と判断する
+			$Hindo{$hin} = $hindo_avg * $wnum;
+		}
+	}
+}
+
+# 品詞を前品詞と後品詞に分ける
+sub hin2maeato {
+	my($hin) = @_;
+	if ($hin =~ /^(.+)＊(.+)/) {
+		($1, $2);
+	}
+	else {
+		('', $hin);
+	}
+}
+
+# 品詞を基本品詞と素性に分ける
+sub hin2basefea {
+	my($hin) = @_;
+	if ($hin =~ /^(.*?)([＋−※].+)/) {
+		($1, $2);
+	}
+	else {
+		($hin, '');
+	}
+}
+
+# ディレクトリと相対パスからファイル名を作る
+sub mkfile {
+	my($dir, $path) = @_;
+	return '' if $path eq '';	# 空ならそのまま
+	$dir =~ s/\/$//g if $dir ne '/'; # 最後の/を取る
+	my $file = "$dir/$path";
+	$file =~ s/.*\/\//\//; # // があったらそこまでを / に変える
+	$file;
+}
+
+# 文字列の表示幅を返す (Latin-1と半角カナ以外は全角幅とみなす)
+sub getlength {
+	my ($str) = @_;
+	$str =~ s/[\x{0001}-\x{00ff}]/A/g;
+	$str =~ s/[\x{ff61}-\x{ff9f}]/K/g;
+	$str =~ s/[^AK]/W-/g;
+	length $str;
+}
+
+# 文字列の先頭から指定表示幅の文字列を返す
+sub leftstr {
+	my ($str, $pos) = @_;
+	return "" if !$str;
+	my @data = split //, $str;
+	my $ret = "";
+	for (my $i = 0; $i <= $#data && $pos > 0; $i++) {
+		my $n = &getlength($data[$i]);
+		$ret .= $data[$i];
+		$pos -= $n;
+	}
+	$ret;
+}
+
+=head1 SEE ALSO
+
+L<unamk>, L<promo>, L<calcmo>, L<UNA::CostMax>
+
+=head1 COPYRIGHT
+
+ Copyright 2000,2002, 2023 RICOH Co, Ltd. All rights reserved.
+
+=cut

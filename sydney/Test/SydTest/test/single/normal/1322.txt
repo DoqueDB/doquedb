@@ -1,0 +1,96 @@
+#障害番号 0512
+#PRIMARY KEY 列に対する COUNT や MAX などで
+#列の別名を指定すると Unexpected → Server is not available.
+#に対応するテスト
+#
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database testdb";
+TerminateSession;
+
+InitializeSession "testdb";
+Command "create table t(pi int, i int, primary key(pi))";
+
+# COUNT #
+Command "select count(pi) from t";
+Command "select count(pi) as numpi from t";
+Command "select count(i) from t";
+Command "select count(i) as numi from t";
+
+# AVG #
+Command "select avg(pi) from t";
+Command "select avg(pi) as averagepi from t";
+Command "select avg(i) from t";
+Command "select avg(i) as averagei from t";
+
+# MAX #
+Command "select max(pi) from t";
+Command "select max(pi) as maxpi from t";
+Command "select max(i) from t";
+Command "select max(i) as maxi from t";
+
+# MIN #
+Command "select min(pi) from t";
+Command "select min(pi) as minpi from t";
+Command "select min(i) from t";
+Command "select min(i) as mini from t";
+
+# SUM #
+Command "select sum(pi) from t";
+Command "select sum(pi) as sumpi from t";
+Command "select sum(i) from t";
+Command "select sum(i) as sumi from t";
+
+
+Command "insert into t values (1, 1)";
+Command "insert into t values (2, 1)";
+Command "insert into t values (3, 1)";
+Command "insert into t values (4, 2)";
+Command "insert into t values (5, 2)";
+Command "insert into t values (6, 3)";
+Command "insert into t values (7, 3)";
+Command "insert into t values (8, 3)";
+
+
+# COUNT #
+Command "select count(pi) from t";
+Command "select count(pi) as numpi from t";
+Command "select count(i) from t";
+Command "select count(i) as numi from t";
+
+# AVG #
+Command "select avg(pi) from t";
+Command "select avg(pi) as averagepi from t";
+Command "select avg(i) from t";
+Command "select avg(i) as averagei from t";
+
+# MAX #
+Command "select max(pi) from t";
+Command "select max(pi) as maxpi from t";
+Command "select max(i) from t";
+Command "select max(i) as maxi from t";
+
+# MIN #
+Command "select min(pi) from t";
+Command "select min(pi) as minpi from t";
+Command "select min(i) from t";
+Command "select min(i) as mini from t";
+
+# SUM #
+Command "select sum(pi) from t";
+Command "select sum(pi) as sumpi from t";
+Command "select sum(i) from t";
+Command "select sum(i) as sumi from t";
+
+
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database testdb";
+TerminateSession;
+
+Terminate;
+End;

@@ -1,0 +1,772 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<!--
+  Copyright (c) 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the License);
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<html>
+
+<head>
+  <!-- Google Tag Manager -->
+  <script type="text/javascript">(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-KRXS4RS');</script>
+  <!-- End Google Tag Manager -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="css/default.css">
+  <title>バッチインサート</title>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRXS4RS" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <h1>バッチインサート</h1>
+  <div class="right"><a href="knowledge.html">[ナレッジに戻る]</a></div>
+  <div class="contents">
+    <dl>
+      <dt>
+        <a href="#sec1">1. 基本的な使いかた</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec11">1.1 データファイルの指定</a>
+          </dt>
+          <dt>
+            <a href="#sec12">1.2 対象列の指定</a>
+          </dt>
+          <dt>
+            <a href="#sec13">1.3 読み込みフィールドの指定</a>
+          </dt>
+          <dt>
+            <a href="#sec14">1.4 読み込みレコードの指定</a>
+          </dt>
+          <dt>
+            <a href="#sec15">1.5 配列データの指定</a>
+          </dt>
+          <dt>
+            <a href="#sec16">1.6 文字コードの指定</a>
+          </dt>
+          <dt>
+            <a href="#sec17">1.7 区切り文字列の指定</a>
+          </dt>
+          <dt>
+            <a href="#sec18">1.8 スペックファイルの指定</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec2">2. 高度な使いかた</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec21">2.1 エラーデータ出力ファイルの指定</a>
+          </dt>
+          <dt>
+            <a href="#sec22">2.2 特殊なデータの指定</a>
+          </dt>
+          <dt>
+            <a href="#sec23">2.3 外部ファイルによるフィールド値の指定</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec3">3. バッチインサート用ファイルを表データから作る</a>
+      </dt>
+      <dt>
+        <a href="#secapp">附録</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#secappa">A. データファイルフォーマット</a>
+          </dt>
+          <dt>
+            <a href="#secappb">B. HINTフォーマット</a>
+          </dt>
+        </dl>
+      </dd>
+    </dl>
+  </div>
+
+  <h2><a id="sec1">1. 基本的な使いかた</a></h2>
+  <p>
+    バッチインサートを用いると、表データを格納したファイル(CSVファイルなど)から一括して表への挿入ができます。
+    一般に通常のINSERT文を用いた挿入よりも高速ですが、以下の制限があります。
+  </p>
+  <ul>
+    <li>
+      バッチインサートの実行中は、他のセッションからの対象の表へのアクセスがすべてブロックされます。
+    </li>
+    <li>
+      バッチインサートが何らかの理由で失敗した場合、失敗するまでにそのバッチインサートで登録されたレコードはすべて取り消されます。
+    </li>
+  </ul>
+  <p>
+    バッチインサートには特別なINSERT文を用います。
+    構文は以下のようなものです。
+  </p>
+  <pre>
+insert [ into ] &lt;表名&gt; [ (&lt;列名&gt;, ...) ]
+  input from path '&lt;データファイルパス&gt;'
+  [ with path '&lt;スペックファイルパス&gt;' ]
+  [ hint '&lt;ヒント文字列'&gt; ]
+</pre>
+  <p>
+    以下の節で具体的な例とともに各構文要素の使用方法を説明します。
+    データファイルの仕様については<a href="#secappa">A. データファイルフォーマット</a>を参照してください。
+  </p>
+
+  <h3><a id="sec11">1.1 データファイルの指定</a></h3>
+  <p>
+    最も単純なのはCSVファイルからの読み込みです。
+    以下では特に断りのないかぎり、下に示したスキーマで定義された表に挿入することを想定します。
+  </p>
+  <pre>
+create table TBL (
+  t_id       int,
+  t_name     nvarchar(128),
+  t_date     datetime,
+  primary key(t_id)
+);
+</pre>
+  <p>
+    以下のようなファイルを用いて、TBL表へバッチインサートを実行します。
+  </p>
+  <pre>
+[namelist.csv]
+  10,織田信長,2009-4-29 10:00:00
+  11,豊臣秀吉,2009-5-15 12:30:00
+  12,徳川家康,2009-6-5 7:45:30
+</pre>
+  <p>
+    構文は以下のようになります。
+  </p>
+  <pre>
+insert into TBL input from path '/work/data/namelist.csv';
+</pre>
+  <p>
+    データファイルパスに相対パスを書くと、DoqueDBのサーバープロセスが動作しているディレクトリからの相対パスになります。
+    サーバープロセスが動作しているディレクトリが不明な場合は絶対パスを指定するようにしてください。
+  </p>
+  <p>
+    上記のINSERT文を実行すると、TBLには以下のようなレコードが追加されます。
+  </p>
+  <pre>
+select * from TBL;
+=&gt;
+  10,織田信長,2009-04-29 10:00:00
+  11,豊臣秀吉,2009-05-15 12:30:00
+  12,徳川家康,2009-06-05 07:45:30
+</pre>
+
+  <h3><a id="sec12">1.2 対象列の指定</a></h3>
+  <p>
+    CSVファイルにTBL表の一部の列しか記述されていない場合はどうしたらいいでしょうか。
+  </p>
+  <p>
+    たとえば以下のように、IDとNAMEに相当するデータを持つCSVファイルからTBL表へ登録するとします。
+  </p>
+  <pre>
+[nameonly.csv]
+  13,石田三成
+  14,伊達政宗
+</pre>
+  <p>
+    この場合、通常のINSERT文と同様に、値を設定する列を指定します。
+  </p>
+  <pre>
+insert into TBL(id, name) input from path '/work/data/nameonly.csv';
+</pre>
+  <p>
+    このINSERT文を実行すると、TBLの内容は以下のようになります。
+  </p>
+  <pre>
+select * from TBL;
+=&gt;
+  10,織田信長,2009-04-29 10:00:00
+  11,豊臣秀吉,2009-05-15 12:30:00
+  12,徳川家康,2009-06-05 07:45:30
+  13,石田三成,(null)
+  14,伊達政宗,(null)
+</pre>
+
+  <h3><a id="sec13">1.3 読み込みフィールドの指定</a></h3>
+  <p>
+    次はCSVファイルに余分なフィールドが含まれている場合です。
+  </p>
+  <p>
+    たとえば以下のように、ID、NAME、DATEのほかに関係のない値が含まれているCSVファイルからTBL表へ登録するとします。
+  </p>
+  <pre>
+[nameextra.csv]
+  15,上杉謙信,2009-8-15 9:15:45,越後の戦国大名
+  16,武田信玄,2009-10-26 8:30:00,甲斐の戦国大名
+</pre>
+  <p>
+    この場合、最後のフィールド(4番目)が余分です。
+  </p>
+  <p>
+    これを除いてバッチインサートの入力として使用するには、ヒント文字列に1番目から3番目だけを使う旨記述します。
+  </p>
+  <pre>
+insert into TBL input from path '/work/data/nameextra.csv' hint 'InputField=(1-3)';
+</pre>
+  <p>
+    TBLの内容は以下のようになります。
+  </p>
+  <pre>
+select * from TBL;
+=&gt;
+  10,織田信長,2009-04-29 10:00:00
+  11,豊臣秀吉,2009-05-15 12:30:00
+  12,徳川家康,2009-06-05 07:45:30
+  13,石田三成,(null)
+  14,伊達政宗,(null)
+  15,上杉謙信,2009-08-15 09:15:45
+  16,武田信玄,2009-10-26 08:30:00
+</pre>
+  <p>
+    InputFieldには以下のような書き方が可能です。
+  </p>
+  <dl>
+    <dt class="boldsub">InputField=(1,4)</dt>
+    <dd>
+      1番目と4番目のフィールドを使用します。
+    </dd>
+    <dt class="boldsub">InputField=(1,3-6)</dt>
+    <dd>
+      1番目と3から6番目までのフィールドを使用します。
+    </dd>
+    <dt class="boldsub">InputField=(-4)</dt>
+    <dd>
+      1番目から4番目までのフィールドを使用します。
+    </dd>
+    <dt class="boldsub">InputField=(3-)</dt>
+    <dd>
+      3番目から最後のフィールドまでを使用します。
+    </dd>
+  </dl>
+  <p>
+    つまり、上の例ではInputField=(-3)と書いてもいいのでした。
+  </p>
+
+  <h3><a id="sec14">1.4 読み込みレコードの指定</a></h3>
+  <p>
+    次に、CSVファイルに見出しなどの余分な行が含まれている場合です。
+  </p>
+  <p>
+    たとえば、以下のように先頭行に見出しがあるCSVファイルからTBL表に登録するとします。
+  </p>
+  <pre>
+[nametitle.csv]
+  番号,名前,登録日
+  17,浅井長政,2009-5-7 14:50:25
+  18,毛利元就,2009-6-15 9:54:14
+</pre>
+  <p>
+    この場合、最初の行をスキップするには、ヒント文字列に2行目以降を使用する旨指定します。
+  </p>
+  <pre>
+insert into TBL input from path '/work/data/nametitle.csv' hint 'InputRecord=(2-)';
+</pre>
+  <p>
+    TBLの内容は以下のようになります。
+  </p>
+  <pre>
+select * from TBL;
+=&gt;
+  10,織田信長,2009-04-29 10:00:00
+  11,豊臣秀吉,2009-05-15 12:30:00
+  12,徳川家康,2009-06-05 07:45:30
+  13,石田三成,(null)
+  14,伊達政宗,(null)
+  15,上杉謙信,2009-08-15 09:15:45
+  16,武田信玄,2009-10-26 08:30:00
+  17,浅井長政,2009-05-07 14:50:25
+  18,毛利元就,2009-06-15 09:54:14
+</pre>
+  <p>
+    InputRecordの指定方法はInputFieldの場合と同様です。
+  </p>
+
+  <h3><a id="sec6"></a>
+    1.5 配列データの指定
+  </h3>
+  <p>
+    DoqueDBの表には配列型の列が定義できます。
+    配列型の列にバッチインサートで値を入れるには、専用の区切り文字を使用します。
+    デフォルトではセミコロン(;)が使用されます。
+  </p>
+  <p>
+    たとえば以下のような表が定義されているとします。
+  </p>
+  <pre>
+create table TBL_with_ARRAY (
+  t_id          int,
+  t_name        nvarchar(128),
+  t_prefecture  nvarchar(3) ARRAY[NO LIMIT],
+  primary key(t_id)
+);
+</pre>
+  <p>
+    この表に値を入れるデータは以下のように作ります。
+  </p>
+  <pre>
+[namearray.csv]
+1,北海道,北海道
+2,東北,青森;岩手;秋田;宮城;福島
+3,関東,東京;神奈川;千葉;埼玉;茨城;群馬;栃木
+</pre>
+
+  <h3><a id="sec16">1.6 文字コードの指定</a></h3>
+  <p>
+    バッチインサートに使用するファイルに非ASCII文字が含まれている場合、codeヒントにより文字コードを指定することができます。
+  </p>
+  <p>
+    たとえば、ファイルの文字コードがUTF-8だった場合、以下のようにしてUTF-8であることを指定します。
+  </p>
+  <pre>
+insert into TBL input from path '/work/data/utf8file.txt' hint 'code="utf-8"';
+</pre>
+  <p>
+    codeヒントには以下のものが指定できます。
+  </p>
+  <dl>
+    <dt class="boldsub">code="utf-8"</dt>
+    <dd>
+      ファイルの文字コードがUTF-8であることを示します。
+    </dd>
+    <dt class="boldsub">code=""</dt>
+    <dd>
+      ファイルの文字コードがOSごとにDoqueDBが決めているデフォルトであることを示します。<br>
+      Linuxの場合はEUC-JPとなります。
+    </dd>
+  </dl>
+  <p>
+    codeヒントで指定した文字コードは、データファイルのほか後述するスペックファイルの文字コードの指定にも使われます。
+  </p>
+  <p>
+    したがって、データファイルとスペックファイルの文字コードは同一である必要があります。
+  </p>
+
+  <h3><a id="sec17">1.7 区切り文字列の指定</a></h3>
+  <p>
+    区切り文字列を指定することにより、CSV以外のファイルをバッチインサートに用いることもできます。
+  </p>
+  <p>
+    区切り文字列は、ヒントか後述するスペックファイルで指定します。
+    指定するキーには以下のものがあります。
+  </p>
+  <dl>
+    <dt class="boldsub">FieldSeparator</dt>
+    <dd>
+      列値どうしの区切り文字列です。
+    </dd>
+    <dt class="boldsub">RecordSeparator</dt>
+    <dd>
+      レコード間の区切り文字列です。
+    </dd>
+    <dt class="boldsub">ElementSeparator</dt>
+    <dd>
+      配列要素どうしの区切り文字列です。
+    </dd>
+  </dl>
+  <p>
+    各区切り文字列には1文字以上20文字以下の文字列を指定します。
+    区切り文字列には、ASCII英数字記号(ただしダブルクオートは除く)のみが使用できます。
+    それぞれに包含関係があってはいけません。
+  </p>
+  <dl>
+    <dt class="boldsub">使用できる例</dt>
+    <dd>
+      <pre>
+FieldSeparator="|\t|"
+RecordSeparator="\n::\n"
+ElementSeparator="@"
+</pre>
+    </dd>
+    <dt class="boldsub">使用できない例1</dt>
+    <dd>
+      <pre>
+FieldSeparator="ここまで\tここから"    … ASCII以外の文字が使用されているため。
+</pre>
+    </dd>
+    <dt class="boldsub">使用できない例2</dt>
+    <dd>
+      <pre>
+RecordSeparator="\n::\n"
+ElementSeparator=":"    … ElementSeparatorがRecordSeparatorに包含されているため。
+</pre>
+    </dd>
+  </dl>
+  <p>
+    なお、上の例で使用したように、区切り文字列の指定には\tと\nが使用できます。
+    それぞれTABと改行を表します。
+    LF、CR/LFのどちらでも改行と認識されます。
+  </p>
+  <p>
+    区切り文字列を使用したデータファイルの例を示します。
+  </p>
+  <pre>
+[namekugiri.txt]
+4|&lt;TAB&gt;|東海|&lt;TAB&gt;|静岡@愛知@三重@岐阜
+::
+5|&lt;TAB&gt;|北陸|&lt;TAB&gt;|新潟@富山@石川@福井
+::
+6|&lt;TAB&gt;|甲信|&lt;TAB&gt;|山梨@長野
+</pre>
+  <p>
+    このデータを上述のTBL_with_ARRAYにバッチインサートするには以下のように指定します。
+  </p>
+  <pre>
+insert into TBL_with_ARRAY input from path '/work/data/namekugiri.txt'
+        hint 'FieldSeparator="|\t|" RecordSeparator="\n::\n" ElementSeparator="@"'
+</pre>
+
+  <h3><a id="sec18">1.8 スペックファイルの指定</a></h3>
+  <p>
+    区切り文字列の指定は、スペックファイルと呼ぶテキストファイルに記述することができます。
+    スペックファイルの使用には、HINT句に記述する手間や誤記の可能性を減らす利点があります。
+  </p>
+  <p>
+    スペックファイルには区切り文字列の指定を改行で区切って並べます。順序は任意です。
+    先頭がシャープ記号(#)である行はコメントとして無視されます。
+  </p>
+  <p>
+    以下にスペックファイルの例を示します。
+  </p>
+  <pre>
+[oosystem.spec]
+# ○○システム用スペック
+FieldSeparator="::"
+RecordSeparator="\n==\n"
+ElementSeparator="@@"
+</pre>
+  <p>
+    スペックファイルを使用したバッチインサートは以下のように実行します。
+  </p>
+  <pre>
+insert into TBL input from path '/work/data/oosystem.txt'
+        with path '/work/spec/oosystem.spec';
+</pre>
+
+  <h2><a id="sec2">2. 高度な使いかた</a></h2>
+
+  <h3><a id="sec21">2.1 エラーデータ出力ファイルの指定</a></h3>
+  <p>
+    バッチインサートで処理中にエラーが発生したときは、すべてのインサート結果を破棄し、処理を取り消します。
+    エラーには、データファイルがフォーマットと一致しない場合(たとえば数値であるべき個所に数字以外があるなど)も含まれます。
+  </p>
+  <p>
+    しかし、たとえばデータファイルの一部にだけ不正な箇所があり、その 場所が特定できない場合などには、データファイルを修正してはバッチインサートを試みるという作業を何度もする羽目になりかねません。
+    このような場合は、以下のようにErrorDataヒントでエラーデータ出力ファイルを指定します。
+  </p>
+  <pre>
+insert into TBL input from path '/work/data/namewitherror.txt'
+        hint 'ErrorData="/work/data/error.out"';
+</pre>
+  <p>
+    ErrorDataの指定があると、データファイルにフォーマットと合わない箇所があったとき、その部分を含むレコード(RecordSeparatorで挟まれた部分)が指定されたパスのファイルに書き出され、処理は継続されます。
+  </p>
+  <p>
+    たとえば、TBL_with_ARRAYに以下のデータファイルを適用するとします。
+    区切り文字はデフォルトのものを使用します。
+  </p>
+  <pre>
+[namewitherror.txt]
+7,近畿,大阪;京都;滋賀;兵庫;奈良;和歌山
+XXX,中国,岡山;広島;山口;鳥取;島根
+9,四国,香川;徳島;高知;愛媛
+</pre>
+  <p>
+    このとき、2行目のデータは先頭のフィールドが数値でないためエラーになります。
+  </p>
+  <p>
+    これを上記のINSERT文でバッチインサートすると、正しい行だけが挿入されます。
+  </p>
+  <pre>
+select * from TBL_with_ARRAY;
+=&gt;
+  7,近畿,{大阪,京都,滋賀,兵庫,奈良,和歌山}
+  9,四国,{香川,徳島,高知,愛媛}
+</pre>
+  <p>
+    さらに、/work/data/error.outの内容は以下のようになります。
+  </p>
+  <pre>
+[error.out]
+XXX,中国,岡山;広島;山口;鳥取;島根
+</pre>
+  <p>
+    ErrorDataで指定したファイルに出力があった場合、適宜修正してバッチインサートのデータファイルとして使用することで、最終的にすべてのデータを挿入することができるようになります。
+  </p>
+
+  <h3><a id="sec22">2.2 特殊なデータの指定</a></h3>
+  <p>
+    データファイルにはいくつかの特殊な書き方ができます。
+  </p>
+  <dl>
+    <dt class="boldsub">
+      ダブルクオートによる特殊文字列の無効化
+    </dt>
+    <dd>
+      文字列データをダブルクオートで囲むと、囲まれた部分は内容に関係なく文字列データとして扱われます。
+      <p>
+        たとえば、FieldSeparatorがカンマであるときにカンマをデータとして含んだ文字列を入れたいならば、その部分をダブルクオートで囲むことで実現できます。
+      </p>
+      <pre>
+[doublequote.txt]
+10,"カンマ(,)を含んだデータ","改行を
+含んだデータ"
+11,普通のデータ,改行を
+含むとエラーになる
+</pre>
+      <p>
+        最初の行のデータは、FieldSeparatorであるカンマやRecordSeparatorである改行をデータの一部として使用しています。
+        3行目のデータでは、3つ目の列値は「改行を」のみとなり、「含むとエラーになる」の行はエラーになります。
+      </p>
+      <p>
+        また、ダブルクオートをデータに入れたい場合は、その部分全体をダブルクオートで囲んだ上で、データとして扱いたいダブルクオートを2重に書きます。
+      </p>
+      <pre>
+[doublequotedata.txt]
+12,"ダブルクオート("")を含んだデータ",普通のデータ
+</pre>
+      <p>
+        挿入結果は以下のようになります。
+      </p>
+      <pre>
+select * from TBL
+=&gt;
+  12,ダブルクオート(")を含んだデータ,普通のデータ
+</pre>
+      <p>
+        なお、ヒントにNoDoubleQuoteと書くとダブルクオートに特別な意味がなくなります。
+        すでにデータとしてダブルクオートを含んだデータファイルがあるが修正したくない、といった場合に使用できます。
+      </p>
+    </dd>
+    <dt class="boldsub">
+      NULL, DEFAULTの指定
+    </dt>
+    <dd>
+      データファイル中であるフィールドが空の場合、対応する列値には列定義のデフォルト値が入ります。
+      また、データがDEFAULTという文字列の場合も、列定義のデフォルト値が入ります。
+      さらに、データがNULLという文字列の場合、列値にはSQLのNULLが入ります。
+      <p>
+        以下のスキーマを持つ表に対して、
+      </p>
+      <pre>
+create table TBL_with_DEFAULT
+(
+  key           int,
+  col1 int default 123,
+  col2 nvarchar(10) default 'x'
+)
+</pre>
+      <p>
+        以下のデータファイルでバッチインサートすると、
+      </p>
+      <pre>
+[nulldefault.txt]
+13,,DEFAULT
+14,NULL,"DEFAULT"
+</pre>
+      <p>
+        以下のような結果になります。
+      </p>
+      <pre>
+select * from TBL_with_DEFAULT
+=&gt;
+  13,123,x
+  14,(null),DEFAULT
+</pre>
+      <p>
+        これらの機能を無効にすることはできません。DEFAULTやNULLという文字列をデータにしたい場合は、ダブルクオートで囲んでください。
+      </p>
+    </dd>
+  </dl>
+
+  <h3><a id="sec23">2.3 外部ファイルによるフィールド値の指定</a></h3>
+  <p>
+    長い文字列やバイナリデータを登録する場合、データファイルに書くかわりに外部ファイルを用いることができます。
+    外部ファイル中のデータはそのまま使用されるため、区切り文字列やNULLなどの特殊な文字列を含んでいてもエスケープする必要がありません。
+  </p>
+  <p>
+    外部ファイルは「FILE ファイル名」のように指定します。
+    ファイル名には相対パスも使用でき、データファイルのあるディレクトリからの相対位置になります。
+  </p>
+  <pre>
+insert into TBL_extern input from path '/work/data/extern.txt';
+
+[extern.txt]
+15,FILE ../image/data1.jpg,画像データ
+16,NULL,FILE /work/text/content.txt
+</pre>
+  <p>
+    この例では、ID=15の2つ目の列値に/work/image/data1.jpgの内容、ID=16の3つ目の列値に/work/text/content.txtの内容が挿入されます。
+  </p>
+  <p>
+    FILEという文字列をデータに含めたい場合は、データをダブルクオートで囲みます。
+    FILEという文字列が含まれたデータファイルを修正せずに使用したい場合、ヒントにNoExternと書くとこの機能を無効にできます。
+  </p>
+
+  <h2><a id="sec3">3. バッチインサート用ファイルを表データから作る</a></h2>
+  <p>
+    これまではデータファイルを用いてバッチインサートする方法について説明しました。
+    逆に、表データからバッチインサート用ファイルを作ることができます。
+    この機能により、既存の表データを別のデータベースにコピーしたり、表単位でバックアップしたりすることができます。
+  </p>
+  <p>
+    表データからバッチインサート用ファイルを作るには以下のようにします。
+  </p>
+  <pre>
+select * output to path '/work/data/tabledata.csv' from TBL;
+</pre>
+  <p>
+    区切り文字列をヒントやスペックファイルで指定することもできます。
+  </p>
+  <pre>
+select * output to path '/work/data/tablewithhint.txt'
+        hint 'FieldSeparator="|\t|" RecordSeparator="::\n::"' from TBL;
+</pre>
+  <p>
+    区切り文字列をスペックファイルで記述しておいてデータファイルとともに保管しておくと、バッチインサートにも使用できるため便利です。
+  </p>
+  <p>
+    NoExtern、NoDoubleQuoteの指定は無視されます。
+    すべての文字列データはダブルクオートでエスケープされ、バイナリファイルや4Kバイト以上の文字列データは外部ファイルに出力されます。
+  </p>
+  <p>
+    外部ファイルのパス名は「レコードの通し番号/フィールドの通し番号.dat」になります。
+    対象のデータが配列だった場合はさらに「レコードの通し番号/フィールドの通し番号/配列の要素番号.dat」になります。
+    たとえば、2番目と3番目の列がバイナリであるような表からバッチインサート用ファイルを作ると、以下のようになります。
+  </p>
+  <pre>
+[tabledata.txt]
+1,FILE "00000000/00000001.dat",NULL
+2,FILE "00000001/00000001.dat",FILE "00000001/00000002.dat"
+</pre>
+  <p>
+    00000000や00000001といったディレクトリはデータファイルと同じ場所に作られます。
+  </p>
+  <p>
+    外部ファイルのパスはデータファイルからの相対パスで評価されるので、データファイルとこれらのディレクトリをまとめて管理することで、任意の場所に展開して使用することができます。
+  </p>
+
+
+  <h2><a id="secapp">附録</a></h2>
+
+  <h3><a id="secappa">A. データファイルフォーマット</a></h3>
+  <p>
+    バッチインサートで使用するデータファイルのフォーマット仕様について説明します。
+  </p>
+  <pre>
+&lt;ファイル&gt; ::= &lt;レコード&gt; &lt;RecordSeparator&gt; &lt;レコード&gt; …
+
+&lt;レコード&gt; ::= &lt;フィールド&gt; &lt;FieldSeparator&gt; &lt;フィールド&gt; …
+
+&lt;フィールド&gt; ::= &lt;データ&gt;
+    | &lt;データ&gt; &lt;ElementSeparator&gt; &lt;データ&gt; …
+
+&lt;データ&gt; ::= &lt;文字列&gt;
+    | &lt;数値&gt;
+    | &lt;NULL指定&gt;
+    | &lt;FILE指定&gt;
+
+&lt;文字列&gt; ::= &lt;ダブルクオートを含まない文字の並び&gt;
+    | " &lt;ダブルクオートを含まない文字の並び&gt; "
+    | " &lt;ダブルクオートを含まない文字の並び&gt; "" &lt;ダブルクオートを含まない文字の並び&gt; …"
+
+  ※ 先頭と末尾の"は無視されます。
+  ※ ""は"として扱われます。
+  ※ 先頭の"をデータとして扱わせるには"""とダブルクオートを3つ書きます。
+  ※ "と"に囲まれた範囲では&lt;XXXSeparator&gt;は抽出されません。
+  ※ 2MB(100万文字)を超える文字列は入れられません。
+     この制限値はパラメーターPlan_BulkMaxSizeで変更できます。
+
+&lt;数値&gt;::= &lt;SQL文で数値リテラルとして認識される文字列&gt;
+
+&lt;NULL指定&gt; ::= &lt;空文字列&gt;
+    | NULL
+    | DEFAULT
+
+  ※ 空文字列の場合、列定義のDEFAULT指定が使用されます。
+  ※ NULLの場合、NULL値が使用されます。(NOT NULL制約は検査されます。)
+  ※ 「NULL」という文字列をデータにしたいときはダブルクオートで囲む必要があります。
+  ※ DEFAULT指定を明示したい場合もあるため、DEFAULTと書いたときもDEFAULT指定を
+     意味することとします。
+  ※ 「DEFAULT」という文字列をデータにしたいときはダブルクオートで囲む必要があります。
+  ※ 配列の列に対してNULLを指定すると、NULLを要素として1つ持つ配列の意味になります。
+
+&lt;FILE指定&gt; ::= FILE &lt;文字列&gt;
+
+  ※ 「FILE」という文字列で始まるデータにしたいときはダブルクオートで囲む必要があります。
+  ※ FILEと&lt;文字列&gt;の間に空白(0x20)を置かないときは、&lt;文字列&gt;は
+     ダブルクオートで挟まれている必要があります。
+  ※ 対応する列がLOB型(BLOBまたはNCLOB)の場合のファイルサイズは2GBまでです。
+     それ以外の場合は文字列の直接指定と同じ制限になります。
+  ※ FILEで指定されたファイル名が相対パスのとき、データファイルからの相対位置になります。
+
+&lt;RecordSeparator&gt; ::= &lt;セパレータ&gt;
+&lt;FieldSeparator&gt; ::= &lt;セパレータ&gt;
+&lt;ElementSeparator&gt; ::= &lt;セパレータ&gt;
+
+&lt;セパレータ&gt; ::= &lt;ダブルクオートを含まない文字の並び&gt;
+
+  ※ スペックで指定された文字列とマッチする部分がセパレータになります。
+  ※ スペック中の「\n」は、改行コード(0x0aまたは0x0d 0x0a)にマッチします。
+  ※ スペック中の「\t」は、タブ(0x09)にマッチします。
+</pre>
+
+  <h3><a id="secappb">B. HINTフォーマット</a></h3>
+  <p>
+    バッチインサートのHINT句に使用することのできるヒント文字列の仕様を説明します。
+  </p>
+  <pre>
+FieldSeparator="文字列"         … 無指定時は","です。
+RecordSeparator="文字列"        … 無指定時は"\n"です。
+ElementSeparator="文字列"       … 無指定時は";"です。
+Code="文字列"                   … 文字コードを表す文字列("utf-8"または"")です。
+                                   ""はOSデフォルト(LinuxならEUC)で、無指定時は""です。
+InputField=(&lt;カンマかハイフンで区切った数値列&gt;)     … 無指定時はすべてです。
+InputRecord=(&lt;カンマかハイフンで区切った数値列&gt;)    … 無指定時はすべてです。
+ErrorData="文字列"              … 文字列はFALSEまたはファイル名です。
+                                   FALSEならエラーが起きたらそのトランザクションが失敗します。
+                                   FALSE以外ならエラー行をそのファイルに出力し、続行します。
+                                   無指定時はFALSEです。
+                                   (ここで検出するエラーはフィールド数の不一致やデータの
+                                   異常など形式的なエラーのみで、Unique制約などファイルに
+                                   挿入して初めてわかるエラーは続行できません。)
+NoExtern                        … 指定するとFILEがキーワードではなくなります。
+                                   (すなわち外部ファイルを使用しません。)
+NoElementNull                   … 指定すると配列型にnullと書いたとき全体がnullになります。
+NoDoubleQuote                   … 指定するとダブルクオートは特殊な意味を持ちません。
+</pre>
+
+  <hr>
+  <p class="center">Copyright (c) 2023 Ricoh Company, Ltd. All rights reserved.</p>
+
+</body>
+
+</html>

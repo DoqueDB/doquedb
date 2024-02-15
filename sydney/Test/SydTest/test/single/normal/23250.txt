@@ -1,0 +1,50 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# XA FORGET -- ある状態のトランザクションブランチに対する抹消のテスト
+#
+
+# 『ヒューリスティックな解決済』
+## XA STARTでトランザクションブランチを開始した終了済のセッション以外のセッションで実行
+Command "create table T(I int)";
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [1];
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "xa recover";
+Command "xa forget X'00'";
+Command "xa recover";
+Command "drop table T";
+
+## XA STARTでトランザクションブランチを開始した終了済のセッション以外のセッション(操作するデータベースが異なる)で実行
+Command "create table T(I int)";
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [1];
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "xa recover";
+TerminateSession;
+InitializeSession "";
+Command "xa forget X'00'";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "xa recover";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

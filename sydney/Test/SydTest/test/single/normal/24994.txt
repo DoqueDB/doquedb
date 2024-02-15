@@ -1,0 +1,44 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB_170711";
+
+Command "drop database TESTDB_170711 if exists";
+Command "create database TESTDB_170711";
+Command "create table TBL(f int, g ntext)";
+Command "create index IDX_f on TBL(f)";
+Command "create fulltext index IDX_g on TBL(g)";
+
+Command "insert TBL values (?, ?)" [1, "abc"];
+Command "insert TBL values (?, ?)" [2, "xyz"];
+Command "insert TBL select T1.f + T2.f, 'bcd' from TBL T1, TBL T2";
+Command "insert TBL select T1.f * T2.f, 'yzw' from TBL T1, TBL T2";
+Command "insert TBL select T1.f + T2.f, 'cde' from TBL T1, TBL T2";
+Command "insert TBL select T1.f * T2.f, 'zwv' from TBL T1, TBL T2 limit 1000";
+
+Command "select count(*)
+from TBL t0
+where
+(t0.g contains 'b'
+or t0.g contains 'y')
+and (
+exists (select * 
+            from TBL t1
+            where t0.f = t1.f
+            and t1.g contains 'b')
+or exists (select * 
+            from TBL t1
+            where t0.f = t1.f
+            and t1.g contains 'y')
+) and (
+exists (select * 
+            from TBL t1
+            where t0.f = t1.f
+            and t1.g contains 'c')
+or exists (select * 
+            from TBL t1
+            where t0.f = t1.f
+            and t1.g contains 'z')
+)";
+TerminateSession;
+Terminate;
+End;

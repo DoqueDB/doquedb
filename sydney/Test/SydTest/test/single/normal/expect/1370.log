@@ -1,0 +1,100 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f ntext,id int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I on t(f)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values('テスト',10)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values('てすと',20)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values('テストがある',100)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) FROM T WHERE f contains FREETEXT('テスト')
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) FROM T WHERE f CONTAINS FREETEXT('テスト') 
+		EXPAND (FROM (SELECT f FROM T WHERE rowid ='1')) ORDER BY SCORE(f)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Non-grouping column 'f' is used in grouping operation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select max(id) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))
+SydTest::Executor: [INFO] {100}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select min(id) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select sum(id) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))
+SydTest::Executor: [INFO] {110}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select avg(id) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))
+SydTest::Executor: [INFO] {55}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select word(f) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))
+SydTest::Executor: [INFO] {'テスト' language '' category 'Helpful' scale 0.50 df 2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f) from T where f contains freetext('テスト') 
+		expand (from (select f from T where rowid ='1'))
+SydTest::Executor: [INFO] {2.881122729541E-2}
+SydTest::Executor: [INFO] {2.626906018111E-2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f from T where f contains freetext('テスト')
+SydTest::Executor: [INFO] {テスト}
+SydTest::Executor: [INFO] {テストがある}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f from T where f contains freetext('テスト') 
+		expand ( from (select f from T where f contains freetext('テスト')))
+SydTest::Executor: [INFO] {テスト}
+SydTest::Executor: [INFO] {テストがある}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

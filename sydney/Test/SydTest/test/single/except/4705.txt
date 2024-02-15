@@ -1,0 +1,29 @@
+# 列どうしの比較(異常系)
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# データの準備
+Command "create table T (I1 int, I2 int, I3 int array [no limit],
+                         F1 float, NVC nvarchar(256))";
+Command "insert into T values (12, 34, ?, 12.0, '12')" [[1, 4, 7]];
+Command "insert into T values (66, 55, ?, 34.5, '34.5')" [[2, 5, 8]];
+Command "insert into T values (56, 78, ?, 99.9, 'Foo')" [[3, 6, 9]];
+
+#配列とスカラーとの比較(異常系)
+Rowset "select I1 from T where I1=I3";
+Rowset "select I1 from T where I3=I1";
+
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

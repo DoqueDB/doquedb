@@ -1,0 +1,55 @@
+#
+# 50文字を超える表、索引、列が作れないことを確認するテスト
+# 障害票 0508に対応
+#
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database testdb";
+TerminateSession;
+
+InitializeSession "testdb";
+
+#
+#表名に51文字以上作成できない
+#
+Command "create table t12345678901234567890123456789012345678901234567890(i int)";
+
+#
+#インデックス名に51文字以上作成できない
+#
+Command "create table IdxTest(i int,C1 nvarchar(10),C2 nvarchar(20))";
+Command "create INDEX I12345678901234567890123456789012345678901234567890 on IdxTest(i,C1)";
+
+#
+#インデックス名に51文字以上作成できない rename
+#
+
+Command "create INDEX I_dx on IdxTest(i,C1)";
+Command "ALTER INDEX \"I_dx\" RENAME \"t12345678901234567890123456789012345678901234567890\"";
+
+
+#
+#列名に51文字以上作成できない
+#
+Command "create table Coltest(i int,t12345678901234567890123456789012345678901234567890 nvarchar(10))";
+
+#
+#表名に51文字以上作成できない rename
+#
+
+Command "create table t(i int)";
+Command "insert into t values (1)";
+Command "ALTER TABLE \"t\" RENAME \"t12345678901234567890123456789012345678901234567890\"";
+
+Command "select * from t";
+
+TerminateSession;
+
+#InitializeSession "";
+#Command "drop database testdb";
+#TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;

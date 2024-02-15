@@ -1,0 +1,57 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Os_PrintCriticalSection
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Os_PrintCriticalSection, /root/test.log
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] PrintCriticalSection
+CriticalSectionManager: [ERR] (Os) Cannot access log file: /root/test.log
+CriticalSectionManager: [ERR] (Os) Possible cause is invalid path, permission denied or the parent directory does not exist.
+CriticalSectionManager: [ERR] Permission denied [Os, 2013(13), WARNING] (ModOsDriverLinux)
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TestDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TestDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(C1 int, C2 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (1, 'test text')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_C2 on T(C2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {1,test text}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C2 = 'test text 2' where C1 = 1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PrintCriticalSection
+CriticalSectionManager: [ERR] (Os) Cannot access log file: /root/test.log
+CriticalSectionManager: [ERR] (Os) Possible cause is invalid path, permission denied or the parent directory does not exist.
+CriticalSectionManager: [ERR] Permission denied [Os, 2013(13), WARNING] (ModOsDriverLinux)
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C1 int, C2 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (1, 'test text')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T2_C2 on T(C2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2
+SydTest::Executor: [INFO] {1,test text}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T2 set C2 = 'test text 2' where C1 = 1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

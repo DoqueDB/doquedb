@@ -1,0 +1,120 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB_2551
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB_2551 if exists
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB_2551
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Prepare begin.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table author (
+    id int,
+    last_timestamp datetime default current_timestamp,
+    primary key(id)
+)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+1 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+2 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+4 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+8 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+16 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+32 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+64 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+128 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+256 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+512 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+1024 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert author(id) select id+2048 from author
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index idx_timestamp on author(last_timestamp)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Prepare end.
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Test begin.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] SELECT author.id FROM author WHERE author.last_timestamp >= '1970-01-01 00:00:00' ORDER BY author.id limit 10
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] {6}
+SydTest::Executor: [INFO] {7}
+SydTest::Executor: [INFO] {8}
+SydTest::Executor: [INFO] {9}
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Test end.
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Test begin.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] SELECT author.id FROM author WHERE author.last_timestamp >= '1970-01-01 00:00:00' ORDER BY author.id limit 10
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] {6}
+SydTest::Executor: [INFO] {7}
+SydTest::Executor: [INFO] {8}
+SydTest::Executor: [INFO] {9}
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Test end.
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB_2551
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

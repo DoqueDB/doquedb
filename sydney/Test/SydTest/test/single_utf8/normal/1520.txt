@@ -1,0 +1,43 @@
+# Bug report 1324
+
+Begin;
+SetEncodingType "utf8";
+
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# nchar
+Command "create table T(C nchar(4))";
+Command "create index I on T(C) hint 'normalized'";
+# (もしかして表示されてない)挿入文字は、Greek Extended の文字。
+# unicodeでは0x1F0Fに該当し、utf8にすると0xE1BC8Fになる。
+Command "insert T values 'Ἇ'";
+Command "insert T values 'Ἇa'";
+Command "insert T values 'aἏ'";
+Command "insert T values 'aἏa'";
+# 2件ヒット
+Command "select * from T where c like 'Ἇ%'";
+# 2件ヒット
+Command "select * from T where c like 'aἏ%'";
+Command "drop table T";
+
+# nvarchar
+Command "create table T(C nvarchar(4))";
+Command "create index I on T(C) hint 'normalized'";
+Command "insert T values 'Ἇ'";
+Command "insert T values 'Ἇa'";
+Command "insert T values 'aἏ'";
+Command "insert T values 'aἏa'";
+Command "select * from T where c like 'Ἇ%'";
+Command "select * from T where c like 'aἏ%'";
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,23 @@
+# 一時表テスト(異常系2)
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table #1 (C1 ntext array [no limit], C2 int)";
+
+# 一時表に索引をつけるとエラーになることを確認する
+Command "create index I on #1(C2)";
+Command "create fulltext index F on #1(C1) hint 'inverted=(nolocation=true, notf=true)'";
+
+Command "drop table #1";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

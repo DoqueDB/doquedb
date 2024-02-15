@@ -1,0 +1,52 @@
+# Bug report 1417
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T(C ntext)";
+Command "insert T values 'abc'";
+Command "create fulltext index I on T(C)";
+
+# essential, important はscale値をさらに'scaleImportant1'倍(デフォルト2倍)する。
+# essentialrelated, importantrelated はscale値をさらに'scaleImportant2'倍(デフォルト1倍)する。
+# helpful, helpfulrelated はscale値をそのまま使う。
+# category指定の省略は helpful として扱われる。
+
+# 1倍
+Command "select score(C) from T where C contains wordlist('abc')";
+Command "select score(C) from T where C contains wordlist('abc' category 'helpful')";
+Command "select score(C) from T where C contains wordlist('abc' category 'helpfulrelated')";
+Command "select score(C) from T where C contains wordlist('abc' category 'essentialrelated')";
+Command "select score(C) from T where C contains wordlist('abc' category 'importantrelated')";
+# 2倍
+Command "select score(C) from T where C contains wordlist('abc' category 'essential')";
+Command "select score(C) from T where C contains wordlist('abc' category 'important')";
+
+# 2倍
+Command "select score(C) from T where C contains wordlist('abc' scale 2)";
+Command "select score(C) from T where C contains wordlist('abc' category 'helpful' scale 2)";
+Command "select score(C) from T where C contains wordlist('abc' category 'helpfulrelated' scale 2)";
+Command "select score(C) from T where C contains wordlist('abc' category 'essentialrelated' scale 2)";
+Command "select score(C) from T where C contains wordlist('abc' category 'importantrelated' scale 2)";
+# 4倍
+Command "select score(C) from T where C contains wordlist('abc' category 'essential' scale 2)";
+Command "select score(C) from T where C contains wordlist('abc' category 'important' scale 2)";
+
+# 4倍
+Command "select score(C) from T where C contains wordlist('abc' scale 4)";
+Command "select score(C) from T where C contains wordlist('abc' category 'helpful' scale 4)";
+Command "select score(C) from T where C contains wordlist('abc' category 'helpfulrelated' scale 4)";
+Command "select score(C) from T where C contains wordlist('abc' category 'essentialrelated' scale 4)";
+Command "select score(C) from T where C contains wordlist('abc' category 'importantrelated' scale 4)";
+# 8倍
+Command "select score(C) from T where C contains wordlist('abc' category 'essential' scale 4)";
+Command "select score(C) from T where C contains wordlist('abc' category 'important' scale 4)";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;
+

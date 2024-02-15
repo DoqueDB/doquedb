@@ -1,0 +1,41 @@
+# オフラインバックアップ
+# 障害票1251
+
+Begin;
+Initialize;
+
+#準備
+InitializeSession "DBDatabaseTest";
+Command "create database DBDatabaseTest";
+Command "create table TBL(f int)";
+Command "insert TBL values (1), (2), (3), (4), (5), (6), (7), (8), (9)";
+TerminateSession;
+
+#バックアップ
+InitializeSession "DBDatabaseTest";
+Command "alter database DBDatabaseTest offline";
+System "mkdir \"d:\\dm\\backup\\DBDatabaseTest\"";
+System "cp -Rf \"d:\\dm\\data\\DBDatabaseTest\" \"d:\\dm\\backup\\DBDatabaseTest\\data\"";
+System "cp -Rf \"d:\\dm\\system\\DBDatabaseTest\" \"d:\\dm\\backup\\DBDatabaseTest\\system\"";
+Command "alter database DBDatabaseTest online";
+Command "select * from TBL";
+#expect: 1,2,...,9が表示
+TerminateSession;
+
+#リストア
+InitializeSession "DBDatabaseTest";
+Command "drop database DBDatabaseTest";
+System "cp -Rf \"d:\\dm\\backup\\DBDatabaseTest\\data\" \"d:\\dm\\data\\DBDatabaseTest\"";
+System "cp -Rf \"d:\\dm\\backup\\DBDatabaseTest\\system\" \"d:\\dm\\system\\DBDatabaseTest\"";
+Command "mount DBDatabaseTest path 'd:\\dm\\data\\DBDatabaseTest' logicallog 'd:\\dm\\data\\DBDatabaseTest' system 'd:\\dm\\system\\DBDatabaseTest' with recovery";
+Command "select * from TBL";
+#expect: 1,2,...,9が表示
+TerminateSession;
+
+#後始末
+InitializeSession "DBDatabaseTest";
+Command "drop database DBDatabaseTest";
+TerminateSession;
+
+Terminate;
+End;

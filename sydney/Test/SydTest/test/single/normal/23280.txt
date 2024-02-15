@@ -1,0 +1,81 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "";
+#
+# 『データ操作中』のトランザクションブランチと連携しているセッションを介したさまざまなSQL文の実行テスト
+#
+
+Command "create database D";
+TerminateSession;
+InitializeSession "D";
+
+Command "create table T(I int)";
+Command "create index X on T(I)";
+
+Command "create area A \'d:\\dm\\TRMeister\\areaA\'";
+
+Command "insert into T(I) values (?)" [1];
+Command "insert into T(I) values (?)" [2];
+
+TerminateSession;
+InitializeSession "D";
+
+Command "xa start X'00'";
+
+# SELECT
+Command "select * from T";
+
+# INSERT
+Command "insert into T(I) values (?)" [3];
+Command "select * from T";
+
+# DELETE
+Command "delete from T where I = ?" [3];
+Command "select * from T";
+
+# UPDATE
+Command "update T set I = ? where I = ?" [1, 2];
+Command "select * from T";
+
+# START BACKUP
+Command "start backup discard snapshot";
+
+# END BACKUP
+Command "end backup";
+
+# VERIFY DATABASE
+Command "verify database D";
+
+# VERIFY TABLE
+Command "verify table T";
+
+# VERIFY INDEX
+Command "verify index X";
+
+# SET TRANSACTION
+Command "set transaction read write";
+
+# CHECKPOINT
+Command "checkpoint";
+
+# SYNC
+Command "sync";
+
+Command "xa end X'00'";
+Command "xa rollback X'00'";
+
+TerminateSession;
+InitializeSession "";
+
+Command "drop database D";
+System "rm -rf d:\\dm\\TRMeister";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

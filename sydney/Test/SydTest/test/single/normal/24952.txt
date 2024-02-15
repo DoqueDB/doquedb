@@ -1,0 +1,21 @@
+# Bug report 1774
+# ORDER BYに複数のキーを並べてテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+Command "create table TBL(f int, g int, h int, primary key(f))";
+Command "insert TBL values (1,2,3), (2,2,3), (3,2,3), (4,2,3)";
+Command "insert TBL select f+4,h,g from TBL";
+Command "insert TBL select f+8,g+1,h-2 from TBL";
+Command "insert TBL select f+16,(g+h)/2,(g*h) from TBL";
+
+Command "select f,g,h,case when g > h then g else h end from TBL order by f,g,h";
+Command "select f,g,h,case when g > h then g else h end from TBL order by f,g,h limit 10";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

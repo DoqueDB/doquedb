@@ -1,0 +1,275 @@
+#全文ファイルテスト(multi, FullText_MergeInvPack=2)
+
+Begin;
+
+#マージ閾値を1にする(設定前の既定値は0)
+SetSystemParameter "FullText_InsertMergeTupleSize" 1;
+SetSystemParameter "FullText_ExpungeMergeTupleSize" 1;
+
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+# DBを作成
+InitializeSession "";
+Command "create database FullTextTest";
+TerminateSession "";
+
+InitializeSession "FullTextTest";
+Command "create table T1 (N int, C ntext array [no limit] hint heap 'compressed')";
+Command "create fulltext index FTIndex1 on T1(C) hint 'sectionized, delayed'";
+Command "create table T2 (N int, C ntext array [no limit] hint heap 'compressed')";
+Command "create fulltext index FTIndex2 on T2(C) hint 'sectionized, delayed'";
+TerminateSession;
+
+# 同時実行
+CreateThread "Thread1";
+CreateThread "Thread2";
+JoinThread "Thread1";
+JoinThread "Thread2";
+
+InitializeSession "FullTextTest";
+# joinでsearch
+Command "select T1.N, T2.N from T1, T2 where T1.N=7 or T2.N=7 order by T1.N, T2.N";
+#- 全文ファイルテスト用の表を消去
+#Command "drop table T1";
+#Command "drop table T2";
+TerminateSession;
+
+#- DBを消去
+#InitializeSession "";
+#Command "drop database FullTextTest";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+
+#- Parameterをデフォルト値に戻す
+## 本当ならば事前に読み込んだ値に戻せると良い
+SetSystemParameter "FullText_InsertMergeTupleSize" 0;
+SetSystemParameter "FullText_ExpungeMergeTupleSize" 0;
+End;
+
+Thread1 {
+InitializeSession 1 "FullTextTest";
+# 全文ファイルに挿入→マージ
+Command 1 "insert into T1 (N, C) values (1, ?)" [[textsjisfile 
+ "..\\..\\doc\\introduction.txt"]];
+Command 1 "insert into T1 (N, C) values (2, ?)" [[textsjisfile 
+ "..\\..\\doc\\RainyNight.txt"]];
+Command 1 "insert into T1 (N, C) values (3, ?)" [[textsjisfile 
+ "..\\..\\doc\\kenpou.txt"]];
+Command 1 "insert into T1 (N, C) values (4, ?)" [[textsjisfile 
+ "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command 1 "insert into T1 (N, C) values (5, ?)" [[textsjisfile 
+ "..\\..\\doc\\rasyoumon.txt"]];
+Command 1 "insert into T1 (N, C) values (6, ?)" [[textsjisfile 
+ "..\\..\\doc\\Teihon.txt"]];
+Command 1 "insert into T1 (N, C) values (7, ?)" [[textsjisfile 
+ "..\\..\\doc\\dictionary.txt"]];
+Command 1 "insert into T1 (N, C) values (8, ?)" [[textsjisfile 
+ "..\\..\\doc\\Teihon.txt"]];
+Command 1 "insert into T1 (N, C) values (9, ?)" [[textsjisfile 
+ "..\\..\\doc\\takekurabe.txt"]];
+Command 1 "insert into T1 (N, C) values (10, ?)" [[textsjisfile 
+ "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+Command 1 "insert into T1 (N, C) values (11, ?)" [[textsjisfile 
+ "..\\..\\doc\\introduction.txt"]];
+Command 1 "insert into T1 (N, C) values (12, ?)" [[textsjisfile 
+ "..\\..\\doc\\Teihon.txt"]];
+#- 1件ずつ削除→マージ
+Command 1 "delete from T1 where N= 1";
+Command 1 "delete from T1 where N= 2";
+Command 1 "delete from T1 where N= 3";
+Command 1 "delete from T1 where N= 4";
+Command 1 "delete from T1 where N= 5";
+Command 1 "delete from T1 where N= 6";
+Command 1 "delete from T1 where N= 7";
+Command 1 "delete from T1 where N= 8";
+Command 1 "delete from T1 where N= 9";
+Command 1 "delete from T1 where N=10";
+Command 1 "delete from T1 where N=11";
+Command 1 "delete from T1 where N=12";
+
+# 再びinsertを行う
+Command 1 "insert into T1 (N, C) values (1, ?)" [[textsjisfile "..\\..\\doc\\introduction.txt"]];
+Command 1 "insert into T1 (N, C) values (2, ?)" [[textsjisfile "..\\..\\doc\\RainyNight.txt"]];
+Command 1 "insert into T1 (N, C) values (3, ?)" [[textsjisfile "..\\..\\doc\\kenpou.txt"]];
+Command 1 "insert into T1 (N, C) values (4, ?)" [[textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command 1 "insert into T1 (N, C) values (5, ?)" [[textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command 1 "insert into T1 (N, C) values (6, ?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command 1 "insert into T1 (N, C) values (7, ?)" [[textsjisfile "..\\..\\doc\\dictionary.txt"]];
+Command 1 "insert into T1 (N, C) values (8, ?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command 1 "insert into T1 (N, C) values (9, ?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command 1 "insert into T1 (N, C) values (10, ?)" [[textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+Command 1 "insert into T1 (N, C) values (11, ?)" [[textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"]];
+
+# select(1回目)
+Command 1 "select count(*) from T1";
+Command 1 "select N from T1 where C like '%内閣総理大臣%'";
+Command 1 "select N from T1 where C like '%老婆%'";
+Command 1 "select N from T1 where C like '%foo%'";
+Command 1 "select N from T1 where C like '%ls%'";
+Command 1 "select N from T1 where C like '%オプション%'";
+Command 1 "select N from T1 where C like '%打者%'";
+Command 1 "select N from T1 where C like '%cryptography%'";
+Command 1 "select N from T1 where C like '%ディレクトリ%'";
+Command 1 "select N from T1 where C like '%address%'";
+Command 1 "select N from T1 where C like '%RFC%'";
+
+#- delete 
+Command 1 "delete from T1 where N= 1";
+Command 1 "delete from T1 where N= 8";
+Command 1 "delete from T1 where N= 2";
+Command 1 "delete from T1 where N= 4";
+Command 1 "delete from T1 where N= 5";
+Command 1 "delete from T1 where N=11";
+# これで残り件数は{3, 6, 7, 9, 10}の5つとなる
+
+#- select(2回目)
+Command 1 "select count(*) from T1";
+Command 1 "select N from T1 where C like '%内閣総理大臣%'";
+Command 1 "select N from T1 where C like '%老婆%'";
+Command 1 "select N from T1 where C like '%foo%'";
+Command 1 "select N from T1 where C like '%ls%'";
+Command 1 "select N from T1 where C like '%オプション%'";
+Command 1 "select N from T1 where C like '%打者%'";
+Command 1 "select N from T1 where C like '%cryptography%'";
+Command 1 "select N from T1 where C like '%ディレクトリ%'";
+Command 1 "select N from T1 where C like '%address%'";
+Command 1 "select N from T1 where C like '%RFC%'";
+
+#- 残り5タプルの内容を全てupdate
+Command 1 "update T1 set C=? where N= 3" [[textsjisfile "..\\..\\doc\\introduction.txt"]];
+Command 1 "update T1 set C=? where N= 6" [[textsjisfile "..\\..\\doc\\RainyNight.txt"]];
+Command 1 "update T1 set C=? where N= 7" [[textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command 1 "update T1 set C=? where N= 9" [[textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command 1 "update T1 set C=? where N=10" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+
+#- select(3回目)
+Command 1 "select count(*) from T1";
+Command 1 "select N from T1 where C like '%内閣総理大臣%'";
+Command 1 "select N from T1 where C like '%老婆%'";
+Command 1 "select N from T1 where C like '%foo%'";
+Command 1 "select N from T1 where C like '%ls%'";
+Command 1 "select N from T1 where C like '%オプション%'";
+Command 1 "select N from T1 where C like '%打者%'";
+Command 1 "select N from T1 where C like '%cryptography%'";
+Command 1 "select N from T1 where C like '%ディレクトリ%'";
+Command 1 "select N from T1 where C like '%address%'";
+Command 1 "select N from T1 where C like '%RFC%'";
+
+TerminateSession 1;
+}
+
+# 表が違うだけで、していることはThread1と全く同じ
+Thread2 {
+InitializeSession 2 "FullTextTest";
+# 全文ファイルに挿入→マージ
+Command 2 "insert into T2 (N, C) values (1, ?)" [[textsjisfile 
+"..\\..\\doc\\introduction.txt"]];
+Command 2 "insert into T2 (N, C) values (2, ?)" [[textsjisfile 
+ "..\\..\\doc\\RainyNight.txt"]];
+Command 2 "insert into T2 (N, C) values (3, ?)" [[textsjisfile 
+ "..\\..\\doc\\kenpou.txt"]];
+Command 2 "insert into T2 (N, C) values (4, ?)" [[textsjisfile 
+ "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command 2 "insert into T2 (N, C) values (5, ?)" [[textsjisfile 
+ "..\\..\\doc\\rasyoumon.txt"]];
+Command 2 "insert into T2 (N, C) values (6, ?)" [[textsjisfile 
+ "..\\..\\doc\\Teihon.txt"]];
+Command 2 "insert into T2 (N, C) values (7, ?)" [[textsjisfile 
+ "..\\..\\doc\\dictionary.txt"]];
+Command 2 "insert into T2 (N, C) values (8, ?)" [[textsjisfile 
+ "..\\..\\doc\\Teihon.txt"]];
+Command 2 "insert into T2 (N, C) values (9, ?)" [[textsjisfile 
+ "..\\..\\doc\\takekurabe.txt"]];
+Command 2 "insert into T2 (N, C) values (10, ?)" [[textsjisfile 
+ "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+Command 2 "insert into T2 (N, C) values (11, ?)" [[textsjisfile 
+ "..\\..\\doc\\introduction.txt"]];
+Command 2 "insert into T2 (N, C) values (12, ?)" [[textsjisfile 
+ "..\\..\\doc\\Teihon.txt"]];
+#- 1件ずつ削除→マージ
+Command 2 "delete from T2 where N= 1";
+Command 2 "delete from T2 where N= 2";
+Command 2 "delete from T2 where N= 3";
+Command 2 "delete from T2 where N= 4";
+Command 2 "delete from T2 where N= 5";
+Command 2 "delete from T2 where N= 6";
+Command 2 "delete from T2 where N= 7";
+Command 2 "delete from T2 where N= 8";
+Command 2 "delete from T2 where N= 9";
+Command 2 "delete from T2 where N=10";
+Command 2 "delete from T2 where N=11";
+Command 2 "delete from T2 where N=12";
+
+# 再びinsertを行う
+Command 2 "insert into T2 (N, C) values (1, ?)" [[textsjisfile "..\\..\\doc\\introduction.txt"]];
+Command 2 "insert into T2 (N, C) values (2, ?)" [[textsjisfile "..\\..\\doc\\RainyNight.txt"]];
+Command 2 "insert into T2 (N, C) values (3, ?)" [[textsjisfile "..\\..\\doc\\kenpou.txt"]];
+Command 2 "insert into T2 (N, C) values (4, ?)" [[textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command 2 "insert into T2 (N, C) values (5, ?)" [[textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command 2 "insert into T2 (N, C) values (6, ?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command 2 "insert into T2 (N, C) values (7, ?)" [[textsjisfile "..\\..\\doc\\dictionary.txt"]];
+Command 2 "insert into T2 (N, C) values (8, ?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command 2 "insert into T2 (N, C) values (9, ?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command 2 "insert into T2 (N, C) values (10, ?)" [[textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+Command 2 "insert into T2 (N, C) values (11, ?)" [[textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"]];
+
+# select(1回目)
+Command 2 "select count(*) from T2";
+Command 2 "select N from T2 where C like '%内閣総理大臣%'";
+Command 2 "select N from T2 where C like '%老婆%'";
+Command 2 "select N from T2 where C like '%foo%'";
+Command 2 "select N from T2 where C like '%ls%'";
+Command 2 "select N from T2 where C like '%オプション%'";
+Command 2 "select N from T2 where C like '%打者%'";
+Command 2 "select N from T2 where C like '%cryptography%'";
+Command 2 "select N from T2 where C like '%ディレクトリ%'";
+Command 2 "select N from T2 where C like '%address%'";
+Command 2 "select N from T2 where C like '%RFC%'";
+
+#- delete 
+Command 2 "delete from T2 where N= 1";
+Command 2 "delete from T2 where N= 8";
+Command 2 "delete from T2 where N= 2";
+Command 2 "delete from T2 where N= 4";
+Command 2 "delete from T2 where N= 5";
+Command 2 "delete from T2 where N=11";
+# これで残り件数は{3, 6, 7, 9, 10}の5つとなる
+
+#- select(2回目)
+Command 2 "select count(*) from T2";
+Command 2 "select N from T2 where C like '%内閣総理大臣%'";
+Command 2 "select N from T2 where C like '%老婆%'";
+Command 2 "select N from T2 where C like '%foo%'";
+Command 2 "select N from T2 where C like '%ls%'";
+Command 2 "select N from T2 where C like '%オプション%'";
+Command 2 "select N from T2 where C like '%打者%'";
+Command 2 "select N from T2 where C like '%cryptography%'";
+Command 2 "select N from T2 where C like '%ディレクトリ%'";
+Command 2 "select N from T2 where C like '%address%'";
+Command 2 "select N from T2 where C like '%RFC%'";
+
+#- 残り5タプルの内容を全てupdate
+Command 2 "update T2 set C=? where N= 3" [[textsjisfile "..\\..\\doc\\introduction.txt"]];
+Command 2 "update T2 set C=? where N= 6" [[textsjisfile "..\\..\\doc\\RainyNight.txt"]];
+Command 2 "update T2 set C=? where N= 7" [[textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command 2 "update T2 set C=? where N= 9" [[textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command 2 "update T2 set C=? where N=10" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+
+#- select(3回目)
+Command 2 "select count(*) from T2";
+Command 2 "select N from T2 where C like '%内閣総理大臣%'";
+Command 2 "select N from T2 where C like '%老婆%'";
+Command 2 "select N from T2 where C like '%foo%'";
+Command 2 "select N from T2 where C like '%ls%'";
+Command 2 "select N from T2 where C like '%オプション%'";
+Command 2 "select N from T2 where C like '%打者%'";
+Command 2 "select N from T2 where C like '%cryptography%'";
+Command 2 "select N from T2 where C like '%ディレクトリ%'";
+Command 2 "select N from T2 where C like '%address%'";
+Command 2 "select N from T2 where C like '%RFC%'";
+
+TerminateSession 2;
+}
+

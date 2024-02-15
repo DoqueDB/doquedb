@@ -1,0 +1,57 @@
+# 未サポート結合関連
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T1 (N int, C ntext)";
+Command "insert into T1 values (1, 'A')";
+Command "insert into T1 values (2, 'B')";
+Command "insert into T1 values (3, 'C')";
+
+Command "create table T2 (N int, C ntext)";
+Command "insert into T2 values (4, 'B')";
+Command "insert into T2 values (5, 'C')";
+Command "insert into T2 values (6, 'D')";
+
+# join構文がおかしい
+Command "select * from T1 join T2";
+
+# full - まだサポートしていない (Plan::RelationNode_QualifiedJoin_Fullを起こす)
+Command "select * from T1 natural full outer join T2";
+# 何の為のポーズがよく分からないが、元々あった。
+Pause;
+
+# Union - まだサポートしていない (Analysis::QueryExpression_SetOperatorを起こす)
+Command "select * from T1 UNION select * from T1";
+Command "select * from T1 UNION select * from T2";
+
+## 4つともnaturalが抜けているのでsyntax errorになる
+# 等結合(inner join)
+Command "select * from T1 inner join T2";
+# 左外部結合(left outer join)
+Command "select * from T1 left outer join T2";
+# 右外部結合(right outer join)
+Command "select * from T1 right outer join T2";
+# 全外部結合(full outer join)
+Command "select * from T1 full outer join T2";
+
+#Command "drop table T1";
+#Command "drop table T2";
+
+Command  "select * from T1";
+Command  "select * from T2";
+
+TerminateSession;
+
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+

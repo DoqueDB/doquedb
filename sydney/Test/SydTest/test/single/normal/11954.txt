@@ -1,0 +1,32 @@
+# 障害票 1300
+# IN、EXISTS、ジョインでORDER BYを伴う副問い合わせを使用する場合
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command  "create table t(id int, a int, primary key(id))";
+Command  "insert into t(id,a) values(1,1),(2,2),(3,3)";
+
+Command  "select id,a from t where id in (select id from t)";
+Command  "select id,a from t where id in (select id from t order by a)";
+Command  "select id,a from t where id in (select id from t order by a limit 2)";
+Command  "select id from t t1 natural join (select * from t order by a) t2";
+Command  "select id from t t1 natural join (select * from t order by a limit 2) t2";
+Command  "select id from t t1 where exists (select * from t t2 where id = t1.id order by a)";
+Command  "select id from t t1 where exists (select * from t t2 where id = t1.id order by a limit 2)";
+
+Command  "drop table t";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

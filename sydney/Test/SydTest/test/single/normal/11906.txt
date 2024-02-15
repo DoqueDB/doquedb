@@ -1,0 +1,60 @@
+#EXISTSを使った副問合せと別の表で明示的Join
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# テーブルT1
+Command  "create table T1(f1 int,f2 int,f3 int)";
+Command  "insert into T1 (f1, f2, f3) values (21, 1, 28)";
+Command  "insert into T1 (f1, f2, f3) values (22, 2, 27)";
+Command  "insert into T1 (f1, f2, f3) values (23, 3, 26)";
+Command  "insert into T1 (f1, f2, f3) values (24, 4, 25)";
+Command  "insert into T1 (f1, f2, f3) values (null, 5, 24)";
+Command  "insert into T1 (f1, f2, f3) values (25, 6, 23)";
+Command  "insert into T1 (f1, f2, f3) values (666, 7, 22)";
+Command  "insert into T1 (f1, f2, f3) values (888, 8, 21)";
+
+
+# テーブルT2
+Command  "create table T2(f1 int,f2 int,f3 int)";
+Command  "insert into T2 (f1, f2, f3) values (888,  111, 18)";
+Command  "insert into T2 (f1, f2, f3) values (777,  111, 17)";
+Command  "insert into T2 (f1, f2, f3) values (666,  444, 16)";
+Command  "insert into T2 (f1, f2, f3) values (555,  555, 15)";
+Command  "insert into T2 (f1, f2, f3) values (444,  111, 14)";
+Command  "insert into T2 (f1, f2, f3) values (333,  222, 13)";
+Command  "insert into T2 (f1, f2, f3) values (222,  222, 12)";
+Command  "insert into T2 (f1, f2, f3) values (111,  555, 11)";
+
+# テーブルT3
+Command  "create table T3(f1 int,f2 int,f3 int)";
+Command  "insert into T3 (f1, f2, f3) values (100, 8, 10)";
+Command  "insert into T3 (f1, f2, f3) values (200, 234, 25)";
+Command  "insert into T3 (f1, f2, f3) values (300, 333, 600)";
+Command  "insert into T3 (f1, f2, f3) values (400, 567, 567)";
+Command  "insert into T3 (f1, f2, f3) values (null,  null,  888)";
+Command  "insert into T3 (f1, f2, f3) values (500, 666, 666)";
+Command  "insert into T3 (f1, f2, f3) values (600,  null, 777)";
+Command  "insert into T3 (f1, f2, f3) values (700, 555, 20)";
+
+Command  "select * from (T3 INNER JOIN (select f1 from T1 where exists (select * from T2 where f1 < f2)) as X(x) on (f3 > x)) INNER JOIN (select f1 from T1 where exists (select * from T3 where f1 < f3)) as Y(y) on (x = y)";
+
+Command  "drop table T1";
+
+Command  "drop table T2";
+
+Command  "drop table T3";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

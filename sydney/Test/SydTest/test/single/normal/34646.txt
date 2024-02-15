@@ -1,0 +1,64 @@
+# Driver/FullText の未通過関数
+#
+#	DelayIndexFile::restore
+#	SectionFile::restore
+#	InfoFile::restore
+#		-> テスト不足: delayed, sectionized の全文に対して、using snapshot →（ない）でバックアップしてものを restore してマウントする
+#2005.07.26 tajima
+
+Begin;
+
+System "mkdir d:\\dm\\data2";
+System "mkdir d:\\dm\\system2";
+
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 ntext array [no limit], C2 fulltext)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'sectionized ,inverted=(nolocation=true)'";
+Command  "create fulltext index I1_2 on T1(C2) hint 'delayed ,inverted=(nolocation=true)'";
+
+# データセット
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"], textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+
+Command "start transaction read write, isolation level serializable";
+Command "start backup full discard snapshot";
+
+System "..\\..\\switchcopy.bat d:\\dm\\data\\TESTDB d:\\dm\\data2\\TESTDB1";
+System "..\\..\\switchcopy.bat d:\\dm\\system\\TESTDB d:\\dm\\system2\\TESTDB1";
+
+Command "end backup";
+Command "commit";
+TerminateSession;
+Terminate;
+
+# システムを初期化し、タイムスタンプファイルを元に戻す
+
+System "..\\..\\restore.bat";
+
+Initialize;
+InitializeSession "";
+
+
+# 正常系 - バックアップ時と異なる格納場所でマウント
+Command "mount TESTDB1 path 'd:\\dm\\data2\\TESTDB1' logicallog 'd:\\dm\\data2\\TESTDB1' system 'd:\\dm\\system2\\TESTDB1'";
+
+TerminateSession;
+
+InitializeSession "TESTDB1";
+
+Command "verify database TESTDB1 cascade continue";
+Command "select * from T1";
+
+TerminateSession;
+Terminate;
+
+System "rm -rf d:\\dm\\data2";
+System "rm -rf d:\\dm\\system2";
+
+End;

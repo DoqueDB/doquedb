@@ -1,0 +1,29 @@
+# Bug report 2445
+# 索引単位が離れてしまっていること考慮したテスト
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T (F nvarchar(256))";
+Command "create fulltext index T_F on T(F) hint 'inverted=(tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1)'";
+
+Command "insert into T values ('医学部とかに絶対合格できる方法')";
+Command "insert into T values ('医学部とかで絶対合格できぬ方法')";
+Command "insert into T values ('医学部とかに絶対')";
+Command "insert into T values ('医学部とかで絶対')";
+Command "insert into T values ('かに')";
+Command "insert into T values ('かで')";
+Command "insert into T values ('絶対むり')";
+Command "insert into T values ('合格できる学習')";
+Command "insert into T values ('合格できぬ学習')";
+
+Command "select * from T where F contains '医学部とかに絶対合格'";
+Command "select * from T where F contains '医学部とかに絶対合格できる方法'";
+Command "select * from T where F contains '絶対合格できる方法'";
+
+TerminateSession;
+Terminate;
+
+End;

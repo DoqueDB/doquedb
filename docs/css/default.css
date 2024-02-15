@@ -1,0 +1,219 @@
+/*
+ * default.css
+ *
+ * Copyright (c) 2023 Ricoh Company, Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the License);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+body
+{
+	background: white;
+	color: black;
+	margin-left: 3%;
+	margin-right: 7%;
+}
+
+p
+{
+	margin-top: 1%
+}
+p.verse
+{
+	margin-left: 3%
+}
+
+/* <example>は<pre class=example>に変換される */
+pre
+{
+	border-width: thin medium medium thin;
+	border-style: solid double double solid;
+	border-color: teal;
+	padding: 1em;
+	margin-left: 3%
+}
+pre.bad-example
+{
+	background: silver;
+}
+
+/* 見出し */
+h1
+{
+	border-bottom: medium solid teal;
+}
+h2
+{
+	margin-top: 3em; /* 前の章と離す */
+	border-bottom: medium solid teal;
+	background-color: #EEFFFF; /* 薄い水色 */
+}
+h3
+{
+	margin-top: 2em; /* 前のセクションと少し離す */
+	border-bottom: medium solid teal;
+}
+h4
+{
+	border-bottom: thin solid teal;
+}
+
+/* リスト */
+ol li
+{
+	/* 手順は、間にexample等を入れることがあるため、*/
+	/* バランスを考えて間隔を広げる */
+	margin-bottom: 1em;
+}
+ol li.nomargin
+{
+	/* olでもマージンを設けない場合 */
+	margin-bottom: 0em;
+}
+dt
+{
+	/* 定義も、少し間隔をあける */
+	margin-top: 0.5em;
+}
+/* リスト内リスト */
+/* BNFの注意書き内で使われる定義文 */
+ul dl
+{
+	margin-top: 0em;
+	margin-bottom: 0em;
+	margin-left: 1em;
+}
+ul dl dt
+{
+	float: left;
+	width: 2em;
+	margin-top: 0em; /* リストのデフォルトを上書き */
+}
+ul dd
+{
+	margin-left: 4em;
+}
+
+ul.none
+{
+	list-style-type: none;
+}
+
+/* 表。生のHTMLを書いた時に使われる。 */
+table
+{
+	border-width: 2px;
+	border-style: outset;
+	/* 表のまわりにマージンを取る */
+	margin-bottom: 1em;
+}
+td, th
+{
+	border-width: 1px;
+	border-style: inset;
+	padding: 5px;
+}
+
+/* 表内リストのデフォルト。コンパクトな表示にする。*/
+table ul, table ol
+{
+	margin-top: 0em;
+	margin-bottom: 0em;
+}
+table li
+{
+	margin-bottom: 0em;
+}
+table dl
+{
+	margin-top: 0em;
+	margin-bottom: 0em;
+	margin-left: 1em;
+}
+table dt
+{
+	float: left;
+	width: 2em;
+	margin-top: 0em; /* リストのデフォルトを上書き */
+}
+table dd
+{
+	margin-left: 2em;
+}
+
+/* 表内リストのシンプル版。前後に説明や補足なしで列挙する時に使う */
+table ul.simple
+{
+	list-style-type: none;
+	margin-left: 0em;
+}
+
+dl ul
+{
+	margin-top: 0.5em;
+}
+
+dd table
+{
+	margin-top: 0.5em;
+}
+
+/* 目次 */
+.contents
+{
+	margin-top: 2em;
+}
+.contents dt
+{
+	margin-top: 0em; /* リストのデフォルトを上書き */
+}
+
+/* 全体 */
+.small
+{
+	font-size: 90%;
+}
+
+.bold
+{
+	font-weight: bold;
+}
+
+.center
+{
+	text-align: center;
+}
+
+.right
+{
+	text-align: right;
+}
+
+.sub
+{
+	margin-left: 1em;
+}
+
+.boldsub
+{
+	font-weight: bold;
+	margin-left: 1em;
+}
+
+img
+{
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	margin-left: 75px;
+}

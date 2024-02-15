@@ -1,0 +1,59 @@
+#verify index (正常系、索引の中身あり)
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T (F ntext array[no limit] hint heap 'compressed')";
+#verifyされるべき索引を生成
+Command "create fulltext index I on T(F) hint 'sectionized, delayed ,inverted=(nolocation=true)'";
+
+# 何件か入れてみる
+Command "insert into T (F) values (?)" [[textsjisfile "..\\..\\doc\\introduction.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\RainyNight.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\kenpou.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\rasyoumon.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\dictionary.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\takekurabe.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\introduction.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+
+#r/wトランザクションについて可能な組み合わせを全て試す
+Command "start transaction read write";
+Command "verify index I";
+Command "verify index I cascade";
+Command "verify index I continue";
+Command "verify index I cascade continue";
+Command "verify index I correct";
+Command "verify index I cascade correct";
+Command "verify index I continue correct";
+Command "verify index I cascade continue correct";
+Command "commit";
+
+#r/oトランザクションについて正常に実行可能な組み合わせを全て試す
+Command "start transaction read only, using snapshot";
+Command "verify index I";
+Command "verify index I cascade";
+Command "verify index I continue";
+Command "verify index I cascade continue";
+Command "commit";
+
+TerminateSession;
+# あとかたづけ
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+
+
+
+

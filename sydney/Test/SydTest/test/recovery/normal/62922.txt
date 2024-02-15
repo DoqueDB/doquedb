@@ -1,0 +1,59 @@
+#verify table (正常系、表の中身あり)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#verifyされるべき表を生成
+Command "create table T (F ntext array[no limit] hint heap 'compressed')";
+Command "create fulltext index I on T(F) hint 'sectionized, delayed ,inverted=(nolocation=true, notf=true)'";
+
+# 何件か入れてみる
+Command "insert into T (F) values (?)" [[textsjisfile "..\\..\\doc\\introduction.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\RainyNight.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\kenpou.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\rasyoumon.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\dictionary.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\takekurabe.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\introduction.txt"]];
+Command "insert into T (F) values (?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+
+#r/wトランザクションについて可能な組み合わせを全て試す
+Command "start transaction read write";
+Command "verify table T";
+Command "verify table T cascade";
+Command "verify table T continue";
+Command "verify table T cascade continue";
+Command "verify table T correct";
+Command "verify table T cascade correct";
+Command "verify table T continue correct";
+Command "verify table T cascade continue correct";
+Command "commit";
+
+#r/oトランザクションについて正常に実行可能な組み合わせを全て試す
+Command "start transaction read only, using snapshot";
+Command "verify table T";
+Command "verify table T cascade";
+Command "verify table T continue";
+Command "verify table T cascade continue";
+Command "commit";
+
+Command  "select * from T";
+
+TerminateSession;
+#あとかたづけ
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+

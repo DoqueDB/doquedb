@@ -1,0 +1,41 @@
+# 
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T (N int, C ntext)";
+Command "insert into T (N,C) values (1, 'a brown')";
+Command "insert into T (N,C) values (2, 'fox jumps')";
+Command "insert into T (N,C) values (3, 'quickly over')";
+Command "insert into T (N,C) values (4, 'the lazy dog')";
+Command "insert into T (N,C) values (5, 'A BROWN')";
+Command "insert into T (N,C) values (6, 'FOX JUMPS')";
+Command "insert into T (N,C) values (7, 'QUICKLY OVER')";
+Command "insert into T (N,C) values (8, 'THE LAZY DOG')";
+Command "insert into T (N,C) values (9, 'a brown')";
+Command "insert into T (N,C) values (10, 'fox jumps')";
+
+TerminateSession;
+Terminate;
+
+Initialize;
+InitializeSession "TESTDB";
+Command "select distinct N from T";
+Command "select distinct C from T";
+
+#2005/12/22 *にdistinctを付けると落ちる。
+Command "select distinct * from T";
+
+Command "drop table T";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

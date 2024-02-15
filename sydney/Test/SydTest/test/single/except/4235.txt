@@ -1,0 +1,22 @@
+# 障害票 1393
+
+Begin;
+
+SetSystemParameter "Exception_FakeError" "Version::File::syncPage_readHeader count >= 3";
+
+Initialize;
+InitializeSession "TEST";
+Command "create database TEST";
+Command "create table T (F nvarchar(256))";
+Command "insert into T values ('abc')";
+Command "insert into T values ('xyz')";
+
+Command "sync 1";
+
+Command "drop database TEST";
+
+TerminateSession;
+
+Terminate;
+
+End;

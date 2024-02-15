@@ -1,0 +1,27 @@
+#verify database (異常系)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#read only transactionではcorrectできないのでエラー
+Command "start transaction read only, using snapshot";
+Command "verify database TESTDB correct";
+Command "verify database TESTDB cascade correct";
+Command "verify database TESTDB continue correct";
+Command "verify database TESTDB cascade continue correct";
+Command "commit";
+
+TerminateSession;
+
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

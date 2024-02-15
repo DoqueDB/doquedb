@@ -1,0 +1,15 @@
+
+Begin;
+Initialize;
+BeginTimeSpan;
+InitializeSession "testdb";
+Command "verify database TESTDB cascade continue";
+
+Command "select * from t";
+
+Command "drop database testdb";
+TerminateSession;
+
+EndTimeSpan;
+Terminate;
+End;

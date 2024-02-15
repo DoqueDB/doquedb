@@ -1,0 +1,28 @@
+# Bug report 1565
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+
+# 同義語を考慮したKWICのテスト
+
+Command "create table T(C ntext)";
+Command "insert into T(C) values 'エスエフ、サイエンスフィクション、科学小説、空想科学小説, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, エスエフ, 文学'"; 
+Command "create fulltext index I on T(C) hint 'kwic, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1 @NORMRSCID:1)'";
+
+# 全ての同義語がマークアップされる
+Command "select kwic(C for 100 enclose with '【' and '】') from T where C contains expand_synonym('エスエフ')";
+Command "select kwic(C for 100 enclose with '【' and '】') from T where C contains synonym('エスエフ' 'サイエンスフィクション' '科学小説' '空想科学小説')";
+# 複数条件
+Command "select kwic(C for 100 enclose with '【' and '】') from T where C contains (expand_synonym('エスエフ') | '文学')";
+Command "select kwic(C for 100 enclose with '【' and '】') from T where C contains (synonym('エスエフ' 'サイエンスフィクション' '科学小説' '空想科学小説') | '文学')";
+# 同義語はいずれか一つがヒットすれば条件を満たすとみなしているので、
+# 出力される領域は、同義語のヒット数より、条件を満たした個数が優先される。
+Command "select kwic(C for 30 enclose with '【' and '】') from T where C contains (expand_synonym('エスエフ') | '文学')";
+Command "select kwic(C for 30 enclose with '【' and '】') from T where C contains (synonym('エスエフ' 'サイエンスフィクション' '科学小説' '空想科学小説') | '文学')";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

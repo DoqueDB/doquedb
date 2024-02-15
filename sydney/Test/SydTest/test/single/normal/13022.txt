@@ -1,0 +1,17 @@
+#
+#障害番号0529 データベースがたくさんあると最初の同期処理に時間がかかる
+#に対応
+#（早い）
+#
+#2005/05/21
+
+Begin;
+SetSystemParameter "Checkpoint_LoadSynchronizeCandidate" "false";
+Initialize;
+InitializeSession "";
+BeginTimeSpan;
+Command "sync";
+EndTimeSpan 2000;
+TerminateSession;
+Terminate;
+End;

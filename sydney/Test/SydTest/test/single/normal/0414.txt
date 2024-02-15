@@ -1,0 +1,487 @@
+# update[1]/btree(index)/heap
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 nvarchar(32) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+# 自分自身にupdate
+Command  "update T1 set C1=?" ["ほげ"];
+# 別の内容にupdate
+Command  "update T1 set C1=?" ["ホゲ"];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" ["ピヨ"];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" ["ホゲ", "ほげ"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" ["ぴよ", "ホゲ"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [textsjisfile "..\\..\\doc\\hello.txt"];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\dictionary.txt"];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [textsjisfile "..\\..\\doc\\ublab.txt", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [textsjisfile "..\\..\\doc\\speak.txt"];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\dictionary.txt"];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [textsjisfile "..\\..\\doc\\speak.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt", textsjisfile "..\\..\\doc\\speak.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 int hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [777];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [777];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [555];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [99999999];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [555, 777];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [333, 555];
+# 列の値に対して*/+-で更新してから自分自身を更新
+Command  "update T1 set C1=C1+? " [777];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1-? " [555];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1*? " [-1];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1/? " [333];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 float hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [3.141592];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [3.141592];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [2.718281];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [-0.789878];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [2.718281, 3.141592];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [1.414213, 2.718281];
+# 列の値に対して*/+-で更新してから自分自身を更新
+Command  "update T1 set C1=C1+? " [3.141592];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1-? " [2.718281];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1*? " [8888.8888];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1/? " [1.414213];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 bigint hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [847865165];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [847865165];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [123456789];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [99999999];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [123456789, 847865165];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [120, 123456789];
+# 列の値に対して*/+-で更新してから自分自身を更新
+Command  "update T1 set C1=C1+? " [847865165];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1-? " [123456789];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1*? " [-1];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1/? " [120];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 datetime hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [time "2001-07-07 12:34:56.789"];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [time "2001-09-09 00:00:00.000"];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [time "1999-07-21 13:20:00.600"];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [time "2001-09-09 00:00:00.000", time "2001-07-07 12:34:56.789"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [time "2002-10-11 17:34:51.000", time "2001-09-09 00:00:00.000"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(32) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [null];
+# 別の内容にupdate
+Command  "update T1 set C1=?" ["ホゲ"];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" ["ピヨ"];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1 is null" ["ホゲ"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [null, "ホゲ"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [null];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\dictionary.txt"];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1 is null" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [null, textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [null];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [textsjisfile "..\\..\\doc\\speak.txt"];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\dictionary.txt"];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1 is null" [textsjisfile "..\\..\\doc\\speak.txt"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [null, textsjisfile "..\\..\\doc\\speak.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 int hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [null];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [555];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [99999999];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1 is null" [555];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [null, 555];
+# 列の値に対して*/+-で更新してから自分自身を更新
+Command  "update T1 set C1=C1+? " [null];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1-? " [555];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1*? " [-1];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1/? " [null];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 float hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [null];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [2.718281];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [-0.789878];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1 is null" [2.718281];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [null, 2.718281];
+# 列の値に対して*/+-で更新してから自分自身を更新
+Command  "update T1 set C1=C1+? " [null];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1-? " [2.718281];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1*? " [8888.8888];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1/? " [null];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 bigint hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [null];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [123456789];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [99999999];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1 is null" [123456789];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [null, 123456789];
+# 列の値に対して*/+-で更新してから自分自身を更新
+Command  "update T1 set C1=C1+? " [null];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1-? " [123456789];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1*? " [-1];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1/? " [null];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 datetime hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [null];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [time "2001-09-09 00:00:00.000"];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [time "1999-07-21 13:20:00.600"];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1 is null" [time "2001-09-09 00:00:00.000"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1=?" [null, time "2001-09-09 00:00:00.000"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(32) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+# 自分自身にupdate
+Command  "update T1 set C1=?" ["ほげ"];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [null];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [null, "ほげ"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1 is null" ["ぴよ"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [textsjisfile "..\\..\\doc\\hello.txt"];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [null];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [null, textsjisfile "..\\..\\doc\\hello.txt"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1 is null" [textsjisfile "..\\..\\doc\\ublab.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [null];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [null, textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1 is null" [textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 int hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [777];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [777];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [null];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [null, 777];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1 is null" [333];
+# 列の値に対して*/+-で更新してから自分自身を更新
+Command  "update T1 set C1=C1+? " [777];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1-? " [null];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1*? " [null];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1/? " [333];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 float hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [3.141592];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [3.141592];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [null];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [null, 3.141592];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1 is null" [1.414213];
+# 列の値に対して*/+-で更新してから自分自身を更新
+Command  "update T1 set C1=C1+? " [3.141592];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1-? " [null];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1*? " [null];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1/? " [1.414213];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 bigint hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [847865165];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [847865165];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [null];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [null, 847865165];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1 is null" [120];
+# 列の値に対して*/+-で更新してから自分自身を更新
+Command  "update T1 set C1=C1+? " [847865165];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1-? " [null];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1*? " [null];
+Command  "select C1 from T1";
+Command  "update T1 set C1=C1/? " [120];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 datetime hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "select C1 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+# 自分自身にupdate
+Command  "update T1 set C1=?" [time "2001-07-07 12:34:56.789"];
+# 別の内容にupdate
+Command  "update T1 set C1=?" [null];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1) values (?)" [null];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=? where C1=?" [null, time "2001-07-07 12:34:56.789"];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=? where C1 is null" [time "2002-10-11 17:34:51.000"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

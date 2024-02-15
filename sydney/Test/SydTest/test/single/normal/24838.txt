@@ -1,0 +1,96 @@
+# 配列でB木をFetch
+# Bug report 2377
+
+Begin;
+Initialize;
+
+InitializeSession "TESTDB_array_fetch";
+
+Command "drop database TESTDB_array_fetch if exists";
+Command "create database TESTDB_array_fetch";
+
+Command "create table TBL1 (f int, g int array[no limit], h varchar(10), i varchar(10) array[10])";
+
+Command "create table Tf (f int)";
+Command "insert Tf values (?)" [null];
+Command "insert Tf values (?)" [1];	
+Command "insert Tf values (?)" [2];
+
+Command "create table Tg (g int array[no limit])";
+Command "insert Tg values (?)" [null];
+Command "insert Tg values (?)" [[null]];
+Command "insert Tg values (?)" [[1]];
+Command "insert Tg values (?)" [[10,20,30]];
+Command "insert Tg values (?)" [[100,null,300]];
+
+Command "create table Th (h varchar(10))";
+Command "insert Th values (?)" [null];
+Command "insert Th values (?)" [""];
+Command "insert Th values (?)" ["abc"];
+Command "insert Th values (?)" ["ace"];
+
+Command "create table Ti (i varchar(10) array[10])";
+Command "insert Ti values (?)" [null];
+Command "insert Ti values (?)" [[null]];
+Command "insert Ti values (?)" [["a"]];
+Command "insert Ti values (?)" [["a","b"]];
+Command "insert Ti values (?)" [["c",null,"e"]];
+
+Command "create table TBL2 (x int, y int, z varchar(10), w varchar(10))";
+
+Command "create table Tx (x int)";
+Command "insert Tx values (?)" [1];
+Command "insert Tx values (?)" [2];
+
+Command "create table Ty (y int)";
+Command "insert Ty values (?)" [1];
+Command "insert Ty values (?)" [10];
+Command "insert Ty values (?)" [20];
+Command "insert Ty values (?)" [300];
+
+Command "create table Tz (z varchar(10))";
+Command "insert Tz values (?)" [""];
+Command "insert Tz values (?)" ["abc"];
+
+Command "create table Tw (w varchar(10))";
+Command "insert Tw values (?)" ["a"];
+Command "insert Tw values (?)" ["e"];
+
+Command "insert TBL1 select * from Tf,Tg,Th,Ti";
+Command "insert TBL2 select * from Tx,Ty,Tz,Tw";
+
+Command "select * from TBL1";
+Command "select * from TBL2";
+
+Command "create index TBL2_yx on TBL2(y,x)";
+Command "create index TBL2_wz on TBL2(w,z)";
+Command "create index TBL2_ywx on TBL2(y,w,x)";
+Command "create index TBL2_ywxz on TBL2(y,w,x,z)";
+
+TerminateSession;
+
+InitializeSession "TESTDB_array_fetch";
+Command "select g,y,f,x from TBL1, TBL2 where g[] = y group by g,y,f,x";
+Command "select i,w,f,x from TBL1, TBL2 where i[] = w group by i,w,f,x";
+
+Command "select g,y,f,x from TBL1, TBL2 where g[] = y and f = x group by g,y,f,x";
+Command "select g,y,f,x from TBL1, TBL2 where g[] = y and x > 10 group by g,y,f,x";
+Command "select i,w,h,z,f,x from TBL1, TBL2 where i[] = w and h = z group by i,w,h,z,f,x";
+Command "select i,w,h,z,f,x from TBL1, TBL2 where i[] = w and z like 'a%' group by i,w,h,z,f,x";
+Command "select g,y,i,w,f,x from TBL1, TBL2 where g[] = y and i[] = w group by g,y,i,w,f,x";
+
+Command "select i,w,h,z,f,x from TBL1, TBL2 where i[] = w and f = x and h = z group by i,w,h,z,f,x";
+Command "select g,y,i,w,f,x from TBL1, TBL2 where g[] = y and f = x and i[] = w group by g,y,i,w,f,x";
+
+Command "select g,y,i,w,h,z,f,x from TBL1, TBL2 where g[] = y and f = x and i[] = w and h = z group by g,y,i,w,h,z,f,x";
+
+TerminateSession;
+
+InitializeSession "TESTDB_array_fetch";
+
+Command "drop database TESTDB_array_fetch";
+
+TerminateSession;
+
+Terminate;
+End;

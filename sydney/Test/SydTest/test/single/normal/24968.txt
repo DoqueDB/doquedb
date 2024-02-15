@@ -1,0 +1,71 @@
+# Bug report 1849
+# NOT NULL制約の検査
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+
+Command "create table TBL(f int, g int not null, h int default 99 not null)";
+
+#not null制約のついた列にnullを入れようとするテスト
+
+#insert
+#明示的にnullを指定
+Command "insert TBL values (null, 1, 1)"; #OK
+Command "insert TBL values (1, null, 1)"; #NG
+Command "insert TBL values (1, 1, null)"; #NG
+Command "insert TBL values (null, null, 1)"; #NG
+Command "insert TBL values (1, null, null)"; #NG
+Command "insert TBL values (null, 1, null)"; #NG
+Command "insert TBL values (null, null, null)"; #NG
+
+Command "select * from TBL";
+AssureCount 1;
+
+#列指定から除外
+Command "insert TBL(g,h) values (1,1)"; #OK
+Command "insert TBL(f,h) values (1,1)"; #NG
+Command "insert TBL(f,g) values (1,1)"; #OK -- hはdefaultつきだから
+
+Command "select * from TBL";
+AssureCount 3;
+
+Command "insert TBL(f) values (1)"; #NG
+Command "insert TBL(g) values (1)"; #OK
+Command "insert TBL(h) values (1)"; #NG
+
+Command "select * from TBL";
+AssureCount 4;
+
+#update
+#明示的にnullを指定
+Command "update TBL set f = 1, g = null"; #NG
+Command "update TBL set g = 1, h = null"; #NG
+Command "update TBL set f = 1, h = null"; #NG
+
+Command "update TBL set f = null"; #OK
+Command "update TBL set g = null"; #NG
+Command "update TBL set h = null"; #NG
+
+Command "select * from TBL";
+
+#DEFAULTを指定
+Command "update TBL set f = 1, g = default"; #NG
+Command "update TBL set g = 1, h = default"; #OK
+Command "select * from TBL";
+Command "update TBL set f = 1, h = default"; #OK
+Command "select * from TBL";
+
+Command "update TBL set f = default"; #OK
+Command "select * from TBL";
+Command "update TBL set g = default"; #NG
+Command "update TBL set h = default"; #OK
+Command "select * from TBL";
+
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

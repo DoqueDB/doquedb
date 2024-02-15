@@ -1,0 +1,321 @@
+Begin;
+Initialize;
+
+#テストに使うデータベースを作成する
+InitializeSession "";
+Command "create database DBAreaTest";
+TerminateSession;
+
+#テストに使うデータベースを設定したセッションを作る
+InitializeSession "DBAreaTest";
+
+#単純なcreate - drop
+Command "create area area1 'areatest'";
+NotExists "d:\\dm\\data\\areatest";
+Command "create table T (f1 int) area area1";
+NotExists "d:\\dm\\data\\areatest";
+Command "insert T values (1)";
+Exists "d:\\dm\\data\\areatest\\T\\RCD_T\\Fixed\\MASTER.SYD";
+Exists "d:\\dm\\data\\areatest\\T\\ROWID\\MASTER.SYD";
+Command "drop table T";
+Command "drop area area1";
+NotExists "d:\\dm\\data\\areatest";
+
+#使用している表があったらエラーになることの確認
+Command "create area area1 'areatest'";
+Command "create table T (f1 int) area area1";
+Command "insert T values (1)";
+Exists "d:\\dm\\data\\areatest\\T";
+
+Command "drop area area1";
+Exists "d:\\dm\\data\\areatest\\T";
+
+Command "drop table T";		#後始末
+NotExists "d:\\dm\\data\\areatest\\T";
+Command "drop area area1";	#後始末
+NotExists "d:\\dm\\data\\areatest";
+
+#表が乗っている状態での定義変更
+Command "create area area1 'areatest'";
+Command "create table T (f1 int) area area1";
+NotExists "d:\\dm\\data\\areatest";
+Command "alter area area1 modify 'alterareatest'";
+NotExists "d:\\dm\\data\\areatest";
+NotExists "d:\\dm\\data\\alterareatest";
+
+Command "insert T values (1)";
+NotExists "d:\\dm\\data\\areatest";
+Exists "d:\\dm\\data\\alterareatest\\T\\RCD_T\\Fixed\\MASTER.SYD";
+Exists "d:\\dm\\data\\alterareatest\\T\\ROWID\\MASTER.SYD";
+
+Command "alter area area1 modify 'areatest'";
+NotExists "d:\\dm\\data\\alterareatest";
+Exists "d:\\dm\\data\\areatest\\T\\RCD_T\\Fixed\\MASTER.SYD";
+Exists "d:\\dm\\data\\areatest\\T\\ROWID\\MASTER.SYD";
+
+Command "drop table T";
+NotExists "d:\\dm\\data\\alterareatest\\T";
+NotExists "d:\\dm\\data\\areatest\\T";
+Command "drop area area1";
+NotExists "d:\\dm\\data\\areatest";
+
+#表と索引が乗っている状態での定義変更
+Command "create area area1 'areatest'";
+Command "create table T (f1 int, f2 ntext) area area1 index area1 fulltext area1";
+Command "create index T_f1 on T(f1)";
+#Command "create fulltext index T_f2 on T(f2)";
+NotExists "d:\\dm\\data\\areatest";
+
+Command "alter area area1 modify 'alterareatest'";
+NotExists "d:\\dm\\data\\areatest";
+NotExists "d:\\dm\\data\\alterareatest";
+
+Command "insert T values (1, 'aaa')";
+NotExists "d:\\dm\\data\\areatest";
+Exists "d:\\dm\\data\\alterareatest\\T\\RCD_T\\Fixed\\MASTER.SYD";
+Exists "d:\\dm\\data\\alterareatest\\T\\RCD_T\\Variable\\MASTER.SYD";
+Exists "d:\\dm\\data\\alterareatest\\T\\BTR_T_f1\\MASTER.SYD";
+#Exists "d:\\dm\\data\\alterareatest\\T\\FTS_T_f2";
+
+Command "alter area area1 modify 'areatest'";
+NotExists "d:\\dm\\data\\alterareatest";
+Exists "d:\\dm\\data\\areatest\\T\\RCD_T\\Fixed\\MASTER.SYD";
+Exists "d:\\dm\\data\\areatest\\T\\RCD_T\\Variable\\MASTER.SYD";
+Exists "d:\\dm\\data\\areatest\\T\\BTR_T_f1\\MASTER.SYD";
+#Exists "d:\\dm\\data\\areatest\\T\\FTS_T_f2";
+
+#表と索引が乗っている状態でのdropがエラーになることの確認
+Command "drop area area1";
+Exists "d:\\dm\\data\\areatest\\T\\BTR_T_f1";
+#Exists "d:\\dm\\data\\areatest\\T\\FTS_T_f2";
+#Command "drop index T_f2";
+#Exists "d:\\dm\\data\\areatest\\T\\BTR_T_f1";
+#NotExists "d:\\dm\\data\\areatest\\T\\FTS_T_f2";
+Command "drop area area1";
+Exists "d:\\dm\\data\\areatest\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\areatest\\T\\FTS_T_f2";
+Command "drop index T_f1";
+NotExists "d:\\dm\\data\\areatest\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\areatest\\T\\FTS_T_f2";
+Exists "d:\\dm\\data\\areatest\\T";
+Command "drop area area1";
+NotExists "d:\\dm\\data\\areatest\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\areatest\\T\\FTS_T_f2";
+Exists "d:\\dm\\data\\areatest\\T";
+Command "drop table T";
+NotExists "d:\\dm\\data\\areatest\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\areatest\\T\\FTS_T_f2";
+NotExists "d:\\dm\\data\\areatest\\T";
+Command "drop area area1";
+NotExists "d:\\dm\\data\\areatest";
+
+#複数のパスが設定される場合
+Command "create area area1 array ['areatest1', 'areatest2']";
+Command "create table T (f1 int, f2 ntext) area area1 index area1 fulltext area1";
+Command "create index T_f1 on T(f1)";
+#Command "create fulltext index T_f2 on T(f2)";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+
+Command "insert T values (1, 'aaa')";
+Exists "d:\\dm\\data\\areatest1\\T\\RCD_T\\Fixed\\MASTER.SYD";
+Exists "d:\\dm\\data\\areatest1\\T\\RCD_T\\Variable\\MASTER.SYD";
+Exists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1\\MASTER.SYD";
+#Exists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+
+#Command "drop index T_f2";
+#NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+#Exists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+Command "drop index T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+Exists "d:\\dm\\data\\areatest1\\T";
+Command "drop table T";
+NotExists "d:\\dm\\data\\areatest1\\T";
+Command "drop area area1";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+
+#複数のパスが設定される場合両方を同時に変更する
+Command "create area area1 array ['areatest1', 'areatest2']";
+Command "create table T (f1 int, f2 ntext) area area1 index area1 fulltext area1";
+Command "create index T_f1 on T(f1)";
+#Command "create fulltext index T_f2 on T(f2)";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+
+Command "alter area area1 modify array ['alterareatest1', 'alterareatest2']";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+NotExists "d:\\dm\\data\\alterareatest1";
+NotExists "d:\\dm\\data\\alterareatest2";
+
+Command "insert T values (1, 'aaa')";
+Exists "d:\\dm\\data\\alterareatest1\\T\\RCD_T\\Fixed\\MASTER.SYD";
+Exists "d:\\dm\\data\\alterareatest1\\T\\RCD_T\\Variable\\MASTER.SYD";
+Exists "d:\\dm\\data\\alterareatest1\\T\\BTR_T_f1\\MASTER.SYD";
+#Exists "d:\\dm\\data\\alterareatest1\\T\\FTS_T_f2";
+
+Command "alter area area1 modify array ['areatest1', 'areatest2']";
+NotExists "d:\\dm\\data\\alterareatest1";
+NotExists "d:\\dm\\data\\alterareatest2";
+Exists "d:\\dm\\data\\areatest1\\T\\RCD_T\\Fixed\\MASTER.SYD";
+Exists "d:\\dm\\data\\areatest1\\T\\RCD_T\\Variable\\MASTER.SYD";
+Exists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1\\MASTER.SYD";
+#Exists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+
+#Command "drop index T_f2";
+#Exists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+#NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+#NotExists "d:\\dm\\data\\areatest2";
+Command "drop index T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+Exists "d:\\dm\\data\\areatest1\\T";
+NotExists "d:\\dm\\data\\areatest2";
+Command "drop table T";
+NotExists "d:\\dm\\data\\areatest1\\T";
+Exists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+Command "drop area area1";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+
+#複数のパスが設定される場合一部だけ変更する
+Command "create area area1 array ['areatest1', 'areatest2']";
+Command "create table T (f1 int, f2 ntext) area area1 index area1 fulltext area1";
+Command "create index T_f1 on T(f1)";
+#Command "create fulltext index T_f2 on T(f2)";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+
+Command "alter area area1 modify [0] 'alterareatest1'";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+NotExists "d:\\dm\\data\\alterareatest1";
+
+Command "insert T values (1, 'aaa')";
+NotExists "d:\\dm\\data\\areatest2";
+Exists "d:\\dm\\data\\alterareatest1\\T\\RCD_T";
+Exists "d:\\dm\\data\\alterareatest1\\T\\BTR_T_f1";
+#Exists "d:\\dm\\data\\alterareatest1\\T\\FTS_T_f2";
+
+Command "alter area area1 modify [0] 'areatest1'";
+NotExists "d:\\dm\\data\\areatest2";
+NotExists "d:\\dm\\data\\alterareatest1";
+Exists "d:\\dm\\data\\areatest1\\T\\RCD_T";
+Exists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+#Exists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+
+#Command "drop index T_f2";
+#Exists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+#NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+#NotExists "d:\\dm\\data\\areatest2";
+Command "drop index T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+Exists "d:\\dm\\data\\areatest1\\T";
+NotExists "d:\\dm\\data\\areatest2";
+Command "drop table T";
+NotExists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\data\\areatest1\\T";
+Exists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+Command "drop area area1";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+
+#複数のパスが設定される場合一部だけ変更する(使われていないほうのパス)
+Command "create area area1 array ['areatest1', 'areatest2']";
+Command "create table T (f1 int, f2 ntext) area area1 index area1 fulltext area1";
+Command "create index T_f1 on T(f1)";
+#Command "create fulltext index T_f2 on T(f2)";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+
+Command "alter area area1 modify [1] 'alterareatest2'";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+NotExists "d:\\dm\\data\\alterareatest2";
+
+Command "insert T values (1, 'aaa')";
+Exists "d:\\dm\\data\\areatest1\\T\\RCD_T";
+Exists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+#Exists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\data\\areatest2";
+NotExists "d:\\dm\\data\\alterareatest2";
+
+Command "alter area area1 modify [1] 'areatest2'";
+Exists "d:\\dm\\data\\areatest1\\T\\RCD_T";
+Exists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+#Exists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\data\\areatest2";
+NotExists "d:\\dm\\data\\alterareatest2";
+
+#Command "drop index T_f2";
+#Exists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+#NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+#NotExists "d:\\dm\\data\\alterareatest2";
+Command "drop index T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+Exists "d:\\dm\\data\\areatest1\\T";
+NotExists "d:\\dm\\data\\alterareatest2";
+Command "drop table T";
+NotExists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\data\\areatest1\\T";
+Exists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\alterareatest2";
+Command "drop area area1";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\alterareatest2";
+
+#複数のパスが設定される場合に単一のパスに変更しようとしてエラーになることの確認
+Command "create area area1 array ['areatest1', 'areatest2']";
+Command "create table T (f1 int, f2 ntext) area area1 index area1 fulltext area1";
+Command "create index T_f1 on T(f1)";
+#Command "create fulltext index T_f2 on T(f2)";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+
+#エラーになる
+Command "alter area area1 modify 'alterareatest'";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+NotExists "d:\\dm\\data\\alterareatest";
+
+Command "insert T values (1, 'aaa')";
+Exists "d:\\dm\\data\\areatest1\\T\\RCD_T";
+Exists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+#Exists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\data\\areatest2";
+NotExists "d:\\dm\\data\\alterareatest";
+
+#Command "drop index T_f2";
+#Exists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+#NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+#NotExists "d:\\dm\\data\\areatest2";
+Command "drop index T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+Exists "d:\\dm\\data\\areatest1\\T";
+NotExists "d:\\dm\\data\\areatest2";
+Command "drop table T";
+NotExists "d:\\dm\\data\\areatest1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\areatest1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\data\\areatest1\\T";
+NotExists "d:\\dm\\data\\areatest2";
+Command "drop area area1";
+NotExists "d:\\dm\\data\\areatest1";
+NotExists "d:\\dm\\data\\areatest2";
+TerminateSession;
+
+#テストに使ったデータベースの破棄
+InitializeSession "";
+Command "drop database DBAreaTest";
+TerminateSession;
+
+Terminate;
+End;

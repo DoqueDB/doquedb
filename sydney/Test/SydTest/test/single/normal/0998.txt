@@ -1,0 +1,44 @@
+# テスト追加: FileAccess_Merge.cpp
+#             ⇒ テスト追加: B+索引のついた列 f1、f2、f3 のある表に何件か入れて、B+木のついた列を2つ取得する
+#	
+#2005.07.26 tajima
+Begin;
+
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (f1 int, f2 int, f3 BIGINT)";
+
+# 索引作成
+Command  "create index T_IDX on T(f1,f2,f3)";
+
+
+#データセット
+CreatePreparedCommand "ins" "insert into T (f1, f2, f3) values (?, ?, ?)";
+PreparedCommand "ins" [1,100,integer64 1000000000 ];
+PreparedCommand "ins" [2,200,integer64 2000000000 ];
+PreparedCommand "ins" [3,300,integer64 3000000000 ];
+PreparedCommand "ins" [4,400,integer64 4000000000 ];
+PreparedCommand "ins" [5,500,integer64 5000000000 ];
+PreparedCommand "ins" [10,601,integer64 6000000010 ];
+PreparedCommand "ins" [20,702,integer64 7000000020 ];
+PreparedCommand "ins" [30,803,integer64 8000000030 ];
+PreparedCommand "ins" [40,904,integer64 9000000040 ];
+
+ErasePreparedCommand "ins";
+
+
+Command "select f1, f2 from T  where f1 > 3 and f2 > 500 and f3 > 5000000000 order by f1,f2";
+Command "select f1, f3 from T  where (f1 <= 3 or f2 > 500) and f3 <= 6000000000";
+
+
+
+# テスト用の表を消去
+Command "drop table T";
+
+
+TerminateSession;
+Terminate;
+End;
+

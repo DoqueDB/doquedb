@@ -1,0 +1,56 @@
+# Bug report 1858
+# キャストに失敗したときに例外を投げるべきでないときの確認テスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+
+Command "create table TBL1(f varchar(5), g char(5), h nvarchar(5), i nchar(5), j int)";
+
+Command "insert TBL1 values ('abc', 'bcd', 'あいう', 'いろは', 123)";
+Command "insert TBL1 values ('abcde', 'bcdef', 'あいうえお', 'いろはにほ', 456)";
+
+Command "create table TBL2(x varchar(10), y char(10), z nvarchar(10), w nchar(10), u float)";
+
+Command "insert TBL2 values ('abcde', 'bcdef', 'あいうえお', 'いろはにほ', 456)";
+Command "insert TBL2 values ('abcdef', 'bcdefg', 'あいうえおかきくけこ', 'いろはにほへと', 123E45)";
+Command "insert TBL2 values ('xyz', 'yzw', 'abc', 'bcd', 123)";
+Command "insert TBL2 values ('xyz', 'yzw', '123', '456', 456)";
+
+Command "select * from TBL1, TBL2 where f = x";
+Command "select * from TBL1, TBL2 where g = y";
+Command "select * from TBL1, TBL2 where h = z";
+Command "select * from TBL1, TBL2 where i = w";
+Command "select * from TBL1, TBL2 where j = u";
+
+Command "select * from TBL1, TBL2 where f = z";
+Command "select * from TBL1, TBL2 where g = w";
+
+Command "select * from TBL1, TBL2 where j = z";
+Command "select * from TBL1, TBL2 where j = w";
+
+Command "create index IDX1_f on TBL1(f)";
+Command "create index IDX1_g on TBL1(g)";
+Command "create index IDX1_h on TBL1(h)";
+Command "create index IDX1_i on TBL1(i)";
+Command "create index IDX1_j on TBL1(j)";
+
+Command "select * from TBL1, TBL2 where f = x";
+Command "select * from TBL1, TBL2 where g = y";
+Command "select * from TBL1, TBL2 where h = z";
+Command "select * from TBL1, TBL2 where i = w";
+Command "select * from TBL1, TBL2 where j = u";
+
+Command "select * from TBL1, TBL2 where f = z";
+Command "select * from TBL1, TBL2 where g = w";
+
+Command "select * from TBL1, TBL2 where j = z";
+Command "select * from TBL1, TBL2 where j = w";
+
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

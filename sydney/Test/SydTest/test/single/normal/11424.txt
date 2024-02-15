@@ -1,0 +1,129 @@
+# select * from T1       inner join T2 on <条件, 列1個> where〈 列1個, 列リスト含む 〉
+#                   left outer
+#                  right outer
+# on <条件>, where句付きjoinテスト (where句内でjoinに使われる列が1個含む)
+# --boolean検索無し
+# 単索引
+# --T1索引有り, T2索引有り
+# --同種テスト 11[1-4]24
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "create index I1_1 on T1(C1)";
+Command  "create index I1_2 on T1(C2)";
+Command  "create index I1_3 on T1(C3)";
+Command  "create index I1_4 on T1(C4)";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  1,   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  null, "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "3",   null,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "4",  "ぴよ", null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null, "ぴよ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "2",   null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  null, "ホゲ", null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "4",  "null", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  null, "ホゲ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  null,  null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "1",   null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null, "ほげ", null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null,  null,  textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null,  null,  null                                 ];
+
+
+# テーブルT2
+Command  "create table T2(C5 int, C6 varchar(2), C7 nvarchar(4), C8 nvarchar(448))";
+Command  "create index I2_1 on T2(C5)";
+Command  "create index I2_2 on T2(C6)";
+Command  "create index I2_3 on T2(C7)";
+Command  "create index I2_4 on T2(C8)";
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "2",  "ほげ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null,  3,   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  null, "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "3",  "ぷう", null                                 ];
+
+
+# inner
+Command  "select * from T1 inner join T2 on C1 = C5 where C1 is null";
+Command  "select * from T1 inner join T2 on C1 = C5 where C5 is null";
+Command  "select * from T1 inner join T2 on C2 = C6 where C2 is null";
+Command  "select * from T1 inner join T2 on C2 = C6 where C6 is null";
+Command  "select * from T1 inner join T2 on C3 = C7 where C3 is null";
+Command  "select * from T1 inner join T2 on C3 = C7 where C7 is null";
+Command  "select * from T1 inner join T2 on C4 = C8 where C4 is null";
+Command  "select * from T1 inner join T2 on C4 = C8 where C8 is null";
+
+Command  "select * from T1 inner join T2 on C1 = C5 where C1 >= (?)" [333];
+Command  "select * from T1 inner join T2 on C1 = C5 where C5 >= (?)" [333];
+Command  "select * from T1 inner join T2 on C2 = C6 where C2 >= (?)" ["3"];
+Command  "select * from T1 inner join T2 on C2 = C6 where C6 >= (?)" ["3"];
+Command  "select * from T1 inner join T2 on C3 = C7 where C3 >= (?)" ["ほげ"];
+Command  "select * from T1 inner join T2 on C3 = C7 where C7 >= (?)" ["ほげ"];
+Command  "select * from T1 inner join T2 on C4 = C8 where C4 like (?)" ["株式会社リコー%"];
+Command  "select * from T1 inner join T2 on C4 = C8 where C8 like (?)" ["株式会社リコー%"];
+
+# left outer
+Command  "select * from T1 left outer join T2 on C1 = C5 where C1 is null";
+Command  "select * from T1 left outer join T2 on C1 = C5 where C5 is null";
+Command  "select * from T1 left outer join T2 on C2 = C6 where C2 is null";
+Command  "select * from T1 left outer join T2 on C2 = C6 where C6 is null";
+Command  "select * from T1 left outer join T2 on C3 = C7 where C3 is null";
+Command  "select * from T1 left outer join T2 on C3 = C7 where C7 is null";
+Command  "select * from T1 left outer join T2 on C4 = C8 where C4 is null";
+Command  "select * from T1 left outer join T2 on C4 = C8 where C8 is null";
+
+Command  "select * from T1 left outer join T2 on C1 = C5 where C1 >= (?)" [333];
+Command  "select * from T1 left outer join T2 on C1 = C5 where C5 >= (?)" [333];
+Command  "select * from T1 left outer join T2 on C2 = C6 where C2 >= (?)" ["3"];
+Command  "select * from T1 left outer join T2 on C2 = C6 where C6 >= (?)" ["3"];
+Command  "select * from T1 left outer join T2 on C3 = C7 where C3 >= (?)" ["ほげ"];
+Command  "select * from T1 left outer join T2 on C3 = C7 where C7 >= (?)" ["ほげ"];
+Command  "select * from T1 left outer join T2 on C4 = C8 where C4 like (?)" ["株式会社リコー%"];
+Command  "select * from T1 left outer join T2 on C4 = C8 where C8 like (?)" ["株式会社リコー%"];
+
+# right outer
+Command  "select * from T1 right outer join T2 on C1 = C5 where C1 is null";
+Command  "select * from T1 right outer join T2 on C1 = C5 where C5 is null";
+Command  "select * from T1 right outer join T2 on C2 = C6 where C2 is null";
+Command  "select * from T1 right outer join T2 on C2 = C6 where C6 is null";
+Command  "select * from T1 right outer join T2 on C3 = C7 where C3 is null";
+Command  "select * from T1 right outer join T2 on C3 = C7 where C7 is null";
+Command  "select * from T1 right outer join T2 on C4 = C8 where C4 is null";
+Command  "select * from T1 right outer join T2 on C4 = C8 where C8 is null";
+
+Command  "select * from T1 right outer join T2 on C1 = C5 where C1 >= (?)" [333];
+Command  "select * from T1 right outer join T2 on C1 = C5 where C5 >= (?)" [333];
+Command  "select * from T1 right outer join T2 on C2 = C6 where C2 >= (?)" ["3"];
+Command  "select * from T1 right outer join T2 on C2 = C6 where C6 >= (?)" ["3"];
+Command  "select * from T1 right outer join T2 on C3 = C7 where C3 >= (?)" ["ほげ"];
+Command  "select * from T1 right outer join T2 on C3 = C7 where C7 >= (?)" ["ほげ"];
+Command  "select * from T1 right outer join T2 on C4 = C8 where C4 like (?)" ["株式会社リコー%"];
+Command  "select * from T1 right outer join T2 on C4 = C8 where C8 like (?)" ["株式会社リコー%"];
+
+Command  "drop table T2";
+
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

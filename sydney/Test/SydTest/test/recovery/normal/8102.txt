@@ -1,0 +1,113 @@
+## -*-Mode: text; tab-width: 4; c-basic-offset: 4;-*-
+## vi:set ts=4 sw=4:
+##
+## 8102.txt -- index 作成のテスト
+##
+##	TEST CONTENTS
+##		index の作成、移動、削除に関係なく table が参照できる
+##
+##	START CONDITIONS
+##		特に無し
+##		
+##	END CONDITIONS
+##		start 前と同じ状態である
+##
+##	CHECK
+##		select 文の結果が正しいか
+##
+##	NOTE
+##		マルチスレッド
+##		正常系
+##		Schema の単体テストも兼ねる
+##
+## Copyright (c) 2001, 2002, 2003 Ricoh Company, Ltd.
+## All rights reserved.
+##
+##		$Author$
+##		$Date$
+##		$Revision$
+##
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+# 準備
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create area IDX_AREA 'd:\\dm\\area\\idx'";
+Command "create table T(A int, B ntext)";
+Command "insert into T(A, B) values(1, 'abcdefg')";
+Command "insert into T(A, B) values(2, 'hijklmn')";
+Command "insert into T(A, B) values(3, 'opqrstu')";
+Command "insert into T(A, B) values(4, 'vwxyz  ')";
+Command "insert into T(A, B) values(5, 'ABCDEFG')";
+Command "insert into T(A, B) values(6, 'HIJKLMN')";
+Command "insert into T(A, B) values(7, 'OPQRSTU')";
+Command "insert into T(A, B) values(8, 'VWXYZ  ')";
+Command "insert into T(A, B) values(9, '       ')";
+TerminateSession;
+
+InitializeSession 1 "TESTDB";
+InitializeSession 2 "TESTDB";
+
+CreateThread "Select";
+JoinThread "Select";
+
+# index を作成しようが、結果は変わらない
+CreateThread "Select";
+CreateThread "Create";
+JoinThread "Select";
+JoinThread "Create";
+
+# index を変更しようが、結果は変わらない
+CreateThread "Select";
+CreateThread "Alter";
+JoinThread "Select";
+JoinThread "Alter";
+
+# index を破棄しようが、結果は変わらない
+CreateThread "Select";
+CreateThread "Drop";
+
+JoinThread "Select";
+JoinThread "Drop";
+
+TerminateSession 1;
+TerminateSession 2;
+
+# 後片付け
+#InitializeSession "TESTDB";
+#Command "drop database TESTDB";
+#TerminateSession;
+
+#System "rm -rf d:\\dm\\area";
+
+# (障害回復を試すためTerminateしない)
+End;
+
+#---------------------------------------------------------------------------------------------------
+
+Select
+{
+Command 1 "select * from T";
+}
+
+Create
+{
+Command 2 "create index IDX1 on T(A)";
+}
+
+Alter
+{
+Command 2 "alter index IDX1 set area IDX_AREA";
+}
+
+Drop
+{
+Command 2 "drop index IDX1";
+}

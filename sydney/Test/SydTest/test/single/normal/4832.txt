@@ -1,0 +1,72 @@
+# int array [no limit] hint heap
+# bitmap index
+# nullを含むarrayのテスト
+# 
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# Tableを準備する
+# データ挿入前にbitmap indexを付与した場合
+Command "create table T1(C1 int array [no limit] hint heap)";
+Command "create bitmap index I_1 on T1(C1)";
+
+Command "insert into T1 (C1) values (?)" [[6666]];
+Command "insert into T1 (C1) values (?)" [[null]];
+Command "insert into T1 (C1) values (?)" [null];
+Command "insert into T1 (C1) values (?)" [[6666, null, 444]];
+Command "insert into T1 (C1) values (?), (?)" [[333, null],[777, 6666]];
+Command "insert into T1 (C1) values (?), (?), (?)" [[null, 222],[6666, 444],[null, null]];
+
+Command "select C1 from T1";
+
+#nullを含む検索のテスト
+Command "select C1 from T1 where C1 = ?" [[6666]];
+Command "select C1 from T1 where C1 = ?" [[6666,null]];
+Command "select C1 from T1 where C1 = ?" [[6666,null,444]];
+Command "select C1 from T1 where C1 = ?" [[null]];
+Command "select C1 from T1 where C1 = ?" [[null,null]];
+
+Command "select * from T1";
+Command "select * from T1 where C1[] = ?" [6666];
+Command "select * from T1 where C1[] = 444";
+Command "select * from T1 where C1[] is NULL";
+Command "select * from T1 where C1 is NULL";
+
+# tableの後始末
+Command  "drop table T1";
+
+
+# Tableを準備する
+# データ挿入後にbitmap indexを付与した場合
+Command  "create table T1 (C1 int array [no limit] hint heap)";
+
+Command  "insert into T1 (C1) values (?)" [[6666]];
+Command  "insert into T1 (C1) values (?)" [[null]];
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [[6666, null, 444]];
+Command  "insert into T1 (C1) values (?), (?)" [[333, null],[777, 6666]];
+Command  "insert into T1 (C1) values (?), (?), (?)" [[null, 222],[6666, 444],[null, null]];
+
+# 期待結果
+# データ挿入前にbitmap indexを付与した場合と同じ結果になるべき
+# 0516障害をupする
+Command "create bitmap index I_1 on T1(C1)";
+Command "select * from T1 where C1 is NULL";
+
+# tableの後始末
+Command  "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

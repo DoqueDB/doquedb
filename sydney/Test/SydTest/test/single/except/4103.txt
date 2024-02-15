@@ -1,0 +1,28 @@
+# langと本文とで型が食い違っている(2)
+
+Begin;
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (N int, C ntext array [no limit], L language)";
+
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, [null, null], "en+ja"];
+PreparedCommand "ins" [1, [null, textucsfile "..\\..\\doc\\takekurabe.txt"], "ja"];
+PreparedCommand "ins" [2, [textucsfile "..\\..\\doc\\takekurabe.txt", null], "en"];
+PreparedCommand "ins" [3, [textucsfile "..\\..\\doc\\takekurabe.txt",
+		           textucsfile "..\\..\\doc\\takekurabe.txt"], "ja+en"];
+ErasePreparedCommand "ins";
+
+# 索引作成に失敗すること
+Command "create fulltext index FTL on T(C) language column L hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;
+

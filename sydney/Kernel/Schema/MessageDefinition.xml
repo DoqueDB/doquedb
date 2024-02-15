@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+  MessageDefinition.xml : メッセージ定義ファイル
+
+  Copyright (c) 2001, 2005, 2024 Ricoh Company, Ltd.
+ 
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE MessageDefine [
+  <!ELEMENT MessageDefine (Message)*>
+
+  <!ELEMENT Message (Name, Number, Format, Argument*)>
+  <!ELEMENT Name (#PCDATA)>
+  <!ELEMENT Number (#PCDATA)>
+
+  <!ELEMENT Format (English, Japanese)>
+  <!ELEMENT Argument (#PCDATA)>
+
+  <!ELEMENT English (#PCDATA)>
+  <!ELEMENT Japanese (#PCDATA)>
+]>
+
+<!--
+★メッセージ定義に関する注意★
+
+	【メッセージ定義ファイル自体について】
+		・ファイルの文字コードを SJIS から変更してはいけない
+
+	【メッセージ作成の方針について】
+
+	【メッセージ番号について】
+		・Number は16 進8 桁で定義し、
+
+		  上位 2 桁は 0x01
+		  次の 2 桁は モジュールを識別する値
+		  下位 4 桁は モジュール内でのメッセージを一意に識別する値
+		
+		  にすること
+		・決して、Exception/ErrorDefinition.xml の
+		  エラー番号と重なってはならない
+
+	【フォーマットについて】
+		・日本語メッセージは「ですます」調で統一すること
+		・Format に %1 などで挿入されるものが文字列である場合、
+		  できる限り言語に左右されない文字列
+		  (SQL 文、表名、数値など)にすること
+-->
+
+<MessageDefine>
+
+<!--
+	データベースの整合性検査(0x0115000?)
+-->
+
+  <Message>
+    <Name>DatabasePathNotExist</Name>
+	<Number>0x01150001</Number>
+	<Format>
+	  <English>Database path do not exist.</English>
+	  <Japanese>データベースのパスがありません。</Japanese>
+	</Format>
+  </Message>
+
+<!--
+	シーケンスファイルの整合性検査(0x0115001?)
+-->
+
+  <Message>
+    <Name>SequenceNotExist</Name>
+	<Number>0x01150010</Number>
+	<Format>
+	  <English>Sequence file do not exist.</English>
+	  <Japanese>シーケンスファイルがありません。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>SequenceCreateFailed</Name>
+	<Number>0x01150011</Number>
+	<Format>
+	  <English>Can't create sequence file in correcting.</English>
+	  <Japanese>修復処理でシーケンスファイルの作成ができませんでした。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>SequenceValueNotMatch</Name>
+	<Number>0x01150012</Number>
+	<Format>
+	  <English>Sequence value do not match.</English>
+	  <Japanese>シーケンスファイルの値よりも大きい値が使われています。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>SequenceCorrectFailed</Name>
+	<Number>0x01150013</Number>
+	<Format>
+	  <English>Can't correct sequence file value in correcting.</English>
+	  <Japanese>修復処理でシーケンスファイルの値を修復することができませんでした。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>SequenceReadFailed</Name>
+	<Number>0x01150014</Number>
+	<Format>
+	  <English>Can't read sequence file value.</English>
+	  <Japanese>シーケンスファイルの値を読み取ることができませんでした。</Japanese>
+	</Format>
+  </Message>
+
+<!--
+	表の整合性検査(0x0115002?)
+-->
+
+  <Message>
+    <Name>MetaIndexNotMatch</Name>
+	<Number>0x01150020</Number>
+	<Format>
+	  <English>System file index '%1' has different tuple count from system record file's.</English>
+	  <Japanese>システム表のレコードファイルと索引ファイルの件数が異なります(索引名:%1)。</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+  </Message>
+
+  <Message>
+    <Name>MetaIndexTupleNotFound</Name>
+	<Number>0x01150021</Number>
+	<Format>
+	  <English>There is a missing tuple (key=%2) in system file index '%1'.</English>
+	  <Japanese>システム表のレコードファイルのタプルのうち索引ファイルにないものがあります(索引名:%1、キー:%2)。</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+	<Argument>%s</Argument>
+  </Message>
+
+<!--
+	タプルの整合性検査(0x0115003?)
+-->
+
+  <Message>
+    <Name>IndexTupleNotFound</Name>
+	<Number>0x01150030</Number>
+	<Format>
+	  <English>There is a missing tuple (key=%2) in index '%1'.</English>
+	  <Japanese>表のタプルのうち索引にないものがあります(索引名:%1、キー:%2)。</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+	<Argument>%s</Argument>
+  </Message>
+
+  <Message>
+    <Name>TupleCountNotMatch</Name>
+	<Number>0x01150031</Number>
+	<Format>
+	  <English>Tuple count do not match in file '%1' (Count=%2, Expected=%3).</English>
+	  <Japanese>ファイルに格納されているタプル数が合致しません(ファイル名:%1、タプル数:%2、正常値:%3)。</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+	<Argument>%lli</Argument>
+	<Argument>%lli</Argument>
+  </Message>
+
+  <Message>
+    <Name>TupleValueNotMatch</Name>
+	<Number>0x01150032</Number>
+	<Format>
+	  <English>Tuple value do not match on field '%1.%2'.</English>
+	  <Japanese>表のファイルと索引のファイルでフィールド値が一致しません(フィールド名:%1.%2)。</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+	<Argument>%s</Argument>
+  </Message>
+
+<!--
+	データの整合性検査(0x0115004?)
+-->
+
+  <Message>
+    <Name>NotNullIntegrityViolation</Name>
+	<Number>0x01150040</Number>
+	<Format>
+	  <English>NULL is stored in field '%1.%2' which has 'NOT NULL' integrity.</English>
+	  <Japanese>NOT NULL制約のある列にNULL値が格納されています(フィールド名:%1.%2)。</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+	<Argument>%s</Argument>
+  </Message>
+
+  <Message>
+    <Name>FileNotFound</Name>
+	<Number>0x01150041</Number>
+	<Format>
+	  <English>A required file is not found.</English>
+	  <Japanese>必要なファイルが見つかりません。</Japanese>
+	</Format>
+  </Message>
+
+<!--
+	途中経過出力用(0x0115009?)
+-->
+
+  <Message>
+    <Name>VerifyStarted</Name>
+	<Number>0x01150090</Number>
+	<Format>
+	  <English>Verify '%1' started.</English>
+	  <Japanese>'%1'の検査を開始します。</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+  </Message>
+
+  <Message>
+    <Name>VerifyFinished</Name>
+	<Number>0x01150091</Number>
+	<Format>
+	  <English>Verify '%1' finished.</English>
+	  <Japanese>'%1'の検査が完了しました。</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+  </Message>
+
+  <Message>
+    <Name>VerifyTupleStarted</Name>
+	<Number>0x01150092</Number>
+	<Format>
+	  <English>Verify tuple of '%1' started.</English>
+	  <Japanese>'%1'のタプルの整合性検査を開始します。</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+  </Message>
+
+  <Message>
+    <Name>VerifyTupleFinished</Name>
+	<Number>0x01150093</Number>
+	<Format>
+	  <English>Verify tuple of '%1' finished.</English>
+	  <Japanese>'%1'のタプルの整合性検査を完了しました。</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+  </Message>
+
+  <Message>
+    <Name>VerifyTupleOnTheWay</Name>
+	<Number>0x01150094</Number>
+	<Format>
+	  <English>Verify tuple of '%1' #%2.</English>
+	  <Japanese>'%1'のタプル検査中(%2)。</Japanese>
+	</Format>
+	<Argument>%s</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+</MessageDefine>
+
+<!--
+  Copyright (c) 2001, 2005, 2024 Ricoh Company, Ltd.
+  All rights reserved.
+-->

@@ -1,0 +1,536 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(c1 char(4))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1 on T1(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 values ('abcd')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(c1 char(4))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I2 on T2(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values ('abcd')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T3(c1 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I3 on T3(c1) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values (1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table Tbtr(c1 int, c2 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index Ibtr on Tbtr(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Tbtr values (1, 2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T2\BMP_I2\MASTER.SYD d:\dm\data\TESTDB\Tbtr\BTR_Ibtr
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibtr cascade continue
+SydTest::Executor: [INFO] {Version,..\..\..\Kernel\Version\VersionLog.cpp,XXX,TESTDB.Tbtr.Ibtr,d:\dm\data\TESTDB\Tbtr\BTR_Ibtr,3,Version page count is inconsistent.}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Ibtr
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index Ibtr on Tbtr(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibtr cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T2\BMP_I2\VERSION.SYD d:\dm\data\TESTDB\Tbtr\BTR_Ibtr
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibtr cascade continue
+SydTest::Executor: [INFO] {Version,..\..\..\Kernel\Version\VersionLog.cpp,XXX,,d:\dm\data\TESTDB\Tbtr\BTR_Ibtr,3,Version page count is inconsistent.}
+SydTest::Executor: [INFO] {Schema,..\..\..\Kernel\Schema\Index.cpp,XXX,TESTDB.Tbtr.Ibtr,,5,Illegal file access.}
+SydTest::Executor: [INFO] {Admin,..\Manager.cpp,XXX,TESTDB.Tbtr.Ibtr,,5,Illegal file access.}
+SydTest::Executor: [INFO] End Of Data.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Illegal file access.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Ibtr
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index Ibtr on Tbtr(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibtr cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T2\BMP_I2\MASTER.SYD d:\dm\data\TESTDB\Tbtr\BTR_Ibtr
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T2\BMP_I2\VERSION.SYD d:\dm\data\TESTDB\Tbtr\BTR_Ibtr
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibtr cascade continue
+SydTest::Executor: [INFO] {PhysicalFile,..\..\..\Kernel\PhysicalFile\File.cpp,XXX,,d:\dm\data\TESTDB\Tbtr\BTR_Ibtr,3,Physical page use situation is inconsistent. (pageID=1 is use.)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Ibtr
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index Ibtr on Tbtr(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibtr cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table Tbtr
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table Tbmp(c1 int, c2 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index Ibmp on Tbmp(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Tbmp values (1, 2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T1\BTR_I1\MASTER.SYD d:\dm\data\TESTDB\Tbmp\BMP_Ibmp
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibmp cascade continue
+SydTest::Executor: [INFO] {Version,..\..\..\Kernel\Version\VersionLog.cpp,XXX,,d:\dm\data\TESTDB\Tbmp\BMP_Ibmp,3,Version page count is inconsistent.}
+SydTest::Executor: [INFO] {Schema,..\..\..\Kernel\Schema\Index.cpp,XXX,TESTDB.Tbmp.Ibmp,,5,Illegal file access.}
+SydTest::Executor: [INFO] {Admin,..\Manager.cpp,XXX,TESTDB.Tbmp.Ibmp,,5,Illegal file access.}
+SydTest::Executor: [INFO] End Of Data.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Illegal file access.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Ibmp
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index Ibmp on Tbmp(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibmp cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T1\BTR_I1\VERSION.SYD d:\dm\data\TESTDB\Tbmp\BMP_Ibmp
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibmp cascade continue
+SydTest::Executor: [INFO] {Version,..\..\..\Kernel\Version\VersionLog.cpp,XXX,TESTDB.Tbmp.Ibmp,d:\dm\data\TESTDB\Tbmp\BMP_Ibmp,3,Version page count is inconsistent.}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Ibmp
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index Ibmp on Tbmp(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibmp cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T1\BTR_I1\MASTER.SYD d:\dm\data\TESTDB\Tbmp\BMP_Ibmp
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T1\BTR_I1\VERSION.SYD d:\dm\data\TESTDB\Tbmp\BMP_Ibmp
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibmp cascade continue
+SydTest::Executor: [INFO] {Version,..\..\..\Kernel\Version\VersionLog.cpp,XXX,TESTDB.Tbmp.Ibmp,d:\dm\data\TESTDB\Tbmp\BMP_Ibmp,3,Version page count is inconsistent.}
+SydTest::Executor: [INFO] {Schema,..\..\..\Kernel\Schema\Index.cpp,XXX,TESTDB.Tbmp.Ibmp,,5,Data in bad page 542703616 of file 'd:\dm\data\TESTDB\Tbmp\BMP_Ibmp\MASTER.SYD'.}
+SydTest::Executor: [INFO] {Admin,..\Manager.cpp,XXX,TESTDB.Tbmp.Ibmp,,5,Data in bad page 542703616 of file 'd:\dm\data\TESTDB\Tbmp\BMP_Ibmp\MASTER.SYD'.}
+SydTest::Executor: [INFO] End Of Data.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data in bad page 542703616 of file 'd:\dm\data\TESTDB\Tbmp\BMP_Ibmp\MASTER.SYD'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Ibmp
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index Ibmp on Tbmp(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Ibmp cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table Tbmp
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table Tcbmp(c1 int, c2 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Tcbmp values (1, 2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=/dev/zero of=d:\dm\data\TESTDB\T3\BMP_I3\Area\MASTER_temp.SYD bs=100 count=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=d:\dm\data\TESTDB\T3\BMP_I3\Area\MASTER.SYD of=d:\dm\data\TESTDB\T3\BMP_I3\Area\MASTER_temp.SYD bs=100 skip=1 seek=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm -rf d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\MASTER.SYD
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\TESTDB\T3\BMP_I3\Area\MASTER_temp.SYD d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\MASTER.SYD
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] {PhysicalFile,..\..\..\Kernel\PhysicalFile\DirectAreaFile.cpp,XXX,TESTDB.Tcbmp.Icbmp,d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area,5,Can't fix node.}
+SydTest::Executor: [INFO] {Schema,..\..\..\Kernel\Schema\Index.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\MASTER.SYD'.}
+SydTest::Executor: [INFO] {Admin,..\Manager.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\MASTER.SYD'.}
+SydTest::Executor: [INFO] End Of Data.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\MASTER.SYD'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Icbmp
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=/dev/zero of=d:\dm\data\TESTDB\T3\BMP_I3\Btree\MASTER_temp.SYD bs=100 count=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=d:\dm\data\TESTDB\T3\BMP_I3\Btree\MASTER.SYD of=d:\dm\data\TESTDB\T3\BMP_I3\Btree\MASTER_temp.SYD bs=100 skip=1 seek=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm -rf d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\MASTER.SYD
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\TESTDB\T3\BMP_I3\Btree\MASTER_temp.SYD d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\MASTER.SYD
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] {PhysicalFile,..\..\..\Kernel\PhysicalFile\File.cpp,XXX,TESTDB.Tcbmp.Icbmp,d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree,5,Initialize of verification has been failed.}
+SydTest::Executor: [INFO] {Schema,..\..\..\Kernel\Schema\Index.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\MASTER.SYD'.}
+SydTest::Executor: [INFO] {Admin,..\Manager.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\MASTER.SYD'.}
+SydTest::Executor: [INFO] End Of Data.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\MASTER.SYD'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Icbmp
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=/dev/zero of=d:\dm\data\TESTDB\T3\BMP_I3\Area\VERSION_temp.SYD bs=100 count=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=d:\dm\data\TESTDB\T3\BMP_I3\Area\VERSION.SYD of=d:\dm\data\TESTDB\T3\BMP_I3\Area\VERSION_temp.SYD bs=100 skip=1 seek=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm -rf d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\VERSION.SYD
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\TESTDB\T3\BMP_I3\Area\VERSION_temp.SYD d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\VERSION.SYD
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] {PhysicalFile,..\..\..\Kernel\PhysicalFile\File.cpp,XXX,TESTDB.Tcbmp.Icbmp,d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree,3,Physical page use situation is inconsistent.}
+SydTest::Executor: [INFO] {Schema,..\..\..\Kernel\Schema\Index.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\VERSION.SYD'.}
+SydTest::Executor: [INFO] {Admin,..\Manager.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\VERSION.SYD'.}
+SydTest::Executor: [INFO] End Of Data.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\VERSION.SYD'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Icbmp
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=/dev/zero of=d:\dm\data\TESTDB\T3\BMP_I3\Btree\VERSION_temp.SYD bs=100 count=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=d:\dm\data\TESTDB\T3\BMP_I3\Btree\VERSION.SYD of=d:\dm\data\TESTDB\T3\BMP_I3\Btree\VERSION_temp.SYD bs=100 skip=1 seek=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm -rf d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\VERSION.SYD
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\TESTDB\T3\BMP_I3\Btree\VERSION_temp.SYD d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\VERSION.SYD
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] {Schema,..\..\..\Kernel\Schema\Index.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\VERSION.SYD'.}
+SydTest::Executor: [INFO] {Admin,..\Manager.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\VERSION.SYD'.}
+SydTest::Executor: [INFO] End Of Data.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\VERSION.SYD'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Icbmp
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=/dev/zero of=d:\dm\data\TESTDB\T3\BMP_I3\Area\MASTER_temp.SYD bs=100 count=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=d:\dm\data\TESTDB\T3\BMP_I3\Area\MASTER.SYD of=d:\dm\data\TESTDB\T3\BMP_I3\Area\MASTER_temp.SYD bs=100 skip=1 seek=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm -rf d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\MASTER.SYD
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\TESTDB\T3\BMP_I3\Area\MASTER_temp.SYD d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\MASTER.SYD
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=/dev/zero of=d:\dm\data\TESTDB\T3\BMP_I3\Area\VERSION_temp.SYD bs=100 count=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=d:\dm\data\TESTDB\T3\BMP_I3\Area\VERSION.SYD of=d:\dm\data\TESTDB\T3\BMP_I3\Area\VERSION_temp.SYD bs=100 skip=1 seek=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm -rf d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\VERSION.SYD
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\TESTDB\T3\BMP_I3\Area\VERSION_temp.SYD d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\VERSION.SYD
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] {PhysicalFile,..\..\..\Kernel\PhysicalFile\File.cpp,XXX,TESTDB.Tcbmp.Icbmp,d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree,3,Physical page use situation is inconsistent.}
+SydTest::Executor: [INFO] {Schema,..\..\..\Kernel\Schema\Index.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\VERSION.SYD'.}
+SydTest::Executor: [INFO] {Admin,..\Manager.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\VERSION.SYD'.}
+SydTest::Executor: [INFO] End Of Data.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Area\VERSION.SYD'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Icbmp
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=/dev/zero of=d:\dm\data\TESTDB\T3\BMP_I3\Btree\MASTER_temp.SYD bs=100 count=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=d:\dm\data\TESTDB\T3\BMP_I3\Btree\MASTER.SYD of=d:\dm\data\TESTDB\T3\BMP_I3\Btree\MASTER_temp.SYD bs=100 skip=1 seek=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm -rf d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\MASTER.SYD
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\TESTDB\T3\BMP_I3\Btree\MASTER_temp.SYD d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\MASTER.SYD
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=/dev/zero of=d:\dm\data\TESTDB\T3\BMP_I3\Btree\VERSION_temp.SYD bs=100 count=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] dd if=d:\dm\data\TESTDB\T3\BMP_I3\Btree\VERSION.SYD of=d:\dm\data\TESTDB\T3\BMP_I3\Btree\VERSION_temp.SYD bs=100 skip=1 seek=1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm -rf d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\VERSION.SYD
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\TESTDB\T3\BMP_I3\Btree\VERSION_temp.SYD d:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\VERSION.SYD
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] {Schema,..\..\..\Kernel\Schema\Index.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\VERSION.SYD'.}
+SydTest::Executor: [INFO] {Admin,..\Manager.cpp,XXX,TESTDB.Tcbmp.Icbmp,,5,Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\VERSION.SYD'.}
+SydTest::Executor: [INFO] End Of Data.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data in bad page 0 of file 'd:\dm\data\TESTDB\Tcbmp\BMP_Icbmp\Btree\VERSION.SYD'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Icbmp
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Icbmp cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table Tcbmp
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table Tary(c1 int array[no limit], c2 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index Iary on Tary(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Tary values (array[1, 2, 3, 4, 5], 2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T2\BMP_I2\MASTER.SYD d:\dm\data\TESTDB\Tary\ARY_Iary
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Iary cascade continue
+SydTest::Executor: [INFO] {Array,..\..\..\Driver\Array\DataPage.cpp,XXX,TESTDB.Tary.Iary,d:\dm\data\TESTDB\Tary\ARY_Iary,3,The right leaf page id is inconsistent.}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Iary
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index Iary on Tary(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Iary cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T2\BMP_I2\VERSION.SYD d:\dm\data\TESTDB\Tary\ARY_Iary
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Iary cascade continue
+SydTest::Executor: [INFO] {Version,..\..\..\Kernel\Version\VersionLog.cpp,XXX,,d:\dm\data\TESTDB\Tary\ARY_Iary,3,Version page count is inconsistent.}
+SydTest::Executor: [INFO] {Schema,..\..\..\Kernel\Schema\Index.cpp,XXX,TESTDB.Tary.Iary,,5,Illegal file access.}
+SydTest::Executor: [INFO] {Admin,..\Manager.cpp,XXX,TESTDB.Tary.Iary,,5,Illegal file access.}
+SydTest::Executor: [INFO] End Of Data.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Illegal file access.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Iary
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index Iary on Tary(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Iary cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T2\BMP_I2\MASTER.SYD d:\dm\data\TESTDB\Tary\ARY_Iary
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] cp -f d:\dm\data\TESTDB\T2\BMP_I2\VERSION.SYD d:\dm\data\TESTDB\Tary\ARY_Iary
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Iary cascade continue
+SydTest::Executor: [INFO] {Array,..\..\..\Driver\Array\DataPage.cpp,XXX,TESTDB.Tary.Iary,d:\dm\data\TESTDB\Tary\ARY_Iary,3,The right leaf page id is inconsistent.}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index Iary
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index Iary on Tary(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index Iary cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table Tary
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

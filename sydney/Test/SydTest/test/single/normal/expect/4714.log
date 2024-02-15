@@ -1,0 +1,111 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(N int, X ntext array [no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(N int, X ntext array [no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T3(N int, X ntext array [no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 values (1, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{hoge}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 values (2, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{piyo}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 values (10, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{HOGE}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 values (20, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{PIYO}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (100, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{HOGE}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 values (200, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{PIYO}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values (1000, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{PIYO}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values (2000, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{PIYO}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select T1.N, T2.N, T1.X, T2.X from T1, T2
+SydTest::Executor: [INFO] {1,100,{hoge},{HOGE}}
+SydTest::Executor: [INFO] {2,100,{piyo},{HOGE}}
+SydTest::Executor: [INFO] {10,100,{HOGE},{HOGE}}
+SydTest::Executor: [INFO] {20,100,{PIYO},{HOGE}}
+SydTest::Executor: [INFO] {1,200,{hoge},{PIYO}}
+SydTest::Executor: [INFO] {2,200,{piyo},{PIYO}}
+SydTest::Executor: [INFO] {10,200,{HOGE},{PIYO}}
+SydTest::Executor: [INFO] {20,200,{PIYO},{PIYO}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 cross join T2
+SydTest::Executor: [INFO] {1,{hoge},100,{HOGE}}
+SydTest::Executor: [INFO] {2,{piyo},100,{HOGE}}
+SydTest::Executor: [INFO] {10,{HOGE},100,{HOGE}}
+SydTest::Executor: [INFO] {20,{PIYO},100,{HOGE}}
+SydTest::Executor: [INFO] {1,{hoge},200,{PIYO}}
+SydTest::Executor: [INFO] {2,{piyo},200,{PIYO}}
+SydTest::Executor: [INFO] {10,{HOGE},200,{PIYO}}
+SydTest::Executor: [INFO] {20,{PIYO},200,{PIYO}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 exists join T2 on (T1.X = T2.X)
+SydTest::Executor: [INFO] {10,{HOGE}}
+SydTest::Executor: [INFO] {20,{PIYO}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1, (T2 join T3 on (T2.X = T3.X)) where T1.X = T2.X
+SydTest::Executor: [INFO] {20,{PIYO},200,{PIYO},1000,{PIYO}}
+SydTest::Executor: [INFO] {20,{PIYO},200,{PIYO},2000,{PIYO}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

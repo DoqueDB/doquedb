@@ -1,0 +1,89 @@
+# 障害票 1063
+# 
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+
+#--abc->xyzに更新
+Command "create table T(c char(4) not null hint heap)";
+Command "create index I on T(c)"; #-- normal index;
+Command "insert T values 'abc'";
+Command "update T set c = 'xyz'"; #--error occurred;
+Command "drop table T";
+
+Command "create table T(c char(4) hint heap)"; #-- without not null;
+Command "create index I on T(c)"; #-- normal index;
+Command "insert T values 'abc'";
+Command "update T set c = 'xyz'";
+Command "drop table T";
+
+Command "create table T(c char(4) hint heap)";
+Command "create all rows index I on T(c)"; #--all rows index;
+Command "insert T values 'abc'";
+Command "update T set c = 'xyz'"; #--error occurred;
+Command "drop table T";
+
+#--abc->nullに更新
+Command "create table T(c char(4) not null hint heap)";
+Command "create index I on T(c)"; #-- normal index;
+Command "insert T values 'abc'";
+Command "update T set c = (null)"; #--not null 制約違反になる。
+Command "drop table T";
+
+Command "create table T(c char(4) hint heap)"; #-- without not null;
+Command "create index I on T(c)"; #-- normal index;
+Command "insert T values 'abc'";
+Command "update T set c = (null)";
+Command "drop table T";
+
+Command "create table T(c char(4) hint heap)";
+Command "create all rows index I on T(c)"; #--all rows index;
+Command "insert T values 'abc'";
+Command "update T set c = (null)"; #-- error occurred;
+Command "drop table T";
+
+#--条件が指定されていると起きない。
+Command "create table T(c char(4) not null hint heap)";
+Command "create index I on T(c)"; #-- normal index;
+Command "insert T values 'abc'";
+Command "update T set c = 'xyz' where c = 'abc'";
+Command "drop table T";
+
+Command "create table T(c char(4) hint heap)"; #-- without not null;
+Command "create index I on T(c)"; #-- normal index;
+Command "insert T values 'abc'";
+Command "update T set c = 'xyz' where c = 'abc'";
+Command "drop table T";
+
+Command "create table T(c char(4) hint heap)";
+Command "create all rows index I on T(c)"; #--all rows index;
+Command "insert T values 'abc'";
+Command "update T set c = 'xyz' where c = 'abc'";
+Command "drop table T";
+
+#--hint heap がないと起きない。
+Command "create table T(c char(4) not null)";
+Command "create index I on T(c)"; #-- normal index;
+Command "insert T values 'abc'";
+Command "update T set c = 'xyz'";
+Command "drop table T";
+
+Command "create table T(c char(4))"; #-- without not null;
+Command "create index I on T(c)"; #-- normal index;
+Command "insert T values 'abc'";
+Command "update T set c = 'xyz'";
+Command "drop table T";
+
+Command "create table T(c char(4))";
+Command "create all rows index I on T(c)"; #--all rows index;
+Command "insert T values 'abc'";
+Command "update T set c = 'xyz'";
+Command "drop table T";
+
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

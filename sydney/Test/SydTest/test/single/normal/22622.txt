@@ -1,0 +1,54 @@
+# ロールフォワードリカバリのテスト
+
+Begin;
+
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB recovery full";
+Command "create table T(ID int, F nvarchar(64), primary key(ID))";
+Command "insert into T values (1, 'aaa'), (2, 'bbb'), (3, 'ccc')";
+Command "checkpoint 2";
+
+# バックアップを開始する - アンマウント
+Command "unmount TESTDB";
+
+System "..\\..\\switchcopy.bat d:\\dm\\data\\TESTDB d:\\dm\\data\\TESTDB1";
+System "..\\..\\switchcopy.bat d:\\dm\\system\\TESTDB d:\\dm\\system\\TESTDB1";
+
+Command "mount TESTDB path 'd:\\dm\\data\\TESTDB' logicallog 'd:\\dm\\data\\TESTDB' system 'd:\\dm\\system\\TESTDB' with discard logicallog";
+Command "alter database TESTDB recovery full";
+
+# 更新する
+Command "update T set F = 'AAA' where ID = 1";
+Command "insert into T values (4, 'ddd')";
+Command "delete from T where ID = 2";
+Command "create index T_F on T(F)";
+Command "select * from T";
+
+# ロールフォワードリカバリログをバックアップに上書きする
+Command "unmount TESTDB";
+
+System "rm -rf d:\\dm\\data\\TESTDB1\\LOGICALLOG.SYD";
+System "rm -rf d:\\dm\\data\\TESTDB1\\LOGICALLOGDIR";
+
+System "..\\..\\switchcopy.bat d:\\dm\\data\\TESTDB\\LOGICALLOG.SYD d:\\dm\\data\\TESTDB1";
+System "..\\..\\switchcopy.bat d:\\dm\\data\\TESTDB\\LOGICALLOGDIR d:\\dm\\data\\TESTDB1\\LOGICALLOGDIR";
+
+Command "mount TESTDB path 'd:\\dm\\data\\TESTDB' logicallog 'd:\\dm\\data\\TESTDB' system 'd:\\dm\\system\\TESTDB'";
+TerminateSession;
+
+# ロールフォワードリカバリする
+InitializeSession "TESTDB1";
+Command "mount TESTDB1 path 'd:\\dm\\data\\TESTDB1' logicallog 'd:\\dm\\data\\TESTDB1' system 'd:\\dm\\system\\TESTDB1' with recovery";
+
+Command "select * from T";
+Command "drop index T_F";
+
+# 後始末
+Command "drop database TESTDB1";
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

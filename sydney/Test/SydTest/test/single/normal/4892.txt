@@ -1,0 +1,74 @@
+# Bug report 1495
+
+Begin;
+
+# 新オプティマイザーを使用
+#SetSystemParameter "Opt_OptimizerVersion" "1";
+
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# search
+Command "create table T1(C1 int array[no limit])";
+Command "create table T2(C2 int)";
+Command "insert T1 values (array[1,2])";
+Command "insert T1 select * from T1";
+Command "insert T1 select * from T1";
+Command "insert T2 values (1)";
+Command "select * from T1, T2 where C1[] = C2";
+Command "create array index I1 on T1(C1)";
+Command "select * from T1, T2 where C1[] = C2";
+Command "drop table T1";
+Command "drop table T2";
+
+# search&null
+Command "create table T1(C1 int array[no limit])";
+Command "create table T2(C2 int)";
+Command "insert T1 values (array[1,NULL])";
+Command "insert T1 select * from T1";
+Command "insert T1 select * from T1";
+Command "insert T2 values (NULL)";
+Command "select * from T1, T2 where C1[] = C2";
+Command "create array index I1 on T1(C1)";
+Command "select * from T1, T2 where C1[] = C2";
+Command "drop table T1";
+Command "drop table T2";
+
+# fetch
+Command "create table T1(C1 int array[no limit])";
+Command "create table T2(C2 int)";
+Command "insert T1 values (array[1,2])";
+Command "insert T1 select * from T1";
+Command "insert T1 select * from T1";
+Command "insert T2 values 1,2";
+Command "select * from T1, T2 where C1[] = C2 and C2 > 0";
+Command "create array index I1 on T1(C1)";
+Command "select * from T1, T2 where C1[] = C2 and C2 > 0";
+Command "drop table T1";
+Command "drop table T2";
+
+# fetch&null
+Command "create table T1(C1 int array[no limit])";
+Command "create table T2(C2 int)";
+Command "insert T1 values (array[1,null,2])";
+Command "insert T1 select * from T1";
+Command "insert T1 select * from T1";
+Command "insert T2 values 1,null,2";
+Command "select * from T1, T2 where C1[] = C2 and C2 > 0";
+Command "create array index I1 on T1(C1)";
+Command "select * from T1, T2 where C1[] = C2 and C2 > 0";
+Command "drop table T1";
+Command "drop table T2";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+
+#SetSystemParameter "Opt_OptimizerVersion" "";
+
+End;

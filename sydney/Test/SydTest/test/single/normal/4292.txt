@@ -1,0 +1,48 @@
+# 単語単位索引での wordhead のテスト
+#
+# 入力されたデータの単語は以下のようになっている
+# 同じ位置で単語切りされるものしか入れていない
+#
+# /リコー/の/環境/へ/の/取り組み/
+# /リコウ/の/環境/へ/の/取り決め/
+# /リコー/の/環状/へ/の/取り組み/
+# /リコー/の/環境/へ/も/取り組み/
+# /ソコー/の/環境/へ/の/取り組み/
+
+Begin;
+Initialize;
+
+InitializeSession "TEST";
+Command "create database TEST";
+Command "create table T(ID int, F nvarchar(512), primary key(ID))";
+Command "create fulltext index T_F on T(F) hint 'inverted=(indexing=word, tokenizer=DUAL:JAP @UNARSCID:1 @NORMRSCID:1)'";
+
+Command "insert into T values (1, 'リコーの環境への取り組み')";
+Command "insert into T values (2, 'リコウの環境への取り決め')";
+Command "insert into T values (3, 'リコーの環状への取り組み')";
+Command "insert into T values (4, 'リコーの環境へも取り組み')";
+Command "insert into T values (5, 'ソコーの環境への取り組み')";
+
+Command "select id, score(F) from T where F contains wordhead('環')";
+Command "select id, score(F) from T where F contains wordhead('環境')";
+Command "select id, score(F) from T where F contains wordhead('環境への')";
+Command "select id, score(F) from T where F contains wordhead('環境への取り')";
+
+Command "select id, score(F) from T where F contains wordhead('環') & wordhead('リ')";
+Command "select id, score(F) from T where F contains wordhead('環境') & wordhead('リコーの')";
+Command "select id, score(F) from T where F contains wordhead('環境への') & wordhead('リコ')";
+Command "select id, score(F) from T where F contains wordhead('環境への取り') & wordhead('リコーの環')";
+
+Command "select id, score(F) from T where F contains within(wordhead('リ') wordhead('環') upper 10)";
+Command "select id, score(F) from T where F contains within(wordhead('リコーの') wordhead('環境') upper 10)";
+Command "select id, score(F) from T where F contains within(wordhead('リコ') wordhead('環境への') upper 10)";
+
+Command "select id, score(F) from T where F contains within(synonym(wordhead('リ') wordhead('ソ')) wordhead('環') upper 10)";
+Command "select id, score(F) from T where F contains within(synonym(wordhead('リコーの') wordhead('リコーも')) wordhead('環境') upper 10)";
+Command "select id, score(F) from T where F contains within(synonym(wordhead('リコ') wordhead('ソコ')) wordhead('環境への') upper 10)";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

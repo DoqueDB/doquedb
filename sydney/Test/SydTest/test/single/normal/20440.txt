@@ -1,0 +1,45 @@
+# TF取得基本テスト
+# TFは、Term Frequencyの略で、term(単語または文字列）の文書内での出現頻度を意味する。
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#      単語ではなく文字のTFを検索してみる。
+#たとえば、
+#新たなデータベースdoc2を作成し、
+#{{abc,cdf}}
+#{{1,2,3}}
+#{{hello,world,C,is,a beautiful language}}
+#{{English,is,easy,to,learn}}
+#のようなデータをデータベースdoc2に追加する。
+#このとき、
+#select rowid,TF(C1) from T where C1 contains wordlist('a','c','e','n','d','l')
+#とすると、
+#{ROWID,Tf(d_text)}
+#{0,{1,2,0,0,1,0}}
+#{2,{4,0,3,1,1,5}}
+#{3,{2,0,2,2,0,2}}
+Command  "create table T2( C1 ntext , L language )";
+
+Command "create fulltext index FTIndex on T2(C1) language column L
+	hint 'delayed, inverted=(normalized=true, indexing=ngram,
+	tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+Command  "insert into T2 (C1) values (?)" ["abc,cdf"];
+Command  "insert into T2 (C1) values (?)" ["1,2,3"];
+Command  "insert into T2 (C1) values (?)" ["hello,world,C,is,a beautiful language"];
+Command  "insert into T2 (C1) values (?)" ["English,is,easy,to,learn"];
+Command  "select rowid,TF(C1) from T2 where C1 contains wordlist('a','c','e','n','d','l')";
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T2";
+
+TerminateSession;
+Terminate;
+End;

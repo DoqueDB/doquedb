@@ -1,0 +1,32 @@
+# Bug report 1734
+# OUTER JOINのジョイン条件に制約条件
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+
+Command  "create table TBL1(f int, g ntext, primary key(f))";
+Command  "create table TBL2(f int, primary key(f))";
+
+Command  "insert TBL1 values (1, 'abc'), (2, 'def'), (3, 'ghi')";
+Command  "insert TBL2 values 1,2,4";
+
+Command  "create fulltext index IDX on TBL1(g)";
+
+Command  "select * from TBL1 left outer join TBL2 on (TBL1.f = TBL2.f) where (g contains 'a')"; 
+Command  "select * from TBL1 left outer join TBL2 on (TBL1.g contains 'a') where (TBL1.f = TBL2.f)"; 
+Command  "select * from TBL1 left outer join TBL2 on (TBL1.g contains 'a') where (TBL2.f is null)"; 
+
+Command  "select * from TBL1 left outer join TBL2 on (TBL1.g contains 'a' or TBL2.f = 4)"; 
+Command  "select * from TBL1 join TBL2 on (TBL1.g contains 'a' or TBL2.f = 4)"; 
+
+Command  "select * from TBL1 left outer join TBL2 on (TBL1.f is null)"; 
+Command  "select * from TBL1 left outer join TBL2 on (TBL1.f  = 2)"; 
+
+Command  "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

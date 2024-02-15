@@ -1,0 +1,74 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DefaultDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f1 int, f2 int, f3 BIGINT)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_IDX on T(f1,f2,f3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (f1, f2, f3) values (?, ?, ?)
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,100,1000000000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,200,2000000000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,300,3000000000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {4,400,4000000000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {5,500,5000000000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {10,601,6000000010}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {20,702,7000000020}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {30,803,8000000030}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {40,904,9000000040}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, f2 from T  where f1 > 3 and f2 > 500 and f3 > 5000000000 order by f1,f2
+SydTest::Executor: [INFO] {10,601}
+SydTest::Executor: [INFO] {20,702}
+SydTest::Executor: [INFO] {30,803}
+SydTest::Executor: [INFO] {40,904}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, f3 from T  where (f1 <= 3 or f2 > 500) and f3 <= 6000000000
+SydTest::Executor: [INFO] {1,1000000000}
+SydTest::Executor: [INFO] {2,2000000000}
+SydTest::Executor: [INFO] {3,3000000000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

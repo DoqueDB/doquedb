@@ -1,0 +1,35 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+
+Command "create table TBL1(f int, g ntext)";
+Command "create table TBL2(x int, primary key(x))";
+
+Command "insert TBL1 values (1, 'abc')";
+Command "insert TBL1 values (1, 'bcd')";
+Command "insert TBL1 values (1, 'cde')";
+Command "insert TBL1 values (2, 'xyz')";
+Command "insert TBL1 values (2, 'wxy')";
+Command "insert TBL1 values (3, '123')";
+Command "insert TBL1 values (3, '234')";
+Command "insert TBL1 values (3, '345')";
+Command "insert TBL1 values (3, '456')";
+
+Command "insert TBL2 values 1,2,3,4,5";
+
+Command "create fulltext index I_f on TBL1(g)";
+
+#期待結果: {abc},{bcd}
+Command "select g from TBL1, TBL2 where g contains ('c'|'x'|'3') and f = x limit 2 offset 1";
+#期待結果: {bcd},{cde}
+Command "select g from TBL1, TBL2 where g contains ('c'|'x'|'3') and f = x limit 2 offset 2";
+#期待結果: {cde},{xyz}
+Command "select g from TBL1, TBL2 where g contains ('c'|'x'|'3') and f = x limit 2 offset 3";
+
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,13 @@
+Begin;
+
+SetSystemParameter "Exception_FakeError" "";
+
+Initialize;
+InitializeSession "TEST";
+Command "verify database TEST cascade continue";
+
+Command "select * from T";
+
+TerminateSession;
+Terminate;
+End;

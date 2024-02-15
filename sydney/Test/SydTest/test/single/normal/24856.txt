@@ -1,0 +1,50 @@
+# Bug report 1780 
+# ContainsをANDでつなげたテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+
+# 表を作成
+Command "create table T (N int, C ntext array [no limit], L language array [no limit])";
+Command "create index T_I on T(N)";
+
+# 索引作成
+Command "create fulltext index FTIndex on T(C) language column L hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, ["リコー", "ワリコー"], ["ja+en", "ja+en"]];
+PreparedCommand "ins" [1, [null, "ワリコー"], ["ja", "ja+en"]];
+PreparedCommand "ins" [2, ["りこう", null], ["ja+en", "ja"]];
+PreparedCommand "ins" [3, [null, null], ["ja", "ja"]];
+
+# レコード数を増やす
+Command "insert T select N+4, C, L from T";
+Command "insert T select N+8, C, L from T";
+Command "insert T select N+16, C, L from T";
+Command "insert T select N+32, C, L from T";
+Command "insert T select N+64, C, L from T";
+Command "insert T select N+128, C, L from T";
+Command "insert T select N+256, C, L from T";
+Command "insert T select N+512, C, L from T";
+Command "insert T select N+1024, C, L from T";
+Command "insert T select N+2048, C, L from T";
+Command "insert T select N+4096, C, L from T";
+Command "insert T select N+8192, C, L from T";
+
+# 1件だけヒットするレコードを作る
+PreparedCommand "ins" [16384, ["キヤノン", "リコー"], ["ja", "ja"]];
+ErasePreparedCommand "ins";
+
+# 以下の2つのSQL文でスコアが違うのはおかしい
+Command "select N, C, score(C) from T where C contains ? and C contains ?" ["リコー", "キヤノン"];
+Command "select N, C, score(C) from T where C contains ? and C contains ?" ["キヤノン", "リコー"];
+
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

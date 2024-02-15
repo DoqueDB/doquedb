@@ -1,0 +1,37 @@
+# select[2]/fulltext(normalized, sectionized)/heap
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 ntext array [no limit] hint heap, C2 fulltext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'sectionized, inverted=(nolocation=true, normalized=true)'";
+Command  "create fulltext index I1_2 on T1(C2) hint 'sectionized, inverted=(nolocation=true, normalized=true)'";
+Command  "create table T2(C1 ntext array [no limit] hint heap, C2 fulltext array [no limit] hint heap)";
+Command  "create fulltext index I2_1 on T2(C1) hint 'sectionized, inverted=(nolocation=true, normalized=true)'";
+Command  "create fulltext index I2_2 on T2(C2) hint 'sectionized, inverted=(nolocation=true, normalized=true)'";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"]];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"], [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+Command  "drop table T1";
+Command  "drop table T2";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

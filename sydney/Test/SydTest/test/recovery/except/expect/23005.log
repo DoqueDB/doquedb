@@ -1,0 +1,82 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T
+(
+	C1 int,
+	C2 int DEFAULT 1234,
+	C3 datetime DEFAULT CURRENT_TIMESTAMP,
+	C4 datetime DEFAULT CURRENT_TIMESTAMP,
+	C5 datetime DEFAULT CURRENT_TIMESTAMP USING ON UPDATE,
+	C6 datetime DEFAULT CURRENT_TIMESTAMP USING ON UPDATE
+)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I4 on T(C4)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I6 on T(C6)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C1, C3, C4, C5, C6) values (1, '1234-05-06 07:08:09', '1234-05-06 07:08:09', '1234-05-06 07:08:09', '1234-05-06 07:08:09'), (2, '2345-06-07 08:09:10', '2345-06-07 08:09:10', '2345-06-07 08:09:10', '2345-06-07 08:09:10')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] checkpoint
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C3 = '3456-07-08 09:10:11' where C1 in (1,2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Sleep
+SydTest::Executor: [INFO] [Sleep Time] 1
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select CURRENT_TIMESTAMP from (values 1) as X(x)
+SydTest::Executor: [INFO] {20YY-MM-DD hh:mm:ss.xxx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {1,1234,3456-07-08 09:10:11.000,1234-05-06 07:08:09.000,20YY-MM-DD hh:mm:ss.xxx,20YY-MM-DD hh:mm:ss.xxx}
+SydTest::Executor: [INFO] {2,1234,3456-07-08 09:10:11.000,2345-06-07 08:09:10.000,20YY-MM-DD hh:mm:ss.xxx,20YY-MM-DD hh:mm:ss.xxx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] Main End.
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify database TESTDB cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {1,1234,3456-07-08 09:10:11.000,1234-05-06 07:08:09.000,20YY-MM-DD hh:mm:ss.xxx,20YY-MM-DD hh:mm:ss.xxx}
+SydTest::Executor: [INFO] {2,1234,3456-07-08 09:10:11.000,2345-06-07 08:09:10.000,20YY-MM-DD hh:mm:ss.xxx,20YY-MM-DD hh:mm:ss.xxx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

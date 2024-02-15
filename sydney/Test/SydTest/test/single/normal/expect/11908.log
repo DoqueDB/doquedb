@@ -1,0 +1,163 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(f1 int,f2  nvarchar(4),f3 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (f1, f2, f3) values (1,  'ほげ', 111)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (f1, f2, f3) values (2,  'ホゲ', 222)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (f1, f2, f3) values (3,  'ぴよ', 333)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (f1, f2, f3) values (4,  'ホゲ', 111)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (f1, f2, f3) values (5, 'ぴよ', 222)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (f1, f2, f3) values (6,  'ホゲ', 333)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (f1, f2, f3) values (7,  null, 111)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (f1, f2, f3) values (8,  'ぴよ', 222)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1 on T1(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(f1 int,f2  nvarchar(4),f3  int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (f1, f2, f3) values (1,  'ぴよ',  111)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (f1, f2, f3) values (2,  'ホゲ',  222)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (f1, f2, f3) values (3,  'ぴよ',  333)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (f1, f2, f3) values (4,  'ホゲ',  444)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (f1, f2, f3) values (5,  null,  555)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (f1, f2, f3) values (6,  null,  666)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (f1, f2, f3) values (7,  'ぴよ',  777)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (f1, f2, f3) values (8,  null, 888)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T2(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 inner join T2 on T1.f1 = T2.f1 or T1.f2=T2.f2
+SydTest::Executor: [INFO] {1,ほげ,111,1,ぴよ,111}
+SydTest::Executor: [INFO] {2,ホゲ,222,2,ホゲ,222}
+SydTest::Executor: [INFO] {2,ホゲ,222,4,ホゲ,444}
+SydTest::Executor: [INFO] {3,ぴよ,333,1,ぴよ,111}
+SydTest::Executor: [INFO] {3,ぴよ,333,3,ぴよ,333}
+SydTest::Executor: [INFO] {3,ぴよ,333,7,ぴよ,777}
+SydTest::Executor: [INFO] {4,ホゲ,111,2,ホゲ,222}
+SydTest::Executor: [INFO] {4,ホゲ,111,4,ホゲ,444}
+SydTest::Executor: [INFO] {5,ぴよ,222,1,ぴよ,111}
+SydTest::Executor: [INFO] {5,ぴよ,222,3,ぴよ,333}
+SydTest::Executor: [INFO] {5,ぴよ,222,5,(null),555}
+SydTest::Executor: [INFO] {5,ぴよ,222,7,ぴよ,777}
+SydTest::Executor: [INFO] {6,ホゲ,333,2,ホゲ,222}
+SydTest::Executor: [INFO] {6,ホゲ,333,4,ホゲ,444}
+SydTest::Executor: [INFO] {6,ホゲ,333,6,(null),666}
+SydTest::Executor: [INFO] {7,(null),111,7,ぴよ,777}
+SydTest::Executor: [INFO] {8,ぴよ,222,1,ぴよ,111}
+SydTest::Executor: [INFO] {8,ぴよ,222,3,ぴよ,333}
+SydTest::Executor: [INFO] {8,ぴよ,222,7,ぴよ,777}
+SydTest::Executor: [INFO] {8,ぴよ,222,8,(null),888}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 left outer join T2 on T1.f1 = T2.f1 or T1.f2=T2.f2
+SydTest::Executor: [INFO] {1,ほげ,111,1,ぴよ,111}
+SydTest::Executor: [INFO] {2,ホゲ,222,2,ホゲ,222}
+SydTest::Executor: [INFO] {2,ホゲ,222,4,ホゲ,444}
+SydTest::Executor: [INFO] {3,ぴよ,333,1,ぴよ,111}
+SydTest::Executor: [INFO] {3,ぴよ,333,3,ぴよ,333}
+SydTest::Executor: [INFO] {3,ぴよ,333,7,ぴよ,777}
+SydTest::Executor: [INFO] {4,ホゲ,111,2,ホゲ,222}
+SydTest::Executor: [INFO] {4,ホゲ,111,4,ホゲ,444}
+SydTest::Executor: [INFO] {5,ぴよ,222,1,ぴよ,111}
+SydTest::Executor: [INFO] {5,ぴよ,222,3,ぴよ,333}
+SydTest::Executor: [INFO] {5,ぴよ,222,5,(null),555}
+SydTest::Executor: [INFO] {5,ぴよ,222,7,ぴよ,777}
+SydTest::Executor: [INFO] {6,ホゲ,333,2,ホゲ,222}
+SydTest::Executor: [INFO] {6,ホゲ,333,4,ホゲ,444}
+SydTest::Executor: [INFO] {6,ホゲ,333,6,(null),666}
+SydTest::Executor: [INFO] {7,(null),111,7,ぴよ,777}
+SydTest::Executor: [INFO] {8,ぴよ,222,1,ぴよ,111}
+SydTest::Executor: [INFO] {8,ぴよ,222,3,ぴよ,333}
+SydTest::Executor: [INFO] {8,ぴよ,222,7,ぴよ,777}
+SydTest::Executor: [INFO] {8,ぴよ,222,8,(null),888}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 right outer join T2 on T1.f1 = T2.f1 or T1.f2=T2.f2
+SydTest::Executor: [INFO] {1,ほげ,111,1,ぴよ,111}
+SydTest::Executor: [INFO] {3,ぴよ,333,1,ぴよ,111}
+SydTest::Executor: [INFO] {5,ぴよ,222,1,ぴよ,111}
+SydTest::Executor: [INFO] {8,ぴよ,222,1,ぴよ,111}
+SydTest::Executor: [INFO] {2,ホゲ,222,2,ホゲ,222}
+SydTest::Executor: [INFO] {4,ホゲ,111,2,ホゲ,222}
+SydTest::Executor: [INFO] {6,ホゲ,333,2,ホゲ,222}
+SydTest::Executor: [INFO] {3,ぴよ,333,3,ぴよ,333}
+SydTest::Executor: [INFO] {5,ぴよ,222,3,ぴよ,333}
+SydTest::Executor: [INFO] {8,ぴよ,222,3,ぴよ,333}
+SydTest::Executor: [INFO] {2,ホゲ,222,4,ホゲ,444}
+SydTest::Executor: [INFO] {4,ホゲ,111,4,ホゲ,444}
+SydTest::Executor: [INFO] {6,ホゲ,333,4,ホゲ,444}
+SydTest::Executor: [INFO] {5,ぴよ,222,5,(null),555}
+SydTest::Executor: [INFO] {6,ホゲ,333,6,(null),666}
+SydTest::Executor: [INFO] {3,ぴよ,333,7,ぴよ,777}
+SydTest::Executor: [INFO] {5,ぴよ,222,7,ぴよ,777}
+SydTest::Executor: [INFO] {7,(null),111,7,ぴよ,777}
+SydTest::Executor: [INFO] {8,ぴよ,222,7,ぴよ,777}
+SydTest::Executor: [INFO] {8,ぴよ,222,8,(null),888}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

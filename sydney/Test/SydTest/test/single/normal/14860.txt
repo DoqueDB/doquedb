@@ -1,0 +1,125 @@
+# 増補
+# select/btree(plain)
+# 同一のタプルに対してand/or検索をする
+# 1302 not null
+# 障害票 1063
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 int not null)";
+# ↓ここがみそ
+Command  "create index I on T1(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (1)";
+Command  "insert into T1 (C1) values (2)";
+Command  "insert into T1 (C1) values (3)";
+Command  "insert into T1 (C1) values (4)";
+Command  "insert into T1 (C1) values (5)";
+Command  "insert into T1 (C1) values (6)";
+Command  "insert into T1 (C1) values (7)";
+Command  "insert into T1 (C1) values (8)";
+Command  "insert into T1 (C1) values (9)";
+Command  "insert into T1 (C1) values (10)";
+Command  "insert into T1 (C1) values (11)";
+Command  "insert into T1 (C1) values (12)";
+
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+# 数字は適当に入れたので考え直した方がいいかもしれない
+Command  "select count(*) from T1 where C1=? and C1=?" [1, 7];
+Command  "select * from T1 where C1=? and C1=?" [2, 8];
+Command  "select C1, C1 from T1 where C1=? and C1=?" [3, 9];
+Command  "select (C1) from T1 where C1=? and C1=?" [4, 10];
+Command  "select count(*) from T1 where C1<? and C1=?" [5, 11];
+Command  "select count(*) from T1 where C1<? and C1<?" [6, 12];
+Command  "select * from T1 where C1<? and C1<?" [7, 1];
+Command  "select C1, C1 from T1 where C1<? and C1<?" [8, 2];
+Command  "select (C1) from T1 where C1<? and C1<?" [9, 3];
+Command  "select count(*) from T1 where C1=? and C1<?" [10, 4];
+Command  "select count(*) from T1 where C1>? and C1>?" [11, 5];
+Command  "select * from T1 where C1>? and C1>?" [12, 6];
+Command  "select C1, C1 from T1 where C1>? and C1>?" [1, 8];
+Command  "select (C1) from T1 where C1>? and C1>?" [2, 9];
+Command  "select count(*) from T1 where C1<=? and C1<=?" [3 ,10];
+Command  "select * from T1 where C1<=? and C1<=?" [4, 11];
+Command  "select C1, C1 from T1 where C1<=? and C1<=?" [5, 12];
+Command  "select (C1) from T1 where C1<=? and C1<=?" [6, 1];
+Command  "select count(*) from T1 where C1>=? and C1>=?" [7, 2];
+Command  "select * from T1 where C1>=? and C1>=?" [8, 3];
+Command  "select C1, C1 from T1 where C1>=? and C1>=?" [9, 4];
+Command  "select (C1) from T1 where C1>=? and C1>=?" [10, 5];
+Command  "select count(*) from T1 where C1<>? and C1<>?" [11, 6];
+Command  "select * from T1 where C1<>? and C1<>?" [12, 7];
+Command  "select C1, C1 from T1 where C1<>? and C1<>?" [1, 9];
+Command  "select (C1) from T1 where C1<>? and C1<>?" [2, 10];
+
+# all/any述語を試す
+Command  "select * from T1 where C1 <> all (select * from T1 where C1<6)";
+Command  "select * from T1 where C1 <> any (select * from T1 where C1<6)";
+
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null and C1 is null";
+Command  "select * from T1 where C1 is null and C1 is null";
+Command  "select C1, C1 from T1 where C1 is null and C1 is null";
+Command  "select (C1) from T1 where C1 is null and C1 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null and C1 is not null";
+Command  "select * from T1 where C1 is not null and C1 is not null";
+Command  "select C1, C1 from T1 where C1 is not null and C1 is not null";
+Command  "select (C1) from T1 where C1 is not null and C1 is not null";
+# or検索
+Command  "select count(*) from T1 where C1=? or C1=?" [3, 11];
+Command  "select * from T1 where C1=? or C1=?" [4, 12];
+Command  "select C1, C1 from T1 where C1=? or C1=?" [5, 1];
+Command  "select (C1) from T1 where C1=? or C1=?" [6, 2];
+Command  "select count(*) from T1 where C1<? or C1=?" [7, 3];
+Command  "select count(*) from T1 where C1<? or C1<?" [8, 4];
+Command  "select * from T1 where C1<? or C1<?" [9, 5];
+Command  "select C1, C1 from T1 where C1<? or C1<?" [10, 6];
+Command  "select (C1) from T1 where C1<? or C1<?" [11, 7];
+Command  "select count(*) from T1 where C1=? or C1<?" [12, 8];
+Command  "select count(*) from T1 where C1>? or C1>?" [1, 10];
+Command  "select * from T1 where C1>? or C1>?" [2, 11];
+Command  "select C1, C1 from T1 where C1>? or C1>?" [3, 12];
+Command  "select (C1) from T1 where C1>? or C1>?" [4, 1];
+Command  "select count(*) from T1 where C1<=? or C1<=?" [5, 2];
+Command  "select * from T1 where C1<=? or C1<=?" [6, 3];
+Command  "select C1, C1 from T1 where C1<=? or C1<=?" [7, 4];
+Command  "select (C1) from T1 where C1<=? or C1<=?" [8, 5];
+Command  "select count(*) from T1 where C1>=? or C1>=?" [9, 6];
+Command  "select * from T1 where C1>=? or C1>=?" [10, 7];
+Command  "select C1, C1 from T1 where C1>=? or C1>=?" [11, 8];
+Command  "select (C1) from T1 where C1>=? or C1>=?" [12, 9];
+Command  "select count(*) from T1 where C1<>? or C1<>?" [1, 11];
+Command  "select * from T1 where C1<>? or C1<>?" [2, 12];
+Command  "select C1, C1 from T1 where C1<>? or C1<>?" [3, 1];
+Command  "select (C1) from T1 where C1<>? or C1<>?" [4, 2];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null or C1 is null";
+Command  "select * from T1 where C1 is null or C1 is null";
+Command  "select C1, C1 from T1 where C1 is null or C1 is null";
+Command  "select (C1) from T1 where C1 is null or C1 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null or C1 is not null";
+Command  "select * from T1 where C1 is not null or C1 is not null";
+Command  "select C1, C1 from T1 where C1 is not null or C1 is not null";
+Command  "select (C1) from T1 where C1 is not null or C1 is not null";
+Command  "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

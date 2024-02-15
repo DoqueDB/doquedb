@@ -1,0 +1,66 @@
+# SELECT句に現れない列でORDER BY指定するようなSQL文を使ったテスト
+# 障害番号　0514に対応
+# 2005.08.30 tajima
+
+Begin;
+
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T1 (ID1 int, C1 NVARCHAR(10),N1 nvarchar(30),Amt1 BIGINT)";
+Command "create table T2 (ID2 int, C2 NVARCHAR(10),N2 nvarchar(30),kz int)";
+
+#データセット
+
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [1,"C000000001","今日は月曜日",integer64 2100000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [2,"C000000002","今日は火曜日",integer64 2100000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [3,"C000000003","今日は水曜日",integer64 2300000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [4,"C000000004","今日は木曜日",integer64 2400000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [5,"C000000005","今日は金曜日",integer64 2500000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [6,"C000000006","今日は土曜日",integer64 2600000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [7,"C000000007","今日は日曜日",integer64 2700000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [8,"C000000008","今日は月曜日",integer64 2800000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [9,"C000000009","今日は火曜日",integer64 2900000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [10,"C00000010","今日は水曜日",integer64 3000000];
+
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [11,"C000000001","ああああ",10000];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [21,"C000000002","いいいい",900];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [31,"C000000003","うううう",800];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [41,"C000000004","ぱぱぱぱ",700];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [51,"C000000005","すすすす",600];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [6,"C000000006","ええええ",500];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [7,"C000000007","ああああ",400];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [8,"C000000008","いいいい",300];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [9,"C000000009","うううう",200];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [10,"C00000010","たたたた",100];
+
+
+
+#SELECT句に現れない列でORDER BY指定する
+
+#項目指定T1のみで列にない項目
+Command "select T1.ID1,T1.C1,T1.N1 from T1, T2 order by T1.Amt1";
+
+#項目指定T２のみで列にない項目
+Command "select T2.ID2,T2.C2,T2.N2 from T1, T2 order by T2.kz";
+
+#項目指定T1、T２で列にない項目
+Command "select T1.ID1,T2.ID2 from T1, T2 order by T1.C1,T1.N1,T1.Amt1,T2.C2,T2.N2,T2.kz";
+
+#項目指定T1、T２で列にある項目とない項目
+Command "select T1.ID1,T2.ID2,T1.C1,T1.N1,T1.Amt1 from T1, T2 order by T2.ID2,T1.C1,T1.N1,T1.Amt1,T2.C2,T2.N2,T2.kz";
+
+#結合ありのときの、項目指定外のソート
+Command  "select T1.ID1,T2.ID2,T1.C1,T1.N1 from T1 inner join T2 on T1.ID1 = T2.ID2 order by T2.kz,T1.Amt1";
+Command  "select T1.ID1,T2.ID2,T1.C1,T1.N1 from T1 left outer join T2 on T1.ID1 = T2.ID2 order by T2.kz,T1.Amt1";
+Command  "select T1.ID1,T2.ID2,T1.C1,T1.N1 from T1 right outer join T2 on T1.ID1 = T2.ID2 order by T2.kz,T1.Amt1";
+
+# テスト用の表を消去
+Command "drop table T1";
+Command "drop table T2";
+
+TerminateSession;
+Terminate;
+End;
+

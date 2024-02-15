@@ -1,0 +1,22 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# XA PREPARE -- バックアップ中の状態でコミット準備完了する
+#
+
+Command "xa start X'00' read only";
+Command "start backup";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,70 @@
+# CASE文の中でINを使ったテスト
+# 障害票2555
+
+Begin;
+Initialize;
+InitializeSession "TESTDB_160208";
+Command "drop database TESTDB_160208 if exists";
+Command "create database TESTDB_160208";
+
+#Command "start explain execute hint 'file data'";
+
+# サブルーチン的に使っているのでmultiではない
+CreateThread "Prepare";
+JoinThread "Prepare";
+
+CreateThread "Test";
+JoinThread "Test";
+
+Command "start transaction read write";
+CreateThread "Test";
+JoinThread "Test";
+Command "commit";
+
+Command "drop database TESTDB_160208";
+
+TerminateSession;
+Terminate;
+End;
+
+Prepare {
+Command "create table TBL (f int, g int array[no limit], h ntext, i ntext array[no limit])";
+
+CreatePreparedCommand "ins" "insert TBL values (?, ?, ?, ?)";
+PreparedCommand "ins" [2, [2], "a", ["a"]];
+PreparedCommand "ins" [3, [3], "b", ["b"]];
+PreparedCommand "ins" [5, [5], "c", ["c"]];
+PreparedCommand "ins" [7, [7], "d", ["d"]];
+PreparedCommand "ins" [11, [11], "e", ["e"]];
+PreparedCommand "ins" [null, [null], null, [null]];
+
+Command "insert TBL select T1.f * T2.f, T1.g || T2.g, T1.h || T2.h, T1.i || array[T1.i[1] || T2.i[1]] from TBL T1, TBL T2 where (T1.f < T2.f or (T1.f is null and T2.f is not null))";
+
+Command "select * from TBL";
+
+Command "create index IDX_f on TBL(f)";
+Command "create array index IDX_g on TBL(g)";
+Command "create fulltext index IDX_h on TBL(h)";
+Command "create fulltext index IDX_i on TBL(i)";
+
+ErasePreparedCommand "ins";
+}
+
+Test {
+Command "select f,g from TBL T1 where g[] in (select f from TBL T2 where T1.f > T2.f)";
+Command "select h,i from TBL T1 where i[] in (select h from TBL T2 where T1.f > T2.f)";
+
+Command "select f,g from TBL where f in (2,3,4)";
+Command "select f,g from TBL where g[] in (2,3,4)";
+Command "select h,i from TBL where h in ('a', 'b', 'c')";
+Command "select h,i from TBL where i[] in ('a', 'b', 'c')";
+
+Command "select case when f in (2,3,4) then f else -1 end from TBL";
+Command "select case when g[] in (2,3,4) then f else -1 end from TBL";
+Command "select case when h in ('a','b','c') then h else 'x' end from TBL";
+Command "select case when i[] in ('a','b','c') then h else 'x' end from TBL";
+
+#以下の2つはNotSupportedが返るのが正解
+Command "select case when g[] in (select f from TBL T2 where T1.f > T2.f) then f else -1 end from TBL T1";
+Command "select case when i[] in (select h from TBL T2 where T1.f > T2.f) then h else -1 end from TBL T1";
+}

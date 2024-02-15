@@ -1,0 +1,69 @@
+#OUTER JOINでキーになっている列に対してヒットしない条件を渡す
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# テーブルT1
+Command  "create table T1(f1 int,f2  nvarchar(4),f3 int)";
+#Command  "create index I1_1 on T1(f1)";
+#Command  "create index I1_2 on T1(f2)";
+#Command  "create index I1_3 on T1(f3)";
+Command  "insert into T1 (f1, f2, f3) values (111,  'ほげ',  1)";
+Command  "insert into T1 (f1, f2, f3) values (111,  'ホゲ',  4)";
+Command  "insert into T1 (f1, f2, f3) values (222,  'ぴよ',  8)";
+Command  "insert into T1 (f1, f2, f3) values (222,  'ホゲ',  1)";
+Command  "insert into T1 (f1, f2, f3) values (null, 'ぴよ',  4)";
+Command  "insert into T1 (f1, f2, f3) values (333,  'ホゲ', 8)";
+Command  "insert into T1 (f1, f2, f3) values (444,  null,   1)";
+Command  "insert into T1 (f1, f2, f3) values (444,  'ぴよ',  4)";
+
+
+# テーブルT3
+Command  "create table T2(f4 int,f5  nvarchar(4),f6 int)";
+#Command  "create index I2_1 on T2(f4)";
+#Command  "create index I2_2 on T2(f5)";
+#Command  "create index I2_3 on T2(f6)";
+Command  "insert into T2 (f4, f5, f6) values (111,  'ほげ',  8)";
+Command  "insert into T2 (f4, f5, f6) values (222,  'ほげ',  4)";
+Command  "insert into T2 (f4, f5, f6) values (444,  'ホゲ',  8)";
+Command  "insert into T2 (f4, f5, f6) values (444,  'ホゲ',  1)";
+Command  "insert into T2 (f4, f5, f6) values (null,  'ぴよ',   8)";
+Command  "insert into T2 (f4, f5, f6) values (222,  'ぴよ', 4)";
+Command  "insert into T2 (f4, f5, f6) values (333,  null,  8)";
+Command  "insert into T2 (f4, f5, f6) values (444,  'ぷう',  1)";
+
+# テーブルT3
+Command  "create table T3(f7 int,f8  nvarchar(4),f9 int)";
+#Command  "create index I3_1 on T3(f7)";
+#Command  "create index I3_2 on T3(f8)";
+#Command  "create index I3_3 on T3(f9)";
+Command  "insert into T3 (f7, f8, f9) values (8,  'ほげ',  8)";
+Command  "insert into T3 (f7, f8, f9) values (222,  'ほげ',  4)";
+Command  "insert into T3 (f7, f8, f9) values (444,  'ホゲ',  8)";
+Command  "insert into T3 (f7, f8, f9) values (8,  'ホゲ',  1)";
+Command  "insert into T3 (f7, f8, f9) values (null,  'ぴよ',   8)";
+Command  "insert into T3 (f7, f8, f9) values (222,  'ぴよ', 4)";
+Command  "insert into T3 (f7, f8, f9) values (333,  null,  8)";
+Command  "insert into T3 (f7, f8, f9) values (8,  'ぷう',  1)";
+
+Command  "select * from T3 LEFT OUTER JOIN (select f3 + f6 from T1,T2) as X(f9) using (f9) where f9 = 8";
+
+Command  "drop table T1";
+
+Command  "drop table T2";
+
+Command  "drop table T3";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

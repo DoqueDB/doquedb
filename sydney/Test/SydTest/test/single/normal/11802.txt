@@ -1,0 +1,74 @@
+#複数の表を使ったselect文の結果を別の表にinsertする
+#障害管理番号0448に対応
+#2005.06.06 tajima
+#
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T1(id int,name nvarchar(255))";
+Command "create table T2(id int,bid int ,name nvarchar(255))";
+
+Command "create table T3(id int,name nvarchar(255))";
+Command "create table T4(id int,name nvarchar(255))";
+
+
+Command "insert into T1 values(1,'tanaka')";
+Command "insert into T1 values(10,'aoki')";
+Command "insert into T1 values(2,'mark')";
+Command "insert into T1 values(20,'sato')";
+Command "insert into T1 values(3,'watanabe')";
+Command "insert into T1 values(3,'asano')";
+
+Command "insert into T2 values(1,100,'ken')";
+Command "insert into T2 values(1,30,'asano')";
+Command "insert into T2 values(20,2,'kato')";
+Command "insert into T2 values(20,20,'sato')";
+Command "insert into T2 values(30,2,'mark')";
+Command "insert into T2 values(40,200,'sato')";
+
+
+#複数の表を使ったselect文の結果を別の表にinsertする
+Command "insert T3 select T1.id, T2.name from T1, T2 where T1.id = T2.id";
+
+#select文に別名を使う
+Command "insert T3 select T1.id c1, T2.name c2 from T1, T2 where T1.id = T2.bid";
+
+#確認
+Command "select * from T3";
+
+
+#select文にORDER BYをつける
+Command "insert T4 select T1.id, T2.name from T1, T2 where T1.id = T2.id order by T2.name";
+
+
+Command "insert T4 select T1.id c1, T2.name c2 from T1, T2 where T1.id = T2.bid order by T2.name";
+
+#確認
+Command "select * from T4";
+
+#insertする表がselect文に使われている表のどれか
+Command "insert T1 select T1.id, T2.name from T1, T2 where T1.id = T2.bid";
+
+
+#確認
+Command "select * from T1";
+
+#Tableの削除
+Command  "drop table T1";
+Command  "drop table T2";
+Command  "drop table T3";
+Command  "drop table T4";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

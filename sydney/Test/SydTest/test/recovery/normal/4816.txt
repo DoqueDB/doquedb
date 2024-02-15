@@ -1,0 +1,39 @@
+# 2005/06/29 khonma Sleep -> sync
+Begin;
+
+#SetSystemParameter "CheckPoint_Period" 1000;
+
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T0 ( C0 int, primary key (C0) )";
+TerminateSession;
+Terminate;
+
+Initialize;
+InitializeSession "TESTDB";
+Command "start transaction read write, isolation level serializable";
+
+# リカバリ時に以降の SQL 文が UNDO される
+
+Command "start backup full discard snapshot";
+Command "end backup";
+
+Command "insert into T0 ( C0 ) values ( 0 )";
+Command "insert into T0 ( C0 ) values ( 0 )";
+Command "insert into T0 ( C0 ) values ( 1 )";
+Command "insert into T0 ( C0 ) values ( 2 )";
+
+# ここで 2 回以上チェックポイントを起こし、
+# リカバリ時に以前の SQL 文をすべて UNDO させる
+
+#Sleep 30000;
+Command "sync";
+Command "sync";
+
+Command  "select * from T0";
+
+End;

@@ -1,0 +1,39 @@
+# Bug report 1826
+# 
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+Command "create table TBL(f int not null, g int not null)";
+Command "create index IDX_f on TBL(f)";
+Command "create index IDX_g on TBL(g)";
+
+Command "insert TBL values (1,1), (2,2), (3,3), (4,4), (5,5)";
+Command "insert TBL select f+1,g*2 from TBL";
+Command "insert TBL select f+1,g*2 from TBL";
+Command "insert TBL select f+1,g*2 from TBL";
+Command "insert TBL select f+1,g*2 from TBL";
+Command "insert TBL select f+1,g*2 from TBL";
+Command "insert TBL select f+1,g*2 from TBL";
+Command "insert TBL select f+1,g*2 from TBL";
+Command "insert TBL select f+1,g*2 from TBL";
+Command "insert TBL select f+1,g*2 from TBL";
+Command "insert TBL select f+1,g*2 from TBL";
+
+Command "start explain no execute";
+
+# IDX_gをスキャンしてfを評価
+Command "select * from TBL where f < 5000 order by g";
+
+# fの検索結果を得て後からソート
+Command "select * from TBL where f < 0 order by g";
+
+# fの検索結果を得て後からソートになるべきところがIDX_gをスキャンしてfを評価になってる
+Command "select * from TBL where f > 50000 order by g";
+
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

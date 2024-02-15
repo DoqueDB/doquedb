@@ -1,0 +1,40 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DefaultDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (N int, C ntext array [no limit], L language)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C, L) values (?, ?, ?)
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {0,{(null),(null)},en+ja}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 69296]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 69296]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 138573]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTL on T(C) language column L hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+Reorganize: [ERR] (Schema) create index failed.
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

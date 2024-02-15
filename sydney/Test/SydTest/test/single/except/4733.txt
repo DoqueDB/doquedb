@@ -1,0 +1,94 @@
+#障害票0742
+
+Begin;
+
+SetSystemParameter "Execution_OverflowNull" "false";
+
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+
+Command "create table T1(C1 int, C2 int, C3 int, C4 int, C5 int, C6 int, C7 int)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (123, 1000, 876, 345, 2, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (2147483646, -2147483647, 1, -1, -1, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (2147483646, -2147483648, 2, -1, -1, null)";
+Command "select * from T1";
+Command "select AVG(C1), AVG(C2), AVG(C3), AVG(C4), AVG(C5), AVG(C6) from T1";
+Command "select SUM(C1), SUM(C2), SUM(C3), SUM(C4), SUM(C5), AVG(C6) from T1";
+Command "select C1, C3 , (C1 + C3) C7 from T1";
+Command "select C2, C3 , (C2 - C3) C7 from T1";
+Command "select C1, C3 , (C1 * C3) C7 from T1";
+Command "select C2, C5 , (C2 / C5) C7 from T1";
+
+# null
+Command "select C1, C6 , (C1 + C6) C7 from T1";
+Command "select C1, C6 , (C1 - C6) C7 from T1";
+Command "select C1, C6 , (C1 * C6) C7 from T1";
+Command "select C1, C6 , (C1 / C6) C7 from T1";
+Command "select count(*) FROM T1";
+Command "select count(C1) FROM T1";
+Command "select count(C7) FROM T1";
+
+Command "drop table T1";
+
+Command "create table T1(C1 bigint, C2 bigint, C3 bigint, C4 bigint, C5 bigint, C6 bigint, C7 bigint)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (123, 1000, 987, 345, 3, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (2147483646, -2147483648, 2, -1, -1, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (9223372036854775806, -9223372036854775807, 1, -1, -1, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (9223372036854775806, -9223372036854775808, 2, -1, -1, null)";
+Command "select * from T1";
+Command "select AVG(C1), AVG(C2), AVG(C3), AVG(C4), AVG(C5), AVG(C6) from T1";
+Command "select SUM(C1), SUM(C2), SUM(C3), SUM(C4), SUM(C5), AVG(C6) from T1";
+Command "select C1, C3 , (C1 + C3) C7 from T1";
+Command "select C2, C3 , (C2 - C3) C7 from T1";
+Command "select C1, C3 , (C1 * C3) C7 from T1";
+Command "select C2, C5 , (C2 / C5) C7 from T1";
+
+# null
+Command "select C1, C6 , (C1 + C6) C7 from T1";
+Command "select C1, C6 , (C1 - C6) C7 from T1";
+Command "select C1, C6 , (C1 * C6) C7 from T1";
+Command "select C1, C6 , (C1 / C6) C7 from T1";
+Command "select count(*) FROM T1";
+Command "select count(C1) FROM T1";
+Command "select count(C7) FROM T1";
+
+Command "drop table T1";
+
+Command "create table T1(C1 float, C2 float, C3 float, C4 float, C5 float, C6 float, C7 float)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (1.23E2, 1E3, 9.87E2, 3.45E2, 6.2E0, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (2.147483646E9, -2.147483648E9, 2E0, -1E0, -1E0, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (9.223372036854775806E18, -9.223372036854775807E18, 2E0, -1E0, -1E0, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (1.79769313486230E308, -1.79769313486230E308, 1E294, 1E0, -1E0, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (1.79769313486230E308, -1.79769313486230E308, 2E294, 1.1E0, -1.1E0, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (2.3E-308, -2.3E-308, 2E294, 1.1E0, -1.1E0, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (2.2250738585073014e-308, -2.2250738585073014e-308, -4.4501477170144028e-308, 1E0, 1E0, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (2.2250738585073014e-308, -2.2250738585073014e-308, -4.45e-308, 9E-1, 1.1E0, null)";
+Command "insert into T1 (C1, C2, C3, C4, C5, C6) values (-2.2250738585073014e-308, 2.2250738585073014e-308, 4.45e-308, 9E-1, 1.1E0, null)";
+Command "select * from T1";
+Command "select AVG(C1), AVG(C2), AVG(C3), AVG(C4), AVG(C5), AVG(C6) from T1";
+Command "select SUM(C1), SUM(C2), SUM(C3), SUM(C4), SUM(C5), AVG(C6) from T1";
+Command "select C1, C3 , (C1 + C3) C7 from T1";
+Command "select C2, C3 , (C2 - C3) C7 from T1";
+Command "select C1, C4 , (C1 * C4) C7 from T1";
+Command "select C2, C5 , (C2 / C5) C7 from T1";
+
+# null
+Command "select C1, C6 , (C1 + C6) C7 from T1";
+Command "select C1, C6 , (C1 - C6) C7 from T1";
+Command "select C1, C6 , (C1 * C6) C7 from T1";
+Command "select C1, C6 , (C1 / C6) C7 from T1";
+Command "select count(*) FROM T1";
+Command "select count(C1) FROM T1";
+Command "select count(C7) FROM T1";
+
+Command "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

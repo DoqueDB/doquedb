@@ -1,0 +1,46 @@
+Begin;
+Initialize;
+InitializeSession "";
+#-------------
+Command "create database DBDatabaseTest";
+Command "create database DBDatabaseTest2";
+TerminateSession;
+
+InitializeSession "DBDatabaseTest";
+Command "create table T(f int)";
+Command "insert T values 1,2,3";
+Exists "d:\\dm\\data\\DBDatabaseTest\\LOGICALLOG.SYD";
+Exists "d:\\dm\\data\\DBDatabaseTest\\T";
+Exists "d:\\dm\\system\\DBDatabaseTest\\OBJECTID";
+TerminateSession;
+
+InitializeSession "DBDatabaseTest2";
+Command "create table T(f int)";
+Command "insert T values 1,2,3";
+Exists "d:\\dm\\data\\DBDatabaseTest2\\LOGICALLOG.SYD";
+Exists "d:\\dm\\data\\DBDatabaseTest2\\T";
+Exists "d:\\dm\\system\\DBDatabaseTest2\\OBJECTID";
+Exists "d:\\dm\\data\\DBDatabaseTest\\LOGICALLOG.SYD";
+Exists "d:\\dm\\data\\DBDatabaseTest\\T";
+Exists "d:\\dm\\system\\DBDatabaseTest\\OBJECTID";
+Exists "d:\\dm\\data\\DBDatabaseTest2\\LOGICALLOG.SYD";
+Exists "d:\\dm\\data\\DBDatabaseTest2\\T";
+Exists "d:\\dm\\system\\DBDatabaseTest2\\OBJECTID";
+
+Command "checkpoint";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database DBDatabaseTest";
+Command "alter database DBDatabaseTest2 set path 'd:\\dm\\data\\DBDatabaseTest' logicallog 'd:\\dm\\data\\DBDatabaseTest' system 'd:\\dm\\system\\DBDatabaseTest'";
+
+Exists "d:\\dm\\data\\DBDatabaseTest\\LOGICALLOG.SYD";
+Exists "d:\\dm\\data\\DBDatabaseTest\\T";
+Exists "d:\\dm\\system\\DBDatabaseTest\\OBJECTID";
+NotExists "d:\\dm\\data\\DBDatabaseTest2\\LOGICALLOG.SYD";
+NotExists "d:\\dm\\data\\DBDatabaseTest2\\T";
+NotExists "d:\\dm\\system\\DBDatabaseTest2\\OBJECTID";
+#------------------------------------
+TerminateSession;
+#Terminate;
+End;

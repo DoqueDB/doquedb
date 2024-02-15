@@ -1,0 +1,114 @@
+Begin;
+Initialize;
+InitializeSession "DefaultDB";
+Command "create table T (N int, C ntext, L language)";
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, null, "ja+en"];
+PreparedCommand "ins" [1, textucsfile "..\\..\\doc\\takekurabe.txt", "ja+en"];
+ErasePreparedCommand "ins";
+Command "create fulltext index FTIndex on T(C) language column L hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+Command "select N, from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+Command "select N, from T where C like ?" ["%improve%"]; # 「improving」の原形
+Command "drop table T";
+
+Command "create table T (N int, C ntext, L language)";
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, null, "ja+en"];
+PreparedCommand "ins" [1, textucsfile "..\\..\\doc\\takekurabe.txt", "ja+en"];
+ErasePreparedCommand "ins";
+Command "create fulltext index FTIndex on T(C) language column L hint 'delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+Command "select N, from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+Command "select N, from T where C like ?" ["%improve%"]; # 「improving」の原形
+Command "drop table T";
+
+Command "create table T (N int, C ntext array [no limit], L language array [no limit])";
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, [null, null], ["ja", "en"]];
+PreparedCommand "ins" [1, [null, textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+PreparedCommand "ins" [2, [textucsfile "..\\..\\doc\\takekurabe.txt", null], 
+			  ["ja", "en"]];
+PreparedCommand "ins" [3, [textucsfile "..\\..\\doc\\takekurabe.txt",
+		           textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+ErasePreparedCommand "ins";
+Command "create fulltext index FTIndex on T(C) language column L hint 'inverted=(normalized=true, indexing=word, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+Command "select N from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+Command "select N from T where C like ?" ["%improve%"]; # 「improving」の原形
+Command "drop table T";
+
+Command "create table T (N int, C ntext array [no limit], L language array [no limit])";
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, [null, null], ["ja", "en"]];
+PreparedCommand "ins" [1, [null, textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+PreparedCommand "ins" [2, [textucsfile "..\\..\\doc\\takekurabe.txt", null], 
+			  ["ja", "en"]];
+PreparedCommand "ins" [3, [textucsfile "..\\..\\doc\\takekurabe.txt",
+		           textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+ErasePreparedCommand "ins";
+Command "create fulltext index FTIndex on T(C) language column L hint 'delayed, inverted=(normalized=true, indexing=word, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+Command "select N from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+Command "select N from T where C like ?" ["%improve%"]; # 「improving」の原形
+Command "drop table T";
+
+Command "create table T (N int, C ntext array [no limit], L language array [no limit])";
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, [null, null], ["ja", "en"]];
+PreparedCommand "ins" [1, [null, textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+PreparedCommand "ins" [2, [textucsfile "..\\..\\doc\\takekurabe.txt", null], 
+			  ["ja", "en"]];
+PreparedCommand "ins" [3, [textucsfile "..\\..\\doc\\takekurabe.txt",
+		           textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+ErasePreparedCommand "ins";
+Command "create fulltext index FTIndex on T(C) language column L hint 'sectionized, inverted=(normalized=true, indexing=word, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+Command "select N, sectionized(C) from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+Command "select N, sectionized(C) from T where C like ?" ["%improve%"]; # 「improving」の原形
+Command "drop table T";
+
+Command "create table T (N int, C ntext array [no limit], L language array [no limit])";
+
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, [null, null], ["ja", "en"]];
+PreparedCommand "ins" [1, [null, textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+PreparedCommand "ins" [2, [textucsfile "..\\..\\doc\\takekurabe.txt", null], 
+			  ["ja", "en"]];
+PreparedCommand "ins" [3, [textucsfile "..\\..\\doc\\takekurabe.txt",
+		           textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+ErasePreparedCommand "ins";
+Command "create fulltext index FTIndex on T(C) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=word, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+Command "select N, sectionized(C) from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+Command "select N, sectionized(C) from T where C like ?" ["%improve%"]; # 「improving」の原形
+Command "drop table T";
+
+Command "create table T (N int, C ntext array [no limit], L language array [no limit])";
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, [null, null], ["ja", "en"]];
+PreparedCommand "ins" [1, [null, textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+PreparedCommand "ins" [2, [textucsfile "..\\..\\doc\\takekurabe.txt", null], 
+			  ["ja", "en"]];
+PreparedCommand "ins" [3, [textucsfile "..\\..\\doc\\takekurabe.txt",
+		           textucsfile "..\\..\\doc\\takekurabe.txt"],
+			  ["ja", "en"]];
+ErasePreparedCommand "ins";
+Command "create fulltext index FT on T(C) hint 'sectionized, delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+Command "select N, sectionized(C) from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+Command "select N, sectionized(C) from T where C like ?" ["%improve%"]; # 「improving」の原形
+Command "drop index FT";
+Command "select N from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+Command "select N from T where C like ?" ["%improve%"]; # 「improving」の原形
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;

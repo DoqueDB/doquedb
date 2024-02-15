@@ -1,0 +1,93 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Plan_NoUnknown
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Plan_NoUnknown, true
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Prepare begin.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB if exists
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(C1 int, C2 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1 on T(C1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Prepare end.
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Test begin.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C1 > 0 and not(C2 = 1)
+SydTest::Executor: [INFO] {3,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C1 > 0 and not(C2 = 1 and C1 > 0)
+SydTest::Executor: [INFO] {3,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C1 > 0 and not(C2 = 1 or C2 = 2)
+SydTest::Executor: [INFO] {3,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T(C2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C1 > 0 and not(C2 = 1)
+SydTest::Executor: [INFO] {3,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C1 > 0 and not(C2 = 1 and C1 > 0)
+SydTest::Executor: [INFO] {3,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C1 > 0 and not(C2 = 1 or C2 = 2)
+SydTest::Executor: [INFO] {3,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Test end.
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Finish
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Finish begin.
+SydTest::Executor: [INFO] [Finish] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Finish end.
+SydTest::Executor: [INFO] [SydTest Option] Finish
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Plan_NoUnknown
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Plan_NoUnknown, false
+SydTest::Executor: [INFO] Main End.

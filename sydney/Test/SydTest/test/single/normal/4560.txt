@@ -1,0 +1,57 @@
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+
+# CREATE DATABASE 直後にデータベース単位のチェックポイント処理が行われるので、
+# バックアップしたものをマウントすると、ここまで論理ログを読み戻してから、
+# REDO することになる
+
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T0 ( C0 int, primary key (C0) )";
+
+Command "insert into T0 ( C0 ) values ( 1 )";
+
+# 以下を読み戻すテスト
+#
+# コミットされたトランザクション中の
+# 次の INSERT 文はユニークエラーになり、STATEMENT ROLLBACK される
+
+Command "start transaction read write";
+Command "insert into T0 ( C0 ) values ( 1 )";
+Command "commit";
+
+# 以下を読み戻すテスト
+#
+# ロールバックされたトランザクション中の
+# 次の INSERT 文はユニークエラーになり、STATEMENT ROLLBACK される
+
+Command "start transaction read write";
+Command "insert into T0 ( C0 ) values ( 1 )";
+Command "rollback";
+
+Command "start transaction read write, isolation level serializable";
+Command "start backup full discard snapshot";
+System "cp -r d:\\dm\\data\\TESTDB d:\\dm\\data\\TESTDB2";
+Command "end backup";
+Command "commit";
+TerminateSession;
+
+InitializeSession "";
+Command "mount TESTDB2 path 'd:\\dm\\data\\TESTDB2'";
+TerminateSession;
+
+InitializeSession "TESTDB2";
+Command "start transaction read write";
+Command "verify database TESTDB2 cascade continue";
+Command "commit";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+Command "drop database TESTDB2";
+TerminateSession;
+Terminate;
+End;

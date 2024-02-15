@@ -1,0 +1,127 @@
+#4620 - uniqueに関するテスト
+#
+# 0310 ALL ROWS版 複合索引
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+
+#####
+# 1) 単純にunique制約が効いているかどうかを試す(列単数)
+
+Command "create table t0 (
+	c1	uniqueidentifier,
+	unique (c1)
+)";
+
+#通常のinsert
+Command "insert t0 ( c1 ) values ( '00000000-0000-0000-0000-000000000000' )";
+Command "insert t0 ( c1 ) values ( '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1 ) values ( '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1 ) values ( '00000000-0000-0000-0000-000000000000' )";
+# nullだとunique制約が効かないのは仕様
+Command "insert t0 ( c1 ) values ( NULL )";
+Command "insert t0 ( c1 ) values ( NULL )";
+
+Command "select * from t0";
+
+Command "drop table t0";
+
+
+#####
+# 2) 単純にunique制約が効いているかどうかを試す(列複数)
+
+Command "create table t0 (
+	c1	int,
+	c2	uniqueidentifier,
+	unique (c1, c2)
+)";
+
+#通常のinsert
+Command "insert t0 ( c1, c2 ) values ( 1, '00000000-0000-0000-0000-000000000000' )";
+Command "insert t0 ( c1, c2 ) values ( 1, '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1, c2 ) values ( 2, '00000000-0000-0000-0000-000000000000' )";
+Command "insert t0 ( c1, c2 ) values ( 2, '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1, c2 ) values ( 1, '00000000-0000-0000-0000-000000000000' )";
+Command "insert t0 ( c1, c2 ) values ( 1, '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1, c2 ) values ( 2, '00000000-0000-0000-0000-000000000000' )";
+Command "insert t0 ( c1, c2 ) values ( 2, '99999999-9999-9999-9999-999999999999' )";
+# nullだとunique制約が効かないのは仕様
+Command "insert t0 ( c1, c2 ) values ( 2, NULL )";
+Command "insert t0 ( c1, c2 ) values ( NULL, '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1, c2 ) values ( 2, NULL )";
+Command "insert t0 ( c1, c2 ) values ( NULL, '99999999-9999-9999-9999-999999999999' )";
+
+Command "select * from t0";
+
+Command "drop table t0";
+
+
+#####
+# 3) primary keyと干渉しあわないか(列単数)   primay key -> all rows index
+
+Command "create table t0 (
+	c1	int,
+	c2	uniqueidentifier,
+	unique (c2)
+)";
+Command "create all rows index I on t0(c1)";
+
+#通常のinsert
+Command "insert t0 ( c1, c2 ) values ( 1, '00000000-0000-0000-0000-000000000000' )";
+Command "insert t0 ( c1, c2 ) values ( 2, '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1, c2 ) values ( 3, '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1, c2 ) values ( 4, '00000000-0000-0000-0000-000000000000' )";
+# nullだとunique制約が効かないのは仕様
+Command "insert t0 ( c1, c2 ) values ( 5, NULL )";
+Command "insert t0 ( c1, c2 ) values ( 6, NULL )";
+
+Command "select * from t0";
+
+Command "drop table t0";
+
+
+#####
+# 4) primary keyと干渉しあわないか(列複数)    primay key -> all rows index
+
+Command "create table t0 (
+	c1	int,
+	c2	int,
+	c3	uniqueidentifier,
+	unique (c2, c3)
+)";
+Command "create all rows index I on t0(c1)";
+
+
+#通常のinsert
+Command "insert t0 ( c1, c2, c3 ) values (  1, 1, '00000000-0000-0000-0000-000000000000' )";
+Command "insert t0 ( c1, c2, c3 ) values (  2, 1, '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1, c2, c3 ) values (  3, 2, '00000000-0000-0000-0000-000000000000' )";
+Command "insert t0 ( c1, c2, c3 ) values (  4, 2, '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1, c2, c3 ) values (  5, 1, '00000000-0000-0000-0000-000000000000' )";
+Command "insert t0 ( c1, c2, c3 ) values (  6, 1, '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1, c2, c3 ) values (  7, 2, '00000000-0000-0000-0000-000000000000' )";
+Command "insert t0 ( c1, c2, c3 ) values (  8, 2, '99999999-9999-9999-9999-999999999999' )";
+# nullだとunique制約が効かないのは仕様
+Command "insert t0 ( c1, c2, c3 ) values (  9, 2, NULL )";
+Command "insert t0 ( c1, c2, c3 ) values ( 10, NULL, '99999999-9999-9999-9999-999999999999' )";
+Command "insert t0 ( c1, c2, c3 ) values ( 11, 2, NULL )";
+Command "insert t0 ( c1, c2, c3 ) values ( 12, NULL, '99999999-9999-9999-9999-999999999999' )";
+
+Command "select * from t0";
+
+Command "drop table t0";
+
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

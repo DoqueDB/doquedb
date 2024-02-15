@@ -1,0 +1,20 @@
+# 障害票 1974
+# DatabaseやAreaに相対パスを指定した時の仕様変更にともなったテスト
+
+Begin;
+Initialize;
+
+#テストに使うデータベースを作成する
+InitializeSession "";
+Command "create database DBAreaTest";
+TerminateSession;
+
+#テストに使うデータベースを設定したセッションを作る
+InitializeSession "DBAreaTest";
+
+#単純なcreate - drop
+Command "create area area1 'areatest'";
+NotExists "d:\\dm\\data\\areatest";
+TerminateSession;
+#Terminate;
+End;

@@ -1,0 +1,34 @@
+#障害票 846
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T1 (f int, g int, h int)";
+Command "create table T2 (x int, y int, z int)";
+Command "create table T3 (a int, b int, c int)";
+
+Command "insert T1 values (1, 10, 100), (2, 20, 200), (3, 30, 300)";
+Command "insert T2 values (1, 3, 5), (2, 4, 6), (3, 6, 9)";
+Command "insert T3 values (10, 20, 30), (20, 30, 40), (30, 40, 50)";
+
+Command "select * from T1 inner join T2 on (f = x) where g in (select a from T3 where b > 10) and h = 300";
+# 期待結果
+# {3, 30, 300, 3, 6, 9}
+
+Command "select * from T1 inner join T2 on (f = x) where exists (select * from T3 where a = g and b > 10) and h = 300";
+# 期待結果
+# {3, 30, 300, 3, 6, 9}
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

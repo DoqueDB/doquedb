@@ -1,0 +1,22 @@
+# 障害票 2566
+# lobのロールフォワードリカバリテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB_160412";
+Command "drop database TESTDB_160412 if exists";
+Command "create database TESTDB_160412";
+Command "create table T (f nclob, g int, h int, primary key(g))";
+Command "insert T values (?,?,?)" ["abc", 0, 10];
+Command "insert T values (?,?,?)" ["xyz", 1, 20];
+Command "checkpoint";
+Command "insert T values (?,?,?)" ["123", 2, 30];
+Command "insert T values (?,?,?)" ["foo", 3, 40];
+Command "update T set f = overlay(f placing 'A' from 1), h = 100 where g = 0";
+Command "update T set f = f || 'w', h = 200 where g = 1";
+Command "delete T where g = 2";
+Command "update T set f = 'bar', h = 400 where g = 3";
+Command "select * from T";
+TerminateSession;
+#Terminate;
+End;

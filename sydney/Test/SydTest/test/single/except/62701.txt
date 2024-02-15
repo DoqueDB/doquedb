@@ -1,0 +1,75 @@
+#indexの生成・削除・index areaの移動(異常系) 
+#原案池田さん。
+
+Begin;
+Initialize;
+
+#テストに使うデータベースを作成する
+InitializeSession "";
+Command "create database IndexTest";
+TerminateSession;
+
+#テストに使うデータベースを設定したセッションを作る
+InitializeSession "IndexTest";
+
+#もとになる表を作る
+Command "create table T (f1 int, f2 ntext, f3 ntext array [NO LIMIT])";
+
+#int型にはFULLTEXTがつけられないことの確認
+Command "create fulltext index T_FTS_f1 on T(f1) hint 'inverted=(nolocation=true, notf=true)'";
+NotExists "d:\\dm\\data\\IndexTest\\T\\FTS_T_FTS_f1";
+
+#f3はf1やf2と複合索引を作ることができない
+Command "create index T_f1_f3 on T(f1,f3)";
+Exists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f1_f3";
+Command "create index T_f2_f3 on T(f2,f3)";
+Exists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f2_f3";
+Command "create index T_f3_f1 on T(f3,f1)";
+Exists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f3_f1";
+Command "create index T_f3_f2 on T(f3,f2)";
+Exists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f3_f2";
+Command "drop index T_f1_f3";
+NotExists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f1_f3";
+Command "drop index T_f2_f3";
+NotExists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f2_f3";
+Command "drop index T_f3_f1";
+NotExists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f3_f1";
+Command "drop index T_f3_f2";
+NotExists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f3_f2";
+
+Command "create index T_f1_f2_f3 on T(f1,f2,f3)";
+Exists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f1_f2_f3";
+Command "create index T_f1_f3_f2 on T(f1,f3,f2)";
+Exists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f1_f3_f2";
+Command "create index T_f2_f1_f3 on T(f2,f1,f3)";
+Exists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f2_f1_f3";
+Command "create index T_f2_f3_f1 on T(f2,f3,f1)";
+Exists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f2_f3_f1";
+Command "create index T_f3_f1_f2 on T(f3,f1,f2)";
+Exists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f3_f1_f2";
+Command "create index T_f3_f2_f1 on T(f3,f2,f1)";
+Exists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f3_f2_f1";
+Command "drop index T_f1_f2_f3";
+NotExists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f1_f2_f3";
+Command "drop index T_f1_f3_f2";
+NotExists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f1_f3_f2";
+Command "drop index T_f2_f1_f3";
+NotExists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f2_f1_f3";
+Command "drop index T_f2_f3_f1";
+NotExists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f2_f3_f1";
+Command "drop index T_f3_f1_f2";
+NotExists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f3_f1_f2";
+Command "drop index T_f3_f2_f1";
+NotExists "d:\\dm\\data\\IndexTest\\T\\BTR_T_f3_f2_f1";
+
+#テストに使った表の破棄
+Command "drop table T";
+TerminateSession;
+
+#テストに使ったデータベースの破棄
+InitializeSession "";
+Command "drop database IndexTest";
+TerminateSession;
+
+Terminate;
+End;

@@ -1,0 +1,162 @@
+#!/use/bin/perl
+# 
+# Copyright (c) 2000,2014, 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+# paco - patch to data file (also useful for code conversion)
+
+=head1 NAME
+
+ paco - データファイルのパッチと漢字コード変換
+
+=head1 SYNOPSIS
+
+ paco [オプション]
+
+=head1 DESCRIPTION
+
+ 日本語形態素解析UNA V3(unamk)用のソースデータ群のファイルに
+ パッチをあてるツールである。同時に漢字コード変換も可能である。
+
+ オプションは以下の通り。(一部のみ)
+
+=item -b
+
+ 後方優先とする。このオプションを指定しない場合、二重定義はエラーとなる。
+
+=item -v
+
+ 不必要に詳細な情報を出力する(Verbose)。ただし、現バージョンでは未使用。
+
+=item -D
+
+ デバッグ用の情報を出力する(Debug)。ただし、現バージョンでは未使用。
+
+=item -h
+
+ 簡単なヘルプを出力する(Help)。
+
+=head1 HISTORY
+
+ Ver.5.00 2002/04/30 UNA-CmnToolsとしてRCS管理に
+ Ver.5.01 2002/08/20 ツールの実行環境を/proj/nlp/tools/UNA-CmnTools/v1.2.dist
+                     に変更
+
+=head1 BUG
+
+=cut
+
+use lib "../tools/perl/lib";
+use utf8;
+use open IN  => ":utf8";
+use open OUT => ":utf8";
+binmode(STDOUT, ":utf8");
+binmode(STDERR, ":utf8");
+
+$key_cols = "0";
+
+# 引数の評価
+use Getopt::Std;
+getopts('k:p:bvDh');
+if ($#ARGV < 0 || $#ARGV > 1 || $opt_h) {
+	die <<EOU;
+paco
+Usage: paco [OPTIONS] DATA_FILE [OUTPUT_FILE]
+   -k COL1:COL2:...    key column number ($key_cols)
+   -p FILE             patch file
+   -b                  backward priority
+   -v                  Verbose
+   -D                  Debug
+   -h                  Help
+EOU
+}
+$key_cols = $opt_k if defined $opt_k;
+@key_cols = split /:/, $key_cols;
+%key_cols = map {$_ => 1} @key_cols;
+$input_code = $opt_i if defined $opt_i;
+$output_code = $opt_o if defined $opt_o;
+$patch_file = $opt_p if defined $opt_p;
+($data_file, $output_file) = @ARGV;
+
+&read_patch_file($patch_file) if $patch_file;
+&patch_data_file($data_file, $output_file);
+
+# パッチファイルを読み込む
+sub read_patch_file {
+    my($file) = @_;
+    open(IN, $file) || die "can't read $file: $!\n";
+    while (<IN>) {
+	chomp;
+	s/(^|\s+)\#.*$//;	# コメントを除去
+	next if !$_;		# 空行は無視
+	# キー文字列を作成する
+	my @a = split /\s+/;
+	my @keys;
+	for $i (0 .. $#a) {
+	    if ($key_cols{$i}) {
+		push(@keys, $a[$i]);
+	    }
+	}
+	my $key_str = join(' ', @keys);
+	# 既に登録されていないかチェック
+	if (!$opt_b && $patch_tbl{$key_str}) {
+	    die "redefinition: $key_str: $_\n";
+	}
+	# 登録する
+	$patch_tbl{$key_str} = $_;
+    }
+    close IN;
+}
+
+# データファイルにパッチをあてる
+sub patch_data_file {
+    my($file, $outfile) = @_;
+    open(IN, $file) || die "can't read $file: $!\n";
+    if ($outfile) {
+	open(OUT, ">$outfile") || die "can't write $outfile: $!\n";
+	select OUT;
+    }
+    while (<IN>) {
+	chomp;
+	# キー文字列を作成する
+	my @a = split /\s+/;
+	my @keys;
+	for $i (0 .. $#a) {
+	    if ($key_cols{$i}) {
+		push(@keys, $a[$i]);
+	    }
+	}
+	my $key_str = join(' ', @keys);
+	# パッチを適用する
+	if ($patch_tbl{$key_str}) {
+	    $_ = $patch_tbl{$key_str};
+	}
+	print "$_\n";
+    }
+    if ($outfile) {
+	close OUT;
+	select STDOUT;
+    }
+    close IN;
+}
+
+=head1 SEE ALSO
+
+L<unamk>, L<mkmodic>, L<mkmoconn>, L<mkkutbl>
+
+=head1 COPYRIGHT
+
+ Copyright 2000,2002, 2023 RICOH Co, Ltd. All rights reserved.
+
+=cut

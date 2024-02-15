@@ -1,0 +1,129 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table Child (name varchar(255) not null, parentName varchar(255) not null, loc int, primary key (name))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table ChildChild (childName1 varchar(255) not null, childName2 varchar(255) not null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table Parent (name varchar(255) not null, primary key (name))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table ParentChild (parentName varchar(255) not null, childName varchar(255) not null, loc int not null, primary key (parentName, loc))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table Child add foreign key (parentName) references Parent (name)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table ChildChild add foreign key (childName1) references Child (name)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table ChildChild add foreign key (childName2) references Child (name)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table ParentChild add foreign key (parentName) references Parent (name)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table ParentChild add foreign key (childName) references Child (name)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Parent (name) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {foo}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write, isolation level read committed
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Child (parentName, loc, name) values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {foo,0,foo1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Child (parentName, loc, name) values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {foo,1,foo2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Parent (name) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Child (parentName, loc, name) values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar,0,bar1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Child (parentName, loc, name) values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar,1,bar2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update Child set parentName=?, loc=? where name=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {foo,0,foo1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update Child set parentName=?, loc=? where name=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {foo,1,foo2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update Child set parentName=?, loc=? where name=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar,0,bar1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update Child set parentName=?, loc=? where name=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar,1,bar2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into ParentChild (parentName, loc, childName) values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar,0,bar1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into ParentChild (parentName, loc, childName) values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar,1,bar2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select parent0_.name as name8_ from Parent parent0_ where parent0_.name between (?) and (?) order by parent0_.name desc
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar,foo}
+SydTest::Executor: [INFO] {foo}
+SydTest::Executor: [INFO] {bar}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write, isolation level read committed
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select children0_.parentName as parentName1_, children0_.name as name1_, children0_.loc as loc1_, children0_.name as name6_0_ from Child children0_ where children0_.parentName in (select parent0_.name from Parent parent0_ where parent0_.name between (?) and (?) )
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar,foo}
+SydTest::Executor: [INFO] {foo,foo1,0,foo1}
+SydTest::Executor: [INFO] {foo,foo2,1,foo2}
+SydTest::Executor: [INFO] {bar,bar1,0,bar1}
+SydTest::Executor: [INFO] {bar,bar2,1,bar2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select morechildr0_.parentName as parentName1_, morechildr0_.childName as childName1_, morechildr0_.loc as loc1_, child1_.name as name6_0_ from ParentChild morechildr0_ left outer join Child child1_ on morechildr0_.childName=child1_.name where morechildr0_.parentName in (select parent0_.name from Parent parent0_ where parent0_.name between (?) and (?) )
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar,foo}
+SydTest::Executor: [INFO] {bar,bar1,0,bar1}
+SydTest::Executor: [INFO] {bar,bar2,1,bar2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select friends0_.childName1 as childName1_1_, friends0_.childName2 as childName2_1_, child1_.name as name6_0_ from ChildChild friends0_ left outer join Child child1_ on friends0_.childName2=child1_.name where friends0_.childName1 in (select child1_.name from ParentChild morechildr0_ left outer join Child child1_ on morechildr0_.childName=child1_.name where morechildr0_.parentName in (select parent0_.name from Parent parent0_ where parent0_.name between (?) and (?) ))
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar,foo}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

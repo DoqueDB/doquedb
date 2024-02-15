@@ -1,0 +1,48 @@
+# Bug report 1466
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# new max lenght for btree is 2497
+Command "create table T (C nvarchar(2497))";
+Command "create index I on T(C)";
+# insert data which length is over 2497
+# and insert over 26 data because of splitting the index's inner pages.
+Command "insert T values ?" [textsjisfile "..\\..\\doc\\MoonlitNight.txt"];
+Command "insert T values ?" [textsjisfile "..\\..\\doc\\rasyoumon.txt"];
+Command "insert T values ?" [textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command "insert T select * from T"; #6
+Command "insert T select * from T"; #12
+Command "insert T select * from T"; #24
+Command "insert T select * from T"; #48
+
+Command "select count(*) from T where C like 'Four Stories%'";
+Command "select count(*) from T where C like '　羅生門%'";
+Command "select count(*) from T where C like '日本国憲法%'";
+
+Command "verify table T cascade continue";
+
+# delete all data
+Command "delete from T where C like 'Four Stories%'";
+Command "delete from T where C like '　羅生門%'";
+Command "delete from T where C like '日本国憲法%'";
+
+Command "verify table T cascade continue";
+
+Command "drop table T";
+
+# except
+Command "create table T (C nvarchar(2498))";
+Command "create index I on T(C)";
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

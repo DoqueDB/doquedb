@@ -1,0 +1,164 @@
+# 
+# Copyright (c) 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+# 各種設定
+
+# パスの設定
+COMMON_DIR   = ../../../../common/lib/linux64
+MOD_INCL     = $(COMMON_DIR)/mod/1.0/include
+MOD_LIB      = $(COMMON_DIR)/mod/1.0/lib48
+UNA_LIB      = $(COMMON_DIR)/una/1.0/lib48
+UNA_TOP      = ../..
+UNA_INCL     = $(UNA_TOP)/m.una/include
+UNAJP_INCL   = $(UNA_TOP)/m.una/ModNlpUnaJp/ModNlpUnaJp
+UNAJP_SRC    = $(UNA_TOP)/m.una/ModNlpUnaJp
+UNABASE_INCL = $(UNA_TOP)/m.una/ModNlpUnaJp/UnaBase/UnaBase
+UNABASE_SRC  = $(UNA_TOP)/m.una/ModNlpUnaJp/UnaBase
+UNATEST_INCL = $(UNA_TOP)/test/include
+UNATEST_SRC  = $(UNA_TOP)/test/src
+TOOLS_TOP    = ../tools
+TOOLS_INCL   = $(TOOLS_TOP)/include
+TOOLS_SRC    = $(TOOLS_TOP)/src
+TOOLS_BIN    = $(TOOLS_TOP)/bin
+
+# ツールの設定
+INSTALL = cp
+CP      = cp
+MKDIR   = /bin/mkdir -p
+RM      = /bin/rm -f
+RMDIR   = /bin/rm -r
+CC      = /usr/bin/g++
+LD      = $(CC)
+E       =
+O       = .o
+D       = .so
+
+# コンパイルオプションの設定
+INCLUDES     = -I$(MOD_INCL) -I$(UNA_INCL) -I$(UNAJP_INCL) -I$(UNABASE_INCL) \
+               -I$(UNATEST_INCL) -I$(TOOLS_INCL)
+CFLAGS       = $(INCLUDES) -DNDEBUG -UDEBUG -UMOD_NDIST -DMOD_DIST -DMOD_KERNEL \
+               -DUNA_V3_3 -DUNA_V3_4 -DV1_1 -DV1_2 -DV1_3 -DV1_4 -DV1_5 -DV1_6 -DV1_7 \
+               -DV1_8 -DV1_9 -DV1_10 -DV1_11 -DV1_12 -DV1_13 -DMOD_DLL -DMOD64 \
+               -DSOURCE_ENCODING_UTF8 -DMCH_INTEL -DOS_RHLINUX6_0 -DCC_GCC -DCC_GCC4_8 \
+               -O3 -fPIC -fpermissive -Wno-unused-result $(EXTRACFLAGS)
+EXTRACFLAGS  = -DMOD_IMPORT_COMMON_DLL -DUNA_DLL
+UNALDFLAGS   = $(OPT_UNALIB) $(OPT_STDLIB) $(EXTRALDFLAGS)
+OPT_UNALIB   = -L$(UNA_LIB) -L$(MOD_LIB) -luna -lenstem -lunajp -lcommon
+OPT_STDLIB   = -lnsl -lpthread -ldl
+EXTRALDFLAGS =
+
+# ツールのビルド
+
+# 実行プログラム
+EXE_MKDIC    = mkunadic$(E)
+EXE_MKCONN   = mkcontbl$(E)
+EXE_MKGRAM   = mkgrmtbl$(E)
+EXE_MKEMKTBL = mkemktbl$(E)
+EXE_MKUMKTBL = mkumktbl$(E)
+EXE_MKUCTBL  = mkuctbl$(E)
+EXE_MKSTDTBL = mkstdtbl$(E)
+EXE_MKCONPT  = mkconpt$(E)
+EXE_ADDRECNO = addrecno$(E)
+EXE_UNASORT  = unasort$(E)
+EXE_MKKEYCHR = mkkeychr$(E)
+EXE_CNVA2N   = cnvapp2norm$(E)
+EXE_UNAMK    = unamk$(E)
+EXE_STEM     = stem$(E)
+EXE_NORM     = norm$(E)
+PROGRAM      = $(EXE_MKDIC) $(EXE_MKCONN) $(EXE_MKGRAM) $(EXE_MKEMKTBL) \
+               $(EXE_MKUMKTBL) $(EXE_MKUCTBL) $(EXE_MKSTDTBL) $(EXE_MKCONPT) \
+               $(EXE_MKKEYCHR) $(EXE_ADDRECNO) $(EXE_UNASORT) $(EXE_CNVA2N) \
+               $(EXE_UNAMK) $(EXE_STEM) $(EXE_NORM)
+
+# ソース
+SRC_MKDIC    = $(TOOLS_SRC)/mkunadic.cpp
+SRC_MKCONN   = $(TOOLS_SRC)/mkcontbl.cpp
+SRC_MKGRAM   = $(TOOLS_SRC)/mkgrmtbl.cpp
+SRC_MKEMKTBL = $(TOOLS_SRC)/mkemktbl.cpp
+SRC_MKUMKTBL = $(TOOLS_SRC)/mkumktbl.cpp
+SRC_MKUCTBL  = $(TOOLS_SRC)/mkuctbl.cpp
+SRC_MKSTDTBL = $(TOOLS_SRC)/mkstdtbl.cpp
+SRC_MKCONPT  = $(TOOLS_SRC)/mkconpt.cpp
+SRC_MKKEYCHR = $(TOOLS_SRC)/mkkeychr.cpp
+SRC_ADDRECNO = $(TOOLS_SRC)/addrecno.cpp
+SRC_UNASORT  = $(TOOLS_SRC)/unasort.cpp
+SRC_CNVA2N   = $(TOOLS_SRC)/cnvapp2norm.cpp
+SRC_UNAMK    = $(TOOLS_SRC)/unamk.cpp
+SRC_STEM     = $(UNATEST_SRC)/stem.cpp
+SRC_NORM     = $(UNATEST_SRC)/norm.cpp
+SRC_UNAUTIL  = $(UNABASE_SRC)/una.cpp
+SRCS_UNAJP   = $(UNAJP_SRC)/unakapi.cpp $(UNAJP_SRC)/unamdeng.cpp
+SRCS_UNABASE = $(UNABASE_SRC)/unaapinf.cpp $(UNABASE_SRC)/unabns.cpp \
+               $(UNABASE_SRC)/unamdtri.cpp $(UNABASE_SRC)/unamdunk.cpp \
+               $(UNABASE_SRC)/unamorph.cpp $(UNABASE_SRC)/unastd.cpp
+
+all: $(PROGRAM)
+
+$(EXE_MKDIC): $(SRC_MKDIC) $(SRC_UNAUTIL) $(SRCS_UNABASE)
+	$(CC) $(CFLAGS) -o $@ $(SRC_MKDIC) $(SRC_UNAUTIL) $(SRCS_UNABASE)
+
+$(EXE_MKCONN): $(SRC_MKCONN) $(SRC_UNAUTIL)
+	$(CC) $(CFLAGS) -o $@ $(SRC_MKCONN) $(SRC_UNAUTIL)
+
+$(EXE_MKGRAM): $(SRC_MKGRAM) $(SRC_UNAUTIL)
+	$(CC) $(CFLAGS) -o $@ $(SRC_MKGRAM) $(SRC_UNAUTIL)
+
+$(EXE_MKEMKTBL): $(SRC_MKEMKTBL) $(SRC_UNAUTIL)
+	$(CC) $(CFLAGS) -o $@ $(SRC_MKEMKTBL) $(SRC_UNAUTIL)
+
+$(EXE_MKUMKTBL): $(SRC_MKUMKTBL) $(SRC_UNAUTIL)
+	$(CC) $(CFLAGS) -o $@ $(SRC_MKUMKTBL) $(SRC_UNAUTIL)
+
+$(EXE_MKUCTBL): $(SRC_MKUCTBL) $(SRC_UNAUTIL)
+	$(CC) $(CFLAGS) -o $@ $(SRC_MKUCTBL) $(SRC_UNAUTIL)
+
+$(EXE_MKSTDTBL): $(SRC_MKSTDTBL) $(SRC_UNAUTIL)
+	$(CC) $(CFLAGS) -o $@ $(SRC_MKSTDTBL) $(SRC_UNAUTIL)
+
+$(EXE_MKCONPT): $(SRC_MKCONPT) $(SRC_UNAUTIL)
+	$(CC) $(CFLAGS) -o $@ $(SRC_MKCONPT) $(SRC_UNAUTIL)
+
+$(EXE_ADDRECNO): $(SRC_ADDRECNO) $(SRC_UNAUTIL)
+	$(CC) $(CFLAGS) -o $@ $(SRC_ADDRECNO) $(SRC_UNAUTIL)
+
+$(EXE_UNASORT): $(SRC_UNASORT) $(SRC_UNAUTIL)
+	$(CC) $(CFLAGS) -o $@ $(SRC_UNASORT) $(SRC_UNAUTIL)
+
+$(EXE_MKKEYCHR): $(SRC_MKKEYCHR)
+	$(CC) $(CFLAGS) -o $@ $(SRC_MKKEYCHR)
+
+$(EXE_CNVA2N): $(SRC_CNVA2N)
+	$(CC) $(CFLAGS) -o $@ $(SRC_CNVA2N) $(UNALDFLAGS)
+
+$(EXE_UNAMK): $(SRC_UNAMK) $(SRCS_UNAJP) $(SRCS_UNABASE)
+	$(CC) $(CFLAGS) -o $@ $(SRC_UNAMK) $(UNALDFLAGS)
+
+$(EXE_STEM): $(SRC_STEM)
+	$(CC) $(CFLAGS) -o $@ $(SRC_STEM) $(UNALDFLAGS)
+
+$(EXE_NORM): $(SRC_NORM)
+	$(CC) $(CFLAGS) -o $@ $(SRC_NORM) $(UNALDFLAGS)
+
+clean:
+	-$(RM) $(PROGRAM)
+
+install: $(PROGRAM)
+	$(MKDIR) $(TOOLS_BIN)
+	$(CP) $(MOD_LIB)/libcommon$(D) $(TOOLS_BIN)
+	$(CP) $(UNA_LIB)/libenstem$(D) $(TOOLS_BIN)
+	$(CP) $(UNA_LIB)/libunajp$(D) $(TOOLS_BIN)
+	$(CP) $(UNA_LIB)/libuna$(D) $(TOOLS_BIN)
+	$(INSTALL) $(PROGRAM) $(TOOLS_BIN)
+	-$(RM) $(PROGRAM)

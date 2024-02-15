@@ -1,0 +1,1585 @@
+/*
+ * Makefile.rule -- Makefile生成用ルールファイル
+ * 
+ * Copyright (c) 1996, 2010, 2023 Ricoh Company, Ltd.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+#define REFERINGSYMBOL(_x_) $$
+#define REFER(_x_) \
+	REFERINGSYMBOL(_x_)_x_
+#define VAR(_x_) \
+	_x_
+#define FOR(_x_, _list_) \
+	for _x_ in _list_; \						@@\
+	do
+#define ROF \
+	; \								@@\
+	done
+#define IF(_c_) \
+	if [ _c_ ]; then
+#define ELSE \
+	; \
+	else
+#define FI \
+	; \								@@\
+	fi
+#define DELIM &&
+#define NOTEQUAL(_x_, _v_) \
+	_x_ != _v_
+#define FILEEXISTS(_x_) \
+	-e _x_
+#define BEGINLOCAL(_x_) \
+	(
+#define ENDLOCAL(_x_) \
+	) || exit 1
+#define LDELIM(_x_) &&
+#define SETENV(_x_, _v_) _x_=_v_ ; export _x_
+#define LOCALMAKE $(MAKE)
+#endif
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#define REFER(_x_) \
+	%%_x_
+#define VAR(_x_) \
+	%%_x_
+#define FOR(_x_, _list_) \
+	for _x_ in (_list_) do @(
+#define ROF \
+	)
+#define IF(_c_) \
+	if _c_
+#define ELSE \
+	else
+#define FI
+#define DELIM &
+#define NOTEQUAL(_x_, _v_) \
+	not _x_ == _v_
+#define FILEEXISTS(_x_) \
+	EXIST _x_
+#ifdef USE_BATCH
+#define BEGINLOCAL(_x_) \
+	echo setlocal > _x_.bat & echo 
+#define ENDLOCAL(_x_) \
+	>> _x_.bat & echo endlocal >> _x_.bat & call _x_.bat & del _x_.bat
+#define LDELIM(_x_) >> _x_.bat & echo 
+#else
+#define BEGINLOCAL(_x_) \
+	@(
+#define ENDLOCAL(_x_) \
+	& if errorlevel 1 (cd & exit 1) else (cd "$(MAKEDIR)") )
+#define LDELIM(_x_) &&
+#define SETENV(_x_, _v_) set _x_=_v_
+#endif
+#define LOCALMAKE $(MAKE) /nologo
+#endif
+
+#ifndef REFER
+#error "Can't make Makefile: Unknown OS"
+#endif
+
+/*
+ * RTarget -- XXX-rのルールを作成
+ */
+#define RTarget(target, subtarget, subdirs)				@@\
+target-r: target-c target						@@\
+									@@\
+target-c:								@@\
+	@FOR(VAR(d), subdirs .dummy) \					@@\
+		IF(NOTEQUAL(REFER(d), .dummy)) \			@@\
+			BEGINLOCAL(target-c) \				@@\
+				cd ..$(S)REFER(d)$(S)c.CONF LDELIM(target-c) \ @@\
+				LOCALMAKE subtarget-r \			@@\
+			ENDLOCAL(target-c) \				@@\
+		FI \							@@\
+	ROF								@@\
+									@@\
+target::								@@
+
+/*
+ * AllRTarget -- all-rのルールを作成
+ */
+#define	AllRTarget() RTarget(all, all, $(SUBDIRS))
+
+#define ConfRTargetBase(target, subtarget, subdirs)			@@\
+target-r: tools target-c target						@@\
+									@@\
+target-c:								@@\
+	@FOR(VAR(d), subdirs .dummy) \					@@\
+		IF(NOTEQUAL(REFER(d), .dummy)) \			@@\
+			BEGINLOCAL(target-c) \				@@\
+				cd ..$(S)REFER(d) LDELIM(target-c) \	@@\
+				cd c LDELIM(target-c) \			@@\
+				LOCALMAKE $(MAKEMAKEFILEFLAGS) LDELIM(target-c) \ @@\
+				cd .. LDELIM(target-c) \		@@\
+				$(MKCONFDIR) CONF LDELIM(target-c) \	@@\
+				cd c.CONF LDELIM(target-c) \		@@\
+				LOCALMAKE message LDELIM(target-c) \	@@\
+				LOCALMAKE subtarget-r \			@@\
+			ENDLOCAL(target-c) \				@@\
+		FI \							@@\
+	ROF								@@\
+									@@\
+target::								@@
+
+/*
+ * ClientAllRTarget -- clientall-rのルールを作成
+ */
+#define	ClientAllRTarget() RTarget(clientall, clientall, $(CLIENTSUBDIRS))
+
+/*
+ * ConfRTarget -- make conf-rのルールを作成
+ */
+#define ConfRTarget()							@@\
+ConfRTargetBase(conf, conf, $(SUBDIRS))					@@\
+tools::									@@\	
+conf:: conf-h								@@\
+conf:: Makefile								@@\
+									@@\
+Makefile: $(MAKEFILE_H) ../c/Makefile.c $(SYDINSTTOP)/conf/Makefile.rule $(SYDINSTTOP)/conf/Makefile.tmpl @@\
+	BEGINLOCAL(make) \						@@\
+		cd .. LDELIM(make) $(MKCONFDIR) CONF \			@@\
+	ENDLOCAL(make)							@@\
+									@@\
+conf-h:									@@\
+	BEGINLOCAL(conf-h) \						@@\
+		cd ..$(S)c LDELIM(conf-h) \				@@\
+		LOCALMAKE $(MAKEMAKEFILEFLAGS) \			@@\
+	ENDLOCAL(conf-h)						@@
+
+/*
+ * ReConfRTarget -- make reconf-rのルールを作成
+ */
+#define ReConfRTarget()							@@\
+reconf-r:: cleanconf-r conf-r						@@\
+RTarget(cleanconf, cleanconf, $(SUBDIRS))				@@\
+									@@\
+cleanconf::								@@\
+	BEGINLOCAL(cleanconf) \						@@\
+		cd ..$(S)c LDELIM(cleanconf) $(RM) Makefile.h \		@@\
+	ENDLOCAL(cleanconf)						@@
+
+/*
+ * InstallRTarget -- make install-rのルールを作成
+ */
+#define InstallRTarget()						@@\
+RTarget(install, install, $(SUBDIRS))					@@\
+RTarget(installh, installh, $(SUBDIRS))					@@\
+RTarget(installdll, installdll, $(SUBDIRS))				@@
+
+/*
+ * ClientInstallRTarget -- make clientinstall-rのルールを作成
+ *
+ *	clientinstallhは不要。通常のinstallhを使う。
+ */
+#define ClientInstallRTarget()						@@\
+RTarget(clientinstall, clientinstall, $(CLIENTSUBDIRS))			@@\
+RTarget(clientinstalldll, clientinstalldll, $(CLIENTSUBDIRS))		@@
+
+/*
+ * CleanRTarget -- make clean-rのルールを作成
+ */
+#define CleanRTarget()							@@\
+clean-r: clean-c clean							@@\
+									@@\
+clean-c:								@@\
+	@FOR(VAR(d), $(SUBDIRS) .dummy) \				@@\
+		IF(NOTEQUAL(REFER(d), .dummy)) \			@@\
+			BEGINLOCAL(cl-c) \				@@\
+				cd ..$(S)REFER(d)$(S)c.CONF LDELIM(cl-c) \ @@\
+				LOCALMAKE clean-r \			@@\
+			ENDLOCAL(cl-c) \				@@\
+		FI \							@@\
+	ROF								@@\
+	@IF(NOTEQUAL('$(CC_TEMPLATEDB)', '')) \				@@\
+		$(RMALL) $(CC_TEMPLATEDB) \				@@\
+	FI								@@\
+									@@\
+clean::									@@
+
+/*
+ * AllTarget -- allのルールを作成
+ *
+ *	make allのターゲットを作る。
+ *	make allで生成してほしいターゲットをtargetsに指定する。
+ */
+#define AllTarget(targets) AllTargetT(all, targets)
+
+/*
+ * AllTargetT -- allのルールを作成
+ *
+ *	生成されるターゲット名にall以外を使えるようにした。
+ */
+#define	AllTargetT(all, targets)					@@\
+all:: targets								@@
+
+/*
+ * ProgramTarget -- 実行可能ファイルを生成するルールを作成
+ *
+ *	生成するプログラム名をprogramに、そのプログラムにリンクする
+ *	オブジェクトファイルのobjectsに指定する。
+ */
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+#ifdef PURIFY
+#define ProgramTarget(program, objects)					@@\
+program: objects							@@\
+	$(PURIFYCOM) $(PURIFYFLAGS) $(LD) -o program.new objects $(PURIFYDLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) @@\
+	$(MV) program.new program					@@
+#elif defined(QUANTIFY)
+#define ProgramTarget(program, objects)					@@\
+program: objects							@@\
+	$(QUANTIFYCOM) $(QUANTIFYFLAGS) $(LD) -o program.new objects $(QUANTIFYDLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) @@\
+	$(MV) program.new program					@@
+#else
+#define ProgramTarget(program, objects)					@@\
+program: objects							@@\
+	$(LD) -o program.new objects $(DLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) @@\
+	$(MV) program.new program					@@
+#endif
+#endif
+
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#ifdef SYD_C_MS8_0
+#define ProgramTarget(program, objects)					@@\
+program: objects							@@\
+	$(LD) objects $(DLLFLAGS) $(STDLIB) $(LDLIBS) \			@@\
+		/pdb:$(@B).pdb /out:$@					@@\
+	$(MT) -manifest $@.manifest -outputresource:$@;1		@@
+#else
+#define ProgramTarget(program, objects)					@@\
+program: objects							@@\
+	$(LD) objects $(DLLFLAGS) $(STDLIB) $(LDLIBS) \			@@\
+		/pdb:$(@B).pdb /out:$@					@@
+#endif
+#endif
+
+/*
+ * ProgramTarget2 -- 実行可能ファイルを生成するルールを作成
+ *
+ *	生成するプログラム名をprogramに、そのプログラムにリンクする
+ *	オブジェクトファイルのobjectsに指定する。
+ *	リンクするライブラリーへの依存関係が記述できるように拡張
+ */
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+#ifdef PURIFY
+#define ProgramTarget2(program, objects, libs)				@@\
+program: objects libs							@@\
+	$(PURIFYCOM) $(PURIFYFLAGS) $(LD) -o program.new objects $(PURIFYDLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) @@\
+	$(MV) program.new program					@@
+#elif defined(QUANTIFY)
+#define ProgramTarget2(program, objects, libs)				@@\
+program: objects libs							@@\
+	$(QUANTIFYCOM) $(QUANTIFYFLAGS) $(LD) -o program.new objects $(QUANTIFYDLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) @@\
+	$(MV) program.new program					@@
+#else
+#define ProgramTarget2(program, objects, libs)				@@\
+program: objects libs							@@\
+	$(LD) -o program.new objects $(DLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) @@\
+	$(MV) program.new program					@@
+#endif
+#endif
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#ifdef SYD_C_MS8_0
+#define ProgramTarget2(program, objects, libs)				@@\
+program: objects libs							@@\
+	$(LD) objects $(DLLFLAGS) $(STDLIB) $(LDLIBS) \			@@\
+		/pdb:$(@B).pdb /out:$@					@@\
+	$(MT) -manifest $@.manifest -outputresource:$@;1		@@
+#else
+#define ProgramTarget2(program, objects, libs)				@@\
+program: objects libs							@@\
+	$(LD) objects $(DLLFLAGS) $(STDLIB) $(LDLIBS) \			@@\
+		/pdb:$(@B).pdb /out:$@					@@
+#endif
+#endif
+
+/*
+ * ProgramTarget3 -- 実行可能ファイルを生成するルールを作成
+ *
+ *	生成するプログラム名をprogramに、そのプログラムにリンクする
+ *	オブジェクトファイルのobjectsに指定する。
+ *	リンクするライブラリーへの依存関係が記述できるように拡張
+ *	LDFLAGS の後ろにリンクするオブジェクトを記述できるように拡張
+ */
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+#ifdef PURIFY
+#define ProgramTarget3(program, objects, objects2, libs)		@@\
+program: objects objects2 libs						@@\
+	$(PURIFYCOM) $(PURIFYFLAGS) $(LD) -o program.new objects $(PURIFYDLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) objects2 @@\
+	$(MV) program.new program					@@
+#elif defined(QUANTIFY)
+#define ProgramTarget3(program, objects, objects2, libs)		@@\
+program: objects objects2 libs						@@\
+	$(QUANTIFYCOM) $(QUANTIFYFLAGS) $(LD) -o program.new objects $(QUANTIFYDLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) objects2 @@\
+	$(MV) program.new program					@@
+#else
+#define ProgramTarget3(program, objects, objects2, libs)		@@\
+program: objects objects2 libs						@@\
+	$(LD) -o program.new objects $(DLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) objects2 @@\
+	$(MV) program.new program					@@
+#endif
+#endif
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#ifdef SYD_C_MS8_0
+#define ProgramTarget3(program, objects, objects2, libs)		@@\
+program: objects libs							@@\
+	$(LD) objects $(DLLFLAGS) $(STDLIB) $(LDLIBS) objects2 \	@@\
+		/pdb:$(@B).pdb /out:$@					@@\
+	$(MT) -manifest $@.manifest -outputresource:$@;1		@@
+#else
+#define ProgramTarget3(program, objects, objects2, libs)		@@\
+program: objects libs							@@\
+	$(LD) objects $(DLLFLAGS) $(STDLIB) $(LDLIBS) objects2 \	@@\
+		/pdb:$(@B).pdb /out:$@					@@
+#endif
+#endif
+
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#ifdef SYD_C_MS8_0
+#define ProgramTarget(program, objects)					@@\
+program: objects							@@\
+	$(LD) objects $(DLLFLAGS) $(STDLIB) $(LDLIBS) \			@@\
+		/pdb:$(@B).pdb /out:$@					@@\
+	$(MT) -manifest $@.manifest -outputresource:$@;1		@@
+#else
+#define ProgramTarget(program, objects)					@@\
+program: objects							@@\
+	$(LD) objects $(DLLFLAGS) $(STDLIB) $(LDLIBS) \			@@\
+		/pdb:$(@B).pdb /out:$@					@@
+#endif
+#endif
+
+/*
+ * ProgramTarget4 -- 実行可能ファイルを生成するルールを作成
+ *
+ *	生成するプログラム名をprogramに、そのプログラムにリンクする
+ *	オブジェクトファイルのobjectsに指定する。
+ */
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+#ifdef PURIFY
+#define ProgramTarget4(program, objectlist, objects)					@@\
+program: objectlist objects							@@\
+	$(PURIFYCOM) $(PURIFYFLAGS) $(LD) -o program.new @objectlist objects $(PURIFYDLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) @@\
+	$(MV) program.new program					@@
+#elif defined(QUANTIFY)
+#define ProgramTarget4(program, objectlist, objects)					@@\
+program: objectlist objects							@@\
+	$(QUANTIFYCOM) $(QUANTIFYFLAGS) $(LD) -o program.new `cat objectlist` objects $(QUANTIFYDLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) @@\
+	$(MV) program.new program					@@
+#else
+#define ProgramTarget4(program, objectlist, objects)					@@\
+program: objectlist objects							@@\
+	$(LD) -o program.new @objectlist objects $(DLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) @@\
+	$(MV) program.new program					@@
+#endif
+#endif
+
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#ifdef SYD_C_MS8_0
+#define ProgramTarget4(program, objectlist, objects)					@@\
+program: objectlist objects							@@\
+	$(LD) @objectlist objects $(DLLFLAGS) $(STDLIB) $(LDLIBS) \			@@\
+		/pdb:$(@B).pdb /out:$@					@@\
+	$(MT) -manifest $@.manifest -outputresource:$@;1		@@
+#else
+#define ProgramTarget4(program, objectlist, objects)					@@\
+program: objectlist objects							@@\
+	$(LD) @objectlist objects $(DLLFLAGS) $(STDLIB) $(LDLIBS) \			@@\
+		/pdb:$(@B).pdb /out:$@					@@
+#endif
+#endif
+
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+/*
+ * ProgramTargetRsh -- 実行可能ファイルを生成するルールを作成
+ * ProgramTarget2Rsh -- 実行可能ファイルを生成するルールを作成
+ *
+ *	生成するプログラム名をprogramに、そのプログラムにリンクする
+ *	オブジェクトファイルのobjectsに指定する。
+ *	リモートホストで実行する
+ */
+#define ProgramTargetRsh(host, dir, program, objects)			@@\
+program: objects							@@\
+	rsh host "cd dir; $(LD) -o program.new objects $(LDFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB)" @@\
+	rsh host "cd dir; $(MV) program.new program"			@@
+#define ProgramTarget2Rsh(host, dir, program, objects, libs)		@@\
+program: objects libs							@@\
+	rsh host "cd dir; $(LD) -o program.new objects $(LDFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB)" @@\
+	rsh host "cd dir; $(MV) program.new program"			@@
+#endif
+
+/*
+ * InstallProgramTarget -- 実行可能ファイルをインストールするルールを作成
+ *
+ *	インストールするプログラム名をprogramに、それを
+ *	インストールするディレクトリをdirectoryに指定する。
+ *	NTではインストールの dependency に program は入れない
+ */
+#define InstallProgramTarget(program, directory)			@@\
+install:: 								@@\
+	@$(INSTALL) $(INSTALLBINFLAGS) program directory		@@
+
+/*
+ * LibraryTarget -- ライブラリを生成するルールを作成
+ *
+ *	生成するライブラリ名をlibraryに、そのライブラリに含める
+ *	オブジェクトファイルのobjectsに指定する。
+ */
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#ifdef SYD_DLL
+#define	LibraryTarget(library, objects)					@@\
+library:: objects							@@\
+	$(LD) -lib objects $(LDFLAGS) /def /out:$@			@@
+#else
+#define LibraryTarget(library, objects)					@@\
+library:: objects							@@\
+	-$(RM) library							@@\
+	echo /nologo /out:library.new > library.rsp			@@\
+	echo objects >> library.rsp					@@\
+	lib @library.rsp						@@\
+	$(MV) library.new library					@@\
+	$(RM) library.rsp						@@
+#endif
+#endif
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+#define LibraryTarget(library, objects)					@@\
+library: objects							@@\
+	-$(RM) library							@@\
+	$(AR) $(ARFLAGS) library.new objects				@@\
+	$(RANLIB) library.new						@@\
+	$(MV) library.new library					@@
+#endif
+
+/*
+ * LibraryTarget2 -- ライブラリを生成するルールを作成
+ *
+ *	生成するライブラリ名をlibraryに、そのライブラリに含める
+ *	オブジェクトファイルのobjectsに指定する。
+ *	リンクするライブラリーへの依存関係が記述できるように拡張
+ */
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#ifdef SYD_DLL
+#define	LibraryTarget2(library, objects, libs)				@@\
+library:: objects libs							@@\
+	$(LD) -lib objects $(LDFLAGS) /def /out:$@			@@
+#else
+#define LibraryTarget2(library, objects, libs)				@@\
+library:: objects libs							@@\
+	-$(RM) library							@@\
+	echo /nologo /out:library.new > library.rsp			@@\
+	echo objects >> library.rsp					@@\
+	lib @library.rsp						@@\
+	$(MV) library.new library					@@\
+	$(RM) library.rsp						@@
+#endif
+#endif
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+#define LibraryTarget2(library, objects, libs)				@@\
+library: objects libs							@@\
+	-$(RM) library							@@\
+	$(AR) $(ARFLAGS) library.new objects				@@\
+	$(RANLIB) library.new						@@\
+	$(MV) library.new library					@@
+#endif
+
+/*
+ * LibraryTarget3 -- ライブラリを生成するルールを作成
+ */
+#if defined(SYD_C_MS)
+#define	LibraryTarget3(library, objectlist)
+#endif
+#if defined(SYD_C_SC) || defined(SYD_C_GCC)
+#define LibraryTarget3(library, objectlist)				@@\
+library: objectlist							@@\
+	-$(RM) library							@@\
+	$(AR) $(ARFLAGS) library.new `cat objectlist`			@@\
+	$(RANLIB) library.new						@@\
+	$(MV) library.new library					@@
+#endif
+
+/*
+ * LibraryTarget4 -- ライブラリを生成するルールを作成
+ */
+#if defined(SYD_C_MS)
+#define	LibraryTarget4(library, objectlist, objects)			@@\
+library: objectlist objects						@@\
+	$(LD) -lib @objectlist objects $(LDFLAGS) /def /out:$@		@@
+#endif
+#if defined(SYD_C_SC) || defined(SYD_C_GCC)
+#define LibraryTarget4(library, objectlist, objects)			@@\
+library: objectlist objects						@@\
+	-$(RM) library							@@\
+	$(AR) $(ARFLAGS) library.new `cat objectlist` objects		@@\
+	$(RANLIB) library.new						@@\
+	$(MV) library.new library					@@
+#endif
+
+/*
+ * LibraryTarget5 -- ライブラリを生成するルールを作成
+ */
+#if defined(SYD_C_MS)
+#define	LibraryTarget5(library, objectlists)
+#endif
+#if defined(SYD_C_SC) || defined(SYD_C_GCC)
+#define LibraryTarget5(library, objectlists)				@@\
+library: objectlists							@@\
+	-$(RM) library library.new					@@\
+	@FOR(VAR(f), objectlists) \					@@\
+		$(AR) $(ARFLAGS2) library.new `cat REFER(f)` \		@@\
+	ROF								@@\
+	$(RANLIB) library.new						@@\
+	$(MV) library.new library					@@
+#endif
+
+/*
+ * Objectリストを再帰的に作る
+ */
+#define	ObjectListRTarget() RTarget(objlist, objlist, $(SUBDIRS))
+
+/*
+ * ClientObjectリストを再帰的に作る
+ */
+#define	ClientObjectListRTarget() RTarget(clientobjlist, clientobjlist, $(CLIENTSUBDIRS))
+
+/*
+ * Objectリストを作る
+ *
+ * 	生成するターゲット名はobjlistで固定
+ */
+#define ObjectListTarget(list, objs, directory) ObjectListTargetT(objlist, list, objs, directory)
+#define ObjectListTarget2(list, objs1, objs2, directory) ObjectListTargetT2(objlist, list, objs1, objs2, directory)
+#define ObjectListTarget3(list, objs1, objs2, objs3, directory) ObjectListTargetT3(objlist, list, objs1, objs2, objs3, directory)
+#define ObjectListTarget4(list, objs1, objs2, objs3, objs4, directory) ObjectListTargetT4(objlist, list, objs1, objs2, objs3, objs4, directory)
+#define ObjectListTarget5(list, objs1, objs2, objs3, objs4, objs5, directory) ObjectListTargetT5(objlist, list, objs1, objs2, objs3, objs4, objs5, directory)
+#define ObjectListTarget6(list, objs1, objs2, objs3, objs4, objs5, objs6, directory) ObjectListTargetT6(objlist, list, objs1, objs2, objs3, objs4, objs5, objs6, directory)
+
+/*
+ * Objectリストを作る(SUBDIRなし)
+ */
+#define ObjectListTargetT(objlist, list, objs, directory)		@@\
+objlist:: list								@@\
+list: ../c/Makefile.c objs						@@\
+	@$(RM) $@.tmp							@@\
+	@FOR(VAR(f), objs) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+/*
+ * Objectリストを作る(SUBDIRなし - 2分割)
+ */
+#define ObjectListTargetT2(objlist, list, objs1, objs2, directory)	@@\
+objlist:: list								@@\
+list: ../c/Makefile.c objs1 objs2					@@\
+	@$(RM) $@.tmp							@@\
+	@FOR(VAR(f), objs1) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs2) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+/*
+ * Objectリストを作る(SUBDIRなし - 3分割)
+ */
+#define ObjectListTargetT3(objlist, list, objs1, objs2, objs3, directory) @@\
+objlist:: list								@@\
+list: ../c/Makefile.c objs1 objs2 objs3					@@\
+	@$(RM) $@.tmp							@@\
+	@FOR(VAR(f), objs1) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs2) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs3) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+/*
+ * Objectリストを作る(SUBDIRなし - 4分割)
+ */
+#define ObjectListTargetT4(objlist, list, objs1, objs2, objs3, objs4, directory) @@\
+objlist:: list								@@\
+list: ../c/Makefile.c objs1 objs2 objs3 objs4				@@\
+	@$(RM) $@.tmp							@@\
+	@FOR(VAR(f), objs1) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs2) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs3) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs4) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+/*
+ * Objectリストを作る(SUBDIRなし - 5分割)
+ */
+#define ObjectListTargetT5(objlist, list, objs1, objs2, objs3, objs4, objs5, directory) @@\
+objlist:: list								@@\
+list: ../c/Makefile.c objs1 objs2 objs3 objs4 objs5			@@\
+	@$(RM) $@.tmp							@@\
+	@FOR(VAR(f), objs1) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs2) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs3) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs4) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs5) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+/*
+ * Objectリストを作る(SUBDIRなし - 6分割)
+ */
+#define ObjectListTargetT6(objlist, list, objs1, objs2, objs3, objs4, objs5, objs6, directory) @@\
+objlist:: list								@@\
+list: ../c/Makefile.c objs1 objs2 objs3 objs4 objs5 objs6		@@\
+	@$(RM) $@.tmp							@@\
+	@FOR(VAR(f), objs1) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs2) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs3) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs4) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs5) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs6) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+/*
+ * Objectリストを作る(SUBDIRあり - 分割なし)
+ */
+#define ObjectListTargetSubDir(list, objs, sublists, directory)		@@\
+objlist:: list								@@\
+list: ../c/Makefile.c objs sublists					@@\
+	@$(RM) $@.tmp							@@\
+	@FOR(VAR(f), objs) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), sublists) \					@@\
+		cat REFER(f) >> $@.tmp \				@@\
+	ROF								@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+/*
+ * Objectリストを作る(SUBDIRあり - 2分割)
+ */
+#define ObjectListTarget2SubDir(list, objs1, objs2, sublists, directory) @@\
+objlist:: list								@@\
+list: ../c/Makefile.c objs1 objs2 sublists				@@\
+	@$(RM) $@.tmp							@@\
+	@FOR(VAR(f), objs1) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs2) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), sublists) \					@@\
+		cat REFER(f) >> $@.tmp \				@@\
+	ROF								@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+/*
+ * Objectリストを作る(SUBDIRあり - 3分割)
+ */
+#define ObjectListTarget3SubDir(list, objs1, objs2, objs3, sublists, directory) @@\
+objlist:: list								@@\
+list: ../c/Makefile.c objs1 objs2 objs3 sublists			@@\
+	@$(RM) $@.tmp							@@\
+	@FOR(VAR(f), objs1) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs2) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs3) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), sublists) \					@@\
+		cat REFER(f) >> $@.tmp \				@@\
+	ROF								@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+/*
+ * Objectリストを作る(SUBDIRあり - 4分割)
+ */
+#define ObjectListTarget4SubDir(list, objs1, objs2, objs3, objs4, sublists, directory) @@\
+objlist:: list								@@\
+list: ../c/Makefile.c objs1 objs2 objs3 objs4 sublists			@@\
+	@$(RM) $@.tmp							@@\
+	@FOR(VAR(f), objs1) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs2) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs3) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs4) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), sublists) \					@@\
+		cat REFER(f) >> $@.tmp \				@@\
+	ROF								@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+/*
+ * Objectリストを作る(SUBDIRあり - 5分割)
+ */
+#define ObjectListTarget5SubDir(list, objs1, objs2, objs3, objs4, objs5, sublists, directory) @@\
+objlist:: list								@@\
+list: ../c/Makefile.c objs1 objs2 objs3 objs4 objs5 sublists		@@\
+	@$(RM) $@.tmp							@@\
+	@FOR(VAR(f), objs1) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs2) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs3) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs4) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), objs5) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> $@.tmp \			@@\
+	ROF								@@\
+	@FOR(VAR(f), sublists) \					@@\
+		cat REFER(f) >> $@.tmp \				@@\
+	ROF								@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+/*
+ * Add to objectlist (used in ObjectListTargetN)
+ */
+#define AddObjectListTarget(list, objs)					@@\
+list.tmp:: objs								@@\
+	@$(RM) list.tmp							@@\
+	@$(TOUCH) list.tmp						@@\
+list.add:: objs list.tmp						@@\
+	@FOR(VAR(f), objs) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> list.tmp \		@@\
+	ROF								@@
+
+/*
+ * Add to objectlist (with SUBDIR)
+ */
+#define AddObjectListTargetSubDir(list, sublists)			@@\
+list.tmp:: sublists							@@\
+	@$(RM) list.tmp							@@\
+	@$(TOUCH) list.tmp						@@\
+list.add:: sublists list.tmp						@@\
+	@FOR(VAR(f), sublists) \					@@\
+		cat REFER(f) >> list.tmp \				@@\
+	ROF								@@
+
+/*
+ * Create objectlist(no SUBDIR - N divided)
+ */
+#define ObjectListTargetN(list, directory)				@@\
+objlist:: list								@@\
+list: ../c/Makefile.c list.done						@@\
+list.done:: list.tmp list.add						@@\
+	@$(TOUCH) list.add						@@\
+	@$(CP) list.tmp list						@@\
+	@$(TOUCH) list.done						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+#endif
+
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+/*
+ * Add to objectlist (used in ObjectListTargetN)
+ */
+#define AddObjectListTarget(list, objs)					@@\
+list.tmp:: objs								@@\
+	@$(RM) list.tmp							@@\
+	@$(TOUCH) list.tmp						@@\
+list.add:: objs list.tmp						@@\
+	@FOR(VAR(f), objs) \						@@\
+		echo $(MAKEDIR)$(S)REFER(f) >> list.tmp \		@@\
+	ROF								@@\
+	@$(RM) list.add							@@\
+	@$(TOUCH) list.add						@@
+
+/*
+ * Add to objectlist (with SUBDIR)
+ */
+#define AddObjectListTargetSubDir(list, sublists)			@@\
+list.tmp:: sublists							@@\
+	@$(RM) list.tmp							@@\
+	@$(TOUCH) list.tmp						@@\
+list.add:: sublists list.tmp						@@\
+	@FOR(VAR(f), sublists) \					@@\
+		cat REFER(f) >> list.tmp \				@@\
+	ROF								@@\
+	@$(RM) list.add							@@\
+	@$(TOUCH) list.add						@@
+
+/*
+ * Create objectlist(no SUBDIR - N divided)
+ */
+#define ObjectListTargetN(list, directory)				@@\
+objlist:: list								@@\
+list: ../c/Makefile.c list.done						@@\
+list.done:: list.tmp list.add						@@\
+	@$(CP) list.tmp list						@@\
+	@$(RM) list.done						@@\
+	@$(TOUCH) list.done						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+#endif
+
+/*
+ * Create objectlist(merging other object lists)
+ *
+ *	下位のobjlistを取得する依存ターゲット名は、objlistで固定
+ */
+#define ObjectListTargetMerge(list, objectlists, directory) ObjectListTargetMergeT(list, objlist, objectlists, directory)
+
+/*
+ * Create objectlistT(merging other object lists)
+ *
+ *	下位のobjlistを取得する依存ターゲット名を指定できるようにした。
+ */
+#define ObjectListTargetMergeT(list, objlist, objectlists, directory)	@@\
+list:: objlist-r							@@\
+list:: objectlists							@@\
+	@$(RM) $@.tmp							@@\
+	@$(CAT) objectlists >> $@.tmp					@@\
+	@$(MV) $@.tmp $@						@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) list directory			@@
+
+/*
+ * DLLRTarget -- dll-rのルールを作成
+ */
+#define	DLLRTarget() RTarget(dll, dll, $(SUBDIRS))
+
+/*
+ * DLLTarget -- DLLを生成するルールを作成
+ *
+ *	生成するライブラリ名をlibraryに、そのライブラリに含める
+ *	オブジェクトファイルのobjectsに指定する。
+ */
+#if defined(SYD_C_MS)
+#ifdef SYD_DLL
+#ifdef SYD_C_MS8_0
+#define	DLLTarget(library, objects)					@@\
+dll:: library								@@\
+library:: objects							@@\
+	$(LD) objects /dll $(DLLFLAGS) $(STDLIB) $(LDLIBS) \		@@\
+		/pdb:$(@B).pdb /out:$@ /implib:$(@B).lib		@@\
+	$(MT) -manifest $@.manifest -outputresource:$@;2		@@
+#else
+#define	DLLTarget(library, objects)					@@\
+dll:: library								@@\
+library:: objects							@@\
+	$(LD) objects /dll $(DLLFLAGS) $(STDLIB) $(LDLIBS) \		@@\
+		/pdb:$(@B).pdb /out:$@ /implib:$(@B).lib		@@
+#endif
+#else
+#define DLLTarget(library, objects)
+#endif
+#endif
+#if defined(SYD_C_GCC)
+#ifdef SYD_DLL
+#define DLLTarget(library, objects)					@@\
+dll:: library								@@\
+library:: objects							@@\
+	$(LD) objects -shared $(DLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) \	@@\
+		-o $@							@@
+#else
+#define DLLTarget(library, objects)
+#endif
+#endif
+#if defined(SYD_C_SC)
+#ifdef SYD_DLL
+#define DLLTarget(library, objects)					@@\
+dll:: library								@@\
+library:: objects							@@\
+	$(LD) objects -G $(DLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) \	@@\
+		-o $@							@@
+#else
+#define DLLTarget(library, objects)
+#endif
+#endif
+
+/*
+ * DLLTarget2 -- DLLを生成するルールを作成
+ *
+ *	生成するライブラリ名をlibraryに、そのライブラリに含める
+ *	オブジェクトファイルのobjectsに指定する。
+ */
+#if defined(SYD_C_MS)
+#ifdef SYD_DLL
+#ifdef SYD_C_MS8_0
+#define	DLLTarget2(library, objects, dependent)				@@\
+dll:: library								@@\
+library:: objects dependent						@@\
+	$(LD) objects /dll $(DLLFLAGS) $(STDLIB) $(LDLIBS) \		@@\
+		/pdb:$(@B).pdb /out:$@ /implib:$(@B).lib		@@\
+	$(MT) -manifest $@.manifest -outputresource:$@;2		@@
+#else
+#define	DLLTarget2(library, objects, dependent)				@@\
+dll:: library								@@\
+library:: objects dependent						@@\
+	$(LD) objects /dll $(DLLFLAGS) $(STDLIB) $(LDLIBS) \		@@\
+		/pdb:$(@B).pdb /out:$@ /implib:$(@B).lib		@@
+#endif
+#else
+#define DLLTarget2(library, objects, dependent)
+#endif
+#endif
+#if defined(SYD_C_GCC)
+#ifdef SYD_DLL
+#define DLLTarget2(library, objects, dependent)				@@\
+dll:: library								@@\
+library:: objects dependent						@@\
+	$(LD) objects -shared $(DLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) \	@@\
+		-o $@							@@
+#else
+#define DLLTarget2(library, objects, dependent)
+#endif
+#endif
+#if defined(SYD_C_SC)
+#ifdef SYD_DLL
+#define DLLTarget2(library, objects, dependent)				@@\
+dll:: library								@@\
+library:: objects dependent						@@\
+	$(LD) objects -G $(DLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) \	@@\
+		-o $@							@@
+#else
+#define DLLTarget2(library, objects, dependent)
+#endif
+#endif
+
+/*
+ * DLLTarget3 -- DLLを生成するルールを作成
+ *
+ *	生成するライブラリ名をlibraryに、そのライブラリに含める
+ *	オブジェクトファイルのobjectsに指定する。
+ *	libを作らなくてもいい場合のもの
+ */
+#if defined(SYD_C_MS)
+#ifdef SYD_DLL
+#ifdef SYD_C_MS8_0
+#define	DLLTarget3(library, objects)					@@\
+dll:: library								@@\
+library:: objects							@@\
+	$(LD) objects /dll $(DLLFLAGS) $(STDLIB) $(LDLIBS) \		@@\
+		/pdb:$(@B).pdb /out:$@					@@\
+	$(MT) -manifest $@.manifest -outputresource:$@;2		@@
+#else
+#define	DLLTarget3(library, objects)					@@\
+dll:: library								@@\
+library:: objects							@@\
+	$(LD) objects /dll $(DLLFLAGS) $(STDLIB) $(LDLIBS) \		@@\
+		/pdb:$(@B).pdb /out:$@					@@
+#endif
+#else
+#define DLLTarget3(library, objects)
+#endif
+#endif
+#if defined(SYD_C_GCC)
+#ifdef SYD_DLL
+#define DLLTarget3(library, objects)					@@\
+dll:: library								@@\
+library:: objects dependent						@@\
+	$(LD) objects -shared $(DLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) \	@@\
+		-o $@							@@
+#else
+#define DLLTarget3(library, objects)
+#endif
+#endif
+#if defined(SYD_C_SC)
+#ifdef SYD_DLL
+#define DLLTarget3(library, objects)					@@\
+dll:: library								@@\
+library:: objects dependent						@@\
+	$(LD) objects -G $(DLLFLAGS) $(LDLIBS:%$L=-l%) $(STDLIB) \	@@\
+		-o $@							@@
+#else
+#define DLLTarget3(library, objects)
+#endif
+#endif
+
+/*
+ * DLLTarget4 -- DLLを生成するルールを作成
+ */
+#if defined(SYD_C_MS)
+#ifdef SYD_DLL
+#ifdef SYD_C_MS8_0
+#define	DLLTarget4(library, objectlist, objects)			@@\
+dll:: library								@@\
+library:: objectlist objects						@@\
+	$(LD) @objectlist objects /dll $(DLLFLAGS) $(STDLIB) $(LDLIBS) \ @@\
+		/pdb:$(@B).pdb /out:$@ /implib:$(@B).lib		@@\
+	$(MT) -manifest $@.manifest -outputresource:$@;2		@@
+#else
+#define	DLLTarget4(library, objectlist, objects)			@@\
+dll:: library								@@\
+library:: objectlist objects						@@\
+	$(LD) @objectlist objects /dll $(DLLFLAGS) $(STDLIB) $(LDLIBS) \ @@\
+		/pdb:$(@B).pdb /out:$@ /implib:$(@B).lib		@@
+#endif
+#else
+#define DLLTarget4(library, objectlist, objects)
+#endif
+#endif
+#if defined(SYD_C_GCC)
+#ifdef SYD_DLL
+#define DLLTarget4(library, objectlist, objects)			@@\
+dll:: library								@@\
+library:: objectlist objects						@@\
+	$(LD) `cat objectlist` objects -shared $(DLLFLAGS) \		@@\
+		$(LDLIBS:%$L=-l%) $(STDLIB) -o $@			@@
+#else
+#define DLLTarget4(library, objectlist, objects)
+#endif
+#endif
+#if defined(SYD_C_SC)
+#ifdef SYD_DLL
+#define	DLLTarget4(library, objectlist, objects)			@@\
+dll:: library								@@\
+library:: objectlist objects						@@\
+	$(LD) `cat objectlist` objects -G $(DLLFLAGS) \			@@\
+		$(LDLIBS:%$L=-l%) $(STDLIB) -o $@			@@
+#else
+#define DLLTarget4(library, objectlist, objects)
+#endif
+#endif
+
+/*
+ * CombineLibraryTarget -- ライブラリを一つにまとめるルールを作成
+ *
+ *	生成するライブラリ名をlibraryに、そのライブラリにまとめる
+ *	ライブラリをlibrariesに指定する。
+ */
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+#define CombineLibraryTarget(library, libraries)			@@\
+library: libraries							@@\
+	-$(RM) library							@@\
+	-$(RMALL) ./tmp							@@\
+	$(MKDIR) ./tmp							@@\
+	cd ./tmp							@@\
+	FOR(VAR(lib), libraries) ar x ../REFER(lib) ROF			@@\
+	$(AR) $(ARFLAGS) library.new *.$(O) 				@@\
+	$(RANLIB) library.new						@@\
+	$(MV) library.new ../library					@@\
+	cd ..								@@\
+	$(RMALL) ./tmp							@@
+#endif
+
+/*
+ * InstallLibraryTarget -- ライブラリをインストールするルールを作成
+ *
+ *	生成するターゲットは、installで固定。
+ */
+#define InstallLibraryTarget(library, directory) InstallLibraryTargetT(install, library, directory)
+
+/*
+ * InstallLibraryTargetT -- ライブラリをインストールするルールを作成
+ *
+ *	インストールするライブラリ名をlibraryに、それを
+ *	インストールするディレクトリをdirectoryに指定する。
+ *	NTではranlibは不要。
+ *	生成するターゲットを指定できるようにした。
+ */
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#define InstallLibraryTargetT(install, library, directory)		@@\
+install::								@@\
+	@$(INSTALL) $(INSTALLLIBFLAGS) library directory		@@
+#endif
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+#define InstallLibraryTargetT(install, library, directory)
+#endif
+
+/*
+ * InstallHeaderTarget -- ヘッダーファイルをインストールするルールを作成
+ *
+ *	インストールするヘッダーファイル名をheaderに、それを
+ *	インストールするディレクトリをdirectoryに指定する。
+ */
+#ifdef SYD_COVERAGE
+#define InstallHeaderTarget(header, directory)				@@\
+directory::								@@\
+	@$(MKDIR) $@							@@\
+installh:: directory header						@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header directory		@@\
+	@$(RM) header							@@
+#else
+#define InstallHeaderTarget(header, directory)				@@\
+directory::								@@\
+	@$(MKDIR) $@							@@\
+installh:: directory header						@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header directory		@@
+#endif
+
+#ifdef SYD_COVERAGE
+#define InstallHeaderTarget2(header1, header2, directory)		@@\
+directory::								@@\
+	@$(MKDIR) $@							@@\
+installh:: directory header1 header2					@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header1 directory		@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header2 directory		@@\
+	@$(RM) header1							@@\
+	@$(RM) header2							@@
+#else
+#define InstallHeaderTarget2(header1, header2, directory)		@@\
+directory::								@@\
+	@$(MKDIR) $@							@@\
+installh:: directory header1 header2					@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header1 directory		@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header2 directory		@@
+#endif
+
+#ifdef SYD_COVERAGE
+#define InstallHeaderTarget3(header1, header2, header3, directory)	@@\
+directory::								@@\
+	@$(MKDIR) $@							@@\
+installh:: directory header1 header2 header3				@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header1 directory		@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header2 directory		@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header3 directory		@@\
+	@$(RM) header1							@@\
+	@$(RM) header2							@@\
+	@$(RM) header3							@@
+#else
+#define InstallHeaderTarget3(header1, header2, header3, directory)	@@\
+directory::								@@\
+	@$(MKDIR) $@							@@\
+installh:: directory header1 header2 header3				@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header1 directory		@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header2 directory		@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header3 directory		@@
+#endif
+
+/*
+ * InstallDLLTarget - -DLLファイルをインストールするルールを作成
+ *
+ *	生成するターゲット名をinstalldllに固定。
+ */
+#define InstallDLLTarget(target, directory) InstallDLLTargetT(installdll, target, directory)
+/*
+ * InstallDLLTarget - -DLLファイルをインストールするルールを作成
+ *
+ *	インストールするDLLファイル名をtargetに、それを
+ *	インストールするディレクトリをdirectoryに指定する。
+ *	生成するターゲット名を指定できるようにした。
+ */
+#ifdef SYD_DLL
+#define InstallDLLTargetT(installdll, target, directory)		@@\
+installdll:: target							@@\
+	@$(INSTALL) $(INSTALLBINFLAGS) target directory			@@
+#else
+#define InstallDLLTargetT(installdll, target, directory)
+#endif
+
+
+/*
+ * CleanTarget -- 不要なファイルを消去するルールを作成
+ *
+ *	make cleanで消去してほしいファイルをfilesに指定する。
+ *	INTELの場合はTEMPLATE_DBがない。なくても無視するオプションがないので。
+ */
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#define CleanTarget(files)						@@\
+clean::									@@\
+	-$(RM) files							@@
+#endif
+#if defined(OS_SOLARIS2_5) || defined(OS_RHLINUX6_0)
+#define CleanTarget(files)						@@\
+clean::									@@\
+	-$(RM) files							@@\
+	-$(RMALL) $(CC_TEMPLATEDB)					@@
+#endif
+/*
+ * GetIdentTarget -- ident をとるルールを作成
+ *
+ *	identをとるヘッダー、ソースを指定すると
+ *	make identでheaders, src のリビジョン情報を集める。
+ *
+ */
+#define	GetIdentTarget(headers, srcs)					@@\
+../include/ident::							@@\
+	@IF( -n "headers" ) \						@@\
+		(cd ..$(S)include DELIM $(IDENT) headers \		@@\
+			| $(SED) -f $(MISC)$(S)wc.sed > ident.new DELIM \ @@\
+			$(MV) ident.new ident) \			@@\
+	FI 								@@\
+../src/ident::								@@\
+	@IF( -n "srcs" ) \						@@\
+		(cd ..$(S)src DELIM $(IDENT) srcs \			@@\
+			| $(SED) -f $(MISC)$(S)wc.sed > ident.new DELIM \ @@\
+			$(MV) ident.new ident) \			@@\
+	FI 								@@
+
+/*
+ * RcsLockTarget -- ファイルを一斉ロックするルールを作成
+ *
+ *	ロックすべきヘッダー、ソースを指定すると
+ *	make lockでheaders, src に作業者のロックをかける
+ *
+ */
+#define	RcsLockTarget(headers, srcs)					@@\
+../include/lock::							@@\
+	@IF( -n "headers" ) \						@@\
+		BEGINLOCAL(ilock) \					@@\
+			cd ..$(S)include LDELIM(ilock) \		@@\
+			$(RCS) -l headers \				@@\
+		ENDLOCAL(ilock) \					@@\
+	FI 								@@\
+../src/lock::								@@\
+	@IF( -n "srcs" ) \						@@\
+		BEGINLOCAL(slock) \					@@\
+			cd ..$(S)src LDELIM(slock) \			@@\
+			$(RCS) -l srcs \				@@\
+		ENDLOCAL(slock) \					@@\
+	FI 								@@
+
+/*
+ * RcsUnlockTarget -- ファイルのロックを解除するルールを作成
+ *
+ *	ロック解除すべきヘッダー、ソースを指定すると
+ *	make unlockでheaders, src のロックを解除する
+ *
+ */
+#define	RcsUnlockTarget(headers, srcs)					@@\
+../include/unlock::							@@\
+	@IF( -n "headers" ) \						@@\
+		BEGINLOCAL(iunlock) \					@@\
+			cd ..$(S)include LDELIM(iunlock) \		@@\
+			$(RCS) -u headers \				@@\
+		ENDLOCAL(iunlock) \					@@\
+	FI 								@@\
+../src/unlock::								@@\
+	@IF( -n "srcs" ) \						@@\
+		BEGINLOCAL(sunlock) \					@@\
+			cd ..$(S)src LDELIM(sunlock) \			@@\
+			$(RCS) -u srcs \				@@\
+		ENDLOCAL(sunlock) \					@@\
+	FI 								@@
+
+/*
+ * RlogTarget -- ファイルがロックされているかどうかを調べるルールを作成
+ *
+ *	ロックの有無をチェックすべきヘッダー、ソースを指定すると
+ *	make rlogでheaders, src のロックを調べたリスト../rlogを作成する
+ *
+ */
+#define	RlogTarget(headers, srcs)					@@\
+../include/rlog::							@@\
+	@IF( -n "headers" ) \						@@\
+		cd ..$(S)include DELIM $(RLOG) -L `$(FULLPATH) headers` | \ @@\
+		$(SED) -n -f $(MISC)$(S)rlog.sed > rlog.new DELIM \	@@\
+		$(MV) rlog.new rlog \					@@\
+	FI 								@@\
+../src/rlog::								@@\
+	@IF( -n "srcs" ) \						@@\
+		cd ..$(S)src DELIM $(RLOG) -L `$(FULLPATH) srcs` | \	@@\
+		$(SED) -n -f $(MISC)$(S)rlog.sed > rlog.new DELIM \	@@\
+		$(MV) rlog.new rlog \					@@\
+	FI 								@@
+
+/*
+ * RcsNameTarget -- リビジョンに名前を付けるルールを作成
+ *
+ *	名前をつけるべきヘッダー、ソースを指定すると
+ *	make rcsnでheaders, src にすべて同じ名前をつける
+ *	(あらかじめロックされていないことを確かめてから実行すること)
+ */
+#define	RcsNameTarget(headers, srcs)					@@\
+../include/rcsn::							@@\
+	@IF( -n "headers" ) \						@@\
+		BEGINLOCAL(ircsn) \					@@\
+			cd ..$(S)include LDELIM(ircsn) \		@@\
+			FOR(VAR(f), headers) \				@@\
+				$(RCS) -n"$(SYDREVNAME):" REFER(f) \	@@\
+			ROF \						@@\
+		ENDLOCAL(ircsn) \					@@\
+	FI 								@@\
+../src/rcsn::								@@\
+	@IF( -n "srcs" ) \						@@\
+		BEGINLOCAL(srcsn) \					@@\
+			cd ..$(S)src LDELIM(srcsn) \			@@\
+			FOR(VAR(f), srcs) \				@@\
+				$(RCS) -n"$(SYDREVNAME):" REFER(f) \	@@\
+			ROF \						@@\
+		ENDLOCAL(srcsn) \					@@\
+	FI 								@@
+
+/*
+ * CheckinTarget -- チェックインするルールを作成
+ *
+ *	チェックインすべきヘッダー、ソースを指定すると
+ *	make ciでheaders, src をすべてチェックインする。
+ *	% make SYDREV=リビジョン SYDREVNAME="シンボリック名"
+ *		SYDREVMSG="message" ci
+ *	
+ */
+#define	CheckinTarget(headers, srcs)					@@\
+../include/ci::								@@\
+	@IF( -n "headers" ) \						@@\
+		BEGINLOCAL(ici) \					@@\
+			cd ..$(S)include LDELIM(ici) \			@@\
+			FOR(VAR(f), headers) \				@@\
+				$(CHECKIN) REFER(f) \			@@\
+			ROF \						@@\
+		ENDLOCAL(ici) \						@@\
+	FI 								@@\
+../src/ci::								@@\
+	@IF( -n "srcs" ) \						@@\
+		BEGINLOCAL(sci) \					@@\
+			cd ..$(S)src LDELIM(sci) \			@@\
+			FOR(VAR(f), srcs) \				@@\
+				$(CHECKIN) REFER(f) \			@@\
+			ROF \						@@\
+		ENDLOCAL(sci) \						@@\
+	FI 								@@
+
+/*
+ * CheckoutTarget -- 決まったリビジョンをチェックアウトするルールを作成
+ *
+ *	チェックアウトすべきヘッダー、ソースを指定すると
+ *	make coでheaders, src にすべてチェックアウトする。
+ *
+ *	% make  SYDREVNAME="シンボリック名" co
+ *
+ */
+#define	CheckoutTarget(headers, srcs)					@@\
+../include/co::								@@\
+	@IF( -n "headers" ) \						@@\
+		BEGINLOCAL(ico) \					@@\
+			cd ..$(S)include LDELIM(ico) \			@@\
+			$(CHECKOUT) headers \				@@\
+		ENDLOCAL(ico) \						@@\
+	FI 								@@\
+../src/co::								@@\
+	@IF( -n "srcs" ) \						@@\
+		BEGINLOCAL(sco) \					@@\
+			cd ..$(S)src LDELIM(sco) \			@@\
+			$(CHECKOUT) srcs \				@@\
+		ENDLOCAL(sco) \						@@\
+	FI 								@@
+
+/*
+ * GetWordCountTarget -- 行数を数えるルールを作成
+ *
+ *	make wcで数えるヘッダー、ソースを指定すると
+ *	headers, src の行数を数える。
+ *
+ */
+#define	GetWordCountTarget(headers, srcs)				@@\
+../include/wc::								@@\
+	@IF( -n "headers" ) \						@@\
+		(cd ..$(S)include DELIM $(WC) `$(FULLPATH) headers` \	@@\
+			| $(SED) -f $(MISC)$(S)wc.sed > wc.new DELIM \	@@\
+			$(MV) wc.new wc) \				@@\
+	FI 								@@\
+../src/wc::								@@\
+	@IF( -n "srcs" ) \						@@\
+		(cd ..$(S)src DELIM $(WC) `$(FULLPATH) srcs` \		@@\
+			| $(SED) -f $(MISC)$(S)wc.sed > wc.new DELIM \	@@\
+			$(MV) wc.new wc) \				@@\
+	FI 								@@
+
+/*
+ * PrintTarget -- 印刷するルールを作成
+ *
+ *	プリンター出力するヘッダー、ソースを指定すると
+ *	make printで PSプリンター$(PSPRN)に出力される。
+ *
+ */
+#define	PrintTarget(headers, srcs)					@@\
+../include/print::							@@\
+	@IF( -n "headers" ) \						@@\
+		$(RMALL) ps.tmp ..$(S)include DELIM \			@@\
+		IF( -n ..$(S)include ) \				@@\
+			$(MKDIR) ..$(S)include DELIM $(MKDIR) ..$(S)include$(S)driver \	@@\
+		FI \							@@\
+		FOR(VAR(file), headers) \				@@\
+			$(MKSRC) ..$(S)include.org$(S)REFER(file) \	@@\
+				> ..$(S)include$(S)REFER(file) DELIM \ 	@@\
+			$(A2PS) ..$(S)include$(S)REFER(file) >> ps.tmp \ @@\
+		ROF \							@@\
+		$(PR) -P$(PSPRN) ps.tmp DELIM				@@\
+		$(RM) ps.tmp \						@@\
+	FI 								@@\
+									@@\
+../src/print::								@@\
+	@IF( -n "srcs" ) \						@@\
+		$(RMALL) ps.tmp ..$(S)src DELIM \			@@\
+		IF( -n ..$(S)src ) \					@@\
+			$(MKDIR) ..$(S)src \				@@\
+		FI \							@@\
+		FOR(VAR(file), srcs) \					@@\
+			$(MKSRC) ..$(S)src.org$(S)REFER(file) > ..$(S)src$(S)REFER(file) DELIM \ @@\
+			$(A2PS) ..$(S)src$(S)REFER(file) >> ps.tmp \	@@\
+		ROF \							@@\
+		$(PR) -P$(PSPRN) ps.tmp DELIM \				@@\
+		$(RMALL) ps.tmp \					@@\
+	FI 								@@
+
+/*
+ * GetTagsTarget -- tags, TAGS を作るルールを作成
+ *
+ *	make tagsでtags, TAGSの対象となるヘッダー、ソースを指定する。
+ *
+ */
+#define	GetTagsTarget(headers, srcs)					@@\
+../include/tags::							@@\
+	@IF( -n "headers" ) \						@@\
+		BEGINLOCAL(itags) \					@@\
+			cd ..$(S)include LDELIM(itags) \		@@\
+			$(CTAGS) `$(FULLPATH) headers` \		@@\
+				| $(SED) -f $(MISC)$(S)tags.sed LDELIM(itags) \ @@\
+			$(ETAGS) `$(FULLPATH) headers` \		@@\
+				| $(SED) -f $(MISC)$(S)tags.sed \	@@\
+		ENDLOCAL(itags) \					@@\
+	FI 								@@\
+../src/tags::								@@\
+	@IF( -n "srcs" ) \						@@\
+		BEGINLOCAL(stags) \					@@\
+			cd ..$(S)src LDELIM(stags) \			@@\
+			$(CTAGS) `$(FULLPATH) srcs` \			@@\
+				| $(SED) -f $(MISC)$(S)tags.sed LDELIM(stags) \ @@\
+			$(ETAGS) `$(FULLPATH) srcs` \			@@\
+				| $(SED) -f $(MISC)$(S)tags.sed \	@@\
+		ENDLOCAL(stags) \					@@\
+	FI 								@@
+
+/*
+ * MessageRTarget -- message-rのルールを作成
+ */
+#define	MessageRTarget() RTarget(message, message, $(SUBDIRS))
+
+/*
+ * MessageTarget -- messageを作る
+ */
+#define MessageTarget(target, definition, dependency)			@@\
+message:: target							@@\
+target: definition dependency						@@\
+	BEGINLOCAL(message) \						@@\
+		$(MKMESSAGE) $(MODULE) definition $(CHARSET) LDELIM(message) \ @@\
+		$(CP) definition target LDELIM(message) \		@@\
+		LOCALMAKE cleanconf conf-h LDELIM(message) \		@@\
+		cd .. LDELIM(message) \					@@\
+		$(MKCONFDIR) CONF \					@@\
+	ENDLOCAL(message)						@@
+
+/*
+ * AntTarget -- Antのルールを作成
+ */
+#define AntTarget(target, subtarget, subdirs)				@@\
+target::								@@\
+	@FOR(VAR(d), subdirs .dummy) \					@@\
+		IF(NOTEQUAL(REFER(d), .dummy)) \			@@\
+			BEGINLOCAL(target-c) \				@@\
+				cd ..$(S)REFER(d) LDELIM(target-c) \	@@\
+				$(ANT) -q subtarget \			@@\
+			ENDLOCAL(target-c) \				@@\
+		FI \							@@\
+	ROF								@@
+
+/*
+ * ResourceTarget -- resourceファイルを生成する
+ */
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#define ResourceTarget(target, source)					@@\
+target: source								@@\
+	$(RC) $(RCFLAGS) /fo target source				@@
+#else
+#define ResourceTarget(target, sourcedir)
+#endif
+
+/*
+ * ResourceName -- resourceファイルの名称を得る
+ */
+#if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
+#define ResourceName(base) base.res
+#endif
+#ifdef OS_SOLARIS2_5
+#define ResourceName(base)
+#endif
+#if defined(OS_RHLINUX6_0)
+#define ResourceName(base)
+#endif
+
+/*
+ * ExportFileName -- expファイルの名称を得る
+ */
+#if defined(SYD_C_MS)
+#define ExportFileName(base) base.exp
+#endif
+#ifdef OS_SOLARIS2_5
+#define ExportFileName(base)
+#endif
+#if defined(OS_RHLINUX6_0)
+#define ExportFileName(base)
+#endif
+
+/*
+ * テープイメージを再帰的に作る
+ */
+#define	TapeRTarget() RTarget(tape, tape, $(SUBDIRS))
+
+/*
+ * テープに含めるヘッダーファイル
+ */
+#define TapeHeaderTarget(header, directory)				@@\
+directory::								@@\
+	@$(MKDIR) $@							@@\
+tape:: directory header							@@\
+	@$(INSTALL) $(INSTALLINCLFLAGS) header directory		@@
+
+/*
+ * Copyright (c) 1996, 2010, 2023 Ricoh Company, Ltd.
+ * All rights reserved.
+*/

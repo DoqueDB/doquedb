@@ -1,0 +1,15 @@
+
+Begin;
+Initialize;
+BeginTimeSpan;
+InitializeSession "DefaultDB";
+Command "verify database DefaultDB cascade continue";
+
+Command "select * from T1";
+
+#Command "drop database "DefaultDB";
+TerminateSession;
+
+EndTimeSpan;
+Terminate;
+End;

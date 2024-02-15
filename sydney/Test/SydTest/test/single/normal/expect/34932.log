@@ -1,0 +1,119 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DefaultDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table Catalog(c_text ntext,c_weight float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index F_I on Catalog(c_text) hint 'delayed, inverted=(nolocation=true, normalized=(stemming=true, deletespace=false),language=ja,tokenizer=DUAL:JAP:ALL:2 ALP:3 ASC:3 KAT:3 KAN:HIR @NORMRSCID:2 @UNARSCID:2)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('カモミールはティーや入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('キャットミントのお茶は胃腸障害などにも効果があり',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('ラベンダーはティーや入浴剤、ポプリやブーケなど幅広く活用できます。頭痛や神経不安、虫除けなどにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('レモンは入浴剤、芳香剤や殺菌など幅広く活用できます。風邪や不眠症などにも効果があり',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('ネロリは香水などに活用できます。ストレスや不眠症などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('スイートマジョラムは料理や、ポプリなどに活用できます。不眠症などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('ローズマリーは入浴剤、お茶や料理、ポプリや化粧品など幅広く活用できます。疲労や無気力などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('レモングラスは料理、殺菌、虫除けに活用できます。心の疲れなどにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('ミントはお茶や入浴剤など幅広く活用できます。鼻づまりなどにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('ポリジは観賞用、料理などに活用できます。体の調子を整える',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('タイムはお茶や料理などに活用できます。',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('オレンジはお茶や入浴剤、芳香剤、化粧品などで活用できます。不眠症などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('ジャスミンはお茶や入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果があり',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('バジルは、料理に活用できます。胃腸障害などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Catalog values('ユーカリはお茶や入浴剤に活用できます。鼻づまりやストレスなどにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(c_text) from Catalog where c_text contains  ('入浴剤' | 'お茶' | 'ポプリ'| '風邪'|'不眠症' LANGUAGE 'ja') order by score(c_text) * c_weight desc limit 10
+SydTest::Executor: [INFO] {7.82103430220339E-1}
+SydTest::Executor: [INFO] {6.62221465411887E-1}
+SydTest::Executor: [INFO] {5.02376711924262E-1}
+SydTest::Executor: [INFO] {3.93872589913039E-1}
+SydTest::Executor: [INFO] {3.83090938694714E-1}
+SydTest::Executor: [INFO] {3.13580955931149E-1}
+SydTest::Executor: [INFO] {2.72093866146164E-1}
+SydTest::Executor: [INFO] {2.44349634096265E-1}
+SydTest::Executor: [INFO] {2.43501197866764E-1}
+SydTest::Executor: [INFO] {1.47780000182187E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(c_text) from Catalog where c_text contains  ('入浴剤' | 'お茶' | 'ポプリ'| '風邪'|'不眠症' LANGUAGE 'ja') order by score(c_text) desc limit 10
+SydTest::Executor: [INFO] {7.82103430220339E-1}
+SydTest::Executor: [INFO] {6.62221465411887E-1}
+SydTest::Executor: [INFO] {5.02376711924262E-1}
+SydTest::Executor: [INFO] {3.93872589913039E-1}
+SydTest::Executor: [INFO] {3.83090938694714E-1}
+SydTest::Executor: [INFO] {3.13580955931149E-1}
+SydTest::Executor: [INFO] {2.72093866146164E-1}
+SydTest::Executor: [INFO] {2.44349634096265E-1}
+SydTest::Executor: [INFO] {2.43501197866764E-1}
+SydTest::Executor: [INFO] {1.47780000182187E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(c_text) from Catalog where c_text contains  ('入浴剤' | 'お茶' | 'ポプリ'| '風邪'|'不眠症' LANGUAGE 'ja') order by score(c_text) * c_weight asc limit 10
+SydTest::Executor: [INFO] {1.34236479868633E-1}
+SydTest::Executor: [INFO] {1.36713167689087E-1}
+SydTest::Executor: [INFO] {1.47780000182187E-1}
+SydTest::Executor: [INFO] {2.43501197866764E-1}
+SydTest::Executor: [INFO] {2.44349634096265E-1}
+SydTest::Executor: [INFO] {2.72093866146164E-1}
+SydTest::Executor: [INFO] {3.13580955931149E-1}
+SydTest::Executor: [INFO] {3.83090938694714E-1}
+SydTest::Executor: [INFO] {3.93872589913039E-1}
+SydTest::Executor: [INFO] {5.02376711924262E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(c_text) from Catalog where c_text contains  ('入浴剤' | 'お茶' | 'ポプリ'| '風邪'|'不眠症' LANGUAGE 'ja') order by score(c_text) asc limit 10
+SydTest::Executor: [INFO] {1.34236479868633E-1}
+SydTest::Executor: [INFO] {1.36713167689087E-1}
+SydTest::Executor: [INFO] {1.47780000182187E-1}
+SydTest::Executor: [INFO] {2.43501197866764E-1}
+SydTest::Executor: [INFO] {2.44349634096265E-1}
+SydTest::Executor: [INFO] {2.72093866146164E-1}
+SydTest::Executor: [INFO] {3.13580955931149E-1}
+SydTest::Executor: [INFO] {3.83090938694714E-1}
+SydTest::Executor: [INFO] {3.93872589913039E-1}
+SydTest::Executor: [INFO] {5.02376711924262E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table Catalog
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

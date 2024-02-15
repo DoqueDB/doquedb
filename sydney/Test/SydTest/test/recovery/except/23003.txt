@@ -1,0 +1,63 @@
+############################################################################
+#C1 DEFAULT指定なしの列
+#C2 DEFAULT <literal>の指定を持つ列
+#C3 DEFAULT CURRENT_TIMESTAMPの指定を持つ列 #1
+#C4 DEFAULT CURRENT_TIMESTAMPの指定を持つ列 #2	... 索引つき
+#C5 DEFAULT CURRENT_TIMESTAMP USING ON UPDATEの指定を持つ列 #1
+#C6 DEFAULT CURRENT_TIMESTAMP USING ON UPDATEの指定を持つ列 #2	... 索引つき
+############################################################################
+# default CURRENT_TIMESTAMP テスト
+# 
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T
+(
+	C1 int,
+	C2 int DEFAULT 1234,
+	C3 datetime DEFAULT CURRENT_TIMESTAMP,
+	C4 datetime DEFAULT CURRENT_TIMESTAMP,
+	C5 datetime DEFAULT CURRENT_TIMESTAMP USING ON UPDATE,
+	C6 datetime DEFAULT CURRENT_TIMESTAMP USING ON UPDATE
+)";
+Command "create index I4 on T(C4)";
+Command "create index I6 on T(C6)";
+
+################ 目視が必要な部分 ##########################################
+### 4の検査 ####
+#INSERT後のリカバリー
+#C1のみに値を指定したINSERT文により(複数の)レコードを入れる
+Command "insert T(C1) values (1), (2), (3), (4), (5)";
+
+#Sleep 1
+Sleep 1;
+
+#リカバリー前の時刻を出しておく
+Command "select CURRENT_TIMESTAMP from (values 1) as X(x)";
+#	⇒ リカバリーの出力と比較する(目視)
+
+#Terminateせずに終了
+Command "select * from T";
+TerminateSession;
+
+#リカバリー前に入れたレコードの内容を確認
+#InitializeSession "TESTDB";
+#Command "select * from T";
+#	⇒ 上記で出力した時刻より前であることを確認する(目視)
+
+# tableの後始末
+#Command  "drop table T";
+
+#TerminateSession;
+
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+#Terminate;
+End;

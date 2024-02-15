@@ -1,0 +1,610 @@
+# select[2]/btree(index)
+# 0910 ALL ROWS版 複合索引
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 nvarchar(32), C2 nvarchar(2497))";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 nvarchar(32), C2 nvarchar(2497))";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" ["ぴよ", textsjisfile "..\\..\\doc\\ublab.txt"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt", "ぴよ", textsjisfile "..\\..\\doc\\ublab.txt"];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=? and C2=?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1<? and C2<?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1>? and C2>?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1<=? and C2<=?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1>=? and C2>=?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1<>? and C2<>?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null and C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null and C2 is not null";
+Command  "select count(*) from T1 where C1=? or C2=?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1<? or C2<?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1>? or C2>?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1<=? or C2<=?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1>=? or C2>=?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1<>? or C2<>?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null or C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null or C2 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(2497), C2 nvarchar(2497))";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 nvarchar(2497), C2 nvarchar(2497))";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\speak.txt"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\ublab.txt", textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt", textsjisfile "..\\..\\doc\\ublab.txt", textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1<? and C2<?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1>? and C2>?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1<=? and C2<=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1>=? and C2>=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1<>? and C2<>?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null and C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null and C2 is not null";
+Command  "select count(*) from T1 where C1=? or C2=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1<? or C2<?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1>? or C2>?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1<=? or C2<=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1>=? or C2>=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1<>? or C2<>?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null or C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null or C2 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(2497), C2 int)";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 nvarchar(2497), C2 int)";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\speak.txt", 555];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt", 333];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777, textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt", 333];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "select count(*) from T1 where C1<? and C2<?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "select count(*) from T1 where C1>? and C2>?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "select count(*) from T1 where C1<=? and C2<=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "select count(*) from T1 where C1>=? and C2>=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "select count(*) from T1 where C1<>? and C2<>?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null and C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null and C2 is not null";
+Command  "select count(*) from T1 where C1=? or C2=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "select count(*) from T1 where C1<? or C2<?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "select count(*) from T1 where C1>? or C2>?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "select count(*) from T1 where C1<=? or C2<=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "select count(*) from T1 where C1>=? or C2>=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "select count(*) from T1 where C1<>? or C2<>?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null or C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null or C2 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 int, C2 float)";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 int, C2 float)";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [777, 3.141592];
+Command  "insert into T1 (C1, C2) values (?, ?)" [777, 3.141592];
+Command  "insert into T1 (C1, C2) values (?, ?)" [555, 2.718281];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [333, 1.414213];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" [777, 3.141592, 333, 1.414213];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=? and C2=?" [777, 3.141592];
+Command  "select count(*) from T1 where C1<? and C2<?" [777, 3.141592];
+Command  "select count(*) from T1 where C1>? and C2>?" [777, 3.141592];
+Command  "select count(*) from T1 where C1<=? and C2<=?" [777, 3.141592];
+Command  "select count(*) from T1 where C1>=? and C2>=?" [777, 3.141592];
+Command  "select count(*) from T1 where C1<>? and C2<>?" [777, 3.141592];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null and C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null and C2 is not null";
+Command  "select count(*) from T1 where C1=? or C2=?" [777, 3.141592];
+Command  "select count(*) from T1 where C1<? or C2<?" [777, 3.141592];
+Command  "select count(*) from T1 where C1>? or C2>?" [777, 3.141592];
+Command  "select count(*) from T1 where C1<=? or C2<=?" [777, 3.141592];
+Command  "select count(*) from T1 where C1>=? or C2>=?" [777, 3.141592];
+Command  "select count(*) from T1 where C1<>? or C2<>?" [777, 3.141592];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null or C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null or C2 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 float, C2 datetime)";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 float, C2 datetime)";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [2.718281, time "2001-09-09 00:00:00.000"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [1.414213, time "2002-10-11 17:34:51.000"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" [3.141592, time "2001-07-07 12:34:56.789", 1.414213, time "2002-10-11 17:34:51.000"];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=? and C2=?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<? and C2<?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1>? and C2>?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<=? and C2<=?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1>=? and C2>=?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<>? and C2<>?" [3.141592, time "2001-07-07 12:34:56.789"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null and C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null and C2 is not null";
+Command  "select count(*) from T1 where C1=? or C2=?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<? or C2<?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1>? or C2>?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<=? or C2<=?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1>=? or C2>=?" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<>? or C2<>?" [3.141592, time "2001-07-07 12:34:56.789"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null or C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null or C2 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 datetime)";
+Command  "create all rows index I1 on T1(C1)";
+Command  "create table T2(C1 datetime)";
+Command  "create all rows index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1) values (?)" [time "2001-09-09 00:00:00.000"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [time "2002-10-11 17:34:51.000"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [time "2001-07-07 12:34:56.789", time "2002-10-11 17:34:51.000"];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=?" [time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<?" [time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1>?" [time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<=?" [time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1>=?" [time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<>?" [time "2001-07-07 12:34:56.789"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(32))";
+Command  "create all rows index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(32))";
+Command  "create all rows index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+Command  "insert into T1 (C1) values (?)" ["ホゲ"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" ["ぴよ"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" ["ほげ", "ぴよ"];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=?" ["ほげ"];
+Command  "select count(*) from T1 where C1<?" ["ほげ"];
+Command  "select count(*) from T1 where C1>?" ["ほげ"];
+Command  "select count(*) from T1 where C1<=?" ["ほげ"];
+Command  "select count(*) from T1 where C1>=?" ["ほげ"];
+Command  "select count(*) from T1 where C1<>?" ["ほげ"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(32), C2 nvarchar(2497))";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 nvarchar(32), C2 nvarchar(2497))";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [null, null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T1.C2 is null and T2.C1 is null and T2.C2 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(2497), C2 nvarchar(2497))";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 nvarchar(2497), C2 nvarchar(2497))";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\speak.txt"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [null, null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T1.C2 is null and T2.C1 is null and T2.C2 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(2497), C2 int)";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 nvarchar(2497), C2 int)";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\speak.txt", 555];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [null, null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T1.C2 is null and T2.C1 is null and T2.C2 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 int, C2 float)";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 int, C2 float)";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" [555, 2.718281];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [null, null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T1.C2 is null and T2.C1 is null and T2.C2 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 float, C2 datetime)";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 float, C2 datetime)";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" [2.718281, time "2001-09-09 00:00:00.000"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [null, null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T1.C2 is null and T2.C1 is null and T2.C2 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 datetime)";
+Command  "create all rows index I1 on T1(C1)";
+Command  "create table T2(C1 datetime)";
+Command  "create all rows index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [time "2001-09-09 00:00:00.000"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T2.C1 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(32))";
+Command  "create all rows index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(32))";
+Command  "create all rows index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" ["ホゲ"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T2.C1 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(32), C2 nvarchar(2497))";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 nvarchar(32), C2 nvarchar(2497))";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" ["ぴよ", textsjisfile "..\\..\\doc\\ublab.txt"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt", "ぴよ", textsjisfile "..\\..\\doc\\ublab.txt"];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(2497), C2 nvarchar(2497))";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 nvarchar(2497), C2 nvarchar(2497))";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\ublab.txt", textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\sasameyuki.txt", textsjisfile "..\\..\\doc\\ublab.txt", textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(2497), C2 int)";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 nvarchar(2497), C2 int)";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt", 333];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", 777, textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt", 333];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 int, C2 float)";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 int, C2 float)";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [777, 3.141592];
+Command  "insert into T1 (C1, C2) values (?, ?)" [777, 3.141592];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [333, 1.414213];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" [777, 3.141592, 333, 1.414213];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 float, C2 datetime)";
+Command  "create all rows index I1 on T1(C1, C2)";
+Command  "create all rows index I1_1 on T1(C1)";
+Command  "create all rows index I1_2 on T1(C2)";
+Command  "create table T2(C1 float, C2 datetime)";
+Command  "create all rows index I2 on T2(C1, C2)";
+Command  "create all rows index I2_1 on T2(C1)";
+Command  "create all rows index I2_2 on T2(C2)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [3.141592, time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [1.414213, time "2002-10-11 17:34:51.000"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" [3.141592, time "2001-07-07 12:34:56.789", 1.414213, time "2002-10-11 17:34:51.000"];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 datetime)";
+Command  "create all rows index I1 on T1(C1)";
+Command  "create table T2(C1 datetime)";
+Command  "create all rows index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1) values (?)" [null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [time "2002-10-11 17:34:51.000"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [time "2001-07-07 12:34:56.789", time "2002-10-11 17:34:51.000"];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(32))";
+Command  "create all rows index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(32))";
+Command  "create all rows index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+Command  "insert into T1 (C1) values (?)" [null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" ["ぴよ"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" ["ほげ", "ぴよ"];
+Command  "drop table T1";
+Command  "drop table T2";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

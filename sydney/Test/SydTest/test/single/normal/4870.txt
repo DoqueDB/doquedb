@@ -1,0 +1,28 @@
+# 障害票 1326
+# 一括登録で言語型の列に値を挿入
+
+Begin;
+Initialize;
+
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table TBL (f int, l1 language, l2 language array[no limit])";
+Command "insert TBL input from path '../../doc/bulk_lang.txt' HINT 'Code=\"utf-8\"'";
+Command "select * from TBL order by f";
+Command "delete TBL";
+Command "insert TBL input from path '../../doc/bulk_lang2.txt' HINT 'ErrorData=\"error.dat\" Code=\"utf-8\"'";
+Command "select * from TBL order by f";
+Command "delete TBL";
+System "diff error.dat ../../doc/bulk_lang_error.txt";
+System "rm error.dat";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+End;

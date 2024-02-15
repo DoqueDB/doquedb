@@ -1,0 +1,39 @@
+# テスト追加: LockForAllObject::abandon
+#            トランザクションの中で全文索引のついた表に全文検索し、さらに一部の行がヒットしない(索引を使わない)条件をANDで指定する
+# 2005.07.25 tajima
+Begin;
+
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (N int, C ntext, L language)";
+
+# 索引作成
+Command "create fulltext index FTIndex on T(C) language column L hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+#トランザクション開始
+Command  "start transaction read write";
+#データセット
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, null, "ja+en"];
+PreparedCommand "ins" [1, textsjisfile "..\\..\\doc\\takekurabe.txt", "ja+en"];
+PreparedCommand "ins" [2, textsjisfile "..\\..\\doc\\Makino.txt", "ja+en"];
+ErasePreparedCommand "ins";
+
+Command "select N, score(C) from T where C like ?" ["%ペイジ%"]; # 「ページ」の異表記
+
+
+Command "select N ,score(C) from T where C like ? AND N=?" ["%ペイジ%",2]; # 「ページ」の異表記 AND N=10 値なし
+
+
+
+Command "commit";
+# テスト用の表を消去
+Command "drop table T";
+
+
+TerminateSession;
+Terminate;
+End;
+

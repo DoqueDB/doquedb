@@ -1,0 +1,116 @@
+# 
+# 集約関数のソートのテスト
+# 2006/04/27 tajima
+#
+
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table sale(ymd NVARCHAR(10),sho_no NVARCHAR(6),c_sno NVARCHAR(6),kazu INT)";
+Command "CREATE INDEX SALE_INDEX ON sale(ymd,sho_no,c_sno)";
+Command "insert into sale values('20050110','A00001','000001',100)";
+Command "insert into sale values('20050110','A00002','000001',100)";
+Command "insert into sale values('20050701','A00003','000002',200)";
+Command "insert into sale values('20050701','A00003','000003',1000)";
+Command "insert into sale values('20050701','A00003','000004',500)";
+Command "insert into sale values('20050701','A00004','000002',200)";
+Command "insert into sale values('20050702','A00001','000001',4200)";
+Command "insert into sale values('20050702','A00001','000002',1500)";
+Command "insert into sale values('20050702','A00001','000003',2500)";
+Command "insert into sale values('20050702','A00002','000002',1300)";
+Command "insert into sale values('20050703','A00002','000001',2300)";
+Command "insert into sale values('20050703','A00002','000002',3300)";
+Command "insert into sale values('20050703','A00002','000003',4300)";
+Command "insert into sale values('20050703','A00002','000004',100)";
+Command "insert into sale values('20050703','A00002','000005',10)";
+Command "insert into sale values('20050703','A00003','000001',300)";
+Command "insert into sale values('20050703','A00003','000002',400)";
+Command "insert into sale values('20050703','A00003','000003',500)";
+Command "insert into sale values('20050703','A00003','000004',2500)";
+Command "insert into sale values('20050703','A00003','000005',1)";
+Command "insert into sale values('20050704','B00001','000001',1200)";
+Command "insert into sale values('20050704','A00001','000002',5000)";
+Command "insert into sale values('20050704','A00002','000003',5)";
+Command "insert into sale values('20050704','A00003','000004',2)";
+
+#order byを指定しないとき
+Command "select sho_no,sum(kazu) as total from sale group by sho_no";
+Command "select sho_no,min(kazu) as total from sale group by sho_no";
+Command "select sho_no,max(kazu) as total from sale group by sho_no";
+Command "select sho_no,count(kazu) as total from sale group by sho_no";
+
+#group byとorder byを使用すると集合関数の値がnullになる
+Command "select sho_no,sum(kazu) as total from sale group by sho_no order by sho_no";
+Command "select sho_no,min(kazu) as total from sale group by sho_no order by sho_no";
+Command "select sho_no,max(kazu) as total from sale group by sho_no order by sho_no";
+Command "select sho_no,count(kazu) as total from sale group by sho_no order by sho_no";
+
+Command "select sho_no,sum(kazu) as total from sale group by sho_no order by sho_no desc";
+Command "select sho_no,min(kazu) as total from sale group by sho_no order by sho_no desc";
+Command "select sho_no,max(kazu) as total from sale group by sho_no order by sho_no desc";
+Command "select sho_no,count(kazu) as total from sale group by sho_no order by sho_no desc";
+
+#order by を列番号で指定
+Command "select sho_no,sum(kazu) as total from sale group by sho_no order by 2";
+Command "select sho_no,min(kazu) as total from sale group by sho_no order by 2";
+Command "select sho_no,max(kazu) as total from sale group by sho_no order by 2";
+Command "select sho_no,count(kazu) as total from sale group by sho_no order by 2";
+
+
+Command "select sho_no,sum(kazu) as total from sale group by sho_no order by 1";
+Command "select sho_no,min(kazu) as total from sale group by sho_no order by 1";
+Command "select sho_no,max(kazu) as total from sale group by sho_no order by 1";
+Command "select sho_no,count(kazu) as total from sale group by sho_no order by 1";
+
+Command "select sho_no,sum(kazu) as total from sale group by sho_no order by 1 desc";
+Command "select sho_no,min(kazu) as total from sale group by sho_no order by 1 desc";
+Command "select sho_no,max(kazu) as total from sale group by sho_no order by 1 desc";
+Command "select sho_no,count(kazu) as total from sale group by sho_no order by 1 desc";
+
+
+#別名、sum(kazu)を使用できないのは仕様
+Command "select * from (select sho_no, sum(kazu) from sale group by sho_no) sale(sho_no, total) order by total";
+Command "select * from (select sho_no, sum(kazu) from sale group by sho_no) sale(sho_no, total) order by total desc";
+Command "select * from (select sho_no, sum(kazu) from sale group by sho_no) sale(s_no, total) order by s_no";
+Command "select * from (select sho_no, sum(kazu) from sale group by sho_no) sale(s_no, total) order by s_no desc";
+
+#20060803 テスト追加
+#group by のみ
+
+Command "select sho_no, sum(kazu) from sale group by sho_no";
+
+#order by のみ
+
+Command "select sho_no, sum(kazu) from sale order by sho_no desc";
+Command "select sho_no, sum(kazu) from sale order by 1 desc";
+Command "select sho_no, sum(kazu) from sale order by 2 desc";
+
+#別名のみ
+
+Command "select sho_no, sum(kazu) as total from sale";
+
+#group by と order by
+
+Command "select sho_no, sum(kazu) from sale group by sho_no order by sho_no desc";
+Command "select sho_no, sum(kazu) from sale group by sho_no order by 1 desc";
+Command "select sho_no, sum(kazu) from sale group by sho_no order by 2 desc";
+
+#order by と 別名
+
+Command "select sho_no, sum(kazu) as total from sale order by sho_no desc";
+Command "select sho_no, sum(kazu) as total from sale order by 1 desc";
+Command "select sho_no, sum(kazu) as total from sale order by 2 desc";
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

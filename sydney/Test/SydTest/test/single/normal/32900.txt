@@ -1,0 +1,42 @@
+#verify index (正常系)
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T (F ntext array[no limit] hint heap 'compressed')";
+#verifyされるべき索引を生成
+Command "create fulltext index I on T(F) hint 'sectionized, delayed ,inverted=(nolocation=true)'";
+
+#r/wトランザクションについて可能な組み合わせを全て試す
+Command "start transaction read write";
+Command "verify index I";
+Command "verify index I cascade";
+Command "verify index I continue";
+Command "verify index I cascade continue";
+Command "verify index I correct";
+Command "verify index I cascade correct";
+Command "verify index I continue correct";
+Command "verify index I cascade continue correct";
+Command "commit";
+
+#r/oトランザクションについて正常に実行可能な組み合わせを全て試す
+Command "start transaction read only, using snapshot";
+Command "verify index I";
+Command "verify index I cascade";
+Command "verify index I continue";
+Command "verify index I cascade continue";
+Command "commit";
+
+TerminateSession;
+# あとかたづけ
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

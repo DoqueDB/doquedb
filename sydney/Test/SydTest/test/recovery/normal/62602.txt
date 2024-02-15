@@ -1,0 +1,50 @@
+# insert->create index /fulltext(plain)/heap
+# 先に索引のない状態で何件か入っているtableに後から索引をつけるテストを行う。
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# 列がスカラ型であるtableのテスト
+Command  "create table T1(C1 ntext hint heap)";
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\Teihon.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\takekurabe.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+# Indexが正常につけられれば成功
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true, notf=true)'";
+# 念のためselect
+Command  "select * from T1";
+Command  "drop table T1";
+
+
+# 列が配列型であるtableのテスト
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"]];
+# Indexが正常につけられれば成功
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true, notf=true)'";
+# 念のためselect
+#Command  "select * from T1";
+#Command  "drop table T1";
+
+Command  "select * from T1";
+
+TerminateSession;
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

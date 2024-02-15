@@ -1,0 +1,47 @@
+# blobファイル0バイトのデータをセットしたテーブルを
+# verifyにかけるとPhysical page use situation is inconsistent.
+# bug票0527に対応 2005/09/28
+
+Begin;
+
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (
+  F1                   int,
+  B1			blob,
+)";
+
+#データセット
+Command  "insert into T (F1,B1) values (?,?)" [1,binaryfile "..\\..\\doc\\zero"];
+
+Command "verify table T cascade continue";
+
+#r/wトランザクションについて可能な組み合わせを全て試す
+Command "start transaction read write";
+Command "verify table T";
+Command "verify table T cascade";
+Command "verify table T continue";
+Command "verify table T cascade continue";
+Command "verify table T correct";
+Command "verify table T cascade correct";
+Command "verify table T continue correct";
+Command "verify table T cascade continue correct";
+Command "commit";
+
+#r/oトランザクションについて正常に実行可能な組み合わせを全て試す
+Command "start transaction read only, using snapshot";
+Command "verify table T";
+Command "verify table T cascade";
+Command "verify table T continue";
+Command "verify table T cascade continue";
+Command "commit";
+
+Command  "select * from T";
+#Command "drop table T ";
+
+TerminateSession;
+# (障害回復を試すためTerminateしない)
+
+End;

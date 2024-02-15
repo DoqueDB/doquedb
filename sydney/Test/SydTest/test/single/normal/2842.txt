@@ -1,0 +1,42 @@
+#backup full
+#read only transactionでDBをbackupし、そのままdropする
+#対象モジュール: Admin
+
+Begin;
+Initialize;
+
+InitializeSession "DefaultDB";
+
+# read onlyならば、isolation levelはserializeのみ可能
+Command "start transaction read only, using snapshot, isolation level serializable";
+# discard snapshotなしはtransactionがread onlyのときのみ可能
+Command "start backup full";
+Command "end backup";
+#rollbackしてもエラーにならないことを確認する
+Command "rollback";
+
+# やり直し
+Command "start transaction read only, using snapshot, isolation level serializable";
+Command "start backup full";
+Command "end backup";
+#再びcommitする
+Command "commit";
+
+# backupは連続して実行可能であることを確認する
+Command "start transaction read only, using snapshot, isolation level serializable";
+Command "start backup full";
+#再びcommitする
+#end backupなしにcommitしても、commitの途中でend backupが行われる
+#このとき、Admin::EndBackup::EndAllが呼ばれる
+Command "commit";
+
+#DBの検査を行う
+Command "start transaction read write";
+Command "verify database DefaultDB cascade continue";
+Command "commit";
+
+TerminateSession;
+
+Terminate;
+End;
+

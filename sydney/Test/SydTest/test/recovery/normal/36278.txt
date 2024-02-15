@@ -1,0 +1,257 @@
+# マルチセッションの動作テスト。
+# 3 read write transaction + 0 read only transaction, 
+# read write transactionのすること = table操作(insert/update/delete) + table操作(insert/update/delete) + table操作(insert/update/delete) , 
+# 共通のisolation level = serializable。
+# 1つ目のr/o transactionは常にT1のみのselect, 
+# 2つ目のr/o transactionは常にT1とT2をjoinしたselect, 
+# 3つ目のr/o transactionは常にbackupを行う。 
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# Tableの作成
+Command  "create table T1(C1 int, C2 nchar(32))";
+Command  "create table T2(C1 int, C2 nchar(32))";
+Command  "create index I1_2 on T1(C2)";
+Command  "create fulltext index I1_F0 on T1(C2) hint 'inverted=(nolocation=true)'";
+# タプルを準備する
+Command  "insert into T1 (C1, C2) values (?, ?)" [1, "1"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [2, "2"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [3, "3"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [4, "4"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [5, "5"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [6, "6"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [7, "7"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [8, "8"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [9, "9"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [10, "10"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [11, "11"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [12, "12"];
+
+# 複数のスレッドをここで同時実行
+CreateThread "Thread1r";
+CreateThread "Thread2c";
+CreateThread "Thread3r";
+JoinThread "Thread1r";
+JoinThread "Thread2c";
+JoinThread "Thread3r";
+
+# repeat
+CreateThread "Thread1c";
+CreateThread "Thread2r";
+CreateThread "Thread3c";
+JoinThread "Thread1c";
+JoinThread "Thread2r";
+JoinThread "Thread3c";
+
+# Tableの内容の最終確認
+Command  "select * from T1 order by C1";
+Command  "select * from T2 order by C1";
+# Tableの後始末
+#Command  "drop table T1";
+#Command  "drop table T2";
+TerminateSession;
+
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+
+# commitするときとrollbackするときとでスクリプトが
+# 共有できるようにこういう形にしてある
+Thread1r
+{
+InitializeSession 1 "TESTDB";
+Command 1 "start transaction read write, isolation level serializable";
+CreateThread "Thread1";
+JoinThread "Thread1";
+Command 1 "rollback";
+TerminateSession 1;
+}
+
+Thread1c
+{
+InitializeSession 1 "TESTDB";
+Command 1 "start transaction read write, isolation level serializable";
+CreateThread "Thread1";
+JoinThread "Thread1";
+Command 1 "commit";
+TerminateSession 1;
+}
+
+Thread1
+{
+# 各タプルをいじる
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [0, "#1", 1, "1"];
+Command 1 "delete from T1 where C1=? and C2=?" [0, "#1"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [1, "-1-"];
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [1, "#2", 2, "2"];
+Command 1 "delete from T1 where C1=? and C2=?" [1, "#2"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [2, "-2-"];
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [2, "#3", 3, "3"];
+Command 1 "delete from T1 where C1=? and C2=?" [2, "#3"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [3, "-3-"];
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [3, "#4", 4, "4"];
+Command 1 "delete from T1 where C1=? and C2=?" [3, "#4"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [4, "-4-"];
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [4, "#5", 5, "5"];
+Command 1 "delete from T1 where C1=? and C2=?" [4, "#5"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [5, "-5-"];
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [5, "#6", 6, "6"];
+Command 1 "delete from T1 where C1=? and C2=?" [5, "#6"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [6, "-6-"];
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [6, "#7", 7, "7"];
+Command 1 "delete from T1 where C1=? and C2=?" [6, "#7"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [7, "-7-"];
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [7, "#8", 8, "8"];
+Command 1 "delete from T1 where C1=? and C2=?" [7, "#8"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [8, "-8-"];
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [8, "#9", 9, "9"];
+Command 1 "delete from T1 where C1=? and C2=?" [8, "#9"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [9, "-9-"];
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [9, "#10", 10, "10"];
+Command 1 "delete from T1 where C1=? and C2=?" [9, "#10"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [10, "-10-"];
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [10, "#11", 11, "11"];
+Command 1 "delete from T1 where C1=? and C2=?" [10, "#11"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [11, "-11-"];
+Command 1 "update T1 set C1=?, C2=? where C1=? and C2=?" [11, "#12", 12, "12"];
+Command 1 "delete from T1 where C1=? and C2=?" [11, "#12"];
+Command 1 "insert into T1 (C1, C2) values (?, ?)" [12, "-12-"];
+}
+
+# commitするときとrollbackするときとでスクリプトが
+# 共有できるようにこういう形にしてある
+Thread2r
+{
+InitializeSession 2 "TESTDB";
+Command 2 "start transaction read write, isolation level serializable";
+CreateThread "Thread2";
+JoinThread "Thread2";
+Command 2 "rollback";
+TerminateSession 2;
+}
+
+Thread2c
+{
+InitializeSession 2 "TESTDB";
+Command 2 "start transaction read write, isolation level serializable";
+CreateThread "Thread2";
+JoinThread "Thread2";
+Command 2 "commit";
+TerminateSession 2;
+}
+
+Thread2
+{
+# 各タプルをいじる
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [0, "#1", 1, "1"];
+Command 2 "delete from T1 where C1=? and C2=?" [0, "#1"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [1, "-1-"];
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [1, "#2", 2, "2"];
+Command 2 "delete from T1 where C1=? and C2=?" [1, "#2"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [2, "-2-"];
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [2, "#3", 3, "3"];
+Command 2 "delete from T1 where C1=? and C2=?" [2, "#3"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [3, "-3-"];
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [3, "#4", 4, "4"];
+Command 2 "delete from T1 where C1=? and C2=?" [3, "#4"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [4, "-4-"];
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [4, "#5", 5, "5"];
+Command 2 "delete from T1 where C1=? and C2=?" [4, "#5"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [5, "-5-"];
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [5, "#6", 6, "6"];
+Command 2 "delete from T1 where C1=? and C2=?" [5, "#6"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [6, "-6-"];
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [6, "#7", 7, "7"];
+Command 2 "delete from T1 where C1=? and C2=?" [6, "#7"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [7, "-7-"];
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [7, "#8", 8, "8"];
+Command 2 "delete from T1 where C1=? and C2=?" [7, "#8"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [8, "-8-"];
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [8, "#9", 9, "9"];
+Command 2 "delete from T1 where C1=? and C2=?" [8, "#9"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [9, "-9-"];
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [9, "#10", 10, "10"];
+Command 2 "delete from T1 where C1=? and C2=?" [9, "#10"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [10, "-10-"];
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [10, "#11", 11, "11"];
+Command 2 "delete from T1 where C1=? and C2=?" [10, "#11"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [11, "-11-"];
+Command 2 "update T1 set C1=?, C2=? where C1=? and C2=?" [11, "#12", 12, "12"];
+Command 2 "delete from T1 where C1=? and C2=?" [11, "#12"];
+Command 2 "insert into T1 (C1, C2) values (?, ?)" [12, "-12-"];
+}
+
+# commitするときとrollbackするときとでスクリプトが
+# 共有できるようにこういう形にしてある
+Thread3r
+{
+InitializeSession 3 "TESTDB";
+Command 3 "start transaction read write, isolation level serializable";
+CreateThread "Thread3";
+JoinThread "Thread3";
+Command 3 "rollback";
+TerminateSession 3;
+}
+
+Thread3c
+{
+InitializeSession 3 "TESTDB";
+Command 3 "start transaction read write, isolation level serializable";
+CreateThread "Thread3";
+JoinThread "Thread3";
+Command 3 "commit";
+TerminateSession 3;
+}
+
+Thread3
+{
+# 各タプルをいじる
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [0, "#1", 1, "1"];
+Command 3 "delete from T1 where C1=? and C2=?" [0, "#1"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [1, "-1-"];
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [1, "#2", 2, "2"];
+Command 3 "delete from T1 where C1=? and C2=?" [1, "#2"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [2, "-2-"];
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [2, "#3", 3, "3"];
+Command 3 "delete from T1 where C1=? and C2=?" [2, "#3"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [3, "-3-"];
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [3, "#4", 4, "4"];
+Command 3 "delete from T1 where C1=? and C2=?" [3, "#4"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [4, "-4-"];
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [4, "#5", 5, "5"];
+Command 3 "delete from T1 where C1=? and C2=?" [4, "#5"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [5, "-5-"];
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [5, "#6", 6, "6"];
+Command 3 "delete from T1 where C1=? and C2=?" [5, "#6"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [6, "-6-"];
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [6, "#7", 7, "7"];
+Command 3 "delete from T1 where C1=? and C2=?" [6, "#7"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [7, "-7-"];
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [7, "#8", 8, "8"];
+Command 3 "delete from T1 where C1=? and C2=?" [7, "#8"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [8, "-8-"];
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [8, "#9", 9, "9"];
+Command 3 "delete from T1 where C1=? and C2=?" [8, "#9"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [9, "-9-"];
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [9, "#10", 10, "10"];
+Command 3 "delete from T1 where C1=? and C2=?" [9, "#10"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [10, "-10-"];
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [10, "#11", 11, "11"];
+Command 3 "delete from T1 where C1=? and C2=?" [10, "#11"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [11, "-11-"];
+Command 3 "update T1 set C1=?, C2=? where C1=? and C2=?" [11, "#12", 12, "12"];
+Command 3 "delete from T1 where C1=? and C2=?" [11, "#12"];
+Command 3 "insert into T1 (C1, C2) values (?, ?)" [12, "-12-"];
+}
+

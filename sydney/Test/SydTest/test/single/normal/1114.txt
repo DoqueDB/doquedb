@@ -1,0 +1,70 @@
+# blobファイルのテスト
+
+Begin;
+SetSystemParameter "SydTest_ShowBinary" "True";
+SetSystemParameter "SydTest_MessageDisplayThreshold" "0";
+Initialize;
+
+
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T1(C1 nclob)";
+Command "select C1 from T1";
+Command "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\rnd1M-a.txt"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [textsjisfile "..\\..\\doc\\rnd1M-b.txt"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [textsjisfile "..\\..\\doc\\rnd1M-c.txt"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from       1 for 1000) from T1";
+Command "select substring(C1 from 1499501 for 1000) from T1";
+Command "select substring(C1 from 2999001 for 1000) from T1";
+Command "select substring(C1 from 2999001) from T1";
+Command "update T1 set C1 = overlay(C1 placing ? from       1)" [textsjisfile "..\\..\\doc\\rnd1k-a.txt"]; 
+Command "update T1 set C1 = overlay(C1 placing ? from 1499501)" [textsjisfile "..\\..\\doc\\rnd1k-b.txt"];
+Command "update T1 set C1 = overlay(C1 placing ? from 2999001)" [textsjisfile "..\\..\\doc\\rnd1k-c.txt"];
+Command "select substring(C1 from       1 for 1000) from T1";
+Command "select substring(C1 from 1499501 for 1000) from T1";
+Command "select substring(C1 from 2999001 for 1000) from T1";
+Command "select substring(C1 from 2999001) from T1";
+Command "verify table T1";
+Command  "drop table T1";
+
+Command "create table T1(C1 nclob)";
+Command "select C1 from T1";
+Command "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\rnd1M-a.txt"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [textsjisfile "..\\..\\doc\\rnd1M-b.txt"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [textsjisfile "..\\..\\doc\\rnd1M-c.txt"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from       1 for 10000) from T1";
+Command "select substring(C1 from 1497501 for 10000) from T1";
+Command "select substring(C1 from 2995001 for 10000) from T1";
+Command "select substring(C1 from 2995001) from T1";
+Command "update T1 set C1 = overlay(C1 placing ? from       1)" [textsjisfile "..\\..\\doc\\rnd5k-a.txt"]; 
+Command "update T1 set C1 = overlay(C1 placing ? from 1497501)" [textsjisfile "..\\..\\doc\\rnd5k-b.txt"];
+Command "update T1 set C1 = overlay(C1 placing ? from 2995001)" [textsjisfile "..\\..\\doc\\rnd5k-c.txt"];
+Command "select substring(C1 from       1 for 5000) from T1";
+Command "select substring(C1 from 1497501 for 5000) from T1";
+Command "select substring(C1 from 2995001 for 5000) from T1";
+Command "select substring(C1 from 2995001) from T1";
+Command "verify table T1";
+Command  "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+SetSystemParameter "SydTest_MessageDisplayThreshold" "500";
+SetSystemParameter "SydTest_ShowBinary" "False";
+End;
+

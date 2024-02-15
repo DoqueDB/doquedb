@@ -1,0 +1,73 @@
+Begin;
+SetSystemParameter "SydTest_UnreplaceBackSlash" "TRUE";
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T input from path '../../doc/bulk_1_data1.txt' hint 'code=\"utf-8\"'";
+Command "select * from T";
+Command "drop table T";
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T input from path '../../doc/bulk_1_data2.utf8' WITH PATH '../../doc/bulk_1_spec2.utf8' HINT 'FieldSeparator=\"\\t\" RecordSeparator=\"\\n===\\n\" ElementSeparator=\"@\" Code=\"utf-8\" InputField=(2-3,5,8-11) InputRecord=(-3,5,8-10) ErrorData=\"error2.dat\"'";
+Command "select * from T";
+Command "drop table T";
+System "diff error2.dat ../../doc/bulk_1_error2.utf8";
+System "rm error2.dat";
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T(f1,f3,f4,g1) input from path '../../doc/bulk_1_data3.utf8' WITH PATH '../../doc/bulk_1_spec3.utf8' HINT 'RecordSeparator=\"\\n===\\n\" Code=\"utf-8\" InputRecord=(-3,5,8-10)'";
+Command "select * from T";
+Command "drop table T";
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T(f1,f3,f4,g1) input from path '../../doc/bulk_1_data4.txt' WITH PATH '../../doc/bulk_1_spec4.txt' HINT 'FieldSeparator=\"\\t\" ElementSeparator=\"@\" InputField=(1,3-4,7) ErrorData=\"error4.dat\" Code=\"utf-8\"'";
+Command "select * from T";
+Command "drop table T";
+System "diff error4.dat ../../doc/bulk_1_error4.txt";
+System "rm error4.dat";
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T input from path '../../doc/bulk_1_data5.utf8' WITH PATH '../../doc/bulk_1_spec5.utf8' HINT 'ElementSeparator=\"@\" Code=\"utf-8\" ErrorData=\"error5.dat\"'";
+Command "select * from T";
+Command "drop table T";
+System "diff error5.dat ../../doc/bulk_1_error5.utf8";
+System "rm error5.dat";
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T input from path '../../doc/bulk_1_data6.txt' WITH PATH '../../doc/bulk_1_spec6.txt' HINT 'FieldSeparator=\"\\t\" RecordSeparator=\"\\n===\\n\" InputField=(2-3,5,8-11) InputRecord=(-3,5,8-10) Code=\"utf-8\"'";
+Command "select * from T";
+Command "drop table T";
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T(f1,f3,f4,g1) input from path '../../doc/bulk_1_data7.utf8' WITH PATH '../../doc/bulk_1_spec7.utf8' HINT 'FieldSeparator=\"\\t\" Code=\"utf-8\" InputRecord=(-3,5,8-10) ErrorData=\"error7.dat\"'";
+Command "select * from T";
+Command "drop table T";
+System "diff error7.dat ../../doc/bulk_1_error7.utf8";
+System "rm error7.dat";
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T(f1,f3,f4,g1) input from path '../../doc/bulk_1_data8.txt' WITH PATH '../../doc/bulk_1_spec8.txt' HINT 'RecordSeparator=\"\\n===\\n\" ElementSeparator=\"@\" InputField=(1,3-4,7) Code=\"utf-8\"'";
+Command "select * from T";
+Command "drop table T";
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T input from path '../../doc/bulk_1_data9.utf8' HINT 'FieldSeparator=\"\\t\" RecordSeparator=\"\\n===\\n\" ElementSeparator=\"@\" Code=\"utf-8\" InputField=(2-3,5,8-11) InputRecord=(-3,5,8-10) ErrorData=\"error9.dat\"'";
+Command "select * from T";
+Command "drop table T";
+System "diff error9.dat ../../doc/bulk_1_error9.utf8";
+System "rm error9.dat";
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T input from path '../../doc/bulk_1_data10.txt' WITH PATH '../../doc/bulk_1_spec10.txt' hint 'code=\"utf-8\"'";
+Command "select * from T";
+Command "drop table T";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

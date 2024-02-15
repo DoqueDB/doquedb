@@ -1,0 +1,207 @@
+# select * from T1 natural       inner join T2
+#                           left outer
+#                          right outer
+# where句付きnatural joinテスト (where句内でjoinに使われる列が含まない)
+# 単索引
+# --T1索引無し, T2索引有り
+# --同種テスト 11[1-4]06
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  1,   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  null, "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "3",  null,   textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "4",  "ぴよ", null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null, "ピヨ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "2",   null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  null,  null,  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "4",  "ピヨ", null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  null,  null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "1",   null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null, "ほげ", null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null,  null,  textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null,  null,  null                                 ];
+
+
+# 1 テーブルT2(C1)
+Command  "create table T2(C1 int)";
+Command  "create index I2_1 on T2(C1)";
+Command  "insert into T2 (C1) values (?)" [111 ];
+Command  "insert into T2 (C1) values (?)" [null];
+Command  "insert into T2 (C1) values (?)" [333 ];
+Command  "insert into T2 (C1) values (?)" [444 ];
+Command  "insert into T2 (C1) values (?)" [666 ];
+
+
+# inner
+Command  "select * from T1 natural inner join T2 where C2 is null";
+Command  "select * from T1 natural inner join T2 where C3 is null";
+Command  "select * from T1 natural inner join T2 where C4 is null";
+
+Command  "select * from T1 natural inner join T2 where C2 >= (?)"   ["3"];
+Command  "select * from T1 natural inner join T2 where C3 >= (?)"   ["ほげ"];
+Command  "select * from T1 natural inner join T2 where C4 like (?)" ["株式会社リコー%"];
+
+# left outer
+Command  "select * from T1 natural left outer join T2 where C2 is null";
+Command  "select * from T1 natural left outer join T2 where C3 is null";
+Command  "select * from T1 natural left outer join T2 where C4 is null";
+
+Command  "select * from T1 natural left outer join T2 where C2 >= (?)"   ["3"];
+Command  "select * from T1 natural left outer join T2 where C3 >= (?)"   ["ほげ"];
+Command  "select * from T1 natural left outer join T2 where C4 like (?)" ["株式会社リコー%"];
+
+# right outer
+Command  "select * from T1 natural right outer join T2 where C2 is null";
+Command  "select * from T1 natural right outer join T2 where C3 is null";
+Command  "select * from T1 natural right outer join T2 where C4 is null";
+
+Command  "select * from T1 natural right outer join T2 where C2 >= (?)"   ["3"];
+Command  "select * from T1 natural right outer join T2 where C3 >= (?)"   ["ほげ"];
+Command  "select * from T1 natural right outer join T2 where C4 like (?)" ["株式会社リコー%"];
+
+Command  "drop table T2";
+
+
+# 2 テーブルT2(C2)
+Command  "create table T2(C2 varchar(2))";
+Command  "create index I2_1 on T2(C2)";
+Command  "insert into T2 (C2) values (?)" ["1" ];
+Command  "insert into T2 (C2) values (?)" [null];
+Command  "insert into T2 (C2) values (?)" ["3" ];
+Command  "insert into T2 (C2) values (?)" ["4" ];
+Command  "insert into T2 (C2) values (?)" ["6" ];
+
+
+# inner
+Command  "select * from T1 natural inner join T2 where C1 is null";
+Command  "select * from T1 natural inner join T2 where C3 is null";
+Command  "select * from T1 natural inner join T2 where C4 is null";
+
+Command  "select * from T1 natural inner join T2 where C1 >= (?)"   [333];
+Command  "select * from T1 natural inner join T2 where C3 >= (?)"   ["ほげ"];
+Command  "select * from T1 natural inner join T2 where C4 like (?)" ["株式会社リコー%"];
+
+# left outer
+Command  "select * from T1 natural left outer join T2 where C1 is null";
+Command  "select * from T1 natural left outer join T2 where C3 is null";
+Command  "select * from T1 natural left outer join T2 where C4 is null";
+
+Command  "select * from T1 natural left outer join T2 where C1 >= (?)"   [333];
+Command  "select * from T1 natural left outer join T2 where C3 >= (?)"   ["ほげ"];
+Command  "select * from T1 natural left outer join T2 where C4 like (?)" ["株式会社リコー%"];
+
+# right outer
+Command  "select * from T1 natural right outer join T2 where C1 is null";
+Command  "select * from T1 natural right outer join T2 where C3 is null";
+Command  "select * from T1 natural right outer join T2 where C4 is null";
+
+Command  "select * from T1 natural right outer join T2 where C1 >= (?)"   [333];
+Command  "select * from T1 natural right outer join T2 where C3 >= (?)"   ["ほげ"];
+Command  "select * from T1 natural right outer join T2 where C4 like (?)" ["株式会社リコー%"];
+
+Command  "drop table T2";
+
+
+# 3 テーブルT2(C3)
+Command  "create table T2(C3 nvarchar(4))";
+Command  "create index I2_1 on T2(C3)";
+Command  "insert into T2 (C3) values (?)" ["ほげ"];
+Command  "insert into T2 (C3) values (?)" [ null ];
+Command  "insert into T2 (C3) values (?)" ["ぴよ"];
+Command  "insert into T2 (C3) values (?)" ["ピヨ"];
+Command  "insert into T2 (C3) values (?)" ["ぷう"];
+
+
+# inner
+Command  "select * from T1 natural inner join T2 where C1 is null";
+Command  "select * from T1 natural inner join T2 where C2 is null";
+Command  "select * from T1 natural inner join T2 where C4 is null";
+
+Command  "select * from T1 natural inner join T2 where C1 >= (?)"   [333];
+Command  "select * from T1 natural inner join T2 where C2 >= (?)"   ["3"];
+Command  "select * from T1 natural inner join T2 where C4 like (?)" ["株式会社リコー%"];
+
+# left outer
+Command  "select * from T1 natural left outer join T2 where C1 is null";
+Command  "select * from T1 natural left outer join T2 where C2 is null";
+Command  "select * from T1 natural left outer join T2 where C4 is null";
+
+Command  "select * from T1 natural left outer join T2 where C1 >= (?)"   [333];
+Command  "select * from T1 natural left outer join T2 where C2 >= (?)"   ["3"];
+Command  "select * from T1 natural left outer join T2 where C4 like (?)" ["株式会社リコー%"];
+
+# right outer
+Command  "select * from T1 natural right outer join T2 where C1 is null";
+Command  "select * from T1 natural right outer join T2 where C2 is null";
+Command  "select * from T1 natural right outer join T2 where C4 is null";
+
+Command  "select * from T1 natural right outer join T2 where C1 >= (?)"   [333];
+Command  "select * from T1 natural right outer join T2 where C2 >= (?)"   ["3"];
+Command  "select * from T1 natural right outer join T2 where C4 like (?)" ["株式会社リコー%"];
+
+Command  "drop table T2";
+
+
+# 4 テーブルT2(C4)
+Command  "create table T2(C4 nvarchar(448))";
+Command  "create index I2_1 on T2(C4)";
+Command  "insert into T2 (C4) values (?)" [textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T2 (C4) values (?)" [null                                 ];
+Command  "insert into T2 (C4) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C4) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C4) values (?)" [textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+
+
+# inner
+Command  "select * from T1 natural inner join T2 where C1 is null";
+Command  "select * from T1 natural inner join T2 where C2 is null";
+Command  "select * from T1 natural inner join T2 where C3 is null";
+
+Command  "select * from T1 natural inner join T2 where C1 >= (?)" [333];
+Command  "select * from T1 natural inner join T2 where C2 >= (?)" ["3"];
+Command  "select * from T1 natural inner join T2 where C3 >= (?)" ["ほげ"];
+
+# left outer
+Command  "select * from T1 natural left outer join T2 where C1 is null";
+Command  "select * from T1 natural left outer join T2 where C2 is null";
+Command  "select * from T1 natural left outer join T2 where C3 is null";
+
+Command  "select * from T1 natural left outer join T2 where C1 >= (?)" [333];
+Command  "select * from T1 natural left outer join T2 where C2 >= (?)" ["3"];
+Command  "select * from T1 natural left outer join T2 where C3 >= (?)" ["ほげ"];
+
+# right outer
+Command  "select * from T1 natural right outer join T2 where C1 is null";
+Command  "select * from T1 natural right outer join T2 where C2 is null";
+Command  "select * from T1 natural right outer join T2 where C3 is null";
+
+Command  "select * from T1 natural right outer join T2 where C1 >= (?)" [333];
+Command  "select * from T1 natural right outer join T2 where C2 >= (?)" ["3"];
+Command  "select * from T1 natural right outer join T2 where C3 >= (?)" ["ほげ"];
+
+Command  "drop table T2";
+
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

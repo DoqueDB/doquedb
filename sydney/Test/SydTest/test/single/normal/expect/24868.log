@@ -1,0 +1,134 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB if exists
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t (f ntext, g ntext, h ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {abc,あいうえお,123}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bcd,あかさたな,135}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),かきくけこ,246}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {cde,(null),139}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index i on t(f)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index j on t(g)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index k on t(h)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where (f contains '' and g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where (f contains string('') and g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where (f contains '' or h is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where (f contains('') or h is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains '' or (f contains '' and f is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where f contains string('') or (f contains string('') and f is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains '' or (g contains '' and g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where f contains string('') or (g contains string('') and g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains '' or (g contains '' and h is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where f contains string('') or (g contains string('') and h is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains '' and (f contains '' or f is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where f contains string('') and (f contains string('') or f is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains '' and (g contains '' or g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where f contains string('') and (g contains string('') or g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains '' and (g contains '' or h is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where f contains string('') and (g contains string('') or h is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains '' and f is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where not (f contains string('') and f is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains '' and g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where not (f contains string('') and g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains '') and not (f is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where not (f contains string('')) and not (f is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains '') and not (g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where not (f contains string('')) and not (g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains '' or f is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where not (f contains string('') or f is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains '' or g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from t where not (f contains string('') or g is null)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

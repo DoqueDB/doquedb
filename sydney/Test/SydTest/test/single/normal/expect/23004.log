@@ -1,0 +1,289 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T
+(
+	C1 int,
+	C2 int DEFAULT 1234,
+	C3 datetime DEFAULT CURRENT_TIMESTAMP,
+	C4 datetime DEFAULT CURRENT_TIMESTAMP,
+	C5 datetime DEFAULT CURRENT_TIMESTAMP USING ON UPDATE,
+	C6 datetime DEFAULT CURRENT_TIMESTAMP USING ON UPDATE
+)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I4 on T(C4)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I6 on T(C6)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C3) values ('1987-06-05 04:32:10'), ('1234-05-06 07:08:09')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C4) values ('1987-06-05 04:32:10'), ('1234-05-06 07:08:09')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C3 from T where C3 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {(null),1234,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] {(null),1234,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C4 from T where C4 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {(null),1234,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] {(null),1234,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C5) values ('1987-06-05 04:32:10'), ('1234-05-06 07:08:09')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C6) values ('1987-06-05 04:32:10'), ('1234-05-06 07:08:09')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C5 from T where C5 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {(null),1234,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] {(null),1234,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C6 from T where C6 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {(null),1234,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] {(null),1234,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C1, C3) values (3, '1987-06-05 04:32:10'), (3, '1234-05-06 07:08:09')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C1, C4) values (4, '1987-06-05 04:32:10'), (4, '1234-05-06 07:08:09')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C3 from T where C1 > 0 and C3 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {3,1234,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] {3,1234,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C4 from T where C1 > 0 and C4 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {4,1234,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] {4,1234,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C1, C5) values (5, '1987-06-05 04:32:10'), (5, '1234-05-06 07:08:09')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C1, C6) values (6, '1987-06-05 04:32:10'), (6, '1234-05-06 07:08:09')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C5 from T where C1 > 0 and C5 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {5,1234,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] {5,1234,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C6 from T where C1 > 0 and C6 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {6,1234,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] {6,1234,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C2, C3) values (3, '1987-06-05 04:32:10'), (3, '1234-05-06 07:08:09')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C2, C4) values (4, '1987-06-05 04:32:10'), (4, '1234-05-06 07:08:09')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C3 from T where C2 < 10 and C3 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {(null),3,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] {(null),3,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C4 from T where C2 < 10 and C4 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {(null),4,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] {(null),4,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C3, C4) values ('1987-06-05 04:32:10', '1234-05-06 07:08:09'), ('1234-05-06 07:08:09', '1987-06-05 04:32:10')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C5, C6) values ('1987-06-05 04:32:10', '1234-05-06 07:08:09'), ('1234-05-06 07:08:09', '1987-06-05 04:32:10')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C3, C4 from T where C3 <= '2000-01-01 00:00:00' and C4 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {(null),1234,1987-06-05 04:32:10.000,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] {(null),1234,1234-05-06 07:08:09.000,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C5, C6 from T where C5 <= '2000-01-01 00:00:00' and C6 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {(null),1234,1987-06-05 04:32:10.000,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] {(null),1234,1234-05-06 07:08:09.000,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C3, C5) values ('1987-06-05 04:32:10', '1234-05-06 07:08:09'), ('1234-05-06 07:08:09', '1987-06-05 04:32:10')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(C4, C6) values ('1987-06-05 04:32:10', '1234-05-06 07:08:09'), ('1234-05-06 07:08:09', '1987-06-05 04:32:10')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C3, C5 from T where C3 <= '2000-01-01 00:00:00' and C5 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {(null),1234,1987-06-05 04:32:10.000,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] {(null),1234,1234-05-06 07:08:09.000,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, C4, C6 from T where C4 <= '2000-01-01 00:00:00' and C6 <= '2000-01-01 00:00:00'
+SydTest::Executor: [INFO] {(null),1234,1987-06-05 04:32:10.000,1234-05-06 07:08:09.000}
+SydTest::Executor: [INFO] {(null),1234,1234-05-06 07:08:09.000,1987-06-05 04:32:10.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C3 = '0123-04-05 06:07:08' where C2 = 3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C4 = '0123-04-05 06:07:08' where C2 = 4
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C3 from T where C3 <= '1000-01-01 00:00:00'
+SydTest::Executor: [INFO] {0123-04-05 06:07:08.000}
+SydTest::Executor: [INFO] {0123-04-05 06:07:08.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C4 from T where C4 <= '1000-01-01 00:00:00'
+SydTest::Executor: [INFO] {0123-04-05 06:07:08.000}
+SydTest::Executor: [INFO] {0123-04-05 06:07:08.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C5 = '0123-04-05 06:07:08' where C2 = 5
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C6 = '0123-04-05 06:07:08' where C2 = 6
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C5 from T where C5 <= '1000-01-01 00:00:00'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C6 from T where C6 <= '1000-01-01 00:00:00'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C1 = 30, C3 = '0012-03-04 05:06:07' where C2 = 3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C1 = 40, C4 = '0012-03-04 05:06:07' where C2 = 4
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C3 from T where C1 > 0 and C3 <= '0100-01-01 00:00:00'
+SydTest::Executor: [INFO] {30,0012-03-04 05:06:07.000}
+SydTest::Executor: [INFO] {30,0012-03-04 05:06:07.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C4 from T where C1 > 0 and C4 <= '0100-01-01 00:00:00'
+SydTest::Executor: [INFO] {40,0012-03-04 05:06:07.000}
+SydTest::Executor: [INFO] {40,0012-03-04 05:06:07.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C1 = 50, C5 = '0012-03-04 05:06:07' where C2 = 5
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C1 = 60, C6 = '0012-03-04 05:06:07' where C2 = 6
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C5 from T where C1 > 0 and C5 <= '0100-01-01 00:00:00'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 from T where C1 > 0 and C6 <= '0100-01-01 00:00:00'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C3 = '0012-03-04 05:06:07', C4 = '0024-06-08 10:12:14' where C2 in (3,4)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C5 = '0012-03-04 05:06:07', C6 = '0024-06-08 10:12:14' where C2 in (5,6)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C3, C4 from T where C3 <= '0100-01-01 00:00:00' and C4 <= '0100-01-01 00:00:00'
+SydTest::Executor: [INFO] {0012-03-04 05:06:07.000,0024-06-08 10:12:14.000}
+SydTest::Executor: [INFO] {0012-03-04 05:06:07.000,0024-06-08 10:12:14.000}
+SydTest::Executor: [INFO] {0012-03-04 05:06:07.000,0024-06-08 10:12:14.000}
+SydTest::Executor: [INFO] {0012-03-04 05:06:07.000,0024-06-08 10:12:14.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C5, C6 from T where C5 <= '0100-01-01 00:00:00' and C6 <= '0100-01-01 00:00:00'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C3 = '0036-09-12 15:18:21', C5 = '0048-12-16 20:24:28' where C2 in (3,5)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C4 = '0050-01-05 20:25:30', C6 = '0061-02-18 02:43:03' where C2 in (4,6)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C3, C5 from T where C3 <= '0100-01-01 00:00:00' and C5 <= '0100-01-01 00:00:00'
+SydTest::Executor: [INFO] {0036-09-12 15:18:21.000,0048-12-16 20:24:28.000}
+SydTest::Executor: [INFO] {0036-09-12 15:18:21.000,0048-12-16 20:24:28.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C4, C6 from T where C4 <= '0100-01-01 00:00:00' and C6 <= '0100-01-01 00:00:00'
+SydTest::Executor: [INFO] {0050-01-05 20:25:30.000,0061-02-18 02:43:03.000}
+SydTest::Executor: [INFO] {0050-01-05 20:25:30.000,0061-02-18 02:43:03.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C4 = C3 where C2 = 3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C3 = C4 where C2 = 4
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C3, C4 from T where C2 = 3
+SydTest::Executor: [INFO] {0036-09-12 15:18:21.000,0036-09-12 15:18:21.000}
+SydTest::Executor: [INFO] {0036-09-12 15:18:21.000,0036-09-12 15:18:21.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C3, C4 from T where C2 = 4
+SydTest::Executor: [INFO] {0050-01-05 20:25:30.000,0050-01-05 20:25:30.000}
+SydTest::Executor: [INFO] {0050-01-05 20:25:30.000,0050-01-05 20:25:30.000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

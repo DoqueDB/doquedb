@@ -1,0 +1,106 @@
+# select * from T1 natural inner       join〈 T2がサブクエリ 〉
+#                          left outer
+#                          right outer
+# T2がサブクエリ付きでのjoinテスト
+# 単索引
+# --T1索引無し, T2索引無し
+# --同種テスト 11[1-4]80
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  null, "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", null                                 ];
+
+
+# テーブルT2
+Command  "create table T2(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "2",  "ほげ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  3,   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  null, "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",  "ぷう", null                                 ];
+
+
+# inner
+Command  "select * from T1 natural inner join (select C1 from T2) as T3";
+Command  "select * from T1 natural inner join (select C2 from T2) as T3";
+Command  "select * from T1 natural inner join (select C3 from T2) as T3";
+Command  "select * from T1 natural inner join (select C4 from T2) as T3";
+
+# left outer
+Command  "select * from T1 natural left outer join (select C1 from T2) as T3";
+Command  "select * from T1 natural left outer join (select C2 from T2) as T3";
+Command  "select * from T1 natural left outer join (select C3 from T2) as T3";
+Command  "select * from T1 natural left outer join (select C4 from T2) as T3";
+
+# right outer
+Command  "select * from T1 natural right outer join (select C1 from T2) as T3";
+Command  "select * from T1 natural right outer join (select C2 from T2) as T3";
+Command  "select * from T1 natural right outer join (select C3 from T2) as T3";
+Command  "select * from T1 natural right outer join (select C4 from T2) as T3";
+
+
+# where句付きでのテスト
+# inner
+Command  "select * from T1 natural inner join (select C1 from T2 where C1 is null) as T3";
+Command  "select * from T1 natural inner join (select C2 from T2 where C2 is null) as T3";
+Command  "select * from T1 natural inner join (select C3 from T2 where C3 is null) as T3";
+Command  "select * from T1 natural inner join (select C4 from T2 where C4 is null) as T3";
+
+Command  "select * from T1 natural inner join (select C1 from T2 where C1 >= (?)) as T3" [333];
+Command  "select * from T1 natural inner join (select C2 from T2 where C2 >= (?)) as T3" ["3"];
+Command  "select * from T1 natural inner join (select C3 from T2 where C3 >= (?)) as T3" ["ほげ"];
+Command  "select * from T1 natural inner join (select C4 from T2 where C4 like (?)) as T3" ["株式会社リコー%"];
+
+# left outer
+Command  "select * from T1 natural left outer join (select C1 from T2 where C1 is null) as T3";
+Command  "select * from T1 natural left outer join (select C2 from T2 where C2 is null) as T3";
+Command  "select * from T1 natural left outer join (select C3 from T2 where C3 is null) as T3";
+Command  "select * from T1 natural left outer join (select C4 from T2 where C4 is null) as T3";
+
+Command  "select * from T1 natural left outer join (select C1 from T2 where C1 >= (?)) as T3" [333];
+Command  "select * from T1 natural left outer join (select C2 from T2 where C2 >= (?)) as T3" ["3"];
+Command  "select * from T1 natural left outer join (select C3 from T2 where C3 >= (?)) as T3" ["ほげ"];
+Command  "select * from T1 natural left outer join (select C4 from T2 where C4 like (?)) as T3" ["株式会社リコー%"];
+
+# right outer
+Command  "select * from T1 natural right outer join (select C1 from T2 where C1 is null) as T3";
+Command  "select * from T1 natural right outer join (select C2 from T2 where C2 is null) as T3";
+Command  "select * from T1 natural right outer join (select C3 from T2 where C3 is null) as T3";
+Command  "select * from T1 natural right outer join (select C4 from T2 where C4 is null) as T3";
+
+Command  "select * from T1 natural right outer join (select C1 from T2 where C1 >= (?)) as T3" [333];
+Command  "select * from T1 natural right outer join (select C2 from T2 where C2 >= (?)) as T3" ["3"];
+Command  "select * from T1 natural right outer join (select C3 from T2 where C3 >= (?)) as T3" ["ほげ"];
+Command  "select * from T1 natural right outer join (select C4 from T2 where C4 like (?)) as T3" ["株式会社リコー%"];
+
+Command  "drop table T2";
+
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

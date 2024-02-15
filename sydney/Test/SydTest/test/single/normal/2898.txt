@@ -1,0 +1,66 @@
+#unmount/mount(空でない表や索引を含むDb, 他のセッションでread only なtransaction でbackupを行う) 障害票#0446
+Begin;
+Initialize;
+InitializeSession "";
+
+Command "create database D1";
+TerminateSession;
+
+InitializeSession "D1";
+Command "create table t(f int)";
+Command "insert into t values 1,2,3,4,5";
+TerminateSession;
+
+InitializeSession 1 "D1";
+Command 1 "start transaction read only, using snapshot";
+Command 1 "start backup full";
+Command 1 "end backup";
+Command 1 "commit";
+
+InitializeSession "";
+Command "unmount D1";
+Command "mount D1 path 'd:\\dm\\data\\D1'";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database D1";
+TerminateSession;
+
+TerminateSession 1;
+Terminate;
+
+Initialize;
+InitializeSession "";
+Command "create database D1";
+Command "create database D2";
+TerminateSession;
+
+InitializeSession "D1";
+Command "create table t(f int)";
+Command "insert into t values 1,2,3,4,5";
+TerminateSession;
+
+InitializeSession 2 "D2";
+Command 2 "create table t(f int)";
+Command 2 "insert into t values 1,2,3,4,5";
+
+InitializeSession 1 "D1";
+Command 1 "start transaction read only, using snapshot";
+Command 1 "start backup full";
+Command 1 "end backup";
+Command 1 "commit";
+
+InitializeSession "";
+Command "unmount D1";
+Command "mount D1 path 'd:\\dm\\data\\D1'";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database D1";
+Command "drop database D2";
+TerminateSession;
+
+TerminateSession 2;
+TerminateSession 1;
+Terminate;
+End;

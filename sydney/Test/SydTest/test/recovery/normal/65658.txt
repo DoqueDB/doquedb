@@ -1,0 +1,139 @@
+# マルチセッションの動作テスト。
+# 1 read write transaction + 2 read only transaction, 
+# read write transactionのすること = r/w transactionからのbackup , 
+# 共通のisolation level = serializable。
+# 1つ目のr/o transactionは常にT1のみのselect, 
+# 2つ目のr/o transactionは常にT1とT2をjoinしたselect, 
+# 3つ目のr/o transactionは常にbackupを行う。 
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# Tableの作成
+Command  "create table T1(C1 int, C2 nchar(32))";
+Command  "create table T2(C1 int, C2 nchar(32))";
+Command  "create index I1_2 on T1(C2)";
+Command  "create fulltext index I1_F0 on T1(C2) hint 'inverted=(nolocation=true, notf=true)'";
+# タプルを準備する
+Command  "insert into T1 (C1, C2) values (?, ?)" [1, "1"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [2, "2"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [3, "3"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [4, "4"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [5, "5"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [6, "6"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [7, "7"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [8, "8"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [9, "9"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [10, "10"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [11, "11"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [12, "12"];
+
+# 複数のスレッドをここで同時実行
+CreateThread "Thread1";
+CreateThread "Thread2";
+CreateThread "Thread3r";
+JoinThread "Thread3r";
+JoinThread "Thread1";
+JoinThread "Thread2";
+
+# repeat
+CreateThread "Thread1";
+CreateThread "Thread2";
+CreateThread "Thread3c";
+JoinThread "Thread3c";
+JoinThread "Thread1";
+JoinThread "Thread2";
+
+# Tableの内容の最終確認
+Command  "select * from T1 order by C1";
+Command  "select * from T2 order by C1";
+# Tableの後始末
+#Command  "drop table T1";
+#Command  "drop table T2";
+TerminateSession;
+
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+
+Thread1
+{
+InitializeSession 1 "TESTDB";
+Command 1 "start transaction read only, using snapshot";
+# 1..12についてlike検索を行う
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%12%"];
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%11%"];
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%10%"];
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%9%"];
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%8%"];
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%7%"];
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%6%"];
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%5%"];
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%4%"];
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%3%"];
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%2%"];
+Command 1 "select C2 from T1 where C2 like ? order by C2" ["%1%"];
+Command 1 "commit";
+TerminateSession 1;
+}
+
+Thread2
+{
+InitializeSession 2 "TESTDB";
+Command 2 "start transaction read only, using snapshot";
+# T1とT2のjoinに対してselectを行う
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [1, "%1%"];
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [2, "%2%"];
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [3, "%3%"];
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [4, "%4%"];
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [5, "%5%"];
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [6, "%6%"];
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [7, "%7%"];
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [8, "%8%"];
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [9, "%9%"];
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [10, "%10%"];
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [11, "%11%"];
+Command 2 "select T1.C1, T2.C1 from T1, T2 where T2.C1=? or T1.C2 like ? order by T1.C1, T2.C1" [12, "%12%"];
+Command 2 "commit";
+TerminateSession 2;
+}
+
+# commitするときとrollbackするときとでスクリプトが
+# 共有できるようにこういう形にしてある
+Thread3r
+{
+InitializeSession 3 "TESTDB";
+Command 3 "start transaction read write, isolation level serializable";
+CreateThread "Thread3";
+JoinThread "Thread3";
+Command 3 "rollback";
+TerminateSession 3;
+}
+
+Thread3c
+{
+InitializeSession 3 "TESTDB";
+Command 3 "start transaction read write, isolation level serializable";
+CreateThread "Thread3";
+JoinThread "Thread3";
+Command 3 "commit";
+TerminateSession 3;
+}
+
+Thread3
+{
+# onlineを行う
+Command 3 "start backup full discard snapshot";
+Command 3 "end backup";
+}
+

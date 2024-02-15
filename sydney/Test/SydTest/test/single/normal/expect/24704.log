@@ -1,0 +1,113 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(C ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I on T(C)  hint 'inverted=(distribute=10, normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=10))'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values ('北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,score(C),cluster(C).id,C from T where C contains 'ロハス'
+SydTest::Executor: [INFO] {2,1.170990747588E-1,1,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {5,1.170990747588E-1,1,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {8,1.170990747588E-1,1,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {0,8.908150472453E-2,2,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {1,8.908150472453E-2,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {3,8.908150472453E-2,2,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {4,8.908150472453E-2,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {6,8.908150472453E-2,2,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {7,8.908150472453E-2,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,score(C),cluster(C).id,C from T where C contains 'ロハス' clustered limit 1
+SydTest::Executor: [INFO] {2,1.170990747588E-1,1,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {5,1.170990747588E-1,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {8,1.170990747588E-1,3,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {0,8.908150472453E-2,4,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {1,8.908150472453E-2,5,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {3,8.908150472453E-2,6,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {4,8.908150472453E-2,7,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {6,8.908150472453E-2,8,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {7,8.908150472453E-2,9,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,score(C),cluster(C).id,C from T where C contains 'ロハス' clustered limit 0.98
+SydTest::Executor: [INFO] {2,1.170990747588E-1,1,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {5,1.170990747588E-1,1,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {8,1.170990747588E-1,1,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {0,8.908150472453E-2,4,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {3,8.908150472453E-2,4,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {6,8.908150472453E-2,4,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {1,8.908150472453E-2,5,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {4,8.908150472453E-2,5,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {7,8.908150472453E-2,5,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,score(C),cluster(C).id,C from T where C contains 'ロハス' clustered limit 0.97
+SydTest::Executor: [INFO] {2,1.170990747588E-1,1,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {5,1.170990747588E-1,1,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {8,1.170990747588E-1,1,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。}
+SydTest::Executor: [INFO] {0,8.908150472453E-2,4,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {3,8.908150472453E-2,4,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {6,8.908150472453E-2,4,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {1,8.908150472453E-2,5,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {4,8.908150472453E-2,5,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] {7,8.908150472453E-2,5,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

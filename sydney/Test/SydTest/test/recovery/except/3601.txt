@@ -1,0 +1,62 @@
+#read onlyトランザクションでできないこと
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T(C int)";
+Command "create index I on T(C)";
+Command "create area A 'd:\\dm\\area\\a'";
+
+# 以下のどの操作もできないはず
+Command "set transaction read only, using snapshot";
+Command "insert into T (C) values (777)";
+# 以上のどの操作もできないはず
+threadout {
+# 以下の操作は成功*する*
+Command "set transaction read only, using snapshot";
+Command "create table T2 (C int)"; 
+Command "set transaction read only, using snapshot";
+Command "create index I2 on T(C)"; 
+Command "set transaction read only, using snapshot";
+Command "create area A2 'd:\\dm\\area\\a2'";
+Command "set transaction read only, using snapshot";
+Command "alter table T set area A";
+Command "set transaction read only, using snapshot";
+Command "alter index I set area A";
+Command "set transaction read only, using snapshot";
+Command "alter area A modify 'd:\\dm\\area\\aa'";
+Command "set transaction read only, using snapshot";
+Command "alter database TESTDB set path 'd:\\dm\\area\\db'";
+Command "set transaction read only, using snapshot";
+Command "drop index I";
+Command "set transaction read only, using snapshot";
+Command "drop table T";
+Command "set transaction read only, using snapshot";
+Command "drop area A";
+Command "set transaction read only, using snapshot";
+Command "drop database TESTDB";
+}
+Command "set transaction read only, using snapshot";
+Command "select C from T";
+
+Command "select * from T";
+
+Command "drop index I";
+#Command "drop table T";
+Command "drop area A";
+TerminateSession;
+
+InitializeSession "";
+#Command "drop database TESTDB";
+TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;
+

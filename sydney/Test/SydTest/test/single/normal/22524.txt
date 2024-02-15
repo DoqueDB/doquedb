@@ -1,0 +1,26 @@
+# Bug report 1791
+
+Begin;
+System "cp -f \"c:\\Program Files\\Ricoh\\TRMeister\\user.pswd\" \"c:\\Program Files\\Ricoh\\TRMeister\\test.pswd\"";
+SetSystemParameter "Server_PasswordFilePath" "c:\\Program Files\\Ricoh\\TRMeister\\test.pswd";
+Initialize;
+InitializeSession "TESTDB" "root" "doqadmin";
+CreateUser "user1" "password1";
+TerminateSession;
+
+InitializeSession "TESTDB" "root" "doqadmin";
+Command  "sync";
+Command  "checkpoint";
+TerminateSession;
+
+InitializeSession  "TESTDB" "user1" "password1";
+Command  "sync";
+Command  "checkpoint";
+TerminateSession;
+
+InitializeSession  "TESTDB" "root" "doqadmin";
+DropUser "user1";
+TerminateSession;
+Terminate;
+System "rm -f \"c:\\Program Files\\Ricoh\\TRMeister\\test.pswd\"";
+End;

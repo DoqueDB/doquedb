@@ -1,0 +1,279 @@
+# 
+# Copyright (c) 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+######################################################################
+# 形態素辞書Makefile 複数辞書版サンプル
+# ext1.dic, ext2.dicからext1{wrd,app2}.dic, ext2{wrd,app2}.dicを作る
+# diclist.datの設定により、ext1*.dic, ext2*.dicのほうが優先度が高い
+######################################################################
+
+# 各種設定
+
+# 辞書バージョン
+UNADIC_VER    = comm1.5.1.9_tool1.3
+UNACON_VER    = una1.5_tool1.3-condef1.5.1.5
+UNAGRM_VER    = una1.5_tool1.3
+UNAEMK_VER    = emk1.5.1.2_ecost1.5.1.2
+UNAUMK_VER    = umk1.5.1.2
+UNAUC_VER     = uc1.5.1.3
+UNASTD_VER    = std1.5.1.5
+
+# MKUNADICの辞書作成モード
+# OPT_COMP：通常モードのときは空, コンパクトモードのときは-c
+OPT_COMP       = -c
+# OPT_BACK：WRD V1.25-形式のときは空，WRD V1.24-形式のときは-b
+OPT_BACK       =
+
+# ツールの設定
+INSTALL        = cp -fp
+CP             = cp -fp
+MKDIR          = mkdir -p
+RM             = /bin/rm -f
+RMDIR          = /bin/rm -fr
+SH             = sh -x
+PERL           = perl
+ICONV_8TO2     = iconv -f UTF8 -t UTF16LE
+ICONV_2TO8     = iconv -f UTF16LE -t UTF8
+
+# 辞書ビルドツールの所在
+TOOLS_DIR      = ../tools
+BIN_DIR        = $(TOOLS_DIR)/bin
+PERL_DIR       = $(TOOLS_DIR)/perl
+
+# 作業用ディレクトリ
+WORK_DIR       = ./uwork-multi
+
+# 出力先ディレクトリ
+OUT_DIR        = ./unadic-multi
+
+# 異表記正規化データのあるディレクトリ
+# あらかじめ以下を実行してデータを作成しておくこと
+#   make-stem, make-stem install, make-norm, make-norm install
+NORM_DIR       = $(OUT_DIR)/norm
+
+# コモンデータディレクトリ
+COMMON_DIR     = ../src-data/una
+COMMON_SUB     = $(COMMON_DIR)/subdata
+COMMON_ETC     = $(COMMON_DIR)/etc
+PARAM_DIR      = $(COMMON_DIR)/unaparam
+
+# 辞書ソース
+CDIC_SRC       = $(COMMON_DIR)/common.dic
+EXT1_SRC       = $(COMMON_DIR)/sample-ext1.dic
+EXT1_SRC       = $(COMMON_DIR)/sample-ext2.dic
+COMMON_SRC     = $(COMMON_DIR)/connect.src \
+                 $(COMMON_DIR)/hinsi.grp \
+                 $(COMMON_DIR)/gobi.tbl \
+                 $(COMMON_DIR)/mfeature.lst \
+                 $(COMMON_DIR)/kurule.src
+ALL_SRC        = $(CDIC_SRC) $(EXT1_SRC) $(EXT2_SRC) $(COMMON_SRC)
+CONDEF_SRC     = $(COMMON_SUB)/condef.txt
+ENGMK_SRC      = $(COMMON_SUB)/emktmdf.txt \
+                 $(COMMON_SUB)/ecosttbl.txt
+UNKMK_SRC      = $(COMMON_SUB)/umktmdf.txt \
+                 $(COMMON_SUB)/unkcost.txt
+STDTBL_SRC     = $(COMMON_SUB)/stdtbl.txt
+DICLIST_SRC    = $(COMMON_DIR)/sample-diclist.dat
+
+# 生成される辞書データ
+BINARY_DICS    = $(WORK_DIR)/unawrd.dic $(WORK_DIR)/unaapp2.dic \
+                 $(WORK_DIR)/ext1wrd.dic $(WORK_DIR)/ext1app2.dic \
+                 $(WORK_DIR)/ext2wrd.dic $(WORK_DIR)/ext2app2.dic \
+                 $(WORK_DIR)/connect.tbl $(WORK_DIR)/gram.tbl \
+                 $(WORK_DIR)/engmk.tbl $(WORK_DIR)/unkmk.tbl \
+                 $(WORK_DIR)/unkcost.tbl $(WORK_DIR)/unastd.tbl
+
+all: $(BINARY_DICS)
+
+# 作業ディレクトリ作成
+$(WORK_DIR):
+	$(MKDIR) $(WORK_DIR)
+
+# コスト再計算用データの取得
+$(WORK_DIR)/costmax.dat: $(COMMON_ETC)/costmax.dat $(WORK_DIR)
+	$(CP) $(COMMON_ETC)/costmax.dat $(WORK_DIR)/costmax.dat
+
+# unadic形態素辞書中間データ作成
+# 新たな品詞が出現したら品詞リスト(unahin.utf8)は更新される
+$(WORK_DIR)/unadic.utf8: $(CDIC_SRC) $(COMMON_SRC) $(WORK_DIR)/costmax.dat
+	$(PERL) $(PERL_DIR)/mkmodic -v -r . -E $(COMMON_DIR) -p h0m0t1f0g0e0 \
+		-a "<hyouki:unite>(<hyouki0> <info:f> <hin>)" -x UNA_HIN \
+		-m etc/hinmap.src -M etc/unihinmap.src -T etc/termtype.lst \
+		-Y etc/termtypemap.lst -l etc/fixhin.lst -s etc/han.tbl \
+		-O $(WORK_DIR)/unadic.utf8 -L $(WORK_DIR)/unahin.utf8 \
+		-z $(WORK_DIR)/hingrp.log \
+		-d $(COMMON_DIR)/common.dic -g $(COMMON_DIR)/hinsi.grp \
+		-t $(COMMON_DIR)/gobi.tbl -f $(COMMON_DIR)/mfeature.lst
+	$(PERL) $(PERL_DIR)/updatedic -c $(WORK_DIR)/costmax.dat \
+		-d unadic.utf8 -e $(WORK_DIR)
+
+# ext1形態素辞書中間データ作成
+$(WORK_DIR)/ext1dic.utf8: $(EXT1_SRC) $(COMMON_SRC) $(WORK_DIR)/costmax.dat
+	$(PERL) $(PERL_DIR)/mkmodic -v -r . -E $(COMMON_DIR) -p h0m0t1f0g0e0 \
+		-a "<hyouki:unite>(<hyouki0> <info:f> <hin>)" -x UNA_HIN \
+		-m etc/hinmap.src -M etc/unihinmap.src -T etc/termtype.lst \
+		-Y etc/termtypemap.lst -l etc/fixhin.lst -s etc/han.tbl \
+		-O $(WORK_DIR)/ext1dic.utf8 -L $(WORK_DIR)/unahin.utf8 \
+		-z $(WORK_DIR)/hingrp.log \
+		-d $(COMMON_DIR)/sample-ext1.dic -g $(COMMON_DIR)/hinsi.grp \
+		-t $(COMMON_DIR)/gobi.tbl -f $(COMMON_DIR)/mfeature.lst
+	$(PERL) $(PERL_DIR)/updatedic -c $(WORK_DIR)/costmax.dat \
+		-d ext1dic.utf8 -e $(WORK_DIR)
+
+# ext2形態素辞書中間データ作成
+$(WORK_DIR)/ext2dic.utf8: $(EXT2_SRC) $(COMMON_SRC) $(WORK_DIR)/costmax.dat
+	$(PERL) $(PERL_DIR)/mkmodic -v -r . -E $(COMMON_DIR) -p h0m0t1f0g0e0 \
+		-a "<hyouki:unite>(<hyouki0> <info:f> <hin>)" -x UNA_HIN \
+		-m etc/hinmap.src -M etc/unihinmap.src -T etc/termtype.lst \
+		-Y etc/termtypemap.lst -l etc/fixhin.lst -s etc/han.tbl \
+		-O $(WORK_DIR)/ext2dic.utf8 -L $(WORK_DIR)/unahin.utf8 \
+		-z $(WORK_DIR)/hingrp.log \
+		-d $(COMMON_DIR)/sample-ext2.dic -g $(COMMON_DIR)/hinsi.grp \
+		-t $(COMMON_DIR)/gobi.tbl -f $(COMMON_DIR)/mfeature.lst
+	$(PERL) $(PERL_DIR)/updatedic -c $(WORK_DIR)/costmax.dat \
+		-d ext2dic.utf8 -e $(WORK_DIR)
+
+# 接続表中間データ作成
+# 品詞リスト確定後に実施する必要があるため、
+# 依存ファイルにすべての形態素辞書中間データを列挙すること
+# これ以降は接続表中間データを品詞リスト確定の目印とする
+$(WORK_DIR)/unacon.utf8: $(ALL_SRC) $(WORK_DIR)/unadic.utf8 \
+		$(WORK_DIR)/ext1dic.utf8 $(WORK_DIR)/ext2dic.utf8
+	$(PERL) $(PERL_DIR)/mkmoconn -v -r . -E $(COMMON_DIR) \
+		-s etc/smap.lst -C etc/costmax.dat -U \
+		-O $(WORK_DIR)/unacon.utf8 -l $(WORK_DIR)/unahin.utf8 \
+		-z $(WORK_DIR)/connck.log -y $(WORK_DIR)/conn.log
+	$(ICONV_8TO2) $(WORK_DIR)/unahin.utf8 -o $(WORK_DIR)/unahin.ucs2
+	$(CP) $(WORK_DIR)/unahin.utf8 $(COMMON_ETC)/dichindo.tbl.new
+
+# unadic形態素辞書/アプリ辞書実行データ作成
+$(WORK_DIR)/unawrd.dic: $(WORK_DIR)/unadic.utf8 $(WORK_DIR)/unacon.utf8 \
+		$(NORM_DIR)/ruleWrd.dic
+	$(BIN_DIR)/cnvapp2norm -r $(NORM_DIR) -i $(WORK_DIR)/unadic.utf8 \
+		-o $(WORK_DIR)/unadic-norm.utf8
+	$(ICONV_8TO2) $(WORK_DIR)/unadic-norm.utf8 \
+		-o $(WORK_DIR)/unadic-norm.ucs2
+	$(BIN_DIR)/mkunadic $(OPT_COMP) $(OPT_BACK) -a $(UNADIC_VER) \
+		$(WORK_DIR)/costmax.dat $(WORK_DIR)/unahin.ucs2 \
+		$(WORK_DIR)/unadic-norm.ucs2 \
+		$(WORK_DIR)/unawrd.dic $(WORK_DIR)/unaapp2.dic
+
+# ext1形態素辞書/アプリ辞書実行データ作成
+$(WORK_DIR)/ext1wrd.dic: $(WORK_DIR)/ext1dic.utf8 $(WORK_DIR)/unacon.utf8 \
+		$(NORM_DIR)/ruleWrd.dic
+	$(BIN_DIR)/cnvapp2norm -r $(NORM_DIR) -i $(WORK_DIR)/ext1dic.utf8 \
+		-o $(WORK_DIR)/ext1dic-norm.utf8
+	$(ICONV_8TO2) $(WORK_DIR)/ext1dic-norm.utf8 \
+		-o $(WORK_DIR)/ext1dic-norm.ucs2
+	$(BIN_DIR)/mkunadic $(OPT_COMP) $(OPT_BACK) -a $(UNADIC_VER) \
+		$(WORK_DIR)/costmax.dat $(WORK_DIR)/unahin.ucs2 \
+		$(WORK_DIR)/ext1dic-norm.ucs2 \
+		$(WORK_DIR)/ext1wrd.dic $(WORK_DIR)/ext1app2.dic
+
+# ext2形態素辞書/アプリ辞書実行データ作成
+$(WORK_DIR)/ext2wrd.dic: $(WORK_DIR)/ext2dic.utf8 $(WORK_DIR)/unacon.utf8 \
+		$(NORM_DIR)/ruleWrd.dic
+	$(BIN_DIR)/cnvapp2norm -r $(NORM_DIR) -i $(WORK_DIR)/ext2dic.utf8 \
+		-o $(WORK_DIR)/ext2dic-norm.utf8
+	$(ICONV_8TO2) $(WORK_DIR)/ext2dic-norm.utf8 \
+		-o $(WORK_DIR)/ext2dic-norm.ucs2
+	$(BIN_DIR)/mkunadic $(OPT_COMP) $(OPT_BACK) -a $(UNADIC_VER) \
+		$(WORK_DIR)/costmax.dat $(WORK_DIR)/unahin.ucs2 \
+		$(WORK_DIR)/ext2dic-norm.ucs2 \
+		$(WORK_DIR)/ext2wrd.dic $(WORK_DIR)/ext2app2.dic
+
+# 接続表実行データ作成
+$(WORK_DIR)/connect.tbl: $(CONDEF_SRC) $(WORK_DIR)/unacon.utf8
+	$(ICONV_8TO2) $(CONDEF_SRC) -o $(WORK_DIR)/condef.ucs2
+	$(BIN_DIR)/mkconpt $(WORK_DIR)/condef.ucs2 $(WORK_DIR)/unahin.ucs2 \
+		$(WORK_DIR)/conpt.ucs2
+	$(ICONV_2TO8) $(WORK_DIR)/conpt.ucs2 -o $(WORK_DIR)/conpt.utf8
+	$(PERL) $(PERL_DIR)/paco -k0:1 -b -p $(WORK_DIR)/conpt.utf8 \
+		$(WORK_DIR)/unacon.utf8 $(WORK_DIR)/unacon-pat.utf8
+	$(ICONV_8TO2) $(WORK_DIR)/unacon-pat.utf8 \
+		-o $(WORK_DIR)/unacon-pat.ucs2
+	$(BIN_DIR)/mkcontbl -a $(UNACON_VER) $(WORK_DIR)/costmax.dat \
+		$(WORK_DIR)/unahin.ucs2 $(WORK_DIR)/unacon-pat.ucs2 \
+		$(WORK_DIR)/connect.tbl
+
+# 係り受けテーブル実行データ作成
+$(WORK_DIR)/gram.tbl: $(ALL_SRC) $(WORK_DIR)/unacon.utf8
+	$(PERL) $(PERL_DIR)/mkkutbl -v -r . -l $(WORK_DIR)/unahin.utf8 \
+		-g $(COMMON_DIR)/hinsi.grp -t $(COMMON_DIR)/gobi.tbl \
+		-k $(COMMON_DIR)/kurule.src \
+		-T $(WORK_DIR)/kutbl.utf8 -A $(WORK_DIR)/kuattr.utf8
+	$(ICONV_8TO2) $(WORK_DIR)/kutbl.utf8 -o $(WORK_DIR)/kutbl.ucs2
+	$(ICONV_8TO2) $(WORK_DIR)/kuattr.utf8 -o $(WORK_DIR)/kuattr.ucs2
+	$(BIN_DIR)/mkgrmtbl -a $(UNAGRM_VER) $(WORK_DIR)/kutbl.ucs2 \
+		$(WORK_DIR)/kuattr.ucs2 $(WORK_DIR)/unacon-pat.ucs2 \
+		$(WORK_DIR)/unahin.ucs2 $(WORK_DIR)/gram.tbl
+
+# 英語トークン文字種変更テーブル実行データ作成
+$(WORK_DIR)/engmk.tbl: $(ENGMK_SRC)
+	$(ICONV_8TO2) $(COMMON_SUB)/emktmdf.txt -o $(WORK_DIR)/emktmdf.ucs2
+	$(ICONV_8TO2) $(COMMON_SUB)/ecosttbl.txt -o $(WORK_DIR)/ecosttbl.ucs2
+	$(BIN_DIR)/mkemktbl -a $(UNAEMK_VER) -m $(WORK_DIR)/emktmdf.ucs2 \
+		-c $(WORK_DIR)/ecosttbl.ucs2 $(WORK_DIR)/engmk.tbl
+
+# 未登録語文字種変更テーブル/コスト推定テーブル実行データ作成
+$(WORK_DIR)/unkmk.tbl: $(UNKMK_SRC)
+	$(ICONV_8TO2) $(COMMON_SUB)/umktmdf.txt -o $(WORK_DIR)/umktmdf.ucs2
+	$(BIN_DIR)/mkumktbl -a $(UNAUMK_VER) -m $(WORK_DIR)/umktmdf.ucs2 \
+		$(WORK_DIR)/unkmk.tbl
+	$(ICONV_8TO2) $(COMMON_SUB)/unkcost.txt -o $(WORK_DIR)/unkcost.ucs2
+	$(BIN_DIR)/mkuctbl -a $(UNAUC_VER) $(WORK_DIR)/unkcost.ucs2 \
+		$(WORK_DIR)/unkcost.tbl
+
+# 文字変換テーブル実行データ作成
+$(WORK_DIR)/unastd.tbl: $(STDTBL_SRC)
+	$(ICONV_8TO2) $(COMMON_SUB)/stdtbl.txt -o $(WORK_DIR)/stdtbl.ucs2
+	$(BIN_DIR)/mkkeychr < $(COMMON_SUB)/stdtbl.txt | \
+		$(ICONV_8TO2) -o $(WORK_DIR)/keychar.ucs2
+	$(BIN_DIR)/mkstdtbl -a $(UNASTD_VER) $(WORK_DIR)/stdtbl.ucs2 \
+		$(WORK_DIR)/keychar.ucs2 $(WORK_DIR)/unastd.tbl
+
+clean: clean-all
+
+clean-all: clean-data clean-install
+
+clean-data:
+	$(RMDIR) $(WORK_DIR)
+
+clean-install:
+	$(RMDIR) $(OUT_DIR)/una
+	$(RM) $(OUT_DIR)/unaparam.dat
+
+install: install-all
+
+install-all: install-data
+
+install-data: $(BINARY_DICS) make-target-dir
+	$(INSTALL) $(WORK_DIR)/unawrd.dic     $(OUT_DIR)/una/unawrd.dic
+	$(INSTALL) $(WORK_DIR)/unaapp2.dic    $(OUT_DIR)/una/unaapp2.dic
+	$(INSTALL) $(WORK_DIR)/ext1wrd.dic    $(OUT_DIR)/una/ext1wrd.dic
+	$(INSTALL) $(WORK_DIR)/ext1app2.dic   $(OUT_DIR)/una/ext1app2.dic
+	$(INSTALL) $(WORK_DIR)/ext2wrd.dic    $(OUT_DIR)/una/ext2wrd.dic
+	$(INSTALL) $(WORK_DIR)/ext2app2.dic   $(OUT_DIR)/una/ext2app2.dic
+	$(INSTALL) $(WORK_DIR)/connect.tbl    $(OUT_DIR)/una/connect.tbl
+	$(INSTALL) $(WORK_DIR)/gram.tbl       $(OUT_DIR)/una/gram.tbl
+	$(INSTALL) $(WORK_DIR)/engmk.tbl      $(OUT_DIR)/una/engmk.tbl
+	$(INSTALL) $(WORK_DIR)/unkmk.tbl      $(OUT_DIR)/una/unkmk.tbl
+	$(INSTALL) $(WORK_DIR)/unkcost.tbl    $(OUT_DIR)/una/unkcost.tbl
+	$(INSTALL) $(WORK_DIR)/unastd.tbl     $(OUT_DIR)/una/unastd.tbl
+	$(INSTALL) $(DICLIST_SRC)             $(OUT_DIR)/una/diclist.dat
+	$(INSTALL) $(PARAM_DIR)/unajp         $(OUT_DIR)/unaparam.dat
+
+make-target-dir:
+	$(MKDIR) $(OUT_DIR)/una

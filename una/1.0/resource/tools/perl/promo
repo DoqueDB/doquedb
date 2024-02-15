@@ -1,0 +1,270 @@
+#!/usr/bin/perl
+# 
+# Copyright (c) 2000,2014, 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+
+# promo - 形態素解析後処理ツール
+
+=head1 NAME
+
+ promo - 形態素解析後処理ツール
+
+=head1 SYNOPSIS
+
+ promo [オプション] [解析結果ファイル ...] >出力ファイル
+
+=head1 DESCRIPTION
+
+ 日本語形態素解析UNA V3(unamk)の形態素解析出力結果を整形する。
+ 目的は、解析結果分析のためのマーク付けをやりやすくするためである。
+
+ 前提として、UNA辞書の単語アプリ情報は "表記(...)" となっていることが
+ 必要である。このツールは、以下の整形を行なう。
+
+   ・未登録語を "表記(？)" に変更する。
+   ・文番号をつける。
+   ・形態素については先頭に3文字分スペースを空ける(マーク欄)。
+   ・空行の解析結果については、とりのぞく。
+
+ オプションは以下の通り。
+
+=over
+
+=item -m
+
+ MeCab(茶まめ)の出力結果を整形する。
+
+=item -v
+
+ 不必要な詳細な情報を出力する(Verbose)。ただし、現バージョンでは未使用。
+
+=item -D
+
+ デバッグ用の情報を出力する(Debug)。ただし、現バージョンでは未使用。
+
+=item -h
+
+ 簡単なヘルプを出力する(Help)。
+
+=back
+
+ 整形例を示す。
+
+ [UNA(unamk)の出力を整形する場合]
+
+ "ドナーカードには脳死での臓器提供希望欄には○印が付いていたが、心臓、肝臓は×印が付いていた。"
+ ドナー(名詞.一般;！未登録語カタ)
+ カード(名詞.一般;！未登録語カタ)
+ に(格助詞.ニ)
+ は(副助詞.ハ)
+ 脳死(名詞.サ変)
+ で(格助詞.デ)
+ の(格助詞.ノ)
+ 臓器(名詞.一般)
+ 提供(名詞.サ変)
+ 希望(名詞.サ変)
+ 欄(名詞.接尾辞)
+ に(格助詞.ニ)
+ は(副助詞.ハ)
+    ↓
+ 00001."ドナーカードには脳死での臓器提供希望欄には○印が付いていたが、心臓、肝臓は×印が付いていた。"
+    ドナー(名詞.一般;！未登録語カタ)
+    カード(名詞.一般;！未登録語カタ)
+    に(格助詞.ニ)
+    は(副助詞.ハ)
+    脳死(名詞.サ変)
+    で(格助詞.デ)
+    の(格助詞.ノ)
+    臓器(名詞.一般)
+    提供(名詞.サ変)
+    希望(名詞.サ変)
+    欄(名詞.接尾辞)
+    に(格助詞.ニ)
+    は(副助詞.ハ)
+ 
+ [MeCab(茶まめ)の出力を整形する場合]
+ 
+ 出典	文境界	書字形	発音形	語彙素読み	語彙素	品詞	活用型	活用形	語形	書字形基本形	語種
+ mai98-2	B	ドナー	ドナー	ドナー	ドナー-donor	名詞-普通名詞-一般			ドナー	ドナー	外
+ mai98-2	I	カード	カード	カード	カード-card	名詞-普通名詞-一般			カード	カード	外
+ mai98-2	I	に	ニ	ニ	に	助詞-格助詞			ニ	に	和
+ mai98-2	I	は	ワ	ハ	は	助詞-係助詞			ワ	は	和
+ mai98-2	I	脳死	ノーシ	ノウシ	脳死	名詞-普通名詞-一般			ノーシ	脳死	漢
+ mai98-2	I	で	デ	デ	で	助詞-格助詞			デ	で	和
+ mai98-2	I	の	ノ	ノ	の	助詞-格助詞			ノ	の	和
+ mai98-2	I	臓器	ゾーキ	ゾウキ	臓器	名詞-普通名詞-一般			ゾーキ	臓器	漢
+ mai98-2	I	提供	テーキョー	テイキョウ	提供	名詞-普通名詞-サ変可能			テーキョー	提供	漢
+ mai98-2	I	希望	キボー	キボウ	希望	名詞-普通名詞-サ変可能			キボー	希望	漢
+ mai98-2	I	欄	ラン	ラン	欄	名詞-普通名詞-一般			ラン	欄	漢
+ mai98-2	I	に	ニ	ニ	に	助詞-格助詞			ニ	に	和
+ mai98-2	I	は	ワ	ハ	は	助詞-係助詞			ワ	は	和
+    ↓
+ 00001."ドナーカードには脳死での臓器提供希望欄には○印が付いていたが、心臓、肝臓は×印が付いていた。"
+    ドナー(ドナー ドナー-donor ドナー 名詞-普通名詞-一般  )
+    カード(カード カード-card カード 名詞-普通名詞-一般  )
+    に(に に ニ 助詞-格助詞  )
+    は(は は ハ 助詞-係助詞  )
+    脳死(脳死 脳死 ノウシ 名詞-普通名詞-一般  )
+    で(で で デ 助詞-格助詞  )
+    の(の の ノ 助詞-格助詞  )
+    臓器(臓器 臓器 ゾウキ 名詞-普通名詞-一般  )
+    提供(提供 提供 テイキョウ 名詞-普通名詞-サ変可能  )
+    希望(希望 希望 キボウ 名詞-普通名詞-サ変可能  )
+    欄(欄 欄 ラン 名詞-普通名詞-一般  )
+    に(に に ニ 助詞-格助詞  )
+    は(は は ハ 助詞-係助詞  )
+
+=head1 HISTORY
+
+ Ver1.01 2000/11/30 PL化後の動作版
+ Ver.5.00 2002/04/30 UNA-WorkToolsとしてRCS管理に
+ Ver.5.01 2002/08/20 ツールの実行環境を/proj/nlp/tools/UNA-CmnTools/v1.2.dist
+                     に変更
+ Ver.5.02 2012/03/19 windowsの動作環境に合わせて変更
+
+=head1 BUG
+
+ 文番号は5桁まで。
+
+=cut
+
+use utf8;                      # UTF8の場合
+use strict;
+use warnings;
+binmode STDIN,  ":utf8";
+binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
+use open IO => ":utf8";
+
+# 引数の評価
+use Getopt::Std;
+my %opt;
+getopts('mvDh', \%opt);
+if ($opt{h}) {
+        die <<EOU;
+Usage: promo [OPTIONS] [INFILE ...] >OUTFILE
+   -m   Input is Mecab's output
+   -v   Verbose
+   -D   Debug
+   -h   Help
+EOU
+}
+print STDERR "v1.2.dist/promo\n" if exists $opt{v};
+
+if (exists $opt{m}) {
+	&promo_mecab();
+	exit(0);
+}
+
+my $prev = '';			# 一つ前の行を保持
+my $sentno = 1;			# 文番号
+while (<>) {
+    chomp;
+	s/^\x{feff}//;
+    s/\r$//;
+    if ($_ eq '') { # 空行
+	print "\n";
+    }
+    elsif (/^".*"$/ && $prev eq '') { # テキスト行
+	if ($_ ne '""') {	# 解析したのが空行でなければ
+	    printf "%05d.$_\n", $sentno;
+	    $sentno++;
+	}
+    }
+    elsif (/\(.+\)$/) { # 登録語
+	print "   $_\n";
+    }
+    else { # 未登録語
+	print "   $_(？)\n";	# 品詞名は"？"
+    }
+    $prev = $_;
+}
+
+sub promo_mecab() {
+	# 現在行
+	my $curr;
+
+	# 列名の書かれた先頭行を読み捨てる。
+	$curr = <>;
+	
+	# 文番号
+	my $stmtno = 1;
+
+	# 現在行をsplitした配列
+	my @a;
+
+	# 一エントリ分の文字列を蓄積する変数
+	my $block = "";
+
+	while (<>) {
+		# 現在行
+		s/^\x{feff}//;
+		$curr = $_;
+		@a = split(/\t/, $curr);
+
+		# 文境界がBの行に遭遇したら、
+		# そこまでの一エントリに対して処理を行う。
+		if ($a[1] eq "B" && $block ne "") {
+			$stmtno = &process_entry($block, $stmtno);
+			$block = "";
+		}
+		$block = $block . $curr;
+	}
+	# ファイルの終端に到達したら、一エントリに対して処理を行う。
+	$stmtno = &process_entry($block, $stmtno);
+}
+
+#
+# 一エントリに対して処理を行う。
+#
+sub process_entry {
+	my $block = $_[0];
+	my $stmtno = $_[1];
+
+	# 一エントリ分の文字列を行ごとに分解する。
+	my @lines = split("\n", $block);
+
+	# 入力形式は「出典 文境界 書字形 発音形 語彙素読み 語彙素 品詞 活用型 活用形 語形 書字形基本形 語種」
+	#             0    1      2      3      4          5      6    7      8      9    10           11
+	# 出力形式は「   書字形(書字形 語彙素 語彙素読み 品詞 活用型 活用形)」
+
+	# 入力データの一行分
+	my $line;
+	# 形態素解析前の文(再組み立て用)
+	my $stmt = "";
+	# 出力データ
+	my $output = "";
+	foreach $line (@lines) {
+		my @a = split(/\t/, $line);
+		$stmt = $stmt . $a[2];
+		$output = $output . "   $a[2]($a[2] $a[5] $a[4] $a[6] $a[7] $a[8])\n";
+	}
+	printf("%05d", $stmtno);
+	print ".\"$stmt\"\n";
+	print $output;
+	print "\n";	# 文の区切りとなる空白行
+
+	return $stmtno+1;
+}
+
+=head1 SEE ALSO
+
+L<unamk>, L<premo>, L<anadbg>
+
+=head1 COPYRIGHT
+
+ Copyright 2000,2014, 2023 RICOH Co, Ltd. All rights reserved.
+
+=cut

@@ -1,0 +1,192 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "create table T_1 (col1 decimal(2,0))";
+# error InvalidCharacter is expected
+Command "insert T_1 values ('0EE0')";
+Command "select * from T_1";
+Command "drop table T_1";
+Command "create table T_2 (col1 decimal(2,0))";
+# error InvalidCharacter is expected
+Command "insert T_2 values ('0..123')";
+Command "select * from T_2";
+Command "drop table T_2";
+Command "create table T_3 (col1 decimal(2,0))";
+# error InvalidCharacter is expected
+Command "insert T_3 values ('0.12.34')";
+Command "select * from T_3";
+Command "drop table T_3";
+Command "create table T_4 (col1 decimal(2,0))";
+# error InvalidCharacter is expected
+Command "insert T_4 values ('12 34')";
+Command "select * from T_4";
+Command "drop table T_4";
+Command "create table T_5 (col1 decimal(10,5))";
+# error InvalidCharacter is expected
+Command "insert T_5 values ('0EE0')";
+Command "select * from T_5";
+Command "drop table T_5";
+Command "create table T_6 (col1 decimal(10,5))";
+# error InvalidCharacter is expected
+Command "insert T_6 values ('0..123')";
+Command "select * from T_6";
+Command "drop table T_6";
+Command "create table T_7 (col1 decimal(10,5))";
+# error InvalidCharacter is expected
+Command "insert T_7 values ('0.12.34')";
+Command "select * from T_7";
+Command "drop table T_7";
+Command "create table T_8 (col1 decimal(10,5))";
+# error InvalidCharacter is expected
+Command "insert T_8 values ('12 34')";
+Command "select * from T_8";
+Command "drop table T_8";
+Command "create table T_9 (col1 decimal(36,36))";
+# error InvalidCharacter is expected
+Command "insert T_9 values ('0EE0')";
+Command "select * from T_9";
+Command "drop table T_9";
+Command "create table T_10 (col1 decimal(36,36))";
+# error InvalidCharacter is expected
+Command "insert T_10 values ('0..123')";
+Command "select * from T_10";
+Command "drop table T_10";
+Command "create table T_11 (col1 decimal(36,36))";
+# error InvalidCharacter is expected
+Command "insert T_11 values ('0.12.34')";
+Command "select * from T_11";
+Command "drop table T_11";
+Command "create table T_12 (col1 decimal(36,36))";
+# error InvalidCharacter is expected
+Command "insert T_12 values ('12 34')";
+Command "select * from T_12";
+Command "drop table T_12";
+Command "create table T_13 (col1 decimal(2,1))";
+# error InvalidCharacter is expected
+Command "insert T_13 values ('0EE0')";
+Command "select * from T_13";
+Command "drop table T_13";
+Command "create table T_14 (col1 decimal(2,1))";
+# error InvalidCharacter is expected
+Command "insert T_14 values ('0..123')";
+Command "select * from T_14";
+Command "drop table T_14";
+Command "create table T_15 (col1 decimal(2,1))";
+# error InvalidCharacter is expected
+Command "insert T_15 values ('0.12.34')";
+Command "select * from T_15";
+Command "drop table T_15";
+Command "create table T_16 (col1 decimal(2,1))";
+# error InvalidCharacter is expected
+Command "insert T_16 values ('12 34')";
+Command "select * from T_16";
+Command "drop table T_16";
+Command "create table T_17 (col1 decimal(10,0))";
+# error InvalidCharacter is expected
+Command "insert T_17 values ('0EE0')";
+Command "select * from T_17";
+Command "drop table T_17";
+Command "create table T_18 (col1 decimal(10,0))";
+# error InvalidCharacter is expected
+Command "insert T_18 values ('0..123')";
+Command "select * from T_18";
+Command "drop table T_18";
+Command "create table T_19 (col1 decimal(10,0))";
+# error InvalidCharacter is expected
+Command "insert T_19 values ('0.12.34')";
+Command "select * from T_19";
+Command "drop table T_19";
+Command "create table T_20 (col1 decimal(10,0))";
+# error InvalidCharacter is expected
+Command "insert T_20 values ('12 34')";
+Command "select * from T_20";
+Command "drop table T_20";
+Command "create table T_21 (col1 decimal(36,0))";
+# error InvalidCharacter is expected
+Command "insert T_21 values ('0EE0')";
+Command "select * from T_21";
+Command "drop table T_21";
+Command "create table T_22 (col1 decimal(36,0))";
+# error InvalidCharacter is expected
+Command "insert T_22 values ('0..123')";
+Command "select * from T_22";
+Command "drop table T_22";
+Command "create table T_23 (col1 decimal(36,0))";
+# error InvalidCharacter is expected
+Command "insert T_23 values ('0.12.34')";
+Command "select * from T_23";
+Command "drop table T_23";
+Command "create table T_24 (col1 decimal(36,0))";
+# error InvalidCharacter is expected
+Command "insert T_24 values ('12 34')";
+Command "select * from T_24";
+Command "drop table T_24";
+Command "create table T_25 (col1 decimal(2,2))";
+# error InvalidCharacter is expected
+Command "insert T_25 values ('0EE0')";
+Command "select * from T_25";
+Command "drop table T_25";
+Command "create table T_26 (col1 decimal(2,2))";
+# error InvalidCharacter is expected
+Command "insert T_26 values ('0..123')";
+Command "select * from T_26";
+Command "drop table T_26";
+Command "create table T_27 (col1 decimal(2,2))";
+# error InvalidCharacter is expected
+Command "insert T_27 values ('0.12.34')";
+Command "select * from T_27";
+Command "drop table T_27";
+Command "create table T_28 (col1 decimal(2,2))";
+# error InvalidCharacter is expected
+Command "insert T_28 values ('12 34')";
+Command "select * from T_28";
+Command "drop table T_28";
+Command "create table T_29 (col1 decimal(10,10))";
+# error InvalidCharacter is expected
+Command "insert T_29 values ('0EE0')";
+Command "select * from T_29";
+Command "drop table T_29";
+Command "create table T_30 (col1 decimal(10,10))";
+# error InvalidCharacter is expected
+Command "insert T_30 values ('0..123')";
+Command "select * from T_30";
+Command "drop table T_30";
+Command "create table T_31 (col1 decimal(10,10))";
+# error InvalidCharacter is expected
+Command "insert T_31 values ('0.12.34')";
+Command "select * from T_31";
+Command "drop table T_31";
+Command "create table T_32 (col1 decimal(10,10))";
+# error InvalidCharacter is expected
+Command "insert T_32 values ('12 34')";
+Command "select * from T_32";
+Command "drop table T_32";
+Command "create table T_33 (col1 decimal(36,18))";
+# error InvalidCharacter is expected
+Command "insert T_33 values ('0EE0')";
+Command "select * from T_33";
+Command "drop table T_33";
+Command "create table T_34 (col1 decimal(36,18))";
+# error InvalidCharacter is expected
+Command "insert T_34 values ('0..123')";
+Command "select * from T_34";
+Command "drop table T_34";
+Command "create table T_35 (col1 decimal(36,18))";
+# error InvalidCharacter is expected
+Command "insert T_35 values ('0.12.34')";
+Command "select * from T_35";
+Command "drop table T_35";
+Command "create table T_36 (col1 decimal(36,18))";
+# error InvalidCharacter is expected
+Command "insert T_36 values ('12 34')";
+Command "select * from T_36";
+Command "drop table T_36";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,975 @@
+
+■ Sydney で扱う SQL の BNF のメモです。
+
+/////////////////////////////////////////////////////////////////////////////
+/////	ToDo リスト
+
+----- ★ Lemon の ToDo リスト ----------------------------------------------
+
+	00/09/25
+		・トランザクション構文対応
+
+	00/09/12
+		・セクション検索構文対応
+			create table
+				☆済 09/14
+			create index
+				☆済 09/12
+			insert into
+				☆済 09/14
+			select
+				☆済 09/12
+
+	00/09/11
+		・ARRAY 構文の実装
+		  <data type>
+				☆済 09/14
+		  <element reference>
+				☆済 09/14
+		  <array value expression>
+				☆済 09/14
+		  <array value constructor>
+				☆済 09/14
+		  Store Assignment
+				☆キャンセル 09/12
+
+	00/08/29
+		・AlterAreaAction::getActionType() の変更に伴い、コンストラクタを
+		  修正。
+			☆済 08/29
+
+	00/08/28
+		・AlterAreaAction::getActionType() の変更に伴い、コンストラクタを
+		  修正。
+			☆済 08/28
+		・なんとか AREA OPTION に DEFAULT を有効にする。
+			☆済 08/28
+
+	00/08/24
+		・23 日追加分のテスト
+			☆済 08/24
+
+	00/08/23
+		・Alter (Index, Database, Area) 句を作成する
+			☆済 08/23
+		・Drop (Database, Index) 句を作成する
+			☆済 08/23
+
+----- ★ Statement Object の ToDo リスト ----------------------------------
+
+	00/09/25
+		・トランザクションオブジェクト作成
+
+	00/09/12
+		・セクション検索対応オブジェクト作成
+			create table
+				☆済 09/14
+			create index
+				☆済 09/12
+			insert into
+				☆済 09/14
+			select
+				☆済 09/12
+
+	00/09/11
+		・ARRAY 構文に対応したオブジェクトの実装 まで
+				☆済 09/14
+
+		・Common::DataArrayData の LIMIT、次数チェック、代入I/F を考える
+		  09/20 まで
+				☆キャンセル 09/12
+
+	00/08/29
+		・AlterAreaAction::getActionType()の戻り値に
+			AryAll と AryElm を追加
+			☆済 08/29
+
+	00/08/28
+		・AlterAreaAction::getActionType()の戻り値より
+			Modify を削除、SingleModify, ArrayModify を追加。
+			☆済 08/28
+
+	00/08/24
+		・23 日追加分のテスト
+			☆済 08/24
+
+	00/08/23
+		・Alter (Index, Database, Area) に関連するオブジェクトを作成する
+			→ AlterIndexStatement, AlterIndexAction
+				☆済 08/23
+			→ AlterDatabaseStatement, AlterDatabaseAction
+				☆済 08/23
+			→ AlterAreaStatement, AlterAreaAction
+				☆済 08/23
+
+		・alter table の省略 AREA 名を Identifier("DEFAULT") から
+		  Identifier() に変更する。
+				☆済 08/23
+
+		・Drop Database, Drop Index オブジェクトの作成
+			→ DropDatabaseStatement
+				☆済 08/24
+			→ DropIndexStatement
+				☆済 08/24
+
+		・上記のクラスに再構築フラグを設定する。
+				☆済 08/24
+
+/////////////////////////////////////////////////////////////////////////////
+/////	セクション検索構文
+
+	● テーブル作成 (ここより 抜粋)
+	create table CH(
+		…,
+		FullTextData	ntext ARRAY[NO LIMIT],
+		…
+	)
+
+	● インデックス作成
+
+	・ブーリアン、ランキング検索用
+		create fulltext index CH on CH(FullTextData)
+
+	・セクション検索対応用
+		create fulltext index CH_SCT on CH(FullTextData) hint'sectionized'
+
+
+	● 挿入
+	insert into CH(…, FullTextData, …) values(…, ARRAY[?, ?, ?, …], …)
+
+	セクションは '?' の配列で表現します。
+	セクション文章はクライアントから渡される DataArrayData 中に
+	Common::StreamData の DataArrayData を設定し、'?' に対応させます。
+
+		注：Common::StreamData は未実装です。
+
+	● 検索
+	select sectionized(CH.TEXT) from CH where CH.TEXT like 'tttt'
+
+
+/////////////////////////////////////////////////////////////////////////////
+/////	Drop Database
+<drop database statement> ::= DROP DATABASE <identifier>
+
+/////////////////////////////////////////////////////////////////////////////
+/////	Database Area Option
+
+<database area option> ::=
+	<database area clause>
+
+<database area clause> ::=
+	AREA <database area option>
+
+<database area option> ::=	[<area name>]
+							[TABLE [<area name>]]
+							[HEAP [<area name>]]
+							[INDEX [<area name>]]
+							[FULLTEXT [<area name>]]
+							[LOGICALLOG [<area name>]]
+							[PHYSICALLOG [<area name>]]
+
+/////////////////////////////////////////////////////////////////////////////
+/////	Table Area Option
+
+<table area option> ::=
+	<table area clause>
+
+<table area clause> ::=
+	AREA <table area option>
+
+<table area option> ::= [<area name>]
+						[HEAP <area name>]
+						[INDEX <area name>]
+						[FULLTEXT <area name>]
+
+※ Memo
+	<table definition> ::= CREATE tableScopeClause TABLE tableName
+						   tableConstantClause (tableelementList)
+						   hint tableAreaOption
+
+/////////////////////////////////////////////////////////////////////////////
+/////	Alter Table
+
+<alter table statement> ::=
+	ALTER TABLE <table name> <alter table action>
+
+<alter table action> ::=
+	<set table area clause> |
+	<drop table area clause>
+
+<set table area clause> ::=
+	SET <table area clause>
+
+<drop table area clauses> ::=
+	DROP <table area clause>
+
+<table area clause> ::=
+	AREA <table area option>
+
+<table area option> 上記参照
+
+/////////////////////////////////////////////////////////////////////////////
+/////	Index Area Option
+
+<index area option> ::=
+	<index area clause>
+<index area clause> ::=
+	AREA <index area option>
+
+<index area option> ::= [<area name>]
+						[PHYSICALLOG [<area option>]]
+						[HINT AREA <character string literal>]
+
+/////////////////////////////////////////////////////////////////////////////
+/////	Alter Index
+
+<alter index statement> ::=
+	ALTER INDEX <index name> <alter index action>
+
+<alter index action> ::=
+	<set  index area clause> |
+	<drop index area cluase>
+
+<set index area clause> ::=
+	SET <index area clause>
+
+<drop index area cluase> ::=
+	DROP <index area clause>
+
+<index area clause>	 上記参照
+
+/////////////////////////////////////////////////////////////////////////////
+/////	Database Area Option
+
+database area clause> ::=
+	AREA <database area option>
+
+<database area option> ::= [<area name>]
+						   [TABLE [<area name>]]
+						   [HEAP [<area name>]]
+						   [INDEX [<area name>]]
+						   [FULLTEXT [<area name>]]
+						   [LOGICALLOG [<area name>]]
+						   [PHYSICALLOG [<area name>]]
+
+/////////////////////////////////////////////////////////////////////////////
+/////	Alter Database
+
+<alter database statement> ::=
+	ALTER DATABASE <database name> <alter database action>
+
+<alter database action> ::=
+	<set  database area clause> |
+	<drop database area clause>
+
+<set  database area clause> ::=
+	SET <database area clause>
+
+<drop database area clause> ::=
+	DROP <database area clause>
+
+<database area clause>	上記参照
+
+/////////////////////////////////////////////////////////////////////////////
+/////	Alter Area
+
+<alter area statement> ::=
+	ALTER AREA <area name> <alter area action>
+
+<alter area action> ::=
+	<modify area definition>
+
+<modify area definition> ::=
+	MODIFY <modify area clause>
+
+<modify area clause> ::= <area path element> |
+						 <area path array> |
+						 <new area specified path element>
+
+<new area specified path element> ::=
+	<left bracket> <numeric literal> <right bracket> <area path element>
+
+	※ サンプル
+		//既存 AREA
+		create area AR1 array['d:\data', 'd:\text']
+		create area AR2 'd:\db'
+
+		//追加 and 削除
+		許可しない。
+		パスの数は変更前と後は変わらない。
+		下位モジュール（Execution？）でチェック。
+
+		//変更
+		alter area AR1 modify aray['d:\syd\data', 'd:\syd\text']
+		alter area AR2 modify 'd:\syd\db'
+
+/////////////////////////////////////////////////////////////////////////////
+/////	Create Area
+
+<area definition> ::=
+	CREATE AREA <area name> <area path>
+
+<area name> ::= <identifier>
+
+<area path> ::= (<area path elemnt> | <area path array>)
+
+<area path element> ::= <literal>
+
+<area path array> ::= <area path element>[,<area path element>,...]
+
+/////////////////////////////////////////////////////////////////////////////
+/////	Drop Area
+<drop area> ::=
+	DROP AREA <area name>
+
+/////////////////////////////////////////////////////////////////////////////
+/////	ARRAY 宣言
+
+<data type> ::=
+	<predefined type>
+  | <row type>
+  | <user-defined type>
+  | <reference type>
+  | <collection type>
+
+	<predefined type> ::=
+	  <character string type>
+	  [ CHARACTER SET <character set specification> ]
+	| <national character string type>
+	| <binary large object string type>
+	| <bit string type>
+	| <numeric type>
+	| <boolean type>
+	| <datetime type>
+	| <interval type>
+
+	<row type> ::=
+	  ROW <row type body>
+	<row type body> ::=
+		<left paren>
+		<field definition> [ { <comma> <field definition> }... ]
+		<right paren>
+
+	<reference type> ::=
+	  REF <left paren> <referenced type> <right paren>
+	  [ <scope clause> ]
+
+	<referenced type> ::= <user-defined type>
+
+
+	<collection type> ::=
+	  <data type> <array specification>
+	<array specification> ::=
+	  <collection type constructor>
+	  <left bracket or trigraph> <unsigned integer>
+	  <right bracket or trigraph>
+	<collection type constructor> ::=
+	  ARRAY
+
+	<empty specification> ::=
+	  ARRAY <left bracket or trigraph> <right bracket or trigraph>
+
+/////////////////////////////////////////////////////////////////////////////
+/////	ARRAY データ
+
+>> value expression
+<value expression> ::=
+	<numeric value expression>
+  | <string value expression>
+  | <datetime value expression>
+  | <interval value expression>
+  | <boolean value expression>
+  | <user-defined type value expression>
+  | <row value expression>
+  | <reference value expression>
+  | <collection value expression>
+
+	<user-defined type value expression> ::=
+	  <value expression primary>
+	<reference value expression> ::=		// 本命
+	  <value expression primary>			// 本命
+	<collection value expression> ::=
+	  <value expression primary>
+	<value expression primary> ::=
+		<parenthesized value expression>
+	  | <nonparenthesized value expression primary>
+	<parenthesized value expression> ::=
+	  <left paren> <value expression> <right paren>
+	<nonparenthesized value expression primary> ::=
+		<unsigned value specification>
+	  | <column reference>
+	  | <set function specification>
+	  | <scalar subquery>
+	  | <case expression>
+
+	� 1 alternative deleted.
+	  | <cast specification>
+	  | <subtype treatment>
+	  | <attribute or method reference>
+	  | <reference resolution>
+	  | <collection value constructor>
+	  | <routine invocation>
+	  | <field reference>
+	  | <element reference>
+	  | <method invocation>
+	  | <static method invocation>
+	  | <new specification>
+
+	� 1 alternative deleted.
+	<collection value constructor> ::=
+	  <array value expression>
+
+	<element reference> ::=		 // ref. value expression
+	  <array value expression> <left bracket or trigraph>
+	  <numeric value expression> <right bracket or trigraph>
+
+	【例外】<array value expression> には <column reference> のみを許す。
+
+	<array value expression> ::=
+		  <array value constructor>
+		| <value expression primary>	// ref. value expression
+
+	<array value constructor> ::=
+	  <array value list constructor>
+	<array value list constructor> ::=
+	  ARRAY <left bracket or trigraph> <array element list>
+	  <right bracket or trigraph>
+	<array element list> ::=
+	  <array element> [ { <comma> <array element> }... ]
+	<array element> ::=
+	  <value expression>
+
+
+	<value expression primary> ::=
+		<column reference>
+	/* omit
+		<parenthesized value expression>
+	  | <nonparenthesized value expression primary>
+	<parenthesized value expression> ::=
+	  <left paren> <value expression> <right paren>
+	<nonparenthesized value expression primary> ::=
+		<unsigned value specification>
+	  | <column reference>
+	  | <set function specification>
+	  | <scalar subquery>
+	  | <case expression>
+	<unsigned value specification> ::=
+		<unsigned literal>
+	  | <general value specification>
+	<general value specification> ::=
+		<host parameter specification>
+	  | <SQL parameter reference>
+	<host parameter specification> ::=
+	  <host parameter name> [ <indicator parameter> ]
+	<indicator parameter> ::=
+	  [ INDICATOR ] <host parameter name>
+	<host parameter name> ::=
+	  <colon> <identifier>
+	<SQL parameter reference> ::=
+	  <basic identifier chain>
+	<identifier chain> ::=
+	  <identifier> [ { <period> <identifier> }... ]
+	<basic identifier chain> ::=
+	  <identifier chain>
+	<column reference> ::=
+		<basic identifier chain>
+	  | MODULE <period> <qualified identifier> <period> <column name>
+	*/
+
+	『 最終案
+		<value expression> ::=
+			  <element reference>
+			| <array value expression>
+
+		<array value constructor> ::=
+			<array value list constructor>
+
+		<array value list constructor> ::=
+			ARRAY <left bracket> <array element list>
+			<right bracket>
+
+		<array element list> ::=
+			<array element> [ { <comma> <array element> }... ]
+
+		<array element> ::=
+			<value expression>
+
+		<value expression> ::=
+			<literal>
+	』
+
+declared		宣言する
+expression		表現 調子
+exact			正確な 厳密な
+specified		明確に 指定する
+cardinality		濃度
+otherwise		別の方法では
+raise			上げる 掲げる
+
+immediately		直ちに 直接
+contain			含む 抑える
+determine		決心する
+apply			申し込む 聞かせる
+aggregation		集合 集約
+
+either			どちらか一方の
+comprising		…から成る、構成する
+
+
+2) The declared type of a <value expression primary> is the declared type of the immediately contained <unsigned value specification>, <column reference>, <set function specification>, <scalar subquery>, <case expression>, <value expression>, <cast specification>, <subtype treatment>, <attribute or method reference>, <reference resolution>, <collection value constructor>, <field reference>, <element reference>, <method invocation>, or <static method invocation>, or the effective returns type of the immediately contained <routine invocation>, respectively.
+
+4.11.1 Arrays
+An array is a collection A in which each element is associated with exactly one ordinal position in A.Ifn is the cardinality of A, then the ordinal position p of an element is an integer in the range 1 (one) <= p <= n. If EDT is the element type of A, then A can thus be considered as a function of the integers in the range 1 (one) to n onto EDT.
+An array site AS has a maximum cardinality m. The cardinality n of an array occupying AS is constrained not to exceed m.
+An array type is a <collection type>. If AT is some array type with element type EDT, then every value of AT is an array of EDT.
+Let A1 and A2 be arrays of EDT. A1 and A2 are the same array if and only if A1 and A2 have the same cardinality n and if, for all i in the range 1 (one) <= i <= n, the element at ordinal position i in A1 is the same as the element at ordinal position i in A2.
+Let n1 be the cardinality of A1 and let n2 be the cardinality of A2. A1 is a subarray of A2 if and only if there exists some j in the range 0 (zero) <= j < n2 such that, for every i in the range 1 (one) i <= n1, the element at ordinal position i in A1 is the same as the element at ordinal position i+j in
+A2.
+
+□m.statement での実装
+<collection type>
+	【例外】	次数が無制限(NO LIMIT)の配列型を定義できる。
+
+<element reference>
+	【例外】	面倒であれば、<numeric value expression> には
+				<literal> しか許さない。
+
+<array value expression>
+	【例外】	<value expression primary> として
+				<column reference> のみを許す。
+
+<array value constructor>
+	【例外	】	<array element> の <value expression> には
+	<literal> と ? のみを許す。
+
+/////////////////////////////////////////////////////////////////////////////
+/////	トランザクション
+
+<start transaction statement> ::=
+	START TRANSACTION <transaction mode> [ { <comma> <transaction mode> } ... ]
+
+<transaction mode> ::=
+	<isolation level> |
+	<transaction access mode>
+
+<transaction access mode> ::=
+	READ ONLY |
+	READ WRITE
+
+<isolation level> ::=
+	ISOLATION LEVEL <level of isolation>
+
+<level of isolation> ::=
+	READ UNCOMMITTED |
+	READ COMMITTED |
+	REPEATABLE READ |
+	SERIALIZABLE
+
+<set transaction statement> ::=
+	SET TRANSACTION <transaction mode> [ { <comma> <transaction mode> } ... ]
+
+<commit statement> ::=
+	COMMIT [ WORK ]
+
+<rollback statement> ::=
+	ROLLBACK [ WORK ]
+
+	//-----------------------------------------------------------------------
+	Statment のオブジェクトツリーは次の様に構成します。
+	<start transaction statement>
+	(StartTransactionStatement
+	 (TransactionMode
+	  (TransactionAccessMode)	enum値 { AccUnknown, ReadOnly, ReadWrite }
+	  (LevelOfIsolation)		enum値 { IsoUnknown,
+							   ReadUncommitted, ReadCommitted,
+							   RepeatableRead,	Serializable  }
+	 )
+	)
+
+	<set transaction statement>
+	(SetTransactionStatement
+	 (StartTransactionStatement) と同じ
+	)
+
+	<commit statement>
+	(CommitStatement)
+	 中身は特に無し
+
+	<rollback statement>
+	(RollbackStatement)
+	 中身は特に無し
+
+
+/***************************************************************************/
+>>>>>	Lisp 形式の値
+
+AlterAreaAction
+	f_ActionType,
+	f_AreaElementList
+
+AlterAreaStatement
+	f_AreaName,
+	f_AlterAction,
+
+AlterDatabaseAction
+	f_ActionType,
+		Unknown = 0,
+		Set,
+		Drop
+	f_AreaOption,
+
+AlterDatabaseStatement
+	f_DatabaseName,
+	f_AlterAction,
+
+AlterIndexAction
+	f_ActionType,
+		Unknown = 0,
+		Set,
+		Drop
+	f_AreaOption,
+
+AlterIndexStatement
+	f_IndexName,
+	f_AlterAction,
+
+AlterTableAction
+	f_ActionType,
+		Unknown = 0,
+		Set,
+		Drop
+	f_AreaOption,
+
+AlterTableStatement
+	f_TableName,
+	f_AlterAction,
+
+AreaDataDefinition
+	f_Path,
+	f_Hint,
+
+AreaDefinition
+	f_Name,							// Area 名
+	f_Elements,						// ElementList
+
+AreaOption
+	f_default		= AreaOption::Default,
+	f_table			= AreaOption::Table,
+	f_heap			= AreaOption::Heap,
+	f_index			= AreaOption::Index,
+	f_fulltext		= AreaOption::FullText,
+	f_logicallog	= AreaOption::LogicalLog,
+	f_physicallog	= AreaOption::PhysicalLog,
+	f_hint			= AreaOption::HintArea,
+
+ColumnDefinition
+	f_Name,
+	f_DataType,
+	f_DefaultValue,
+	f_Hint,
+
+ColumnName
+	f_Identifier,
+
+ColumnNameList
+	f_ColumnName,
+
+CursorName
+	f_Identifier,
+
+DataType
+	f_DataType,
+		NoType = 0,
+		Char,					// ASCIIのchar (CHAR相当)
+		NChar,					// Unicode char
+		Int,
+		Float,
+		DateTime,				// 日付、日時型
+		UniqueIdentifier,		// マイクロソフト拡張型: Guid
+		Binary,					// Binary
+		Image,					// BLOB相当: 無制限可変長バイナリ文字列
+		NText,					// 無制限可変長Unicode文字列
+		Fulltext				// FTS全文文字列
+
+	f_Length,
+	f_Flag,
+		None = 0,
+		Fixed,
+		Variable,
+		Unlimited
+	f_Array						// -1 時 NOLIMIT
+
+DeleteStatement
+	f_TableReference,
+	f_SearchCondition,
+	f_CursorName,
+
+DerivedColumn
+	f_ValueExpression,
+	f_ColumnName,
+
+DropTableStatement
+	f_Name,
+
+DropTableStatement
+	f_Name,
+
+FromClause
+	f_TableReferenceList,
+
+FromClause
+	f_TableReferenceList,
+
+GroupByClause
+	f_GroupingColumnReferenceList,
+
+GroupingColumnReference
+	f_ItemReference,
+
+GroupingColumnReferenceList
+	f_GroupingColumnReference,
+
+HavingClause
+	f_Condition,
+
+Hint
+	f_HintElement,
+
+HintElement
+	f_HintPrimary,
+
+HintElementList
+	f_HintElement,
+
+Identifier
+	f_Identifier,
+
+IndexDefinition
+	f_Name,
+	f_TableName,
+	f_ColumnNameList,
+	f_IndexType,
+		None = 0,
+		Clustered,
+		NonClustered,
+		Inverted
+	f_Hint,
+
+InsertColumnsAndSource
+	f_Query,
+	f_ColumnList,
+
+InsertStatement
+	f_TableName,
+	f_CursorName,
+	f_QueryExpression,
+	f_ColumnNameList,
+
+ItemReference
+	f_ItemQualifier,
+	f_ItemName,
+
+Literal
+	f_DataType,
+		None = 0,
+		DatetimeStringLiteral,
+		ExactNumericLiteral,
+		ApproximateLiteral,
+		CharacterStringLiteral
+	f_Data,
+
+NamedColumnsJoin
+	f_ColumnList,
+
+QualifiedJoin
+	f_JoinType,
+		None = 0,
+		InnerJoin,
+		NaturalJoin,
+		LeftOuterJoin,
+		RightOuterJoin,
+		FullOuterJoin
+	f_Left,
+	f_Right,
+	f_JoinSpecification,
+
+QueryExpression
+	f_QueryTerm,
+	f_Operator,
+	f_Next,
+
+QueryOperator
+	f_SetOperatorType,
+		None = 0,
+		Union,
+		Except,
+		Intersect
+	f_All,
+	f_CorrespondingSpec,
+
+QuerySpecification
+	f_Quantifier,
+	f_SelectList,
+	f_Table,
+	f_SortSpecification,
+
+QueryTerm
+	f_QueryPrimary,
+
+SelectList
+	f_SelectSubListList,
+
+SelectStatement
+	f_QuerySpecification,
+
+SelectSubList
+	f_DerivedColumnOrIdentifier,
+
+SelectSubListList
+	f_SelectSubList,
+
+SortSpecification
+	f_SortKey,
+	f_OrderingSpecification,
+		Ascending = 0,
+		Descending
+
+SortSpecificationList
+	f_SortSpecification,
+
+SqlStatementList
+	f_Statement,
+
+TableConstraintDefinition
+	f_ConstraintType,
+		None = 0,
+		PrimaryKey
+	f_ColumnNameList,
+	f_Clustered,
+
+TableCorrelationSpec
+	f_Correlation,
+	f_Derived,
+
+TableDefinition
+	f_Name,
+	f_Scope,
+		Permanent = 0,			// 永続的
+		LocalTemporary,			// セッション内一時テーブル
+		GlobalTemporary			// 大域的一時テーブル
+	f_ConstUpdate,
+		Updatable = 0,
+		Constant
+	f_Elements,
+	f_InitialValue,
+	f_Hint,
+
+TableElementList
+	f_TableElement,
+
+TableExpression
+	f_FromClause,
+	f_WhereClause,
+	f_GroupByClause,
+	f_HavingClause,
+
+TableReference
+	f_Reference,
+	f_CorrelationName,
+	f_DerivedColumnList,
+	f_Query,
+
+TableReferenceList
+	f_Object,
+
+UpdateSetClause
+	f_ColumnNameList,
+	f_RowValue,
+
+UpdateSetClauseList
+	f_SetClause,
+
+UpdateStatement
+	f_TableReference,
+	f_UpdateType,
+		None = 0,
+		All,
+		Some
+	f_SetClauseList,
+	f_SearchCondition,
+	f_CursorName,
+
+ValueExpression
+	f_Operator,
+		op_List = 1,
+		op_Literal,
+		op_Nullobj,
+		op_Itemref,
+		op_Rowref,
+		op_Arrayref,
+		op_Rowconst,
+		op_Tblconst,
+		op_Arrayconst,
+		op_Placeholder,
+		op_ColumnName,
+		op_Add = 31,
+		op_Sub,
+		op_Mul,
+		op_Div,
+		op_Neg,
+		op_And = 41,
+		op_Or,
+		op_Not,
+		op_String_concat = 51,
+		op_Eq = 61,
+		op_Ne,
+		op_Le,
+		op_Lt,
+		op_Ge,
+		op_Gt,
+		op_Between,
+		op_Like,
+		op_Contains,
+		op_IsNull,
+		op_Exists,
+		op_Func = 80
+	f_ValueType,
+		Unknown = 0,
+		Numeric,
+		String,
+		Datetime,
+		Interval,
+		Enumerate,
+		Boolean,
+		Null,
+		Row,
+		Table,
+		Array
+	f_Constant,
+	f_Left,
+	f_Right,
+	f_Option,
+	f_Primary,
+	f_Function,
+		func_Unknown = 0,
+		func_User,
+		func_Session_User,
+		func_Current_User,
+		func_Current_Path,
+		func_Value,
+		func_Count,
+		func_Avg,
+		func_Max,
+		func_Min,
+		func_Sum
+	f_Quantifier,
+		quant_None = 0,
+		quant_All,
+		quant_Distinct
+
+ValueExpressionList
+	f_Constant,
+	f_ValueExpression,
+
+WhereClause
+	f_Condition,

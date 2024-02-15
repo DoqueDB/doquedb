@@ -1,0 +1,62 @@
+# Bug report 1683
+
+Begin;
+
+SetSystemParameter "Plan_NoUnknown" "true";
+
+Initialize;
+InitializeSession "TESTDB";
+
+CreateThread "Prepare";
+JoinThread "Prepare";
+
+CreateThread "Test";
+JoinThread "Test";
+
+CreateThread "Finish";
+JoinThread "Finish";
+
+TerminateSession;
+Terminate;
+
+SetSystemParameter "Plan_NoUnknown" "false";
+
+End;
+
+Prepare
+{
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+
+Command  "create table T(C1 int, C2 int)";
+Command  "create index I1 on T(C1)";
+Command  "insert into T values (?, ?)" [1,1];
+Command  "insert into T values (?, ?)" [2,1];
+Command  "insert into T values (?, ?)" [3,null];
+}
+
+Test
+{
+Command  "select * from T where C1 > 0 and not(C2 = 1)";
+#期待結果:{3,null}
+
+#and/or
+Command  "select * from T where C1 > 0 and not(C2 = 1 and C1 > 0)";
+#期待結果:{3,null}
+Command  "select * from T where C1 > 0 and not(C2 = 1 or C2 = 2)";
+#期待結果:{3,null}
+
+#索引をつけても同じ結果
+Command  "create index I2 on T(C2)";
+Command  "select * from T where C1 > 0 and not(C2 = 1)";
+#期待結果:{3,null}
+Command  "select * from T where C1 > 0 and not(C2 = 1 and C1 > 0)";
+#期待結果:{3,null}
+Command  "select * from T where C1 > 0 and not(C2 = 1 or C2 = 2)";
+#期待結果:{3,null}
+}
+
+Finish
+{
+Command  "drop database TESTDB";
+}

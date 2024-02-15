@@ -1,0 +1,26 @@
+Begin;
+Initialize;
+InitializeSession "DBAreaTest";
+#------------------------------------
+NotExists "d:\\dm\\data\\areatest";
+
+#表と索引が乗っている状態での定義変更
+Command "create table T (f1 int, f2 ntext) area area1 index area1 fulltext area1";
+Command "create index T_f1 on T(f1)";
+Command "create fulltext index T_f2 on T(f2)";
+Command "insert T values (1, 'aaa')";
+Exists "d:\\dm\\data\\areatest\\T";
+Exists "d:\\dm\\data\\areatest\\T\\BTR_T_f1";
+Exists "d:\\dm\\data\\areatest\\T\\FTS_T_f2";
+Command "alter area area1 modify 'alterareatest'";
+NotExists "d:\\dm\\data\\areatest";
+Exists "d:\\dm\\data\\alterareatest\\T\\BTR_T_f1";
+Exists "d:\\dm\\data\\alterareatest\\T\\FTS_T_f2";
+Command "alter area area1 modify 'areatest'";
+NotExists "d:\\dm\\data\\alterareatest";
+Exists "d:\\dm\\data\\areatest\\T\\BTR_T_f1";
+Exists "d:\\dm\\data\\areatest\\T\\FTS_T_f2";
+#------------------------------------
+TerminateSession;
+#Terminate;
+End;

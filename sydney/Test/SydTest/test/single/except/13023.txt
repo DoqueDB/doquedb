@@ -1,0 +1,13 @@
+Begin;
+SetSystemParameter "Exception_FakeError" "Buffer::Page::attach count=2";
+
+Initialize;
+InitializeSession "TEST";
+Command "select A from T";
+Command "select B from T";
+Command "select * from T where A = 2";
+TerminateSession;
+Terminate;
+
+SetSystemParameter "Exception_FakeError" "";
+End;

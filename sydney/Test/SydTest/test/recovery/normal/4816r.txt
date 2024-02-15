@@ -1,0 +1,21 @@
+# 4816.txt専用
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+InitializeSession "TESTDB";
+Command "verify database TESTDB cascade continue";
+# ↓結果は空であること
+Command "select * from T0";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+
+#SetSystemParameter "CheckPoint_Period" 600000; # as Default
+
+End;

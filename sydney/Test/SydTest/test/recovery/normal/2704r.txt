@@ -1,0 +1,13 @@
+#recoveryを行わせるためのSydTest
+Begin;
+BeginTimeSpan;
+Initialize;
+InitializeSession "TESTDB";
+Command "verify database TESTDB cascade continue";
+Command  "select * from  r1234567890123456789012345678901234567890123456789";
+Command "drop database TESTDB";
+EndTimeSpan;
+TerminateSession;
+Terminate;
+End;
+

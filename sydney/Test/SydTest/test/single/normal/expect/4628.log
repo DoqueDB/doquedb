@@ -1,0 +1,147 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DefaultDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (N int, C ntext, L language)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1 (N int, C1 nvarchar(256), L1 language)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTIndex on T(C) language column L hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTIndex1 on T1(C1) language column L1 hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C, L) values (?, ?, ?)
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {0,(null),ja+en}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 69290]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 6394]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,あああああああああああああああああページあああああああ,ja+en}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins1
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (N, C1, L1) values (?, ?, ?)
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins1
+SydTest::Executor: [INFO] [[SQL Parameter]] {0,(null),ja+en}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins1
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,このページはボロボロで読みにくい,ja+en}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins1
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,あああああああああああああああああページあああああああ,ja+en}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins1
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,あああああページあああああああああページあああああああ,ja+en}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins1
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T,T1 where T.C like ? AND T1.C1 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] {3,あああああああああああああああああページあああああああ,en+ja,1,このページはボロボロで読みにくい,en+ja}
+SydTest::Executor: [INFO] {3,あああああああああああああああああページあああああああ,en+ja,2,あああああああああああああああああページあああああああ,en+ja}
+SydTest::Executor: [INFO] {3,あああああああああああああああああページあああああああ,en+ja,3,あああああページあああああああああページあああああああ,en+ja}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select T.N,T1.N from T,T1 where (T.C like '%ペイジ%' or T1.C1 like '%ペイジ%') and T.N = 3
+SydTest::Executor: [INFO] {3,0}
+SydTest::Executor: [INFO] {3,1}
+SydTest::Executor: [INFO] {3,2}
+SydTest::Executor: [INFO] {3,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select T.N,T1.N from T,T1 where T.C like '%リファレンス%' or T1.C1 like '%アメリカ%' or T.N = 3
+SydTest::Executor: [INFO] {3,0}
+SydTest::Executor: [INFO] {3,1}
+SydTest::Executor: [INFO] {3,2}
+SydTest::Executor: [INFO] {3,3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] {5.71E-1,2.01E-1}
+SydTest::Executor: [INFO] {5.71E-1,1.90E-1}
+SydTest::Executor: [INFO] {5.71E-1,2.55E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T.C)
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] {5.71E-1,2.01E-1}
+SydTest::Executor: [INFO] {5.71E-1,1.90E-1}
+SydTest::Executor: [INFO] {5.71E-1,2.55E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T1.C1)
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] {5.71E-1,1.90E-1}
+SydTest::Executor: [INFO] {5.71E-1,2.01E-1}
+SydTest::Executor: [INFO] {5.71E-1,2.55E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T.C),score(T1.C1)
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] {5.71E-1,1.90E-1}
+SydTest::Executor: [INFO] {5.71E-1,2.01E-1}
+SydTest::Executor: [INFO] {5.71E-1,2.55E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T1.C1),score(T.C)
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] {5.71E-1,1.90E-1}
+SydTest::Executor: [INFO] {5.71E-1,2.01E-1}
+SydTest::Executor: [INFO] {5.71E-1,2.55E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T natural inner join T1 where T.C like ? AND T1.C1 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] {3,あああああああああああああああああページあああああああ,en+ja,あああああページあああああああああページあああああああ,en+ja}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T natural inner join T1
+SydTest::Executor: [INFO] {0,(null),en+ja,(null),en+ja}
+SydTest::Executor: [INFO] <length = 69313>
+SydTest::Executor: [INFO] <length = 6428>
+SydTest::Executor: [INFO] {3,あああああああああああああああああページあああああああ,en+ja,あああああページあああああああああページあああああああ,en+ja}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

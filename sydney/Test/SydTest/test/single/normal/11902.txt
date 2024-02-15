@@ -1,0 +1,92 @@
+# テスト追加: FROM句にDISTINCTを用いた副問合せがあるようなSELECT文
+#	select * from (select distinct f1 from t1) as X, (select distinct f2,f3 from t2, t3) as Y;
+#	※現状、上記SQL文はAccess Violationを起こす…。
+#coverage計測後の不足テスト追加(RelationNode_input.cpp)
+#2005.07.25 Tajima
+Begin;
+
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (ID int, C NVARCHAR(10),N ntext,Amt BIGINT)";
+Command "create table T1 (ID1 int, C1 NVARCHAR(10),N1 ntext,Amt1 BIGINT)";
+Command "create table T2 (ID2 int, C2 NVARCHAR(10),N2 ntext,kz int)";
+
+#データセット
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [1,"C000000001",textsjisfile "..\\..\\doc\\hello.txt",integer64 1100000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [1,"C000000002",textsjisfile "..\\..\\doc\\hello.txt",integer64 1200000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [1,"C000000003",textsjisfile "..\\..\\doc\\hello.txt",integer64 1300000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [1,"C000000004",textsjisfile "..\\..\\doc\\hello.txt",integer64 1400000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [1,"C000000005",textsjisfile "..\\..\\doc\\hello.txt",integer64 1500000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [2,"C000000006",textsjisfile "..\\..\\doc\\hello.txt",integer64 1600000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [2,"C000000007",textsjisfile "..\\..\\doc\\hello.txt",integer64 1700000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [2,"C000000008",textsjisfile "..\\..\\doc\\hello.txt",integer64 1800000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [2,"C000000009",textsjisfile "..\\..\\doc\\hello.txt",integer64 1900000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [2,"C00000010",textsjisfile "..\\..\\doc\\hello.txt",integer64 2000000];
+
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [1,"C000000001","今日は月曜日",integer64 2100000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [1,"C000000002","今日は火曜日",integer64 2200000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [1,"C000000003","今日は水曜日",integer64 2300000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [1,"C000000004","今日は木曜日",integer64 2400000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [1,"C000000005","今日は金曜日",integer64 2500000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [2,"C000000006","今日は土曜日",integer64 2600000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [2,"C000000007","今日は日曜日",integer64 2700000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [2,"C000000008","今日は月曜日",integer64 2800000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [2,"C000000009","今日は火曜日",integer64 2900000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [2,"C00000010","今日は水曜日",integer64 3000000];
+
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [1,"C000000001",textsjisfile "..\\..\\doc\\ricoh.txt",100];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [1,"C000000002",textsjisfile "..\\..\\doc\\ricoh.txt",200];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [1,"C000000003",textsjisfile "..\\..\\doc\\ricoh.txt",300];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [1,"C000000004",textsjisfile "..\\..\\doc\\ricoh.txt",400];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [1,"C000000005",textsjisfile "..\\..\\doc\\ricoh.txt",500];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [2,"C000000006",textsjisfile "..\\..\\doc\\ricoh.txt",10];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [2,"C000000007",textsjisfile "..\\..\\doc\\ricoh.txt",20];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [2,"C000000008",textsjisfile "..\\..\\doc\\ricoh.txt",30];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [2,"C000000009",textsjisfile "..\\..\\doc\\ricoh.txt",40];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [2,"C00000010",textsjisfile "..\\..\\doc\\ricoh.txt",50];
+
+
+#FROM句に副問合せがあるSelect文を発行
+
+
+Command "Select * from (Select distinct ID from T, T2) as A,(Select distinct ID1 from T1 ) as B "; 
+
+Command "Select * from (Select distinct ID from T inner join T2 on T.C = T2.C2) as A,(Select distinct ID1 from T1 ) as B order by A.ID"; 
+
+Command "Select A.ID,B.ID1 from (Select distinct ID from T inner join T2 on T.C = T2.C2) as A,(Select distinct ID1 from T1 ) as B order by A.ID"; 
+
+Command "Select A.ID,B.ID1,A.C,B.C1 from (Select distinct ID,C from T inner join T2 on T.C = T2.C2) as A,(Select distinct ID1,C1 from T1 ) as B order by A.ID"; 
+
+Command "Select distinct A.ID,B.ID1 from (Select distinct ID from T inner join T2 on T.C = T2.C2) as A,(Select distinct ID1 from T1 ) as B order by A.ID"; 
+
+
+Command "Select A.ID,B.ID1 from (Select * from T inner join T2 on T.C = T2.C2) as A,(Select * from T1 ) as B order by A.ID"; 
+Command "Select A.ID,B.ID1 from (Select distinct * from T inner join T2 on T.C = T2.C2) as A,(Select distinct * from T1 ) as B order by A.ID"; 
+
+Command "Select A.ID,B.ID1,A.C,B.C1 from (Select * from T inner join T2 on T.C = T2.C2) as A,(Select * from T1 ) as B order by A.ID"; 
+
+Command "Select A.ID,B.ID1,A.C,B.C1 from (Select distinct * from T inner join T2 on T.C = T2.C2) as A,(Select distinct * from T1 ) as B order by A.ID"; 
+
+
+#2005/12/22 *にdistinctを付けると落ちる。
+
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [2,"C00000010",textsjisfile "..\\..\\doc\\hello.txt",integer64 2000000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [2,"C00000010",textsjisfile "..\\..\\doc\\hello.txt",integer64 2000000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [2,"C00000010",textsjisfile "..\\..\\doc\\hello.txt",integer64 2000000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [2,"C00000010",textsjisfile "..\\..\\doc\\hello.txt",integer64 2000000];
+
+Command "Select * from (Select  * from T, T2) as A,(Select  * from T1 ) as B where A.C ='C00000010'"; 
+Command "Select distinct * from (Select distinct * from T, T2) as A,(Select distinct * from T1 ) as B where A.C = 'C00000010'"; 
+
+
+# テスト用の表を消去
+Command "drop table T";
+Command "drop table T1";
+Command "drop table T2";
+
+TerminateSession;
+Terminate;
+End;
+

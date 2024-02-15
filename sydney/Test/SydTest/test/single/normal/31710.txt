@@ -1,0 +1,48 @@
+# not C like
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# 列がスカラ型であるtableのテスト
+# Tableを準備する
+Command  "create table T(C ntext array[no limit])";
+
+# 検索対象となるタプルを準備する
+Command  "insert into T(C) values (?)" [["ほげ"]];
+Command  "insert into T(C) values (?)" [["ほげほげ"]];
+Command  "insert into T(C) values (?)" [["げほげほ"]];
+Command  "insert into T(C) values (?)" [["はらほげ"]];
+Command  "insert into T(C) values (?)" [["ほえ"]];
+Command  "insert into T(C) values (?)" [[""]];
+
+# スコア検索を行う
+Command  "select C from T where not C like ?" ["ほげ"];
+Command  "select C from T where not C like ?" ["%ほげ"];
+Command  "select C from T where not C like ?" ["ほげ%"];
+Command  "select C from T where not C like ?" ["%ほげ%"];
+
+
+# 索引付けてテストもする。
+Command "create fulltext index I on T(C) hint 'sectionized, delayed, inverted=(nolocation=true, normalized=true)'";
+# スコア検索を行う
+Command  "select C from T where not C like ?" ["ほげ"];
+Command  "select C from T where not C like ?" ["%ほげ"];
+Command  "select C from T where not C like ?" ["ほげ%"];
+Command  "select C from T where not C like ?" ["%ほげ%"];
+
+# tableの後始末
+Command  "drop table T";
+
+TerminateSession;
+
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

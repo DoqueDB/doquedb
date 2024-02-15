@@ -1,0 +1,102 @@
+# preedit_resultout
+# Plan_TraceOptimizationOutput 
+#障害票 848
+
+Begin;
+
+SetSystemParameter "Plan_TraceOptimizationOutput" "1";
+SetSystemParameter "Plan_TraceLevel" "2";
+
+Initialize;
+
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T(C1 int, C2 int)";
+Command "insert T values
+		(0, null),
+		(1, 20),
+		(2, 8),
+		(3, 16),
+		(4, 2),
+		(5, 1),
+		(6, 3),
+		(7, 7),
+		(8, 10),
+		(9, 0),
+		(10, 3),
+		(11, 7),
+		(12, 8),
+		(13, null),
+		(14, 0),
+		(15, 10),
+		(16, 16),
+		(17, 18),
+		(18, 2),
+		(19, 12),
+		(20, 0),
+		(21, 11),
+		(22, 8),
+		(23, 3),
+		(24, 18),
+		(25, 10),
+		(26, 16),
+		(27, 2),
+		(28, 7),
+		(29, null)";
+
+# ROWID
+Command "select ROWID, C1, C2 from T where ROWID = 10";
+
+# ROWID 左辺に値
+Command "select ROWID, C1, C2 from T where 10 = ROWID";
+
+
+# 索引使う
+Command "create index I_1 on T(C2)";
+
+Command "select * from T where C2 > ?" [10];
+Command "select * from T where C2 < ?" [10];
+Command "select * from T where C2 >= ?" [10];
+Command "select * from T where C2 <= ?" [10];
+Command "select * from T where C2 = ?" [10];
+Command "select * from T where C2 >= ? and C2 <> ?" [5, 10];
+Command "select * from T where C2 >= ? and C2 != ?" [5, 10];
+
+#左辺に値
+Command "select * from T where ? < C2" [10];
+Command "select * from T where ? > C2" [10];
+Command "select * from T where ? <= C2" [10];
+Command "select * from T where ? >= C2" [10];
+Command "select * from T where ? = C2" [10];
+Command "select * from T where ? >= C2 and ? <> C2" [5, 10];
+Command "select * from T where ? >= C2 and ? != C2" [5, 10];
+
+Command "drop index I_1";
+
+
+# bitmap index
+Command "create bitmap index I_2 on T(C2) hint 'compressed'";
+
+Command "select * from T where C2 <> ?" [10];
+Command "select * from T where C2 = ?" [10];
+Command "select * from T where C2 >= ? and C2 <> ?" [5, 10];
+
+#左辺に値
+Command "select * from T where ? <> C2" [10];
+Command "select * from T where ? = C2" [10];
+Command "select * from T where ? >= C2 and ? <> C2" [5, 10];
+
+Command "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

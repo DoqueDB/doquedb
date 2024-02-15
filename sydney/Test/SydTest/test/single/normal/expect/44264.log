@@ -1,0 +1,133 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(c ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I on T(c) hint 'inverted=(nolocation=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values 'あいう', '%う'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c like ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%い%}
+SydTest::Executor: [INFO] {あいう}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c like ? language ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,ja}
+SydTest::Executor: [INFO] {あいう}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,fr}
+SydTest::Executor: [INFO] {あいう}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,}
+SydTest::Executor: [INFO] {あいう}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c like ? language ? escape ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,fr,}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - invalid escape character.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,fr,あ}
+SydTest::Executor: [INFO] {%う}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,,}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - invalid escape character.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,,あ}
+SydTest::Executor: [INFO] {%う}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c like ? escape ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,あ}
+SydTest::Executor: [INFO] {%う}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - invalid escape character.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where c like ? escape ? language ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,あ,}
+SydTest::Executor: [INFO] {%う}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,あ,fr}
+SydTest::Executor: [INFO] {%う}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,,}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - invalid escape character.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {あ%う%,,fr}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - invalid escape character.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

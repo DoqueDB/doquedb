@@ -1,0 +1,470 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB_160208
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB_160208 if exists
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB_160208
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Prepare begin.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL (f int, g int array[no limit], h ntext, i ntext array[no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (?, ?, ?, ?)
+SydTest::Executor: [INFO] [Prepare] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,{2},a,{a}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,{3},b,{b}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {5,{5},c,{c}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {7,{7},d,{d}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {11,{11},e,{e}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),{(null)},(null),{(null)}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select T1.f * T2.f, T1.g || T2.g, T1.h || T2.h, T1.i || array[T1.i[1] || T2.i[1]] from TBL T1, TBL T2 where (T1.f < T2.f or (T1.f is null and T2.f is not null))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL
+SydTest::Executor: [INFO] {2,{2},a,{a}}
+SydTest::Executor: [INFO] {3,{3},b,{b}}
+SydTest::Executor: [INFO] {5,{5},c,{c}}
+SydTest::Executor: [INFO] {7,{7},d,{d}}
+SydTest::Executor: [INFO] {11,{11},e,{e}}
+SydTest::Executor: [INFO] {(null),{(null)},(null),{(null)}}
+SydTest::Executor: [INFO] {6,{2,3},ab,{a,ab}}
+SydTest::Executor: [INFO] {10,{2,5},ac,{a,ac}}
+SydTest::Executor: [INFO] {14,{2,7},ad,{a,ad}}
+SydTest::Executor: [INFO] {22,{2,11},ae,{a,ae}}
+SydTest::Executor: [INFO] {15,{3,5},bc,{b,bc}}
+SydTest::Executor: [INFO] {21,{3,7},bd,{b,bd}}
+SydTest::Executor: [INFO] {33,{3,11},be,{b,be}}
+SydTest::Executor: [INFO] {35,{5,7},cd,{c,cd}}
+SydTest::Executor: [INFO] {55,{5,11},ce,{c,ce}}
+SydTest::Executor: [INFO] {77,{7,11},de,{d,de}}
+SydTest::Executor: [INFO] {(null),{(null),2},(null),{(null),(null)}}
+SydTest::Executor: [INFO] {(null),{(null),3},(null),{(null),(null)}}
+SydTest::Executor: [INFO] {(null),{(null),5},(null),{(null),(null)}}
+SydTest::Executor: [INFO] {(null),{(null),7},(null),{(null),(null)}}
+SydTest::Executor: [INFO] {(null),{(null),11},(null),{(null),(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX_f on TBL(f)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index IDX_g on TBL(g)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index IDX_h on TBL(h)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index IDX_i on TBL(i)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] Prepare end.
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Test begin.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f,g from TBL T1 where g[] in (select f from TBL T2 where T1.f > T2.f)
+SydTest::Executor: [INFO] {6,{2,3}}
+SydTest::Executor: [INFO] {10,{2,5}}
+SydTest::Executor: [INFO] {14,{2,7}}
+SydTest::Executor: [INFO] {22,{2,11}}
+SydTest::Executor: [INFO] {15,{3,5}}
+SydTest::Executor: [INFO] {21,{3,7}}
+SydTest::Executor: [INFO] {33,{3,11}}
+SydTest::Executor: [INFO] {35,{5,7}}
+SydTest::Executor: [INFO] {55,{5,11}}
+SydTest::Executor: [INFO] {77,{7,11}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h,i from TBL T1 where i[] in (select h from TBL T2 where T1.f > T2.f)
+SydTest::Executor: [INFO] {ab,{a,ab}}
+SydTest::Executor: [INFO] {ac,{a,ac}}
+SydTest::Executor: [INFO] {ad,{a,ad}}
+SydTest::Executor: [INFO] {ae,{a,ae}}
+SydTest::Executor: [INFO] {bc,{b,bc}}
+SydTest::Executor: [INFO] {bd,{b,bd}}
+SydTest::Executor: [INFO] {be,{b,be}}
+SydTest::Executor: [INFO] {cd,{c,cd}}
+SydTest::Executor: [INFO] {ce,{c,ce}}
+SydTest::Executor: [INFO] {de,{d,de}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f,g from TBL where f in (2,3,4)
+SydTest::Executor: [INFO] {2,{2}}
+SydTest::Executor: [INFO] {3,{3}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f,g from TBL where g[] in (2,3,4)
+SydTest::Executor: [INFO] {2,{2}}
+SydTest::Executor: [INFO] {6,{2,3}}
+SydTest::Executor: [INFO] {10,{2,5}}
+SydTest::Executor: [INFO] {14,{2,7}}
+SydTest::Executor: [INFO] {22,{2,11}}
+SydTest::Executor: [INFO] {(null),{(null),2}}
+SydTest::Executor: [INFO] {3,{3}}
+SydTest::Executor: [INFO] {15,{3,5}}
+SydTest::Executor: [INFO] {21,{3,7}}
+SydTest::Executor: [INFO] {33,{3,11}}
+SydTest::Executor: [INFO] {(null),{(null),3}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h,i from TBL where h in ('a', 'b', 'c')
+SydTest::Executor: [INFO] {a,{a}}
+SydTest::Executor: [INFO] {b,{b}}
+SydTest::Executor: [INFO] {c,{c}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h,i from TBL where i[] in ('a', 'b', 'c')
+SydTest::Executor: [INFO] {a,{a}}
+SydTest::Executor: [INFO] {b,{b}}
+SydTest::Executor: [INFO] {c,{c}}
+SydTest::Executor: [INFO] {ab,{a,ab}}
+SydTest::Executor: [INFO] {ac,{a,ac}}
+SydTest::Executor: [INFO] {ad,{a,ad}}
+SydTest::Executor: [INFO] {ae,{a,ae}}
+SydTest::Executor: [INFO] {bc,{b,bc}}
+SydTest::Executor: [INFO] {bd,{b,bd}}
+SydTest::Executor: [INFO] {be,{b,be}}
+SydTest::Executor: [INFO] {cd,{c,cd}}
+SydTest::Executor: [INFO] {ce,{c,ce}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when f in (2,3,4) then f else -1 end from TBL
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when g[] in (2,3,4) then f else -1 end from TBL
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {6}
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] {14}
+SydTest::Executor: [INFO] {22}
+SydTest::Executor: [INFO] {15}
+SydTest::Executor: [INFO] {21}
+SydTest::Executor: [INFO] {33}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when h in ('a','b','c') then h else 'x' end from TBL
+SydTest::Executor: [INFO] {a}
+SydTest::Executor: [INFO] {b}
+SydTest::Executor: [INFO] {c}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when i[] in ('a','b','c') then h else 'x' end from TBL
+SydTest::Executor: [INFO] {a}
+SydTest::Executor: [INFO] {b}
+SydTest::Executor: [INFO] {c}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {ab}
+SydTest::Executor: [INFO] {ac}
+SydTest::Executor: [INFO] {ad}
+SydTest::Executor: [INFO] {ae}
+SydTest::Executor: [INFO] {bc}
+SydTest::Executor: [INFO] {bd}
+SydTest::Executor: [INFO] {be}
+SydTest::Executor: [INFO] {cd}
+SydTest::Executor: [INFO] {ce}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when g[] in (select f from TBL T2 where T1.f > T2.f) then f else -1 end from TBL T1
+Executor: [ERR] (SydTest) Object No=xxx (Plan::Predicate::Impl::InImpl) Not supported.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when i[] in (select h from TBL T2 where T1.f > T2.f) then h else -1 end from TBL T1
+Executor: [ERR] (SydTest) Object No=xxx (Plan::Predicate::Impl::InImpl) Not supported.
+SydTest::Executor: [INFO] Test end.
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Test begin.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f,g from TBL T1 where g[] in (select f from TBL T2 where T1.f > T2.f)
+SydTest::Executor: [INFO] {6,{2,3}}
+SydTest::Executor: [INFO] {10,{2,5}}
+SydTest::Executor: [INFO] {14,{2,7}}
+SydTest::Executor: [INFO] {22,{2,11}}
+SydTest::Executor: [INFO] {15,{3,5}}
+SydTest::Executor: [INFO] {21,{3,7}}
+SydTest::Executor: [INFO] {33,{3,11}}
+SydTest::Executor: [INFO] {35,{5,7}}
+SydTest::Executor: [INFO] {55,{5,11}}
+SydTest::Executor: [INFO] {77,{7,11}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h,i from TBL T1 where i[] in (select h from TBL T2 where T1.f > T2.f)
+SydTest::Executor: [INFO] {ab,{a,ab}}
+SydTest::Executor: [INFO] {ac,{a,ac}}
+SydTest::Executor: [INFO] {ad,{a,ad}}
+SydTest::Executor: [INFO] {ae,{a,ae}}
+SydTest::Executor: [INFO] {bc,{b,bc}}
+SydTest::Executor: [INFO] {bd,{b,bd}}
+SydTest::Executor: [INFO] {be,{b,be}}
+SydTest::Executor: [INFO] {cd,{c,cd}}
+SydTest::Executor: [INFO] {ce,{c,ce}}
+SydTest::Executor: [INFO] {de,{d,de}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f,g from TBL where f in (2,3,4)
+SydTest::Executor: [INFO] {2,{2}}
+SydTest::Executor: [INFO] {3,{3}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f,g from TBL where g[] in (2,3,4)
+SydTest::Executor: [INFO] {2,{2}}
+SydTest::Executor: [INFO] {6,{2,3}}
+SydTest::Executor: [INFO] {10,{2,5}}
+SydTest::Executor: [INFO] {14,{2,7}}
+SydTest::Executor: [INFO] {22,{2,11}}
+SydTest::Executor: [INFO] {(null),{(null),2}}
+SydTest::Executor: [INFO] {3,{3}}
+SydTest::Executor: [INFO] {15,{3,5}}
+SydTest::Executor: [INFO] {21,{3,7}}
+SydTest::Executor: [INFO] {33,{3,11}}
+SydTest::Executor: [INFO] {(null),{(null),3}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h,i from TBL where h in ('a', 'b', 'c')
+SydTest::Executor: [INFO] {a,{a}}
+SydTest::Executor: [INFO] {b,{b}}
+SydTest::Executor: [INFO] {c,{c}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h,i from TBL where i[] in ('a', 'b', 'c')
+SydTest::Executor: [INFO] {a,{a}}
+SydTest::Executor: [INFO] {b,{b}}
+SydTest::Executor: [INFO] {c,{c}}
+SydTest::Executor: [INFO] {ab,{a,ab}}
+SydTest::Executor: [INFO] {ac,{a,ac}}
+SydTest::Executor: [INFO] {ad,{a,ad}}
+SydTest::Executor: [INFO] {ae,{a,ae}}
+SydTest::Executor: [INFO] {bc,{b,bc}}
+SydTest::Executor: [INFO] {bd,{b,bd}}
+SydTest::Executor: [INFO] {be,{b,be}}
+SydTest::Executor: [INFO] {cd,{c,cd}}
+SydTest::Executor: [INFO] {ce,{c,ce}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when f in (2,3,4) then f else -1 end from TBL
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when g[] in (2,3,4) then f else -1 end from TBL
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {6}
+SydTest::Executor: [INFO] {10}
+SydTest::Executor: [INFO] {14}
+SydTest::Executor: [INFO] {22}
+SydTest::Executor: [INFO] {15}
+SydTest::Executor: [INFO] {21}
+SydTest::Executor: [INFO] {33}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when h in ('a','b','c') then h else 'x' end from TBL
+SydTest::Executor: [INFO] {a}
+SydTest::Executor: [INFO] {b}
+SydTest::Executor: [INFO] {c}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when i[] in ('a','b','c') then h else 'x' end from TBL
+SydTest::Executor: [INFO] {a}
+SydTest::Executor: [INFO] {b}
+SydTest::Executor: [INFO] {c}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {ab}
+SydTest::Executor: [INFO] {ac}
+SydTest::Executor: [INFO] {ad}
+SydTest::Executor: [INFO] {ae}
+SydTest::Executor: [INFO] {bc}
+SydTest::Executor: [INFO] {bd}
+SydTest::Executor: [INFO] {be}
+SydTest::Executor: [INFO] {cd}
+SydTest::Executor: [INFO] {ce}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] {x}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when g[] in (select f from TBL T2 where T1.f > T2.f) then f else -1 end from TBL T1
+Executor: [ERR] (SydTest) Object No=xxx (Plan::Predicate::Impl::InImpl) Not supported.
+SydTest::Executor: [INFO] [Test] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when i[] in (select h from TBL T2 where T1.f > T2.f) then h else -1 end from TBL T1
+Executor: [ERR] (SydTest) Object No=xxx (Plan::Predicate::Impl::InImpl) Not supported.
+SydTest::Executor: [INFO] Test end.
+SydTest::Executor: [INFO] [SydTest Option] Test
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB_160208
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

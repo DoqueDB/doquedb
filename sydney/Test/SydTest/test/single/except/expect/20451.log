@@ -1,0 +1,87 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1( C1 ntext , L language)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTIndex on T1(C1) language column L
+	hint 'delayed, inverted=(normalized=true, indexing=word,
+	tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {good bye,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {good evening,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {world,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {world,world,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bye,bye}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bye,bye,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select d_id, score(C1),TF(C1) from C1 where C1 contains freetext('押出機を用いて強化熱可塑性樹脂を製造する方法') order by score(C1) desc limit 50
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select TF(C1) from T1 where C1 contains wordlist('日本語' ,'単語') expand(from(values '形態素解析の問題点')) extractor '@TERMRSCID:1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) SQL syntax error 'Unfinished string literal'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select  score(C1),TF(C1) from T1 where C1 contains wordlist ('ます') limit 10
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select  score(C1),TF(C1) from T1 where C1 contains 'ます' limit 10
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select  score(C1),TF(C1) from T1 where C1 contains wordlist ('ます' & 'です') limit 10
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) SQL syntax error ' near token XXX at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select  score(C1),TF(C1) from T1 where C1 contains 'ます' & 'です' limit 10
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select  score(C1),TF(C1) from T1 where C1 contains wordlist ('ます' | 'です') limit 10
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) SQL syntax error ' near token XXX at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select  score(C1),TF(C1) from T1 where C1 contains 'ます' | 'です' limit 10
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,TF(C1) from T1 where C1 contains within('押出機' '方法' asymmetric lower 2 upper 10) order by score(C1) desc limit 10
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index FTIndex
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

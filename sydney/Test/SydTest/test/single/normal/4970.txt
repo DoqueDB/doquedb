@@ -1,0 +1,29 @@
+# 障害票 0991
+
+Begin;
+Initialize;
+InitializeSession "";
+
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# verify前 非NULL要素 の1パターン
+# verify時 空 の1パターン
+# 基本形
+Command "create table T(C char(4))";
+Command "insert T values 'abc'";
+Command "create index I on T(C)";
+Command "delete from T where C = 'abc'";
+Command "verify table T cascade continue";
+Command  "select * from T";
+Command "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

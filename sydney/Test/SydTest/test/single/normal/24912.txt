@@ -1,0 +1,130 @@
+#任意要素の検索
+#データは空配列、全部NULL、全体がNULL、ひとつNULL(残りがHIT、HITしない)、NULLなし(HIT、HITしない)で作る
+# single/normal/4940 のarray index
+# Bug report 1652
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# 任意要素に対する条件が正しく動作することを確認する
+
+####################################################
+# 準備
+####################################################
+Command "create table t (f int array[no limit], g int array[no limit], h int)";
+# 空配列
+Command "insert t values (?, ?, ?)" [[], [1,3,5], 135];
+Command "insert t values (?, ?, ?)" [[1,2,3], [], 123];
+Command "insert t values (?, ?, ?)" [[], [], 0];
+# 全部NULL
+Command "insert t values (?, ?, ?)" [[null], [2,4,6], 246];
+Command "insert t values (?, ?, ?)" [[2,3,4], [null], 234];
+Command "insert t values (?, ?, ?)" [[null], [null], 1];
+Command "insert t values (?, ?, ?)" [[null, null], [4, 8, 16], 4816];
+Command "insert t values (?, ?, ?)" [[3,4,5], [null, null], 345];
+Command "insert t values (?, ?, ?)" [[null, null], [null, null], 2];
+# 全体がNULL
+Command "insert t values (?, ?, ?)" [null, [3,9,27], 3927];
+Command "insert t values (?, ?, ?)" [[4,5,6], null, 456];
+Command "insert t values (?, ?, ?)" [null, null, 3];
+# ひとつNULL(残りがHITする)
+Command "insert t values (?, ?, ?)" [[null, 3], [5,10,15], 51015];
+Command "insert t values (?, ?, ?)" [[5,6,7], [null, 3], 567];
+Command "insert t values (?, ?, ?)" [[null, 3], [null, 3], 4];
+Command "insert t values (?, ?, ?)" [[3, null], [6,24,72], 62472];
+Command "insert t values (?, ?, ?)" [[6,7,8], [3, null], 678];
+Command "insert t values (?, ?, ?)" [[3, null], [3, null], 5];
+# ひとつNULL(残りがHITしない)
+Command "insert t values (?, ?, ?)" [[null, 100], [7,28,84], 72884];
+Command "insert t values (?, ?, ?)" [[7,8,9], [null, 100], 789];
+Command "insert t values (?, ?, ?)" [[100, null], [8,48,96], 84896];
+Command "insert t values (?, ?, ?)" [[9,10,11], [100, null], 91011];
+Command "insert t values (?, ?, ?)" [[100, null], [100, null], 7];
+#NULLなし(HITする)
+Command "insert t values (?, ?, ?)" [[3, 30, 300], [9, 81, 108], 981108];
+Command "insert t values (?, ?, ?)" [[11,12,13], [300, 30, 3], 111213];
+Command "insert t values (?, ?, ?)" [[30, 3, 300], [300, 3, 30], 8];
+#NULLなし(HITしない)
+Command "insert t values (?, ?, ?)" [[90, 9, 900], [900, 9, 90], 9];
+
+# fにのみbitmap索引をつける
+Command "create array index i on t(f)";
+
+Command "select * from t";
+
+####################################################################
+#1つ
+#select * from notC f[]A = 3B
+#
+#A … 1: f[](索引つき) 2: g[](索引なし)
+#B … 1: =3            2: is null
+#C … 1: not           2: notなし
+
+Command "select * from t where not f[] = 3";
+Command "select * from t where f[] is null";
+Command "select * from t where g[] = 3";
+Command "select * from t where not g[] is null";
+
+#2つ
+#select * from f[]A = 3B andC,D f[]E = 4F
+#
+#A … 1: f[](索引つき) 2: g[](索引なし)
+#B … 1: =3            2: is null
+#C … 1: and           2: or
+#D … 1: not           2: notなし
+#E … 1: f[]           2: g[]
+#F … 1: =3(B:1なら=4) 2: is null
+
+Command "select * from t where f[] = 3 and not f[] = 4";
+Command "select * from t where f[] = 3 and g[] is null";
+Command "select * from t where f[] is null or not f[] is null";
+Command "select * from t where f[] is null or g[] = 3";
+Command "select * from t where g[] = 3 or not g[] = 4";
+Command "select * from t where g[] = 3 or f[] is null";
+Command "select * from t where g[] is null and not g[] is null";
+Command "select * from t where g[] is null and f[] = 3";
+
+#3つ
+#select * from f[]A = 3B andC,D (f[]E = 4F andG,H f[]I = 5J)
+#
+#A … 1: f[](索引つき) 2: g[](索引なし)
+#B … 1: =3            2: is null
+#C … 1: and           2: or
+#D … 1: not           2: notなし
+#E … 1: f[]           2: g[]
+#F … 1: =3(B:1なら=4) 2: is null
+#G … 1: and           2: or
+#H … 1: not           2: notなし
+#I … 1: f[]           2: g[]
+#J … 1: =3(F:1なら=5) 2: is null
+
+Command "select * from t where f[] = 3 and not (f[] = 4 and not f[] = 5)";
+Command "select * from t where f[] = 3 and not (f[] is null or g[] is null)";
+Command "select * from t where f[] = 3 or  (g[] = 4 and not g[] is null)";
+Command "select * from t where f[] is null and  (g[] = 3 or f[] = 5)";
+Command "select * from t where f[] is null or not (g[] is null and f[] is null)";
+Command "select * from t where f[] is null or  (f[] is null or not g[] = 3)";
+Command "select * from t where g[] = 3 or (f[] = 4 or not f[] is null)";
+Command "select * from t where g[] = 3 or not (g[] is null or f[] = 3)";
+Command "select * from t where g[] = 3 and (g[] is null and not g[] = 3)";
+Command "select * from t where g[] is null or not (f[] = 3 and g[] = 5)";
+Command "select * from t where g[] is null and (f[] is null and not f[] is null)";
+Command "select * from t where g[] is null and not (g[] = 3 or not g[] is null)";
+
+######################################################################
+
+# tableの後始末
+Command "drop table t";
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

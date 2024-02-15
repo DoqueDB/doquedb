@@ -1,0 +1,30 @@
+# backup (r/w s, discard snapshot, recover)
+# 上記のトランザクションとオプションでDBのバックアップ及び復帰作業を行う。
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession 1 "TESTDB";
+
+Command 1 "create table T (C ntext array[no limit])";
+Command 1 "create fulltext index I on T(C)";
+Command 1 "insert into T values (?)" [["hoge"]];
+
+Command 1 "start transaction read write, isolation level serializable";
+# バックアップ開始;
+Command 1 "start backup full discard snapshot";
+# バックアップできる状態になったDBの退避
+System "..\\..\\switchcopy.bat d:\\dm\\data\\TESTDB d:\\dm\\alter_data_TESTDB";
+System "..\\..\\switchcopy.bat d:\\dm\\system\\TESTDB d:\\dm\\alter_system_TESTDB";
+# バックアップ終了
+Command 1 "end backup";
+Command 1 "commit";
+TerminateSession 1;
+# (障害回復を試すためTerminateしない)
+
+End;

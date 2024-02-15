@@ -1,0 +1,80 @@
+# 日本語で表や列などが命名可能か調べる
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database データベース";
+TerminateSession;
+InitializeSession "データベース";
+
+Command "create table 表 ( 第一列 int, 第二列 ntext)";
+
+Command "start transaction read write";
+Command "insert into 表 (第一列, 第二列) values (100, 'ほげほげ')";
+Command "select * from 表";
+Command "delete from 表";
+Command "commit";
+
+Command "insert into 表 (第一列, 第二列) values (100, 'ほげほげ')";
+
+Command "create area エリア 'd:\\dm\\area\\エリア'";
+Command "create area 代替エリア 'd:\\dm\\area\\代替'";
+
+Command "create index 索引一 on 表(第一列)";
+Command "alter index 索引一 set area 代替エリア";
+Command "drop index 索引一";
+
+Command "select count(*) from 表";
+Command "select 第一列 from 表 where 第一列=100";
+
+#一度消した名前のindexを再び作ることはできるか?
+Command "create clustered index 索引一 on 表(第一列)";
+
+Command "select 第二列 from 表";
+
+Command "create fulltext index 索引三 on 表(第二列)";
+Command "drop index 索引三";
+
+Command "select count(*) from 表";
+
+Command "drop area エリア";
+Command "drop area 代替エリア";
+
+Command "start transaction read write";
+Command "start backup full discard snapshot";
+Command "end backup";
+Command "commit";
+
+TerminateSession;
+
+# unmount -> mount
+InitializeSession "";
+Command "alter database データベース set path 'd:\\dm\\alter\\でべ'";
+Command "unmount データベース";
+Command "mount データベース path 'd:\\dm\\alter\\でべ' using snapshot";
+TerminateSession;
+
+InitializeSession "データベース";
+Command "start transaction read write";
+Command "verify database データベース cascade continue";
+Command "commit";
+TerminateSession;
+
+InitializeSession "$$SystemDB";
+Command "start transaction read only, using snapshot";
+Command "select * from System_Database";
+Command "commit";
+TerminateSession;
+
+InitializeSession "データベース";
+Command "select 第一列 from 表 where 第一列=100";
+Command "delete from 表";
+Command "drop table 表";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database データベース";
+TerminateSession;
+Terminate;
+End;
+

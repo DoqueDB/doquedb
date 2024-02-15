@@ -1,0 +1,53 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# XA COMMIT -- コミットしようとしたトランザクションブランチの状態ごとのテスト
+#
+
+# 『コミット準備完了』
+## XA STARTでトランザクションブランチ(データ操作無)を開始した実行中のセッションで実行
+Command "xa start X'00'";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+## XA STARTでトランザクションブランチ(データ操作有)を開始した実行中のセッションで実行
+Command "create table T(I int)";
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [1];
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+Command "select * from T";
+Command "drop table T";
+
+## XA STARTでトランザクションブランチ(データ操作無)を開始した終了済のセッション以外のセッションで実行
+Command "xa start X'00'";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "xa commit X'00'";
+
+## XA STARTでトランザクションブランチ(データ操作有)を開始した終了済のセッション以外のセッションで実行
+Command "create table T(I int)";
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [1];
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "xa commit X'00'";
+Command "select * from T";
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,98 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# シャットダウン時のトランザクションブランチの扱いのテスト
+#
+
+Command "create table T(I int)";
+Command "insert into T(I) values (?)" [1];
+Command "insert into T(I) values (?)" [2];
+
+# 『コミット準備完了』でないトランザクションブランチはシャットダウンによりロールバックされる
+Command "select * from T";
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [3];
+Command "select * from T";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "select * from T";
+Command "xa recover";
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [3];
+Command "select * from T";
+Command "xa end X'00'";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "select * from T";
+Command "xa recover";
+
+# 『コミット準備完了』のトランザクションブランチはシャットダウンにより『ヒューリスティックな解決済』になる
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [3];
+Command "select * from T";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "select * from T";
+Command "xa recover";
+
+# 『ヒューリスティックな解決済』なトランザクションブランチの情報はシャットダウンを繰り返しても保持されている
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "xa recover";
+Command "xa start X'01'";
+Command "insert into T(I) values (?)" [3];
+Command "select * from T";
+Command "xa end X'01'";
+Command "xa prepare X'01'";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "xa recover";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "xa recover";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "xa recover";
+Command "xa forget X'00'";
+Command "xa recover";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "xa recover";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "xa recover";
+Command "xa forget X'01'";
+Command "xa recover";
+
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

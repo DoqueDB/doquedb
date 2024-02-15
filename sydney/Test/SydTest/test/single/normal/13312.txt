@@ -1,0 +1,42 @@
+Begin;
+Initialize;
+InitializeSession "";
+#------------------------------------
+Exists "d:\\dm\\data\\databasetest\\T";
+Command "drop database DBDatabaseTest";
+NotExists "d:\\dm\\data\\databasetest";
+NotExists "d:\\dm\\data\\logtest";
+NotExists "d:\\dm\\system\\systemtest";
+TerminateSession;
+
+#パスを指定しないで作成したデータベースに対するalter
+InitializeSession "";
+Command "create database DBDatabaseTest";
+Exists "d:\\dm\\data\\DBDatabaseTest\\LOGICALLOG.SYD";
+#作成遅延 -> privilegeが作られるのである
+Exists "d:\\dm\\system\\DBDatabaseTest\\OBJECTID";
+Exists "d:\\dm\\system\\DBDatabaseTest\\SCHEMA";
+TerminateSession;
+InitializeSession "DBDatabaseTest";
+Command "create table T (f1 int)";
+NotExists "d:\\dm\\data\\DBDatabaseTest\\T";
+Exists "d:\\dm\\system\\DBDatabaseTest\\OBJECTID";
+Exists "d:\\dm\\system\\DBDatabaseTest\\SCHEMA";
+Command "insert T values (1)";
+Exists "d:\\dm\\data\\DBDatabaseTest\\T";
+TerminateSession;
+
+InitializeSession "";
+Command "alter database DBDatabaseTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+NotExists "d:\\dm\\data\\DBDatabaseTest\\T";
+Exists "d:\\dm\\data\\databasetest\\T";
+NotExists "d:\\dm\\data\\DBDatabaseTest\\LOGICALLOG.SYD";
+Exists "d:\\dm\\data\\logtest\\LOGICALLOG.SYD";
+NotExists "d:\\dm\\system\\DBDatabaseTest\\OBJECTID";
+NotExists "d:\\dm\\system\\DBDatabaseTest\\SCHEMA";
+Exists "d:\\dm\\system\\systemtest\\OBJECTID";
+Exists "d:\\dm\\system\\systemtest\\SCHEMA";
+#------------------------------------
+TerminateSession;
+#Terminate;
+End;

@@ -1,0 +1,126 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DefaultDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (N int, C ntext array [no limit], L language array [no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C, L) values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12705]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like ? language ? and C like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%,ja,%the%,en}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like ? language ? or C like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%,ja,%the%,en}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like ? language ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%,ja}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%the%,en}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%主権%,ja}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%主権%,en}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%EU%,en}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%EU%,ja}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTIndex on T(C) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=ngram, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C) from T where C like ? language ? and C like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%,ja,%the%,en}
+SydTest::Executor: [INFO] {0,{1,2}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C) from T where C like ? language ? or C like ? language ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%,ja,%the%,en}
+SydTest::Executor: [INFO] {0,{1,2}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Query]] select N, sectionized(C) from T where C like ? language ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%,ja}
+SydTest::Executor: [INFO] {0,{1,2}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%the%,en}
+SydTest::Executor: [INFO] {0,{1,2}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%主権%,ja}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%主権%,en}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%EU%,en}
+SydTest::Executor: [INFO] {0,{2}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {%EU%,ja}
+SydTest::Executor: [INFO] {0,{2}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index FTIndex cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,368 @@
+# 
+# PrepareCommandのテスト
+# 2005/10/31 tajima
+#障害番号　559、560に対応
+#          他、いろいろな構文テスト
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T (N int,N1 int, C ntext)";
+Command "create table T1 (N int,N1 int, C ntext)";
+Command "create table T3 (N int,N1 int, C ntext)";
+
+Command "insert into T (N,N1,C) values (1,1, 'a brown')";
+Command "insert into T (N,N1,C) values (2,2, 'fox jumps')";
+Command "insert into T (N,N1,C) values (3,3, 'quickly over')";
+Command "insert into T (N,N1,C) values (4,4, 'the lazy dog')";
+Command "insert into T (N,N1,C) values (5,5, '_A_BROWN')";
+Command "insert into T (N,N1,C) values (6,6, 'ああああああ')";
+Command "insert into T (N,N1,C) values (7,6, 'いいいいいい')";
+Command "insert into T (N,N1,C) values (8,6, 'うううううう')";
+Command "insert into T (N,N1,C) values (9,6, 'ええええええええええ')";
+Command "insert into T (N,N1,C) values (10,6, 'おおおおおおおおお')";
+Command "insert into T (N,N1,C) values (11,6, 'かかかかかかか')";
+Command "insert into T (N,N1,C) values (12,2, 'fox jumps')";
+Command "insert into T (N,N1,C) values (13,3, 'quickly over')";
+Command "insert into T (N,N1,C) values (14,4, 'the lazy dog')";
+Command "insert into T (N,N1,C) values (15,5, 'A BROWN')";
+Command "insert into T (N,N1,C) values (16,6, 'B_BROWN')";
+Command "insert into T (N,N1,C) values (17,6, 'C_BROWN')";
+Command "insert into T (N,N1,C) values (18,6, 'D_BROWN')";
+Command "insert into T (N,N1,C) values (19,6, 'E_BROWN')";
+Command "insert into T (N,N1,C) values (20,6, 'F_BROWN')";
+Command "insert into T (N,N1,C) values (21,6, 'G_BROWN')";
+Command "insert into T (N,N1,C) values (22,null, 'FOX JUMPS')";
+Command "insert into T (N,N1,C) values (23,1, 'QUICKLY OVER')";
+Command "insert into T (N,N1,C) values (24,2, 'THE LAZY DOG')";
+Command "insert into T (N,N1,C) values (25,3, 'a brown')";
+Command "insert into T (N,N1,C) values (26,4, 'fox jumps')";
+Command "insert into T (N,N1,C) values (27,1, 'a brown')";
+Command "insert into T (N,N1,C) values (28,2, 'fox jumps')";
+Command "insert into T (N,N1,C) values (29,3, 'quickly over')";
+Command "insert into T (N,N1,C) values (30,4, 'the lazy dog')";
+Command "insert into T (N,N1,C) values (31,5, 'A BROWN')";
+Command "insert into T (N,N1,C) values (32,6, '1aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (33,6, '2aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (34,6, '3aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (35,6, '4aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (36,6,  '5aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (37,6, '6aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (38,2, 'fox jumps')";
+Command "insert into T (N,N1,C) values (39,3, 'quickly over')";
+Command "insert into T (N,N1,C) values (40,4, 'bbbbbbbbbbbb')";
+Command "insert into T (N,N1,C) values (41,5, 'bbbbbbbbbbbb')";
+Command "insert into T (N,N1,C) values (42,6, '7aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (43,6, '8aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (44,6, '9aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (45,6, '1aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (46,6, '2aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (47,6, '3aaaaaaaaaa')";
+Command "insert into T (N,N1,C) values (48,2, 'fox jumps')";
+Command "insert into T (N,N1,C) values (49,3, 'quickly over')";
+Command "insert into T (N,N1,C) values (50,4, 'the lazy dog')";
+
+Command "insert into T1 (N,N1,C) values (1,null, 'FOX JUMPS')";
+Command "insert into T1 (N,N1,C) values (2,1, 'QUICKLY OVER')";
+Command "insert into T1 (N,N1,C) values (3,2, 'THE LAZY DOG')";
+Command "insert into T1 (N,N1,C) values (9,3, 'a brown')";
+Command "insert into T1 (N,N1,C) values (10,4, 'fox jumps')";
+Command "insert into T1 (N,N1,C) values (11,6, '4aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (12,2, 'fox jumps')";
+Command "insert into T1 (N,N1,C) values (13,3, 'quickly over')";
+Command "insert into T1 (N,N1,C) values (14,4, 'the lazy dog')";
+Command "insert into T1 (N,N1,C) values (15,5, 'A BROWN')";
+Command "insert into T1 (N,N1,C) values (16,6, '5aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (17,6, '6aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (18,6, '7aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (19,6, '8aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (20,6, '9aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (21,6, '0aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (22,null, 'FOX JUMPS')";
+Command "insert into T1 (N,N1,C) values (23,1, 'QUICKLY OVER')";
+Command "insert into T1 (N,N1,C) values (24,2, 'THE LAZY DOG')";
+Command "insert into T1 (N,N1,C) values (25,3, 'a brown')";
+Command "insert into T1 (N,N1,C) values (26,4, 'fox jumps')";
+Command "insert into T1 (N,N1,C) values (27,1, 'a brown')";
+Command "insert into T1 (N,N1,C) values (28,2, 'fox jumps')";
+Command "insert into T1 (N,N1,C) values (29,3, 'quickly over')";
+Command "insert into T1 (N,N1,C) values (30,4, 'the lazy dog')";
+Command "insert into T1 (N,N1,C) values (31,5, 'A BROWN')";
+Command "insert into T1 (N,N1,C) values (32,6, '1aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (33,6, '2aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (34,6, '3aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (35,6, '4aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (36,6, '5aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (37,6, '6aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (38,2, 'fox jumps')";
+Command "insert into T1 (N,N1,C) values (39,3, 'quickly over')";
+Command "insert into T1 (N,N1,C) values (40,4, 'bbbbbbbbbbbb')";
+Command "insert into T1 (N,N1,C) values (41,5, 'bbbbbbbbbbbb')";
+Command "insert into T1 (N,N1,C) values (42,6, '7aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (43,6, '8aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (44,6, '9aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (45,6, '0aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (46,6, '1aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (47,6, '2aaaaaaaaaaa')";
+Command "insert into T1 (N,N1,C) values (48,2, 'fox jumps')";
+Command "insert into T1 (N,N1,C) values (49,3, 'quickly over')";
+Command "insert into T1 (N,N1,C) values (50,4, 'the lazy dog')";
+
+Command "create index T_N on T(N)";
+Command "create index T1_N on T1(N)";
+
+#障害番号 560　
+#ContentElementの削除でAccessViolationが発生することがある
+CreatePreparedCommand "del2" "delete T where exists (select * from T1 where T1.N = T.N and T.N = ? and T1.N = ?)";
+
+PreparedCommand "del2" [1, 1];
+PreparedCommand "del2" [2, 2];
+PreparedCommand "del2" [3, 3];
+PreparedCommand "del2" [4, 4];
+
+Command "select * from T order by N";
+
+
+
+#障害番号　559
+# limit に？を使用するとサーバが落ちる。
+# offsetも使用
+Command  "select * from T order by N limit ?" [3];
+Command  "select * from T order by N limit ?" [10];
+Command  "select * from T order by N limit ?" [15];
+Command  "select * from T order by N limit ?" [100];
+Command  "select * from T order by N limit ? offset ?" [20,10];
+Command  "select * from T order by N limit ? offset ?" [1,100];
+
+CreatePreparedCommand "selA1" "select * from T order by N limit ?";
+CreatePreparedCommand "selA2" "select * from T order by N limit ? offset ?";
+
+PreparedCommand "selA1" [10];
+PreparedCommand "selA1" [100];
+PreparedCommand "selA2" [5,5];
+PreparedCommand "selA2" [10,10];
+PreparedCommand "selA2" [150,140];
+
+#
+#in
+#
+CreatePreparedCommand "sel_in" "select * from T where N in (?, ?, ?) order by N";
+
+PreparedCommand "sel_in" [6,5,4];
+PreparedCommand "sel_in" [7,8,9];
+PreparedCommand "sel_in" [17,18,19];
+
+#like escape
+Command "select N,C from T where C like ? escape ? " ["A%" , "_"];
+CreatePreparedCommand "sel_escape" "select N,C from T where C like ? escape ?";
+PreparedCommand "sel_escape" ["A%" , "_"];
+ErasePreparedCommand "sel_escape";
+
+#
+#inner join
+#
+CreatePreparedCommand "sel1" "select T1.N,T.N1 from T inner join T1 on T.N=T1.N where T.N = ?" ;
+PreparedCommand "sel1" [21];
+PreparedCommand "sel1" [22];
+PreparedCommand "sel1" [23];
+PreparedCommand "sel1" [24];
+
+#right outer join
+CreatePreparedCommand "sel2" "select T1.N,T.N1 from T left outer join T1 on T.N=T1.N where T.N = ?" ;
+PreparedCommand "sel2" [11];
+PreparedCommand "sel2" [12];
+PreparedCommand "sel2" [15];
+
+#left outer join
+CreatePreparedCommand "sel3" "select T1.N,T.N1 from T right outer join T1 on T.N=T1.N where T.N = ?" ;
+PreparedCommand "sel3" [31];
+PreparedCommand "sel3" [32];
+
+#
+#副問い合わせ
+#
+CreatePreparedCommand "sel4" "Select * from (Select T.N from T inner join T1 on T.N = T1.N) as A,(Select T1.N from T1 ) as B  where A.N=B.N AND A.N > ?";
+
+PreparedCommand "sel4" [21];
+PreparedCommand "sel4" [22];
+
+#
+#distinct
+#
+CreatePreparedCommand "sel7" "select distinct T.C from T inner join T1 on T.N=T1.N where T.C like ?";
+CreatePreparedCommand "sel8" "Select * from (Select distinct T.N from T, T1) as A,(Select distinct N from T1 ) as B  where  A.N < ?";
+
+
+PreparedCommand "sel7" ["%LA%"];
+PreparedCommand "sel7" ["%over%"];
+PreparedCommand "sel8" [5];
+
+
+#
+#複数の表のjoin selectとinsert
+#
+CreatePreparedCommand "ins1" "insert T3 select T1.N, T.N1,T.C from T1, T where T1.N = T.N and T.N = ?";
+
+PreparedCommand "ins1" [9];
+PreparedCommand "ins1" [10];
+PreparedCommand "ins1" [11];
+
+Command "select * from T3";
+
+#2005/12/22 *にdistinctを付けると落ちる。
+
+CreatePreparedCommand "sel9" "select distinct * from T inner join T1 on T.N=T1.N where T.C like ?";
+CreatePreparedCommand "sel10" "Select  distinct * from (Select * from T, T1) as A,(Select * from T1 ) as B  where  B.N >= 50 AND A.N < ?";
+CreatePreparedCommand "sel11" "Select  * from (Select distinct * from T, T1) as A,(Select distinct * from T1 ) as B  where  B.N >= ? AND A.N < ?";
+
+Command "insert into T1 (N,N1,C) values (50,4, 'the lazy dog')";
+Command "insert into T1 (N,N1,C) values (50,4, 'the lazy dog')";
+Command "insert into T1 (N,N1,C) values (50,4, 'the lazy dog')";
+
+Command "select * from T inner join T1 on T.N=T1.N where T.C like '%LA%'";
+PreparedCommand "sel9" ["%LA%"];
+
+
+PreparedCommand "sel10" [5];
+PreparedCommand "sel11" [50,5];
+
+
+#
+#del
+#
+CreatePreparedCommand "del1" "delete from T where T.N >= ? and T.N <= ?";
+
+PreparedCommand "del1" [11,15];
+PreparedCommand "del1" [16,20];
+PreparedCommand "del1" [21,25];
+
+Command "select * from T";
+
+ErasePreparedCommand "selA1";
+ErasePreparedCommand "selA2";
+ErasePreparedCommand "sel_in";
+ErasePreparedCommand "sel1";
+ErasePreparedCommand "sel2";
+ErasePreparedCommand "sel3";
+ErasePreparedCommand "sel4";
+
+
+ErasePreparedCommand "sel7";
+ErasePreparedCommand "sel8";
+
+ErasePreparedCommand "sel9";
+ErasePreparedCommand "sel10";
+ErasePreparedCommand "sel11";
+
+ErasePreparedCommand "ins1";
+ErasePreparedCommand "del1";
+ErasePreparedCommand "del2";
+
+
+# 障害票 1111
+CreatePreparedCommand "update" "update T set N = ? where N1 = ?";
+# 2回以上updateを実行
+PreparedCommand "update" [101, 1];
+PreparedCommand "update" [102, 6];
+PreparedCommand "update" [null, 1];
+PreparedCommand "update" [null, 6];
+ErasePreparedCommand "update";
+
+# 条件(N1)には索引が付いていない。
+# 条件に?が使われていない。
+CreatePreparedCommand "update" "update T set N = ? where N1 = 4";
+# update
+PreparedCommand "update" [110];
+PreparedCommand "update" [1];
+PreparedCommand "update" [null];
+# 更新されてしまったのでPreparedCommandで定義した適当な値を入れ直す。
+Command "insert into T1 (N,N1,C) values (1,null, 'FOX JUMPS')";
+PreparedCommand "update" [null];
+ErasePreparedCommand "update";
+
+CreatePreparedCommand "update" "update T set N = ? where N1 is null";
+PreparedCommand "update" [120];
+PreparedCommand "update" [1];
+PreparedCommand "update" [null];
+# 更新されてしまったのでPreparedCommandで定義した適当な値を入れ直す。
+Command "insert into T1 (N,N1,C) values (1,null, 'FOX JUMPS')";
+PreparedCommand "update" [null];
+ErasePreparedCommand "update";
+
+# 条件(N1)には索引が付いていない。
+# 更新対象に?が使われていない。
+CreatePreparedCommand "update" "update T set N = 7 where N1 = ?";
+# 2回以上updateを実行
+PreparedCommand "update" [7];
+PreparedCommand "update" [8];
+ErasePreparedCommand "update";
+
+CreatePreparedCommand "update" "update T set N = null where N1 = ?";
+# 2回以上updateを実行
+PreparedCommand "update" [130];
+PreparedCommand "update" [131];
+ErasePreparedCommand "update";
+
+Command "select * from T";
+
+# 更新対象列に付いている索引が条件にも使われる。
+CreatePreparedCommand "update" "update T set N = ? where N = ?";
+# 2回以上updateを実行
+PreparedCommand "update" [6, 48];
+PreparedCommand "update" [1, 49];
+PreparedCommand "update" [null, 6];
+PreparedCommand "update" [null, 1];
+ErasePreparedCommand "update";
+
+# 更新対象列に付いている索引が条件にも使われる。
+# 条件に?が使われていない。
+CreatePreparedCommand "update" "update T set N = ? where N = 8";
+# update
+PreparedCommand "update" [8];
+PreparedCommand "update" [10];
+PreparedCommand "update" [null];
+# 更新されてしまったのでPreparedCommandで定義した適当な値を入れ直す。
+Command "insert into T1 (N,N1,C) values (1,null, 'FOX JUMPS')";
+PreparedCommand "update" [null];
+ErasePreparedCommand "update";
+
+CreatePreparedCommand "update" "update T set N = ? where N is null";
+PreparedCommand "update" [140];
+# 更新されてしまったのでnullを入れ直す。
+Command "insert into T1 (N,N1,C) values (null,6, 'FOX JUMPS')";
+PreparedCommand "update" [141];
+PreparedCommand "update" [null];
+# 更新されてしまったのでPreparedCommandで定義した適当な値を入れ直す。
+Command "insert into T1 (N,N1,C) values (null,6, 'FOX JUMPS')";
+PreparedCommand "update" [null];
+ErasePreparedCommand "update";
+
+# 更新対象列に付いている索引が条件にも使われる。
+# 更新対象に?が使われていない。
+CreatePreparedCommand "update" "update T set N = 150 where N = ?";
+# 2回以上updateを実行
+PreparedCommand "update" [2];
+PreparedCommand "update" [3];
+ErasePreparedCommand "update";
+
+CreatePreparedCommand "update" "update T set N = null where N = ?";
+# 2回以上updateを実行
+PreparedCommand "update" [4];
+PreparedCommand "update" [150];
+ErasePreparedCommand "update";
+
+Command "select * from T";
+
+Command "drop table T";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

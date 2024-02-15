@@ -1,0 +1,25 @@
+#temporaryが指定されたらNotSupported
+# 障害票 1091
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create global temporary table TBL(f int)";
+
+Command "create local temporary table TBL(f int)";
+
+Command "create temporary table TBL(f int)";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

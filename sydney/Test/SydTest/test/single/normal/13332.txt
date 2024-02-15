@@ -1,0 +1,12 @@
+Begin;
+Initialize;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+TerminateSession;
+InitializeSession "";
+#------------------------------------
+Command "drop database DBMountTest";
+#------------------------------------
+TerminateSession;
+Terminate;
+End;

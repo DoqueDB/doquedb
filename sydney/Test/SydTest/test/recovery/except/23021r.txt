@@ -1,0 +1,46 @@
+#recoveryを行わせるためのSydTest
+Begin;
+BeginTimeSpan;
+Initialize;
+InitializeSession "TESTDB";
+Command "verify database TESTDB cascade continue";
+
+#別のスクリプトでリカバリーを実行し、g の値を確認する
+
+#select * from T;
+#⇒ 期待結果:
+#   {1, 0, 10}
+#   {2, 1, 20}
+#   {3, 2, 30}
+#   {4, 3, 40}
+#   {5, 4, 50}
+#   {6, 5, 60}
+
+Command  "select * from T";
+
+#さらに g の値を指定せずに数件の挿入を行う
+
+#insert T values (7, 70), (8, 80), (9, 90);
+#insert T values (10, 100), (11, 110), (12, 120); 
+
+Command  "insert T(f, h) values (7, 70), (8, 80), (9, 90)";
+Command  "insert T(f, h) values (10, 100), (11, 110), (12, 120)";
+
+#g の値が続きから生成されていることを確認する
+
+#select * from T;
+#⇒ 期待結果:
+#   {7, 6, 70}
+#   {8, 7, 80}
+#   {9, 8, 90}
+#   {10, 9, 100}
+#   {11, 10, 110}
+#   {12, 11, 120}
+
+Command  "select * from T";
+
+Command "drop database TESTDB";
+EndTimeSpan;
+TerminateSession;
+Terminate;
+End;

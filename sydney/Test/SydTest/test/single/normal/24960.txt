@@ -1,0 +1,63 @@
+# UNSNEST
+# Bug report 1804
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+
+Command "create table document (
+	sn int,
+	ownersn int,
+	searchrightallow int array[no limit],
+	searchrightdeny int array[no limit],
+	pathlist int array[no limit],
+	primary key(sn))";
+Command "create table folder (
+	sn int,
+	ownersn int,
+	searchrightallow int array[no limit],
+	searchrightdeny int array[no limit],
+	pathlist int array[no limit],
+	primary key(sn))";
+Command "create index document_ownersn on document(ownersn)";
+Command "create array index document_searchrightallow on document(searchrightallow)";
+Command "create array index document_searchrightdeny on document(searchrightdeny)";
+Command "create array index document_pathlist on document(pathlist)";
+Command "create index folder_ownersn on folder(ownersn)";
+Command "create array index folder_searchrightallow on folder(searchrightallow)";
+Command "create array index folder_searchrightdeny on folder(searchrightdeny)";
+Command "create array index folder_pathlist on folder(pathlist)";
+
+Command "insert folder values		    
+	(1, 4, array[1,2,3], array[4,5], array[]),
+	(2, 4, array[1,2,3], array[4,5], array[1]),
+	(3, 4, array[1,2,3], array[4,5], array[1]),
+	(4, 4, array[2,3], array[4,5], array[1,2]),
+	(5, 4, array[2,3], array[4,5], array[1,2,4])";
+
+Command "insert document values		    
+	(1, 4, array[1,2,3], array[4,5], array[1]),
+	(2, 4, array[1,2,3], array[4,5], array[1]),
+	(3, 4, array[1,2,3], array[4,5], array[1,3]),
+	(4, 4, array[1,2,3], array[4,5], array[1,2]),
+	(5, 4, array[1,2,3], array[4,5], null),
+	(6, 4, array[1,2,3], array[4,5], array[1,2,4]),
+	(7, 4, array[1,2,3], array[4,5], null)";
+Command "select SN from Document where SN > 0
+				and (SearchRightAllow[] in (1,6,8)
+				     or OwnerSN = 1)
+				and not SearchRightDeny[] in (1,6,8)
+				and not exists (select * from Folder
+						where SN in (select * from unnest(Document.PathList) as x)
+						and ((not SearchRightAllow[] in (1,6,8) and OwnerSN != 1)
+							or SearchRightDeny[] in (1,6,8)))";
+Command "select * from unnest(array[1,3,5]) as x";
+Command "select * from Document where exists (select * from Folder where sn in (select * from unnest(Document.pathList) as x))";
+
+Command  "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,29 @@
+# backup 
+# 不適切な引数のbackupを行う
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession 1 "TESTDB";
+Command 1 "start transaction read write, isolation level read uncommitted";
+
+# 現在, fullオプションは必須
+Command 1 "start backup discard snapshot";
+#Command 1 "end backup";
+
+# isolation levelがserializableでない場合、discard snapshotが必要
+Command 1 "start backup full";
+#Command 1 "end backup";
+
+Command 1 "commit";
+TerminateSession 1;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

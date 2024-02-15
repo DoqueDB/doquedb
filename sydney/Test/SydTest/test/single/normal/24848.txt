@@ -1,0 +1,55 @@
+# Bug report 2551
+# 索引を使える条件で索引を使わないプランになった時の処理確認
+
+Begin;
+Initialize;
+InitializeSession "TESTDB_2551";
+
+Command "drop database TESTDB_2551 if exists";
+Command "create database TESTDB_2551";
+
+#CreateTheardを使っているがサブルーチン的に使っているだけでmultiではない
+
+CreateThread "Prepare";
+JoinThread "Prepare";
+
+Command "start transaction read write";
+CreateThread "Test";
+JoinThread "Test";
+Command "commit";
+CreateThread "Test";
+JoinThread "Test";
+
+Command "drop database TESTDB_2551";
+
+TerminateSession;
+Terminate;
+End;
+
+Test {
+Command "SELECT author.id FROM author WHERE author.last_timestamp >= '1970-01-01 00:00:00' ORDER BY author.id limit 10";
+}
+
+Prepare {
+Command "create table author (
+    id int,
+    last_timestamp datetime default current_timestamp,
+    primary key(id)
+)";
+
+Command "insert author(id) values (?)" [1];
+Command "insert author(id) select id+1 from author";
+Command "insert author(id) select id+2 from author";
+Command "insert author(id) select id+4 from author";
+Command "insert author(id) select id+8 from author";
+Command "insert author(id) select id+16 from author";
+Command "insert author(id) select id+32 from author";
+Command "insert author(id) select id+64 from author";
+Command "insert author(id) select id+128 from author";
+Command "insert author(id) select id+256 from author";
+Command "insert author(id) select id+512 from author";
+Command "insert author(id) select id+1024 from author";
+Command "insert author(id) select id+2048 from author";
+
+Command "create index idx_timestamp on author(last_timestamp)";
+}

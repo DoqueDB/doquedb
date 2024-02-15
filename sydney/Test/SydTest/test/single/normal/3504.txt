@@ -1,0 +1,35 @@
+#【項目】
+# 更新トランザクションを開始し、終了せずにセッションを終了する
+#【結果】
+# トランザクションがロールバックされる
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T(C int)";
+
+Command "start transaction read write";
+# データベースを更新する
+Command "insert into T values (1)";
+
+# いったん終了させて再開
+TerminateSession;
+InitializeSession "TESTDB";
+
+# 先ほどの更新内容がロールバックされていることを確認する
+Command "select * from T";
+
+Command "drop table T";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+End;

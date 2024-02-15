@@ -1,0 +1,301 @@
+# select * from T1 natural       inner join T2
+#                           left outer
+#                          right outer
+#
+# 各々の型でjoinテスト (naturalで使用される列が1個)
+# テーブルの同列1個で正しく結合されているかをテスト
+# joinの単体テストなので結合に使われていないカラムが正しく表示されているかのテストも含む
+# 単索引
+# --T1索引有り, T2索引無し
+# --同種テスト 11[1-4]02
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "create index I1_1 on T1(C1)";
+Command  "create index I1_2 on T1(C2)";
+Command  "create index I1_3 on T1(C3)";
+Command  "create index I1_4 on T1(C4)";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  null, "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", null                                 ];
+
+
+# 1 テーブルT2(C1, int)
+Command  "create table T2(C1 int, C5 int)";
+Command  "insert into T2 (C1, C5) values (?, ?)" [111,  1111];
+Command  "insert into T2 (C1, C5) values (?, ?)" [null, 2222];
+Command  "insert into T2 (C1, C5) values (?, ?)" [333,  3333];
+Command  "insert into T2 (C1, C5) values (?, ?)" [444,  null];
+Command  "insert into T2 (C1, C5) values (?, ?)" [666,  6666];
+Command  "insert into T2 (C1, C5) values (?, ?)" [null, null];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 2 テーブルT2(C1, varchar)
+Command  "create table T2(C1 int, C5 varchar(8))";
+Command  "insert into T2 (C1, C5) values (?, ?)" [111,  "1111"];
+Command  "insert into T2 (C1, C5) values (?, ?)" [null, "2222"];
+Command  "insert into T2 (C1, C5) values (?, ?)" [333,  "3333"];
+Command  "insert into T2 (C1, C5) values (?, ?)" [444,   null ];
+Command  "insert into T2 (C1, C5) values (?, ?)" [666,  "6666"];
+Command  "insert into T2 (C1, C5) values (?, ?)" [null,  null ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 3 テーブルT2(C1, nvarchar)
+Command  "create table T2(C1 int, C5 nvarchar(8))";
+Command  "insert into T2 (C1, C5) values (?, ?)" [111,  "げらげら"];
+Command  "insert into T2 (C1, C5) values (?, ?)" [null, "わらわら"];
+Command  "insert into T2 (C1, C5) values (?, ?)" [333,  "えへえへ"];
+Command  "insert into T2 (C1, C5) values (?, ?)" [444,   null     ];
+Command  "insert into T2 (C1, C5) values (?, ?)" [666,  "ぷうぷう"];
+Command  "insert into T2 (C1, C5) values (?, ?)" [null,  null     ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 4 テーブルT2(C1, text)
+Command  "create table T2(C1 int, C5 nvarchar(448))";
+Command  "insert into T2 (C1, C5) values (?, ?)" [111,  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C1, C5) values (?, ?)" [null, textsjisfile "..\\..\\doc\\dictionary.txt"  ];
+Command  "insert into T2 (C1, C5) values (?, ?)" [333,  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C1, C5) values (?, ?)" [444,  null                                 ];
+Command  "insert into T2 (C1, C5) values (?, ?)" [666,  textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T2 (C1, C5) values (?, ?)" [null, null                                 ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 5 テーブルT2(C2, int)
+Command  "create table T2(C2 varchar(2), C5 int)";
+Command  "insert into T2 (C2, C5) values (?, ?)" ["1",  1111];
+Command  "insert into T2 (C2, C5) values (?, ?)" [null, 2222];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["3",  3333];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["4",  null];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["6",  6666];
+Command  "insert into T2 (C2, C5) values (?, ?)" [null, null];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 6 テーブルT2(C2, varchar)
+Command  "create table T2(C2 varchar(2), C5 varchar(8))";
+Command  "insert into T2 (C2, C5) values (?, ?)" ["1",  "1111"];
+Command  "insert into T2 (C2, C5) values (?, ?)" [null, "2222"];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["3",  "3333"];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["4",   null ];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["6",  "6666"];
+Command  "insert into T2 (C2, C5) values (?, ?)" [null,  null ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 7 テーブルT2(C2, nvarchar)
+Command  "create table T2(C2 varchar(2), C5 nvarchar(8))";
+Command  "insert into T2 (C2, C5) values (?, ?)" ["1",  "げらげら"];
+Command  "insert into T2 (C2, C5) values (?, ?)" [null, "わらわら"];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["3",  "えへえへ"];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["4",   null     ];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["6",  "ぷうぷう"];
+Command  "insert into T2 (C2, C5) values (?, ?)" [null,  null     ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 8 テーブルT2(C2, text)
+Command  "create table T2(C2 varchar(2), C5 nvarchar(448))";
+Command  "insert into T2 (C2, C5) values (?, ?)" ["1",  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C2, C5) values (?, ?)" [null, textsjisfile "..\\..\\doc\\dictionary.txt"  ];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["3",  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["4",  null                                 ];
+Command  "insert into T2 (C2, C5) values (?, ?)" ["6",  textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T2 (C2, C5) values (?, ?)" [null, null                                 ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 9 テーブルT2(C3, int)
+Command  "create table T2(C3 nvarchar(4), C5 int)";
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ほげ", 1111];
+Command  "insert into T2 (C3, C5) values (?, ?)" [null,   2222];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ホゲ", 3333];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ぴよ", null];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ぷう", 6666];
+Command  "insert into T2 (C3, C5) values (?, ?)" [ null,  null];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 10 テーブルT2(C3, varchar)
+Command  "create table T2(C3 nvarchar(4), C5 varchar(8))";
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ほげ", "1111"];
+Command  "insert into T2 (C3, C5) values (?, ?)" [null,   "2222"];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ホゲ", "3333"];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ぴよ",  null ];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ぷう", "6666"];
+Command  "insert into T2 (C3, C5) values (?, ?)" [ null,   null ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 11 テーブルT2(C3, nvarchar)
+Command  "create table T2(C3 nvarchar(4), C5 nvarchar(8))";
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ほげ", "げらげら"];
+Command  "insert into T2 (C3, C5) values (?, ?)" [null,   "わらわら"];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ホゲ", "えへえへ"];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ぴよ",  null     ];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ぷう", "ぷうぷう"];
+Command  "insert into T2 (C3, C5) values (?, ?)" [ null,   null     ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 12 テーブルT2(C3, text)
+Command  "create table T2(C3 nvarchar(4), C5 nvarchar(448))";
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ほげ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C3, C5) values (?, ?)" [null,   textsjisfile "..\\..\\doc\\dictionary.txt"  ];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ぴよ", null                                 ];
+Command  "insert into T2 (C3, C5) values (?, ?)" ["ぷう", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T2 (C3, C5) values (?, ?)" [ null,  null                                 ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 13 テーブルT2(C4, int)
+Command  "create table T2(C4 nvarchar(448), C5 int)";
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\lab.txt",     1111];
+Command  "insert into T2 (C4, C5) values (?, ?)" [null,                                   2222];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt",  3333];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt",  null];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\in_lab.txt",     6666];
+Command  "insert into T2 (C4, C5) values (?, ?)" [null,                                   null];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 14 テーブルT2(C4, varchar)
+Command  "create table T2(C4 nvarchar(448), C5 varchar(8))";
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\lab.txt",    "1111"];
+Command  "insert into T2 (C4, C5) values (?, ?)" [null,                                  "2222"];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt", "3333"];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt",  null ];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\in_lab.txt",    "6666"];
+Command  "insert into T2 (C4, C5) values (?, ?)" [null,                                   null ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 15 テーブルT2(C4, nvarchar)
+Command  "create table T2(C4 nvarchar(448), C5 nvarchar(8))";
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\lab.txt",    "げらげら"];
+Command  "insert into T2 (C4, C5) values (?, ?)" [null,                                  "わらわら"];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt", "えへえへ"];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt",  null     ];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\in_lab.txt",    "ぷうぷう"];
+Command  "insert into T2 (C4, C5) values (?, ?)" [null,                                   null     ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+
+# 16 テーブルT2(C4, nvarchar)
+Command  "create table T2(C4 nvarchar(448), C5 nvarchar(8))";
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\lab.txt",    textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C4, C5) values (?, ?)" [null,                                  textsjisfile "..\\..\\doc\\dictionary.txt"  ];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", null                                 ];
+Command  "insert into T2 (C4, C5) values (?, ?)" [textsjisfile "..\\..\\doc\\in_lab.txt",    textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T2 (C4, C5) values (?, ?)" [null,                                  null                                 ];
+
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+Command  "drop table T2";
+
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

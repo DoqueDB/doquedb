@@ -1,0 +1,191 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(C int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I on T(C)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area A 'd:\dm\area\a'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB offline
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values (777)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2 (C int)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T(C)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area A2 'd:\dm\area\a2'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table T set area A
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter index I set area A
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area A modify 'd:\dm\area\aa'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB set path 'd:\dm\area\db'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area A
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C from T
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB online
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB read only
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values (777)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2 (C int)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T(C)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area A2 'd:\dm\area\a2'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table T set area A
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter index I set area A
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area A modify 'd:\dm\area\aa'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB set path 'd:\dm\area\db'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area A
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB offline
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (C) values (777)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C from T
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2 (C int)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T(C)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area A2 'd:\dm\area\a2'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table T set area A
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter index I set area A
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area A modify 'd:\dm\area\aa'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB set path 'd:\dm\area\db'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area A
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is READ ONLY.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Database 'TESTDB' is OFFLINE.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB online
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database TESTDB read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] Main End.
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify database TESTDB cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

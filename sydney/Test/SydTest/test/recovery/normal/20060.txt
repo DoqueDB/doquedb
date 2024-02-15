@@ -1,0 +1,19 @@
+# 障害票 1430
+# ALTER TABLE ADD COLUMNしたことがある表で全文索引のUPDATEをする
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+#Command "drop database TESTDB ";
+Command "create database TESTDB";
+Command "create table TBL(f int, g ntext hint heap, g2 ntext, h language, s float)";
+Command "create fulltext index IDX_g on TBL(g) language column h";
+Command "create fulltext index IDX_g2 on TBL(g2) score column s";
+Command "insert TBL values (1, 'aaa', 'bbb', 'ja', 0.1)";
+Command "alter table TBL add column j int";
+Command "checkpoint";
+
+Command "update TBL set g = null, g2 = 'ccc', h = 'ja', s = 0.1";
+TerminateSession;
+#Terminate;
+End;

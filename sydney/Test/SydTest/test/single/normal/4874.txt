@@ -1,0 +1,26 @@
+# 障害票 1366
+# 
+
+Begin;
+Initialize;
+
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint, g1 int array[10], primary key(f1))";
+Command "create fulltext index T_f2 on T(f2)";
+Command "INSERT T input from path '../../doc/bulk_1_data1.txt' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "delete from T";
+Command "INSERT T input from path '../../doc/bulk_1_data1.txt' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+End;

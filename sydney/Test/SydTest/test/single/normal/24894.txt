@@ -1,0 +1,37 @@
+# ジョイン条件と索引が使える条件が選択率の低い条件とANDで結合している条件で索引が使われているか確認
+
+Begin;
+Initialize;
+InitializeSession "TESTDB_2539";
+Command "create database TESTDB_2539";
+
+Command "create table TBL(f int, g int, h int)";
+Command "create index IDX_f on TBL(f)";
+
+Command "insert TBL values (?,?,?)" [1,2,3];
+Command "insert TBL values (?,?,?)" [2,2,3];
+Command "insert TBL values (?,?,?)" [3,2,3];
+Command "insert TBL values (?,?,?)" [4,2,3];
+Command "insert TBL values (?,?,?)" [5,2,3];
+Command "insert TBL values (?,?,?)" [6,2,3];
+Command "insert TBL values (?,?,?)" [7,2,3];
+Command "insert TBL values (?,?,?)" [8,2,3];
+Command "insert TBL values (?,?,?)" [9,2,3];
+Command "insert TBL values (?,?,?)" [10,2,3];
+
+Command "start explain no execute hint 'file data'";
+Command "select * from TBL T1
+	where f <= 5 and
+	 not g = 1 and
+	 ((g > 0 and
+	   exists (select * from TBL T2 where T1.f = T2.f and T2.h > 0))
+	 or
+	  (g > 0 and
+	   exists (select * from TBL T2 where T1.f = T2.f and T2.h < 10))
+	 )";
+Command "end explain";
+
+Command "drop database TESTDB_2539";
+TerminateSession;
+Terminate;
+End;

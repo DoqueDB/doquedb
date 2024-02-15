@@ -1,0 +1,36 @@
+# select[1]/record
+#image型のデータについては等号や不等号による検索ができないことを確かめる
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 image)";
+Command  "create table T2(C1 image)";
+Command  "insert into T1 (C1) values (?)" [binaryfile "..\\..\\doc\\rnd10k"];
+Command  "insert into T1 (C1) values (?)" [binaryfile "..\\..\\doc\\rnd10k"];
+Command  "insert into T1 (C1) values (?)" [binaryfile "..\\..\\doc\\rnd20k"];
+Command  "insert into T2 (C1) values (?)" [binaryfile "..\\..\\doc\\rnd50k"];
+Command  "select C1 from T1";
+Command  "select count(*) from T1";
+Command  "select count(*) from T1 where C1=?" [binaryfile "..\\..\\doc\\rnd10k"];
+Command  "select count(*) from T1 where C1<?" [binaryfile "..\\..\\doc\\rnd10k"];
+Command  "select count(*) from T1 where C1>?" [binaryfile "..\\..\\doc\\rnd10k"];
+Command  "select count(*) from T1 where C1<=?" [binaryfile "..\\..\\doc\\rnd10k"];
+Command  "select count(*) from T1 where C1>=?" [binaryfile "..\\..\\doc\\rnd10k"];
+Command  "select count(*) from T1 where C1<>?" [binaryfile "..\\..\\doc\\rnd10k"];
+Command  "select count(*) from T1 where C1 is  null";
+Command  "select count(*) from T1 where C1 is  not null";
+
+Command  "select * from T1";
+Command  "select * from T2";
+
+TerminateSession;
+InitializeSession "";
+TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

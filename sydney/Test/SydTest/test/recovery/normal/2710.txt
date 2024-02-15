@@ -1,0 +1,57 @@
+#alter table area (単一パス)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+InitializeSession "";
+#セッションで使用するエリアの定義
+Command "create area area1 'd:\\dm\\area\\1'";
+NotExists "d:\\dm\\area\\1";
+TerminateSession;
+
+InitializeSession "";
+
+#全体、default->area1
+Command "create table T (f1 int)";
+Command "insert into T values (1)";
+Exists "d:\\dm\\data\\DefaultDB\\T";
+Command "alter table T set area area1";
+
+NotExists "d:\\dm\\data\\DefaultDB\\T";
+Exists "d:\\dm\\area\\1\\T";
+Command "drop table T";
+NotExists "d:\\dm\\area\\1\\T";
+
+#全体、area1->default (1)
+Command "create table T (f1 int) area area1";
+Command "insert into T values (1)";
+Exists "d:\\dm\\area\\1\\T";
+Command "alter table T drop area";
+NotExists "d:\\dm\\area\\1\\T";
+Exists "d:\\dm\\data\\DefaultDB\\T";
+Command "drop table T";
+NotExists "d:\\dm\\data\\DefaultDB\\T";
+
+#全体、area1->default (2)
+Command "create table T (f1 int) area area1";
+Command "insert into T values (1)";
+Exists "d:\\dm\\area\\1\\T";
+Command "alter table T drop area default";
+NotExists "d:\\dm\\area\\1\\T";
+Exists "d:\\dm\\data\\DefaultDB\\T";
+#Command "drop table T";
+#NotExists "d:\\dm\\data\\DefaultDB\\T";
+
+TerminateSession;
+
+#使用したエリアの後始末
+#defaultに移動したので、area1は消してもOK
+InitializeSession "";
+Command "drop area area1";
+NotExists "d:\\dm\\area\\1";
+TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;

@@ -1,0 +1,53 @@
+# 配列型のキャストのテスト
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T (A ntext array [no limit])";
+Command "insert into T values (?)" [[1, 1.1, "1.1"]];
+Command "insert into T values (?)" [["2.2", 2.2, 2]];
+Command "insert into T values (?)" [[3.3, "3.3", 3]];
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T (A float array [no limit])";
+Command "insert into T values (?)" [[1, 1.1]];
+Command "insert into T values (?)" [[2, 2]];
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T (A int array [no limit])";
+Command "insert into T values (?)" [[1, 1.1]];
+Command "insert into T values (?)" [[2.2, 2.2]];
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T (D datetime array [no limit])";
+Command "insert into T values (?)" [["2002-13-99", date "2002-01-10", 5]];
+Command "insert into T values (?)" [[1, date "2002-03-31", 2.2, 3.3]];
+Command "insert into T values (?)" [[2.71828, date "2002-03-31", -5]];
+Command "select * from T";
+Command "drop table T";
+
+Command  "create table T (A int array [4])";
+Command  "insert T values (array[1,2,3])";
+Command  "select T.A[1], T.A[2], T.A[3] from T";
+#Command  "drop table T";
+
+Command  "select * from T";
+
+TerminateSession;
+
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+

@@ -1,0 +1,159 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB if exists
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL(f int array[no limit], g ntext array[no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{1},{abc}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{2},{bcd}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{3},{cde}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{99},{xyz}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select t1.f || t2.f, t1.g || t2.g from TBL t1, TBL t2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select t1.f || t2.f, t1.g || t2.g from TBL t1, TBL t2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {{},{}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (null, null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index IDX_f on TBL(f)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f[] = 1 and array[1,2,3] is substring of f
+SydTest::Executor: [INFO] {{1,2,3},{abc,bcd,cde}}
+SydTest::Executor: [INFO] {{1,1,2,3},{abc,abc,bcd,cde}}
+SydTest::Executor: [INFO] {{1,2,3},{abc,bcd,cde}}
+SydTest::Executor: [INFO] {{1,2,3,1},{abc,bcd,cde,abc}}
+SydTest::Executor: [INFO] {{1,2,3,2},{abc,bcd,cde,bcd}}
+SydTest::Executor: [INFO] {{1,2,3,3},{abc,bcd,cde,cde}}
+SydTest::Executor: [INFO] {{1,2,3,99},{abc,bcd,cde,xyz}}
+SydTest::Executor: [INFO] {{2,1,2,3},{bcd,abc,bcd,cde}}
+SydTest::Executor: [INFO] {{3,1,2,3},{cde,abc,bcd,cde}}
+SydTest::Executor: [INFO] {{99,1,2,3},{xyz,abc,bcd,cde}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f[] = 2 and array[2,2,3] is substring of f
+SydTest::Executor: [INFO] {{2,2,3},{bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{1,2,2,3},{abc,bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{2,2,3},{bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{2,2,2,3},{bcd,bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{2,2,3,1},{bcd,bcd,cde,abc}}
+SydTest::Executor: [INFO] {{2,2,3,2},{bcd,bcd,cde,bcd}}
+SydTest::Executor: [INFO] {{2,2,3,3},{bcd,bcd,cde,cde}}
+SydTest::Executor: [INFO] {{2,2,3,99},{bcd,bcd,cde,xyz}}
+SydTest::Executor: [INFO] {{3,2,2,3},{cde,bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{99,2,2,3},{xyz,bcd,bcd,cde}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where g[] = 'abc' and array['abc', 'bcd', 'cde'] is substring of g
+SydTest::Executor: [INFO] {{1,2,3},{abc,bcd,cde}}
+SydTest::Executor: [INFO] {{1,1,2,3},{abc,abc,bcd,cde}}
+SydTest::Executor: [INFO] {{1,2,3},{abc,bcd,cde}}
+SydTest::Executor: [INFO] {{1,2,3,1},{abc,bcd,cde,abc}}
+SydTest::Executor: [INFO] {{1,2,3,2},{abc,bcd,cde,bcd}}
+SydTest::Executor: [INFO] {{1,2,3,3},{abc,bcd,cde,cde}}
+SydTest::Executor: [INFO] {{1,2,3,99},{abc,bcd,cde,xyz}}
+SydTest::Executor: [INFO] {{2,1,2,3},{bcd,abc,bcd,cde}}
+SydTest::Executor: [INFO] {{3,1,2,3},{cde,abc,bcd,cde}}
+SydTest::Executor: [INFO] {{99,1,2,3},{xyz,abc,bcd,cde}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where g[] = 'bcd' and array['bcd', 'bcd', 'cde'] is substring of g
+SydTest::Executor: [INFO] {{2,2,3},{bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{1,2,2,3},{abc,bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{2,2,3},{bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{2,2,2,3},{bcd,bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{2,2,3,1},{bcd,bcd,cde,abc}}
+SydTest::Executor: [INFO] {{2,2,3,2},{bcd,bcd,cde,bcd}}
+SydTest::Executor: [INFO] {{2,2,3,3},{bcd,bcd,cde,cde}}
+SydTest::Executor: [INFO] {{2,2,3,99},{bcd,bcd,cde,xyz}}
+SydTest::Executor: [INFO] {{3,2,2,3},{cde,bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{99,2,2,3},{xyz,bcd,bcd,cde}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f is substring of array[1,1,2,2,3,3,1,2,3]
+SydTest::Executor: [INFO] {{1},{abc}}
+SydTest::Executor: [INFO] {{2},{bcd}}
+SydTest::Executor: [INFO] {{3},{cde}}
+SydTest::Executor: [INFO] {{1,1},{abc,abc}}
+SydTest::Executor: [INFO] {{1,2},{abc,bcd}}
+SydTest::Executor: [INFO] {{2,2},{bcd,bcd}}
+SydTest::Executor: [INFO] {{2,3},{bcd,cde}}
+SydTest::Executor: [INFO] {{3,1},{cde,abc}}
+SydTest::Executor: [INFO] {{3,3},{cde,cde}}
+SydTest::Executor: [INFO] {{1,1},{abc,abc}}
+SydTest::Executor: [INFO] {{1,2},{abc,bcd}}
+SydTest::Executor: [INFO] {{1,1,2},{abc,abc,bcd}}
+SydTest::Executor: [INFO] {{1,2,2},{abc,bcd,bcd}}
+SydTest::Executor: [INFO] {{1,2,3},{abc,bcd,cde}}
+SydTest::Executor: [INFO] {{2,2},{bcd,bcd}}
+SydTest::Executor: [INFO] {{2,3},{bcd,cde}}
+SydTest::Executor: [INFO] {{2,2,3},{bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{2,3,3},{bcd,cde,cde}}
+SydTest::Executor: [INFO] {{3,1},{cde,abc}}
+SydTest::Executor: [INFO] {{3,3},{cde,cde}}
+SydTest::Executor: [INFO] {{3,1,2},{cde,abc,bcd}}
+SydTest::Executor: [INFO] {{3,3,1},{cde,cde,abc}}
+SydTest::Executor: [INFO] {{1,1,2},{abc,abc,bcd}}
+SydTest::Executor: [INFO] {{1,1,2,2},{abc,abc,bcd,bcd}}
+SydTest::Executor: [INFO] {{1,2,2},{abc,bcd,bcd}}
+SydTest::Executor: [INFO] {{1,2,3},{abc,bcd,cde}}
+SydTest::Executor: [INFO] {{1,2,2,3},{abc,bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{2,2,3},{bcd,bcd,cde}}
+SydTest::Executor: [INFO] {{2,2,3,3},{bcd,bcd,cde,cde}}
+SydTest::Executor: [INFO] {{2,3,3},{bcd,cde,cde}}
+SydTest::Executor: [INFO] {{2,3,3,1},{bcd,cde,cde,abc}}
+SydTest::Executor: [INFO] {{3,1,2},{cde,abc,bcd}}
+SydTest::Executor: [INFO] {{3,1,2,3},{cde,abc,bcd,cde}}
+SydTest::Executor: [INFO] {{3,3,1},{cde,cde,abc}}
+SydTest::Executor: [INFO] {{3,3,1,2},{cde,cde,abc,bcd}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f is substring of g
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where g is substring of f
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where 1 is substring of f
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Operands of 'is substring of' should be array type.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where 'abc' is substring of g
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Operands of 'is substring of' should be array type.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

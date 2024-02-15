@@ -1,0 +1,23 @@
+# backup (r/o r/c, recover)
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession 1 "TESTDB";
+Command 1 "start transaction read only, using snapshot, isolation level read committed";
+#下のbackup文が失敗すれば成功
+Command 1 "start backup full ";
+Command 1 "end backup";
+Command 1 "commit";
+TerminateSession 1;
+
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+

@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<project name="doquedb" default="dist" basedir=".">
+ 
+  <property name="name" value="dqdialect"/>
+  <property name="src" value="src"/>
+  <property name="build" value="build"/>
+  <property name="dist" value="dist"/>
+  <property name="lib" value="lib"/>
+  <property name="bin" value="bin"/>
+
+  <property environment="env"/>
+  <property name="build.version" value="1.6"/>
+  <path id="build.bootclass.path">
+    <pathelement path="${env.JAVA6_HOME}/jre/lib/rt.jar"/>
+    <pathelement path="${env.JAVA_HOME6}/jre/lib/rt.jar"/>
+    <pathelement path="${env.JAVA_HOME_6}/jre/lib/rt.jar"/>
+    <pathelement path="${env.JAVA6_HOME}/jre/lib/jce.jar"/>
+    <pathelement path="${env.JAVA_HOME6}/jre/lib/jce.jar"/>
+    <pathelement path="${env.JAVA_HOME_6}/jre/lib/jce.jar"/>
+  </path>
+  <target name="prepare">
+    <!-- create time stamp -->
+    <tstamp/>
+    <!-- create directory -->
+    <mkdir dir="${build}"/>
+    <mkdir dir="${dist}"/>
+    <mkdir dir="${bin}"/>
+    <mkdir dir="${lib}"/>
+  </target>
+
+  <target name="compile" depends="prepare">
+    <javac encoding="utf-8" srcdir="${src}" destdir="${build}" debug="on" source="${build.version}" target="${build.version}" bootclasspathref="build.bootclass.path">
+      <classpath>
+        <fileset dir="../JDBC/lib"><include name="**/*.jar"/></fileset>
+        <fileset dir="olib"><include name="**/*.jar"/></fileset>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="dist" depends="compile">
+    <jar jarfile="${lib}/${name}.jar" manifest="${src}/jp/co/ricoh/doquedb/hibernate/META-INF/MANIFEST.MF">
+      <fileset dir="${build}">
+        <include name="jp/co/ricoh/doquedb/hibernate/**"/>
+      </fileset>
+    </jar>
+  </target>
+
+  <target name="doc" depends="prepare">
+      <delete dir="${doc}"/>
+      <javadoc destdir="docs/api"
+               author="false" version="false" use="true"
+               windowtitle="DoqueDB Hibernate Dialect (javadoc)"
+               encoding="utf-8" charset="utf-8" docencoding="utf-8">
+        <sourcepath path="${src}"/>
+        <package name="jp.co.ricoh.doquedb.hibernate.criterion"/>
+        <package name="jp.co.ricoh.doquedb.hibernate.usertype"/>
+        <classpath>
+          <fileset dir="lib"><include name="**/*.jar"/></fileset>
+          <fileset dir="olib"><include name="**/*.jar"/></fileset>
+        </classpath>
+        <doctitle><![CDATA[<h1>DoqueDB Hibernate Dialect</h1>]]></doctitle>
+        <bottom><![CDATA[<i>Copyright &#169; 2023 RICOH Co., Ltd. All Rights Reserved.</i>]]></bottom>
+     </javadoc>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build}"/>
+  </target>
+
+</project>

@@ -1,0 +1,12 @@
+#recoveryを行わせるためのSydTest
+Begin;
+BeginTimeSpan;
+Initialize;
+InitializeSession "";
+Command "verify database DefaultDB cascade continue";
+Command  "select * from T";
+EndTimeSpan;
+TerminateSession;
+Terminate;
+End;
+

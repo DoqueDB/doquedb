@@ -1,0 +1,311 @@
+# select * from〈 natural inner でT1を作成 〉natural inner       join T2
+#                             　                     left outer
+#                                                    right outer
+# natural inner joinで作成したT1でのjoinテスト
+# --T1_1とT1_6, T1_2とT1_5, T1_3とT1_4の結合テーブル作成は全行結合となるので排除
+# --同種テスト 1147[2-6]
+# 単索引
+# --T1索引有り, T2索引有り
+# --同種テスト 11[1-4]72
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# T1作成の為のテーブルが6つ
+# 1 テーブルT1_1(int, varchar)
+Command  "create table T1_1(C1 int, C2 varchar(2))";
+Command  "create index I1_1_1 on T1_1(C1)";
+Command  "create index I1_1_2 on T1_1(C2)";
+Command  "insert into T1_1 (C1, C2) values (?, ?)" [111,  "1" ];
+Command  "insert into T1_1 (C1, C2) values (?, ?)" [222,  "2" ];
+Command  "insert into T1_1 (C1, C2) values (?, ?)" [333,  null];
+Command  "insert into T1_1 (C1, C2) values (?, ?)" [null, "3" ];
+Command  "insert into T1_1 (C1, C2) values (?, ?)" [666,  "4" ];
+Command  "insert into T1_1 (C1, C2) values (?, ?)" [null, null];
+
+# 2 テーブルT1_2(int, nvarchar)
+Command  "create table T1_2(C1 int, C3 nvarchar(4))";
+Command  "create index I1_2_1 on T1_2(C1)";
+Command  "create index I1_2_2 on T1_2(C3)";
+Command  "insert into T1_2 (C1, C3) values (?, ?)" [111,  "ほげ"];
+Command  "insert into T1_2 (C1, C3) values (?, ?)" [222,  "ホゲ"];
+Command  "insert into T1_2 (C1, C3) values (?, ?)" [333,   null ];
+Command  "insert into T1_2 (C1, C3) values (?, ?)" [null, "ぴよ"];
+Command  "insert into T1_2 (C1, C3) values (?, ?)" [666,  "ぷう"];
+Command  "insert into T1_2 (C1, C3) values (?, ?)" [null,  null ];
+
+# 3 テーブルT1_3(int, text)
+Command  "create table T1_3(C1 int, C4 nvarchar(448))";
+Command  "create index I1_3_1 on T1_3(C1)";
+Command  "create index I1_3_2 on T1_3(C4)";
+Command  "insert into T1_3 (C1, C4) values (?, ?)" [111,  textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1_3 (C1, C4) values (?, ?)" [222,  textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1_3 (C1, C4) values (?, ?)" [333,  null                                 ];
+Command  "insert into T1_3 (C1, C4) values (?, ?)" [null, textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1_3 (C1, C4) values (?, ?)" [666,  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T1_3 (C1, C4) values (?, ?)" [null, null                                 ];
+
+# 4 テーブルT1_4(varchar, nvarchar)
+Command  "create table T1_4(C2 varchar(2), C3 nvarchar(4))";
+Command  "create index I1_4_1 on T1_4(C2)";
+Command  "create index I1_4_2 on T1_4(C3)";
+Command  "insert into T1_4 (C2, C3) values (?, ?)" ["1",  "ほげ"];
+Command  "insert into T1_4 (C2, C3) values (?, ?)" ["2",  "ホゲ"];
+Command  "insert into T1_4 (C2, C3) values (?, ?)" ["3",   null ];
+Command  "insert into T1_4 (C2, C3) values (?, ?)" [null, "ぴよ"];
+Command  "insert into T1_4 (C2, C3) values (?, ?)" ["6",  "ぷう"];
+Command  "insert into T1_4 (C2, C3) values (?, ?)" [null,  null ];
+
+# 5 テーブルT1_5(varchar, text)
+Command  "create table T1_5(C2 varchar(2), C4 nvarchar(448))";
+Command  "create index I1_5_1 on T1_5(C2)";
+Command  "create index I1_5_2 on T1_5(C4)";
+Command  "insert into T1_5 (C2, C4) values (?, ?)" ["1",  textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1_5 (C2, C4) values (?, ?)" ["2",  textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1_5 (C2, C4) values (?, ?)" ["3",  null                                 ];
+Command  "insert into T1_5 (C2, C4) values (?, ?)" [null, textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1_5 (C2, C4) values (?, ?)" ["6",  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T1_5 (C2, C4) values (?, ?)" [null, null                                 ];
+
+# 6 テーブルT1_6(nvarchar, text)
+Command  "create table T1_6(C3 nvarchar(4), C4 nvarchar(448))";
+Command  "create index I1_6_1 on T1_6(C3)";
+Command  "create index I1_6_2 on T1_6(C4)";
+Command  "insert into T1_6 (C3, C4) values (?, ?)" ["ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1_6 (C3, C4) values (?, ?)" ["ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1_6 (C3, C4) values (?, ?)" ["ぴよ", null                                 ];
+Command  "insert into T1_6 (C3, C4) values (?, ?)" [ null,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1_6 (C3, C4) values (?, ?)" ["ぷう", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T1_6 (C3, C4) values (?, ?)" [ null,  null                                 ];
+
+
+# テーブルT2
+Command  "create table T2(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "create index I2_1 on T2(C1)";
+Command  "create index I2_2 on T2(C2)";
+Command  "create index I2_3 on T2(C3)";
+Command  "create index I2_4 on T2(C4)";
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  null, "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", null                                 ];
+
+
+# inner
+Command  "select * from (select * from T1_1 natural inner join T1_2) as T1 natural inner join T2";
+Command  "select * from (select * from T1_1 natural inner join T1_3) as T1 natural inner join T2";
+Command  "select * from (select * from T1_1 natural inner join T1_4) as T1 natural inner join T2";
+Command  "select * from (select * from T1_1 natural inner join T1_5) as T1 natural inner join T2";
+Command  "select * from (select * from T1_2 natural inner join T1_3) as T1 natural inner join T2";
+Command  "select * from (select * from T1_2 natural inner join T1_4) as T1 natural inner join T2";
+Command  "select * from (select * from T1_2 natural inner join T1_6) as T1 natural inner join T2";
+Command  "select * from (select * from T1_3 natural inner join T1_5) as T1 natural inner join T2";
+Command  "select * from (select * from T1_3 natural inner join T1_6) as T1 natural inner join T2";
+Command  "select * from (select * from T1_4 natural inner join T1_5) as T1 natural inner join T2";
+Command  "select * from (select * from T1_4 natural inner join T1_6) as T1 natural inner join T2";
+Command  "select * from (select * from T1_5 natural inner join T1_6) as T1 natural inner join T2";
+
+# --上と同じ結果になる
+Command  "select * from T1_1 natural inner join T1_2 natural inner join T2";
+Command  "select * from T1_1 natural inner join T1_3 natural inner join T2";
+Command  "select * from T1_1 natural inner join T1_4 natural inner join T2";
+Command  "select * from T1_1 natural inner join T1_5 natural inner join T2";
+Command  "select * from T1_2 natural inner join T1_3 natural inner join T2";
+Command  "select * from T1_2 natural inner join T1_4 natural inner join T2";
+Command  "select * from T1_2 natural inner join T1_6 natural inner join T2";
+Command  "select * from T1_3 natural inner join T1_5 natural inner join T2";
+Command  "select * from T1_3 natural inner join T1_6 natural inner join T2";
+Command  "select * from T1_4 natural inner join T1_5 natural inner join T2";
+Command  "select * from T1_4 natural inner join T1_6 natural inner join T2";
+Command  "select * from T1_5 natural inner join T1_6 natural inner join T2";
+
+# left outer
+Command  "select * from (select * from T1_1 natural inner join T1_2) as T1 natural left outer join T2";
+Command  "select * from (select * from T1_1 natural inner join T1_3) as T1 natural left outer join T2";
+Command  "select * from (select * from T1_1 natural inner join T1_4) as T1 natural left outer join T2";
+Command  "select * from (select * from T1_1 natural inner join T1_5) as T1 natural left outer join T2";
+Command  "select * from (select * from T1_2 natural inner join T1_3) as T1 natural left outer join T2";
+Command  "select * from (select * from T1_2 natural inner join T1_4) as T1 natural left outer join T2";
+Command  "select * from (select * from T1_2 natural inner join T1_6) as T1 natural left outer join T2";
+Command  "select * from (select * from T1_3 natural inner join T1_5) as T1 natural left outer join T2";
+Command  "select * from (select * from T1_3 natural inner join T1_6) as T1 natural left outer join T2";
+Command  "select * from (select * from T1_4 natural inner join T1_5) as T1 natural left outer join T2";
+Command  "select * from (select * from T1_4 natural inner join T1_6) as T1 natural left outer join T2";
+Command  "select * from (select * from T1_5 natural inner join T1_6) as T1 natural left outer join T2";
+
+# --上と同じ結果になる
+Command  "select * from T1_1 natural inner join T1_2 natural left outer join T2";
+Command  "select * from T1_1 natural inner join T1_3 natural left outer join T2";
+Command  "select * from T1_1 natural inner join T1_4 natural left outer join T2";
+Command  "select * from T1_1 natural inner join T1_5 natural left outer join T2";
+Command  "select * from T1_2 natural inner join T1_3 natural left outer join T2";
+Command  "select * from T1_2 natural inner join T1_4 natural left outer join T2";
+Command  "select * from T1_2 natural inner join T1_6 natural left outer join T2";
+Command  "select * from T1_3 natural inner join T1_5 natural left outer join T2";
+Command  "select * from T1_3 natural inner join T1_6 natural left outer join T2";
+Command  "select * from T1_4 natural inner join T1_5 natural left outer join T2";
+Command  "select * from T1_4 natural inner join T1_6 natural left outer join T2";
+Command  "select * from T1_5 natural inner join T1_6 natural left outer join T2";
+
+# right outer
+Command  "select * from (select * from T1_1 natural inner join T1_2) as T1 natural right outer join T2";
+Command  "select * from (select * from T1_1 natural inner join T1_3) as T1 natural right outer join T2";
+Command  "select * from (select * from T1_1 natural inner join T1_4) as T1 natural right outer join T2";
+Command  "select * from (select * from T1_1 natural inner join T1_5) as T1 natural right outer join T2";
+Command  "select * from (select * from T1_2 natural inner join T1_3) as T1 natural right outer join T2";
+Command  "select * from (select * from T1_2 natural inner join T1_4) as T1 natural right outer join T2";
+Command  "select * from (select * from T1_2 natural inner join T1_6) as T1 natural right outer join T2";
+Command  "select * from (select * from T1_3 natural inner join T1_5) as T1 natural right outer join T2";
+Command  "select * from (select * from T1_3 natural inner join T1_6) as T1 natural right outer join T2";
+Command  "select * from (select * from T1_4 natural inner join T1_5) as T1 natural right outer join T2";
+Command  "select * from (select * from T1_4 natural inner join T1_6) as T1 natural right outer join T2";
+Command  "select * from (select * from T1_5 natural inner join T1_6) as T1 natural right outer join T2";
+
+# --上と同じ結果になる
+Command  "select * from T1_1 natural inner join T1_2 natural right outer join T2";
+Command  "select * from T1_1 natural inner join T1_3 natural right outer join T2";
+Command  "select * from T1_1 natural inner join T1_4 natural right outer join T2";
+Command  "select * from T1_1 natural inner join T1_5 natural right outer join T2";
+Command  "select * from T1_2 natural inner join T1_3 natural right outer join T2";
+Command  "select * from T1_2 natural inner join T1_4 natural right outer join T2";
+Command  "select * from T1_2 natural inner join T1_6 natural right outer join T2";
+Command  "select * from T1_3 natural inner join T1_5 natural right outer join T2";
+Command  "select * from T1_3 natural inner join T1_6 natural right outer join T2";
+Command  "select * from T1_4 natural inner join T1_5 natural right outer join T2";
+Command  "select * from T1_4 natural inner join T1_6 natural right outer join T2";
+Command  "select * from T1_5 natural inner join T1_6 natural right outer join T2";
+
+
+# joind tableがさらにjoind table
+# int型でjoind tableを作成(T1_1, T1_2, T1_3)
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_2) as T1_7 natural inner join T1_3) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_2) as T1_7 natural inner join T1_3) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_2) as T1_7 natural inner join T1_3) as T1 natural right outer join T2";
+
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_2) as T1_7 natural left outer join T1_3) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_2) as T1_7 natural left outer join T1_3) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_2) as T1_7 natural left outer join T1_3) as T1 natural right outer join T2";
+
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_2) as T1_7 natural right outer join T1_3) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_2) as T1_7 natural right outer join T1_3) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_2) as T1_7 natural right outer join T1_3) as T1 natural right outer join T2";
+
+# --上と同じ結果になる
+Command  "select * from T1_1 natural inner join T1_2 natural inner join T1_3 natural inner join T2";
+Command  "select * from T1_1 natural inner join T1_2 natural inner join T1_3 natural left outer join T2";
+Command  "select * from T1_1 natural inner join T1_2 natural inner join T1_3 natural right outer join T2";
+
+Command  "select * from T1_1 natural inner join T1_2 natural left outer join T1_3 natural inner join T2";
+Command  "select * from T1_1 natural inner join T1_2 natural left outer join T1_3 natural left outer join T2";
+Command  "select * from T1_1 natural inner join T1_2 natural left outer join T1_3 natural right outer join T2";
+
+Command  "select * from T1_1 natural inner join T1_2 natural right outer join T1_3 natural inner join T2";
+Command  "select * from T1_1 natural inner join T1_2 natural right outer join T1_3 natural left outer join T2";
+Command  "select * from T1_1 natural inner join T1_2 natural right outer join T1_3 natural right outer join T2";
+
+# varchar型でjoind tableを作成(T1_1, T1_4, T1_5)
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_4) as T1_7 natural inner join T1_5) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_4) as T1_7 natural inner join T1_5) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_4) as T1_7 natural inner join T1_5) as T1 natural right outer join T2";
+
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_4) as T1_7 natural left outer join T1_5) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_4) as T1_7 natural left outer join T1_5) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_4) as T1_7 natural left outer join T1_5) as T1 natural right outer join T2";
+
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_4) as T1_7 natural right outer join T1_5) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_4) as T1_7 natural right outer join T1_5) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_1 natural inner join T1_4) as T1_7 natural right outer join T1_5) as T1 natural right outer join T2";
+
+# --上と同じ結果になる
+Command  "select * from T1_1 natural inner join T1_4 natural inner join T1_5 natural inner join T2";
+Command  "select * from T1_1 natural inner join T1_4 natural inner join T1_5 natural left outer join T2";
+Command  "select * from T1_1 natural inner join T1_4 natural inner join T1_5 natural right outer join T2";
+
+Command  "select * from T1_1 natural inner join T1_4 natural left outer join T1_5 natural inner join T2";
+Command  "select * from T1_1 natural inner join T1_4 natural left outer join T1_5 natural left outer join T2";
+Command  "select * from T1_1 natural inner join T1_4 natural left outer join T1_5 natural right outer join T2";
+
+Command  "select * from T1_1 natural inner join T1_4 natural right outer join T1_5 natural inner join T2";
+Command  "select * from T1_1 natural inner join T1_4 natural right outer join T1_5 natural left outer join T2";
+Command  "select * from T1_1 natural inner join T1_4 natural right outer join T1_5 natural right outer join T2";
+
+# nvarchar型でjoind tableを作成(T1_2, T1_4, T1_6)
+Command  "select * from (select * from (select * from T1_2 natural inner join T1_4) as T1_7 natural inner join T1_6) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_2 natural inner join T1_4) as T1_7 natural inner join T1_6) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_2 natural inner join T1_4) as T1_7 natural inner join T1_6) as T1 natural right outer join T2";
+
+Command  "select * from (select * from (select * from T1_2 natural inner join T1_4) as T1_7 natural left outer join T1_6) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_2 natural inner join T1_4) as T1_7 natural left outer join T1_6) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_2 natural inner join T1_4) as T1_7 natural left outer join T1_6) as T1 natural right outer join T2";
+
+Command  "select * from (select * from (select * from T1_2 natural inner join T1_4) as T1_7 natural right outer join T1_6) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_2 natural inner join T1_4) as T1_7 natural right outer join T1_6) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_2 natural inner join T1_4) as T1_7 natural right outer join T1_6) as T1 natural right outer join T2";
+
+# --上と同じ結果になる
+Command  "select * from T1_2 natural inner join T1_4 natural inner join T1_6 natural inner join T2";
+Command  "select * from T1_2 natural inner join T1_4 natural inner join T1_6 natural left outer join T2";
+Command  "select * from T1_2 natural inner join T1_4 natural inner join T1_6 natural right outer join T2";
+
+Command  "select * from T1_2 natural inner join T1_4 natural left outer join T1_6 natural inner join T2";
+Command  "select * from T1_2 natural inner join T1_4 natural left outer join T1_6 natural left outer join T2";
+Command  "select * from T1_2 natural inner join T1_4 natural left outer join T1_6 natural right outer join T2";
+
+Command  "select * from T1_2 natural inner join T1_4 natural right outer join T1_6 natural inner join T2";
+Command  "select * from T1_2 natural inner join T1_4 natural right outer join T1_6 natural left outer join T2";
+Command  "select * from T1_2 natural inner join T1_4 natural right outer join T1_6 natural right outer join T2";
+
+# nvarchar(text)型でjoind tableを作成(T1_3, T1_5, T1_6)
+Command  "select * from (select * from (select * from T1_3 natural inner join T1_5) as T1_7 natural inner join T1_6) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_3 natural inner join T1_5) as T1_7 natural inner join T1_6) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_3 natural inner join T1_5) as T1_7 natural inner join T1_6) as T1 natural right outer join T2";
+
+Command  "select * from (select * from (select * from T1_3 natural inner join T1_5) as T1_7 natural left outer join T1_6) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_3 natural inner join T1_5) as T1_7 natural left outer join T1_6) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_3 natural inner join T1_5) as T1_7 natural left outer join T1_6) as T1 natural right outer join T2";
+
+Command  "select * from (select * from (select * from T1_3 natural inner join T1_5) as T1_7 natural right outer join T1_6) as T1 natural inner join T2";
+Command  "select * from (select * from (select * from T1_3 natural inner join T1_5) as T1_7 natural right outer join T1_6) as T1 natural left outer join T2";
+Command  "select * from (select * from (select * from T1_3 natural inner join T1_5) as T1_7 natural right outer join T1_6) as T1 natural right outer join T2";
+
+# --上と同じ結果になる
+Command  "select * from T1_3 natural inner join T1_5 natural inner join T1_6 natural inner join T2";
+Command  "select * from T1_3 natural inner join T1_5 natural inner join T1_6 natural left outer join T2";
+Command  "select * from T1_3 natural inner join T1_5 natural inner join T1_6 natural right outer join T2";
+
+Command  "select * from T1_3 natural inner join T1_5 natural left outer join T1_6 natural inner join T2";
+Command  "select * from T1_3 natural inner join T1_5 natural left outer join T1_6 natural left outer join T2";
+Command  "select * from T1_3 natural inner join T1_5 natural left outer join T1_6 natural right outer join T2";
+
+Command  "select * from T1_3 natural inner join T1_5 natural right outer join T1_6 natural inner join T2";
+Command  "select * from T1_3 natural inner join T1_5 natural right outer join T1_6 natural left outer join T2";
+Command  "select * from T1_3 natural inner join T1_5 natural right outer join T1_6 natural right outer join T2";
+
+
+Command  "drop table T1_1";
+Command  "drop table T1_2";
+Command  "drop table T1_3";
+Command  "drop table T1_4";
+Command  "drop table T1_5";
+Command  "drop table T1_6";
+
+Command  "drop table T2";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

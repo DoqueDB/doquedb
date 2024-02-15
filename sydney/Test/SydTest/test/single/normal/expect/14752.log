@@ -1,0 +1,219 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t0 (
+	c1	uniqueidentifier,
+	unique (c1)
+)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1 ) values ( '00000000-0000-0000-0000-000000000000' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1 ) values ( '99999999-9999-9999-9999-999999999999' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1 ) values ( '99999999-9999-9999-9999-999999999999' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1 ) values ( '00000000-0000-0000-0000-000000000000' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1 ) values ( NULL )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1 ) values ( NULL )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t0
+SydTest::Executor: [INFO] {00000000-0000-0000-0000-000000000000}
+SydTest::Executor: [INFO] {99999999-9999-9999-9999-999999999999}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table t0
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t0 (
+	c1	int,
+	c2	uniqueidentifier,
+	unique (c1, c2)
+)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 1, '00000000-0000-0000-0000-000000000000' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 1, '99999999-9999-9999-9999-999999999999' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 2, '00000000-0000-0000-0000-000000000000' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 2, '99999999-9999-9999-9999-999999999999' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 1, '00000000-0000-0000-0000-000000000000' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 1, '99999999-9999-9999-9999-999999999999' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 2, '00000000-0000-0000-0000-000000000000' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 2, '99999999-9999-9999-9999-999999999999' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 2, NULL )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( NULL, '99999999-9999-9999-9999-999999999999' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 2, NULL )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( NULL, '99999999-9999-9999-9999-999999999999' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t0
+SydTest::Executor: [INFO] {1,00000000-0000-0000-0000-000000000000}
+SydTest::Executor: [INFO] {1,99999999-9999-9999-9999-999999999999}
+SydTest::Executor: [INFO] {2,00000000-0000-0000-0000-000000000000}
+SydTest::Executor: [INFO] {2,99999999-9999-9999-9999-999999999999}
+SydTest::Executor: [INFO] {2,(null)}
+SydTest::Executor: [INFO] {(null),99999999-9999-9999-9999-999999999999}
+SydTest::Executor: [INFO] {2,(null)}
+SydTest::Executor: [INFO] {(null),99999999-9999-9999-9999-999999999999}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table t0
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t0 (
+	c1	int,
+	c2	uniqueidentifier,
+	unique (c2)
+)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create all rows index I on t0(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 1, '00000000-0000-0000-0000-000000000000' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 2, '99999999-9999-9999-9999-999999999999' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 3, '99999999-9999-9999-9999-999999999999' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 4, '00000000-0000-0000-0000-000000000000' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 5, NULL )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2 ) values ( 6, NULL )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t0
+SydTest::Executor: [INFO] {1,00000000-0000-0000-0000-000000000000}
+SydTest::Executor: [INFO] {2,99999999-9999-9999-9999-999999999999}
+SydTest::Executor: [INFO] {5,(null)}
+SydTest::Executor: [INFO] {6,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table t0
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t0 (
+	c1	int,
+	c2	int,
+	c3	uniqueidentifier,
+	unique (c2, c3)
+)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create all rows index I on t0(c1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values (  1, 1, '00000000-0000-0000-0000-000000000000' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values (  2, 1, '99999999-9999-9999-9999-999999999999' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values (  3, 2, '00000000-0000-0000-0000-000000000000' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values (  4, 2, '99999999-9999-9999-9999-999999999999' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values (  5, 1, '00000000-0000-0000-0000-000000000000' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values (  6, 1, '99999999-9999-9999-9999-999999999999' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values (  7, 2, '00000000-0000-0000-0000-000000000000' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values (  8, 2, '99999999-9999-9999-9999-999999999999' )
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values (  9, 2, NULL )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values ( 10, NULL, '99999999-9999-9999-9999-999999999999' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values ( 11, 2, NULL )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t0 ( c1, c2, c3 ) values ( 12, NULL, '99999999-9999-9999-9999-999999999999' )
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t0
+SydTest::Executor: [INFO] {1,1,00000000-0000-0000-0000-000000000000}
+SydTest::Executor: [INFO] {2,1,99999999-9999-9999-9999-999999999999}
+SydTest::Executor: [INFO] {3,2,00000000-0000-0000-0000-000000000000}
+SydTest::Executor: [INFO] {4,2,99999999-9999-9999-9999-999999999999}
+SydTest::Executor: [INFO] {9,2,(null)}
+SydTest::Executor: [INFO] {10,(null),99999999-9999-9999-9999-999999999999}
+SydTest::Executor: [INFO] {11,2,(null)}
+SydTest::Executor: [INFO] {12,(null),99999999-9999-9999-9999-999999999999}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table t0
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

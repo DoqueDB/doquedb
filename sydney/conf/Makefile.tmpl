@@ -1,0 +1,737 @@
+/*
+ * Makefile.tmpl -- Makefileのテンプレート
+ * 
+ * Copyright (c) 1996, 2017, 2023 Ricoh Company, Ltd.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "Makefile.rule"
+
+#ifdef linux
+#undef linux
+#endif
+
+/** define necessary symbols */
+/* don't include SyInclude.h */
+#define __SY_INCLUDE_H
+#include "../include/SyDefault.h"
+
+/** パッケージ名 */
+PACKAGE = doquedb
+
+#if defined(SYD_C_GCC4_8)
+COMMON_VERSION_SUFFIX = e
+#elif defined(SYD_C_MS10_0)
+COMMON_VERSION_SUFFIX = d
+#elif defined(SYD_C_MS9_0)
+COMMON_VERSION_SUFFIX = c
+#elif defined(SYD_C_MS8_0)
+COMMON_VERSION_SUFFIX = b
+#elif defined(SYD_C_MS7_0) || defined(SYD_C_GCC4_4)
+COMMON_VERSION_SUFFIX = a
+#else
+COMMON_VERSION_SUFFIX =
+#endif
+
+/*
+ * defineシンボルで与えられる定数値
+ */
+SYDINSTTOP = CONFTOP
+OSNAME = CONFOS
+MODVERSION = MODVER
+UNAVERSION = UNAVER
+ZLIBVERSION = ZLIBVER
+BOOSTVERSION = BOOSTVER
+
+/* SUFFIX used for SydneyXX.dll, SyMesEngXX.dll and SyMesJpnXX.dll */
+CLIENTSUFFIX=33$(COMMON_VERSION_SUFFIX)
+
+#if defined(V1_13)
+MODSUFFIX=09$(COMMON_VERSION_SUFFIX)
+#elif defined(V1_12)
+MODSUFFIX=08$(COMMON_VERSION_SUFFIX)
+#elif defined(V1_11)
+MODSUFFIX=07$(COMMON_VERSION_SUFFIX)
+#elif defined(V1_10)
+MODSUFFIX=06$(COMMON_VERSION_SUFFIX)
+#elif defined(V1_9)
+MODSUFFIX=05$(COMMON_VERSION_SUFFIX)
+#elif defined(V1_8)
+MODSUFFIX=04$(COMMON_VERSION_SUFFIX)
+#elif defined(V1_7)
+MODSUFFIX=03$(COMMON_VERSION_SUFFIX)
+#elif defined(V1_6)
+MODSUFFIX=02$(COMMON_VERSION_SUFFIX)
+#else
+MODSUFFIX=
+#endif
+
+UNASUFFIX=
+
+/*
+ * パッケージ名
+ */
+PACKAGE_NAME = $(PACKAGE)
+
+/* ディレクトリセパレータ */
+
+#ifdef SYD_OS_WINDOWS
+S	= \#
+#else
+S	= /
+#endif
+
+/*
+ * ヘッダの参照場所 include$(SUFFIX)
+ * (現バージョンではすべて空)
+ */
+#if defined(SYD_OS_SOLARIS)
+SUFFIX = 
+#elif defined(SYD_OS_LINUX)
+SUFFIX = 
+#elif defined(SYD_OS_WINDOWS)
+SUFFIX =
+#endif
+
+SYDTOP = $(SYDINSTTOP)
+SYDTOOL = $(SYDINSTTOP)$(S)..$(S)common$(S)tools
+SYDLOCALTOOL = $(SYDINSTTOP)$(S)tools
+
+/*
+ * MOD、UNA、ZLIBの場所
+ */
+#ifdef SYD_ARCH64
+SYDEXTLIB = $(SYDTOP)$(S)..$(S)common$(S)lib$(S)$(OSNAME)64
+#else
+SYDEXTLIB = $(SYDTOP)$(S)..$(S)common$(S)lib$(S)$(OSNAME)
+#endif
+MODTOP = $(SYDEXTLIB)$(S)mod$(S)$(MODVERSION)
+UNATOP = $(SYDEXTLIB)$(S)una$(S)$(UNAVERSION)
+ZLIBTOP = $(SYDEXTLIB)$(S)zlib$(S)$(ZLIBVERSION)
+BOOSTTOP = $(SYDEXTLIB)$(S)boost$(S)$(BOOSTVERSION)
+
+#ifdef SYD_OS_WINNT4_0
+PLATHOMESDKTOP = $(SYDTOP)$(S)lib$(S)$(OSNAME)$(S)PlatformSDK
+#endif
+
+SYDLIBTOP = $(SYDTOP)
+SYDINSTLIBTOP = $(SYDINSTTOP)
+
+SYDBUILDDIR = $(SYDTOP)$(S)tools$(S)build
+
+SYDLIBDIR = $(SYDLIBTOP)$(S)c.CONF
+SYDINCLDIR = $(SYDLIBTOP)$(S)include$(SUFFIX)
+/* make installのためのディレクトリ */
+SYDINSTLIBDIR = $(SYDINSTLIBTOP)$(S)c.CONF
+SYDINSTINCLDIR = $(SYDINSTLIBTOP)$(S)include$(SUFFIX)
+
+IDENT = $(SYDTOOL)$(S)build$(S)Ident
+MKSRC = $(SYDTOOL)$(S)build$(S)mkipasrc
+FULLPATH = $(SYDTOOL)$(S)build$(S)fullpath
+MISC = $(SYDTOOL)$(S)build$(S)misc
+
+/*
+ * message生成に関する設定
+ */
+#if defined(SYD_OS_WINDOWS)
+CHARSET = UTF-8
+JAVA = "$(JAVA_HOME)\bin\java"
+ANT = "$(ANT_HOME)\bin\ant"
+#elif defined(SYD_OS_SOLARIS)
+CHARSET = UTF-8
+JAVA = $(JAVA_HOME)/bin/java
+ANT = /opt/ant/bin/ant
+#elif defined(SYD_OS_LINUX)
+CHARSET = UTF-8
+JAVA = $(JAVA_HOME)/bin/java
+ANT = $(ANT_HOME)/bin/ant
+#endif
+
+BUILD_JAR = $(SYDLOCALTOOL)$(S)build$(S)sydbuild.jar
+MKMESSAGE = $(JAVA) -classpath $(BUILD_JAR) jp.co.ricoh.sydney.build.MessageGenerator
+
+/*
+ * 以下は汎用
+ */
+
+/* 拡張子 */
+
+#if defined(SYD_OS_SOLARIS)
+O	= .o
+E	=
+L	= .a
+D	= .so
+P	= lib
+#elif defined(SYD_OS_LINUX)
+O	= .o
+E	=
+L	= .a
+D	= .so
+P	= lib
+#elif defined(SYD_OS_WINDOWS)
+O	= .obj
+E	= .exe
+L	= .lib
+D	= .dll
+P	=
+#endif
+
+/* コンパイラの指定 */
+
+#if defined(SYD_OS_SOLARIS)
+
+#if defined(SYD_C_SC5_8)
+CC = /opt/SUNWspro11/bin/CC
+#elif defined(SYD_C_SC5_5)
+CC = /opt/SUNWspro8.0/bin/CC
+#elif defined(SYD_C_SC5_3)
+CC = /opt/SUNWspro6.2/bin/CC
+#elif defined(SYD_C_SC5_0)
+CC = /opt/SUNWspro5.0/bin/CC
+#elif defined(SYD_C_SC4_2)
+CC = /opt/SUNWspro4.2/bin/CC
+#elif defined(SYD_C_GCC)
+CC = /usr/local/gnu/bin/g++
+#endif
+
+#elif defined(SYD_OS_LINUX)
+
+#if defined(SYD_C_ICC)
+#ifdef SYD_ARCH64
+CC = /opt/intel/cc/bin64/icc
+#else
+CC = /opt/intel/cc/bin/icc
+#endif
+#elif defined(SYD_C_GCC)
+CC = /usr/bin/g++
+#endif
+
+#elif defined(SYD_OS_WINDOWS)
+
+#if defined(SYD_CODEWIZARD)
+CC = codewizard
+#elif defined(SYD_C_MS8_0)
+/*
+ * Don't use absolute path.
+ * PATH environment should include correct path.
+ * Run on Visual Studio 2005 command prompt.
+ */
+CC = cl
+MT = mt -nologo
+#elif defined(SYD_C_MS7_0)
+/*
+ * Don't use absolute path.
+ * PATH environment should include correct path.
+ * Run on Visual Studio .NET command prompt.
+ */
+CC = cl
+#elif defined(SYD_C_MS6_0)
+/*
+ * Don't use absolute path.
+ * PATH environment should include correct path.
+ */
+CC = cl
+#endif
+
+#endif
+
+/* コンパイラーに指定するオプション */
+
+/*
+ * ヘッダーファイルを include$(SUFFIX) で参照する
+ * 公開ヘッダもこの場所にインストールされる
+ */
+INC0 = -I..
+INC1 = -I..$(S)include$(SUFFIX)
+INC2 = -I..$(S)..$(S)include$(SUFFIX)
+INC3 = -I..$(S)..$(S)..$(S)include$(SUFFIX)
+INC4 = -I..$(S)..$(S)..$(S)..$(S)include$(SUFFIX)
+INC5 = -I..$(S)..$(S)..$(S)..$(S)..$(S)include$(SUFFIX)
+
+INCLUDES = $(INC0) $(INC1) $(INC2) $(INC3) $(INC4) $(INC5) -I$(UNATOP)$(S)include -I$(MODTOP)$(S)include -I$(BOOSTTOP)$(S)include
+
+DEFINITIONS = -DCLIENTSUFFIX=\"$(CLIENTSUFFIX)\"
+
+CFLAGS = $(EXTRALOCALCFLAGS) $(DEFINITIONS) $(INCLUDES) FLAGS $(EXTRACFLAGS)
+
+/* リンカー */
+
+#if defined(SYD_OS_SOLARIS)
+
+#if defined(SYD_C_SC)
+LD = $(CC) FLAGS
+#elif defined(SYD_C_GCC)
+LD = $(CC)
+#endif
+
+#elif defined(SYD_OS_LINUX)
+
+#if defined(SYD_C_ICC)
+LD = $(CC) FLAGS
+#elif defined(SYD_C_GCC)
+LD = $(CC)
+#endif
+
+#elif defined(SYD_OS_WINDOWS)
+
+#if defined(SYD_C_MS)
+LD = link
+#endif
+
+#endif
+
+/* リソースに関係する定義 */
+RESOURCE = ResourceName($(MODULE))
+TARGET_EXPORT = ExportFileName($(TARGET_BASE))
+
+/* 標準に使用するライブラリー */
+
+#if defined(SYD_OS_SOLARIS)
+
+#if defined(SYD_C_SC5_0)
+/*
+ * POSIX スレッドの動作をするように、-mt を指定しない
+ * そのため、マニュアルの -xnolib のところに書いてある
+ * デフォルトのオプションに POSIX スレッドのための
+ * -lposix4 -lpthread を指定し、他に必要なものを末尾に加える
+ */
+STDLIB = -lpthread -lCstd -lCrun -lm -lw -lposix4 -lc -lnsl -lsocket -lgen -ldl
+
+#elif defined(SYD_C_SC4_2)
+/*
+ * POSIX スレッドの動作をするように、-mt を指定しない
+ * そのため、マニュアルの -nolib のところに書いてある
+ * デフォルトのオプションに POSIX スレッドのための
+ * -lposix4 -lpthread を指定し、他に必要なものを末尾に加える
+ */
+STDLIB = -lC -lm -lw -lposix4 -lpthread -lcx -lc -lnsl -lsocket -lgen -ldl
+
+#elif defined(SYD_C_GCC)
+STDLIB = -lnsl -lsocket -lpthread -lposix4 -lgen -ldl
+#endif
+
+#elif defined(SYD_OS_LINUX)
+
+#if defined(SYD_C_ICC)
+#if defined(SYD_C_ICC14)
+STDLIB = -lnsl -lpthread -ldl -lrt -luuid -limf -lsvml -lirng -lintlc
+#else
+STDLIB = -lnsl -lpthread -ldl -lrt -luuid -limf -lirc -lcxaguard -lsvml -lintlc
+#endif
+#elif defined(SYD_C_GCC)
+STDLIB = -lnsl -lpthread -ldl -lrt -luuid
+#endif
+
+#elif defined(SYD_OS_WINDOWS)
+
+#if defined(SYD_C_MS)
+STDLIB = ws2_32.lib advapi32.lib rpcrt4.lib
+#endif
+
+#endif
+
+/* リンカーに指定するオプション */
+
+#if defined(SYD_OS_SOLARIS)
+LPATHOP	= -L
+#elif defined(SYD_OS_LINUX)
+LPATHOP	= -L
+#elif defined(SYD_OS_WINDOWS)
+LPATHOP	= /LIBPATH:
+#endif
+
+LIB0 = $(LPATHOP).
+LIB1 = $(LPATHOP)..$(S)c.CONF
+LIB2 = $(LPATHOP)..$(S)..$(S)c.CONF
+LIB3 = $(LPATHOP)..$(S)..$(S)..$(S)c.CONF
+LIB4 = $(LPATHOP)..$(S)..$(S)..$(S)..$(S)c.CONF
+LIB5 = $(LPATHOP)..$(S)..$(S)..$(S)..$(S)..$(S)c.CONF
+
+#if defined(SYD_OS_SOLARIS) || defined(SYD_OS_LINUX)
+
+#ifdef SYD_C_ICC
+#ifdef SYD_ARCH64
+ICCLIB = $(LPATHOP)/opt/intel/cc/lib64
+#else
+ICCLIB = $(LPATHOP)/opt/intel/cc/lib
+#endif
+#else
+ICCLIB =
+#endif
+LIBRARIES = $(LIB0) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5) $(LPATHOP)$(UNATOP)$(S)UNALIBPATH $(LPATHOP)$(MODTOP)$(S)MODLIBPATH $(ICCLIB) $(LPATHOP)$(BOOSTTOP)$(S)lib
+LOCALLDFLAGS =
+LOCALDLLFLAGS =
+
+#elif defined(SYD_OS_WINDOWS)
+
+LIBRARIES = $(LIB0) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5) $(LPATHOP)$(UNATOP)$(S)UNALIBPATH $(LPATHOP)$(MODTOP)$(S)MODLIBPATH $(LPATHOP)$(ZLIBTOP) $(LPATHOP)$(BOOSTTOP)$(S)lib 
+#ifdef USE_GL
+OPTIMIZE_FLAG = \
+	/LTCG
+#endif
+#ifdef SYD_ARCH64
+MACHINE_FLAG = /machine:X64
+#else
+MACHINE_FLAG = /machine:I386
+#endif
+#ifdef SYD_C_MS8_0
+LOCALLDFLAGS = \
+	/nologo \
+	/subsystem:console \
+	$(MACHINE_FLAG) \
+	/manifest \
+	$(OPTIMIZE_FLAG)
+#else
+LOCALLDFLAGS = \
+	/nologo \
+	/subsystem:console \
+	$(MACHINE_FLAG) \
+	$(OPTIMIZE_FLAG)
+#endif
+#if defined(SYD_C_MS6_0)
+#ifdef SYD_COVERAGE
+SPECIAL_DLLFLAGS = /pdbtype:con
+#else
+SPECIAL_DLLFLAGS = /pdbtype:sept
+#endif
+#endif
+#ifdef SYD_C_MS8_0
+LOCALDLLFLAGS = \
+	/nologo \
+	/subsystem:console \
+	/incremental:no \
+	/debug \
+	$(MACHINE_FLAG) \
+	/fixed:no \
+	/LARGEADDRESSAWARE \
+	/manifest \
+	$(SPECIAL_DLLFLAGS) \
+	$(OPTIMIZE_FLAG)
+#else
+LOCALDLLFLAGS = \
+	/nologo \
+	/subsystem:console \
+	/incremental:no \
+	/debug \
+	$(MACHINE_FLAG) \
+	/fixed:no \
+	/LARGEADDRESSAWARE \
+	$(SPECIAL_DLLFLAGS) \
+	$(OPTIMIZE_FLAG)
+#endif
+#endif
+
+LDFLAGS = $(LOCALLDFLAGS) $(EXTRALOCALLDFLAGS) $(LIBRARIES) $(EXTRALDFLAGS)
+PURIFYLDFLAGS = $(LOCALLDFLAGS) $(PURIFYLOCALLDFLAGS) $(LIBRARIES) $(EXTRALDFLAGS)
+QUANTIFYLDFLAGS = $(LOCALLDFLAGS) $(QUANTIFYLOCALLDFLAGS) $(LIBRARIES) $(EXTRALDFLAGS)
+
+DLLFLAGS = $(LOCALDLLFLAGS) $(EXTRALOCALDLLFLAGS) $(LIBRARIES) $(EXTRADLLFLAGS)
+PURIFYDLLFLAGS = $(LOCALDLLFLAGS) $(PURIFYLOCALDLLFLAGS) $(LIBRARIES) $(EXTRADLLFLAGS)
+QUANTIFYDLLFLAGS = $(LOCALDLLFLAGS) $(QUANTIFYLOCALDLLFLAGS) $(LIBRARIES) $(EXTRADLLFLAGS)
+
+#if defined(SYD_OS_WINDOWS)
+/* RC(バージョン番号生成) */
+RC = rc.exe
+#ifdef DEBUG
+RCFLAGS = $(RCLOCALFLAGS) /l 0x411 /d "_DEBUG" /d "_AFXDLL" 
+#else
+RCFLAGS = $(RCLOCALFLAGS) /l 0x411 /d "NDEBUG" /d "_AFXDLL" 
+#endif
+#endif
+
+/* アーカイバー */
+/* アーカイバーオプション */
+
+#if defined(SYD_OS_SOLARIS)
+
+#if defined(SYD_C_SC)
+AR = /usr/ccs/bin/ar
+ARFLAGS = cr
+ARFLAGS2 = cq
+#elif defined(SYD_C_GCC)
+AR = /usr/ccs/bin/ar
+ARFLAGS = cr
+ARFLAGS2 = cq
+#endif
+
+#elif defined(SYD_OS_LINUX)
+
+#if defined(SYD_C_GCC)
+AR = /usr/bin/ar
+ARFLAGS = cr
+ARFLAGS2 = cq
+#endif
+
+#elif defined(SYD_OS_WINDOWS)
+
+#if defined(SYD_C_MS)
+AR = link -lib
+ARFLAGS =
+ARFLAGS2 =
+#endif
+
+#endif
+
+/* テンプレートデータベース名 */
+
+#if defined(SYD_OS_SOLARIS)
+
+#if defined(SYD_C_SC5_8)
+/* temporary files are deleted automatically */
+CC_TEMPLATEDB =
+#elif defined(SYD_C_SC5_0)
+CC_TEMPLATEDB = SunWS_cache SunWS_config
+#elif defined(SYD_C_SC4_2)
+CC_TEMPLATEDB = Templates.DB
+#elif defined(SYD_C_GCC)
+CC_TEMPLATEDB =
+#endif
+
+#elif defined(SYD_OS_LINUX)
+
+#if defined(SYD_C_GCC)
+CC_TEMPLATEDB =
+#endif
+
+#elif defined(SYD_OS_WINDOWS)
+
+#if defined(SYD_C_MS)
+CC_TEMPLATEDB =
+#endif
+
+#endif
+
+/* MOD他ライブラリー名 */
+
+#if defined(SYD_OS_SOLARIS)
+
+MODLIBNAME = Common$(MODSUFFIX)
+UNALIBNAME = Una$(UNASUFFIX)
+MODLIBS = $(UNALIBNAME)$L $(MODLIBNAME)$L
+MODCLIENTLIBS = $(MODLIBNAME)$L
+
+#elif defined(SYD_OS_LINUX)
+
+MODLIBNAME = common
+UNALIBNAME = una
+MODLIBS = $(UNALIBNAME)$L $(MODLIBNAME)$L
+MODCLIENTLIBS = $(MODLIBNAME)$L
+
+#elif defined(SYD_OS_WINDOWS)
+
+MODLIBNAME = libCommon$(MODSUFFIX)
+UNALIBNAME = libUna$(UNASUFFIX)
+MODLIBS = $(MODLIBNAME)$L $(UNALIBNAME)$L
+MODCLIENTLIBS = $(MODLIBNAME)$L
+
+#endif
+
+/* その他 */
+
+#if defined(SYD_OS_SOLARIS)
+
+MV = /bin/mv -f
+CP = /bin/cp
+RM = /bin/rm -f
+CAT = /bin/cat
+RMALL = $(RM) -r
+MKDIR = /bin/mkdir -p
+TOUCH = /bin/touch
+RANLIB = /usr/bin/true
+
+#elif defined(SYD_OS_LINUX)
+
+MV = /bin/mv -f
+CP = /bin/cp
+RM = /bin/rm -f
+CAT = /bin/cat
+RMALL = $(RM) -r
+MKDIR = /bin/mkdir -p
+TOUCH = /bin/touch
+RANLIB = /usr/bin/ranlib
+
+#elif defined(SYD_OS_WINDOWS)
+
+MV = $(SYDTOOL)\build\mv
+CP = $(SYDTOOL)\build\cp
+RM = $(SYDTOOL)\build\rm
+CAT = $(SYDTOOL)\build\cat
+RMALL = $(SYDTOOL)\build\rmdir
+MKDIR = $(SYDTOOL)\build\mkdir
+TOUCH = $(SYDTOOL)\build\touch
+RANLIB = 
+
+#endif
+
+#if defined(SYD_OS_SOLARIS)
+
+MAKE = /usr/ccs/bin/make -r -$(MAKEFLAGS)
+MKCONFDIR = $(SYDTOOL)/build/mkconfdir -f
+NKF = /usr/local/bin/nkf -s
+INSTALL = $(SYDTOOL)/build/install
+INSTALLBINFLAGS = 0755
+INSTALLLIBFLAGS = 0644
+INSTALLINCLFLAGS = 0644
+SED = /usr/bin/sed
+AWK = /usr/bin/awk
+WC = /usr/bin/wc
+
+#elif defined(SYD_OS_LINUX)
+
+MAKE = /usr/bin/make -r -$(MAKEFLAGS)
+MKCONFDIR = $(SYDTOOL)/build/mkconfdir -f
+NKF = /usr/bin/nkf -s
+INSTALL = $(SYDTOOL)/build/install
+INSTALLBINFLAGS = 0755
+INSTALLLIBFLAGS = 0644
+INSTALLINCLFLAGS = 0644
+SED = /bin/sed
+AWK = /bin/awk
+WC = /usr/bin/wc
+
+#elif defined(SYD_OS_WINDOWS)
+
+MAKE = nmake /$(MAKEFLAGS)
+MKCONFDIR = call $(SYDTOOL)\build\mkconfdir.bat -f
+NKF =
+INSTALL = $(SYDTOOL)\build\install
+INSTALLBINFLAGS = 0755
+INSTALLLIBFLAGS = 0644
+INSTALLINCLFLAGS = 0644
+SED =
+AWK =
+WC =
+
+#endif
+
+MAKEFILE_H = ..$(S)c$(S)Makefile.h
+MAKEFILE_H_MAK = \
+	$(SYDINSTTOP)$(S)conf$(S)$(OSNAME)$(S)makefile_h.mak	
+
+#ifdef SYD_OS_WINDOWS
+MAKEMAKEFILEFLAGS = \
+	"MAKE=$(MAKE)" \
+	"MAKEFILE_H_MAK=$(MAKEFILE_H_MAK)" \
+	"SYDTOP=$(SYDTOP)" \
+	"UNATOP=$(UNATOP)" \
+	"MODTOP=$(MODTOP)" \
+	"ZLIBTOP=$(ZLIBTOP)"
+#else
+MAKEMAKEFILEFLAGS = \
+	"MAKE=$(MAKE)" \
+	"MAKEFILE_H_MAK=$(MAKEFILE_H_MAK)" \
+	"SYDTOP=$(SYDTOP)" \
+	"UNATOP=$(UNATOP)" \
+	"MODTOP=$(MODTOP)"
+#endif
+
+PURIFYFLAGS = $(EXTRAPURIFYFLAGS)
+QUANTIFYFLAGS = $(EXTRAQUANTIFYFLAGS) -record-child-process-data
+PURECOVFLAGS = $(EXTRAPURECOVFLAGS) -follow-child-processes -counts-file=%v%p.pcv -best-effort
+
+#if defined(SYD_OS_SOLARIS)
+
+A2PS = $(SYDBUILDDIR)/a2ps -T4
+CTAGS = /usr/local/gnu/bin/ctags
+ETAGS = /usr/local/gnu/bin/etags
+PERL = /usr/local/bin/perl5
+
+#if defined(SYD_C_SC5_8) /* source /opt/Rational/purifyplus_setup.csh */
+PURIFYCOM = purify
+QUANTIFYCOM = quantify
+PURECOVCOM = purecov
+#elif defined(SYD_C_SC5_3)
+PURIFYCOM = /opt/Rational/bin/purify.2002a.06.00
+QUANTIFYCOM = /opt/Rational/bin/quantify.2002a.06.00
+PURECOVCOM = /opt/Rational/bin/purecov.2002a.06.00
+#elif defined(SYD_C_SC4_2)
+PURIFYCOM = /opt/Rational/bin/purify-5.2
+QUANTIFYCOM = /opt/Rational/bin/quantify-5.2
+PURECOVCOM = /opt/Rational/bin/purecov-5.2
+#endif
+
+PR = /usr/ucb/lpr
+
+ZLIBDLL = -lz
+OPENSSLDLL =
+
+#elif defined(SYD_OS_LINUX)
+
+A2PS = $(SYDBUILDDIR)/a2ps -T4
+CTAGS = /usr/bin/ctags
+ETAGS = /usr/bin/etags
+PERL = /usr/bin/perl
+
+PURIFYCOM = purify
+QUANTIFYCOM = quantify
+PURECOVCOM = purecov
+
+PR = /usr/bin/lpr
+
+ZLIBDLL = -lz
+OPENSSLDLL =
+BOOSTDLL = -lboost_system
+BOOST_FILESYSTEM_DLL = -lboost_filesystem
+
+#elif defined(SYD_OS_WINDOWS)
+
+A2PS =
+CTAGS =
+ETAGS =
+PERL = perl
+
+PURIFYCOM =
+QUANTIFYCOM =
+PURECOVCOM =
+
+PR = /usr/ucb/lpr
+
+ZLIBDLL = zdll$L
+OPENSSLDLL =
+BOOSTDLL = boost_system$(L)
+BOOST_FILESYSTEM_DLL = boost_filesystem$(L)
+#endif
+
+/* Makefile がある場所 */
+#if defined(SYD_OS_SOLARIS) || defined(SYD_OS_LINUX)
+MAKEDIR = `pwd`
+#endif
+
+@@
+#include "Makefile.c"
+@@
+/*
+ * 以下は汎用ターゲット
+ */
+AllRTarget()				/* make all-r */
+ClientAllRTarget()			/* make clientall-r */
+DLLRTarget()				/* make dll-r */
+MessageRTarget()			/* make message-r */
+
+ConfRTarget()				/* make conf-r */
+ReConfRTarget()				/* make reconf-r */
+InstallRTarget()			/* make install-r */
+ClientInstallRTarget()			/* make clientinstall-r */
+
+CleanRTarget()				/* make clean-r */
+
+ObjectListRTarget()			/* make objectlist-r */
+ClientObjectListRTarget()		/* make clientobjectlist-r */
+
+TapeRTarget()				/* make tape-r */
+
+/*
+ * Copyright (c) 1996, 2017, 2023 Ricoh Company, Ltd.
+ * All rights reserved.
+ */

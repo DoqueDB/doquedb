@@ -1,0 +1,96 @@
+#列の追加/変更 alter column
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#1．varchar(5) -> varchar(10)
+Command "create table T (C varchar(5))";
+Command "insert into T values ('abcde')";
+Command "insert into T values ('abcdef')";
+
+Command "select * from T";
+#Command "select * from T where C like '%%'";
+
+Command "alter table T alter column C varchar(10)";
+Command "insert into T values ('abcdefghijklmnopqrstuvwxyz')";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+#2．nvarchar(5) -> nvarchar(10)
+Command "create table T (C nvarchar(5))";
+Command "insert into T values ('abcde')";
+Command "insert into T values ('abcdef')";
+
+Command "insert into T values ('あいうえお')";
+Command "insert into T values ('あいうえおかきくけこ')";
+
+Command "select * from T";
+
+Command "alter table T alter column C nvarchar(10)";
+
+Command "insert into T values ('abcdefghijklmnopqrstuvwxyz')";
+Command "insert into T values ('あいうえおかきくけこ')";
+Command "insert into T values ('あいうえおかきくけこさしすせそ')";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+#3．nvarchar(10) -> ntext
+
+Command "create table T (C nvarchar(10))";
+Command "insert into T values ('abcdefghij')";
+Command "insert into T values ('abcdefghijk')";
+
+Command "insert into T values ('あいうえおかきくけこ')";
+Command "insert into T values ('あいうえおかきくけこさしすせそ')";
+
+Command "select * from T";
+
+Command "alter table T alter column C ntext";
+
+Command "insert into T values ('abcdefghijklmnopqrstuvwxyz')";
+Command "insert into T values ('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz')";
+
+Command "insert into T values ('あいうえおかきくけこさしすせそ')";
+Command "insert into T values ('あいうえおかきくけこさしすせそたちつてとなにぬねの')";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+#4．NOT NULL制約のついた列
+
+Command "create table T (C int not null)";
+
+Command "insert into T values (1)";
+Command "insert into T values (null)";
+
+Command "select * from T";
+Command "select * from T where C int is null";
+
+Command "alter table T alter column C int";
+Command "insert into T values (null)";
+
+Command "select * from T where C is null";
+
+# tableの後始末
+Command  "drop table T";
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,55 @@
+#
+#存在しないテーブル名、列名、データベース名を指定したテスト
+#　2006.03.23　tajima
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TestDB";
+TerminateSession;
+
+InitializeSession "TestDB";
+
+Command "create table T(id int,bno varchar(32),amt bigint)";
+Command "insert into T values(1,'abcde',10000000)";
+
+# SQL文に指定された表名が存在しないものである場合TableNotFoundとなる。
+
+Command "select * from  T1";
+Command "select id from T1";
+Command "select bno from T1 where id = 1";
+
+Command "insert into T1 values(1,'bbbb',2000)";
+
+Command "update T2 set name='田中太郎'";
+Command "update T2 set id='10' where id=1";
+
+Command "delete from T2";
+
+#select 文,insert文とupdate文で存在しない列名が使用された場合ColumnNotFoundとなる。
+
+Command "select id,name from T";
+Command "select ano,ttt from T";
+Command "select * from T where ano = 2";
+
+Command "insert into T(ano) values(1)";
+
+
+Command "update T set name='田中太郎'";
+Command "update T set id='10' where aid=1";
+
+Command "select id,name from T1";
+Command "select id,name from T";
+
+Command "select * from T";
+
+TerminateSession;
+
+InitializeSession "";
+
+#Command "drop database TestDB1";
+#Command "drop database TestDB";
+
+TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

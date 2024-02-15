@@ -1,0 +1,88 @@
+#alter database readwrite/readonly, online/offline (異常系)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T(C int)";
+Command "create index I on T(C)";
+Command "create area A 'd:\\dm\\area\\a'";
+
+#readwrite
+Command "alter database TESTDB offline";
+#offlineでできないこと
+Command "insert into T (C) values (777)";
+Command "create table T2 (C int)"; 
+Command "create index I2 on T(C)"; 
+Command "create area A2 'd:\\dm\\area\\a2'";
+Command "alter table T set area A";
+Command "alter index I set area A";
+Command "alter area A modify 'd:\\dm\\area\\aa'";
+Command "alter database TESTDB set path 'd:\\dm\\area\\db'";
+Command "drop table T";
+Command "drop index I";
+Command "drop area A";
+Command "drop database TESTDB";
+
+Command "select C from T";
+#->online
+Command "alter database TESTDB online";
+#->readonly
+Command "alter database TESTDB read only";
+
+#read onlyでできないこと
+
+Command "insert into T (C) values (777)";
+Command "create table T2 (C int)"; 
+Command "create index I2 on T(C)"; 
+Command "create area A2 'd:\\dm\\area\\a2'";
+Command "alter table T set area A";
+Command "alter index I set area A";
+Command "alter area A modify 'd:\\dm\\area\\aa'";
+Command "alter database TESTDB set path 'd:\\dm\\area\\db'";
+Command "drop table T";
+Command "drop index I";
+Command "drop area A";
+Command "drop database TESTDB";
+
+Command "alter database TESTDB offline";
+
+#readonlyかつofflineでできないこと
+Command "insert into T (C) values (777)";
+Command "select C from T";
+Command "create table T2 (C int)"; 
+Command "create index I2 on T(C)"; 
+Command "create area A2 'd:\\dm\\area\\a2'";
+Command "alter table T set area A";
+Command "alter index I set area A";
+Command "alter area A modify 'd:\\dm\\area\\aa'";
+Command "alter database TESTDB set path 'd:\\dm\\area\\db'";
+Command "drop table T";
+Command "drop index I";
+Command "drop area A";
+Command "drop database TESTDB";
+
+Command "select * from T";
+
+#Command "drop table T";
+#Command "drop index I";
+#Command "drop area A";
+TerminateSession;
+
+InitializeSession "";
+#Command "drop database TESTDB";
+#onlineかつread writeにしないとDBはdropできない
+Command "alter database TESTDB online";
+Command "alter database TESTDB read write";
+#Command "drop database TESTDB";
+TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;
+

@@ -1,0 +1,75 @@
+# Containsテストで、DISTINCTとORDER BYを同時に指定
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command  "create table T (N int, C ntext)";
+Command  "create fulltext index I on T(C) hint 'inverted=(nolocation=true)'";
+Command  "insert into T (N,C) values (?, ?)" [1, "aaa"];
+Command  "insert into T (N,C) values (?, ?)" [1, "aaaa"];
+Command  "insert into T (N,C) values (?, ?)" [1, "aaaaa"];
+Command  "insert into T (N,C) values (?, ?)" [1, "baaa"];
+Command  "insert into T (N,C) values (?, ?)" [1, "baaaa"];
+Command  "insert into T (N,C) values (?, ?)" [1, "aaac"];
+Command  "insert into T (N,C) values (?, ?)" [1, "aaaac"];
+Command  "insert into T (N,C) values (?, ?)" [1, "baaac"];
+Command  "insert into T (N,C) values (?, ?)" [1, "baaaac"];
+Command  "insert into T (N,C) values (?, ?)" [1, "adaaada"];
+Command  "insert into T (N,C) values (?, ?)" [1, "aaddaaa"];
+Command  "insert into T (N,C) values (?, ?)" [1, "aaaddaa"];
+Command  "insert into T (N,C) values (?, ?)" [1, "a"];
+Command  "insert into T (N,C) values (?, ?)" [2, "aa"];
+Command  "insert into T (N,C) values (?, ?)" [3, "aaa"];
+Command  "insert into T (N,C) values (?, ?)" [4, "aaaa"];
+Command  "insert into T (N,C) values (?, ?)" [5, "aaaaa"];
+Command  "insert into T (N,C) values (?, ?)" [1, "b"];
+Command  "insert into T (N,C) values (?, ?)" [2, "ba"];
+Command  "insert into T (N,C) values (?, ?)" [3, "baa"];
+Command  "insert into T (N,C) values (?, ?)" [4, "baaa"];
+Command  "insert into T (N,C) values (?, ?)" [5, "baaaa"];
+Command  "insert into T (N,C) values (?, ?)" [1, "c"];
+Command  "insert into T (N,C) values (?, ?)" [2, "ac"];
+Command  "insert into T (N,C) values (?, ?)" [3, "aac"];
+Command  "insert into T (N,C) values (?, ?)" [4, "aaac"];
+Command  "insert into T (N,C) values (?, ?)" [5, "aaaac"];
+Command  "insert into T (N,C) values (?, ?)" [1, "bc"];
+Command  "insert into T (N,C) values (?, ?)" [2, "bac"];
+Command  "insert into T (N,C) values (?, ?)" [3, "baac"];
+Command  "insert into T (N,C) values (?, ?)" [4, "baaac"];
+Command  "insert into T (N,C) values (?, ?)" [5, "baaaac"];
+Command  "insert into T (N,C) values (?, ?)" [1, "adaaada"];
+Command  "insert into T (N,C) values (?, ?)" [2, "aadadaa"];
+Command  "insert into T (N,C) values (?, ?)" [3, "adadadada"];
+Command  "insert into T (N,C) values (?, ?)" [4, "aaddaaa"];
+Command  "insert into T (N,C) values (?, ?)" [5, "aaaddaa"];
+
+Command  "select DISTINCT N, score(C) from T where C contains (?) order by score(C) desc limit 10" ["aaa"];
+
+# 障害によるテスト
+Command  "select DISTINCT * from T where C contains (?) order by score(C) desc limit 10" ["aaa"];
+
+#全体をstart transaction read write;とcommit;で囲んだもの
+Command "start transaction read write";
+Command  "select DISTINCT N, score(C) from T where C contains (?) order by score(C) desc limit 10" ["aaa"];
+
+# 障害によるテスト
+Command  "select DISTINCT * from T where C contains (?) order by score(C) desc limit 10" ["aaa"];
+
+Command "commit";
+
+Command  "drop table T";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+# DBの復旧はrestore_sydtestで自動的に行われる
+End;

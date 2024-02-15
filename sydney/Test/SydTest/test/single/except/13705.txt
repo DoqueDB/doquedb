@@ -1,0 +1,26 @@
+Begin;
+SetSystemParameter "Exception_FakeError" "Inverted::IDVectorFile::insert count=(1 5)";
+
+Initialize;
+InitializeSession "TEST";
+
+
+Command "create database TEST";
+Command "create table T (F nvarchar(no limit))";
+Command "create fulltext index T_F on T(F)";
+
+
+Command "insert into T values 'リコーの環境への取り組み'";	# エラー
+Command "verify table T cascade continue";
+Command "insert into T values 'リコーの環境への取り組み'";	# 正常
+Command "insert into T values 'リコーのエコバナシ'";		# エラー
+Command "insert into T values 'リコーのエコバナシ'";		# 正常
+
+Command "verify table T cascade continue";
+Command "select * from T where F contains 'リコーの環境'";
+Command "select * from T where F contains 'リコーのエコ'";
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

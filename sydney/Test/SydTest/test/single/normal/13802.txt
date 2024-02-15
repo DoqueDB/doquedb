@@ -1,0 +1,14 @@
+# 障害票 1440
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop table T_26 if exists";
+Command "create table T_26 (dec1 decimal(10, 0), int2 int)";
+Command "insert T_26 values (-6543210987, -2147483648)";
+TerminateSession;
+Terminate;
+End;

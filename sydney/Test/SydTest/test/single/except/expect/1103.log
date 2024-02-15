@@ -1,0 +1,171 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(N int, C1 blob, C2 blob)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=C1||? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=C2||? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C1) from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C2) from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=C2||? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from       5001) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from         -1) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from 9999999999) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(N int, C1 nvarchar(32), C2 nvarchar(32))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=C1||? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=C2||? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C1) from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C2) from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=C2||? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from         5001) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from           -1) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from   9999999999) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from     4 for -2) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from 4 for -99999) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(N int, C1 image, C2 image)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=C1||? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=C2||? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C1) from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select char_length(C2) from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=C2||? where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from         5001) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from           -1) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from   9999999999) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from     4 for -2) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C2=overlay(C1 placing ? from 4 for -99999) where N=1
+SydTest::Executor: [INFO] [[SQL Parameter]] {size=20000}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

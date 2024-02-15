@@ -1,0 +1,85 @@
+# select[2]/fulltext(delayed)/heap
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 ntext hint heap, C2 fulltext hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'delayed ,inverted=(nolocation=true)'";
+Command  "create fulltext index I1_2 on T1(C2) hint 'delayed ,inverted=(nolocation=true)'";
+Command  "create table T2(C1 ntext hint heap, C2 fulltext hint heap)";
+Command  "create fulltext index I2_1 on T2(C1) hint 'delayed ,inverted=(nolocation=true)'";
+Command  "create fulltext index I2_2 on T2(C2) hint 'delayed ,inverted=(nolocation=true)'";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\Teihon.txt", textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\Teihon.txt", textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "select count(*) from T1 where C1<? and C2<?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "select count(*) from T1 where C1>? and C2>?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "select count(*) from T1 where C1<=? and C2<=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "select count(*) from T1 where C1>=? and C2>=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "select count(*) from T1 where C1<>? and C2<>?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null and C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null and C2 is not null";
+Command  "select count(*) from T1 where C1=? or C2=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "select count(*) from T1 where C1<? or C2<?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "select count(*) from T1 where C1>? or C2>?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "select count(*) from T1 where C1<=? or C2<=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "select count(*) from T1 where C1>=? or C2>=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "select count(*) from T1 where C1<>? or C2<>?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null or C2 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null or C2 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap, C2 fulltext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'delayed ,inverted=(nolocation=true)'";
+Command  "create fulltext index I1_2 on T1(C2) hint 'delayed ,inverted=(nolocation=true)'";
+Command  "create table T2(C1 ntext array [no limit] hint heap, C2 fulltext array [no limit] hint heap)";
+Command  "create fulltext index I2_1 on T2(C1) hint 'delayed ,inverted=(nolocation=true)'";
+Command  "create fulltext index I2_2 on T2(C2) hint 'delayed ,inverted=(nolocation=true)'";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"]];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1, C2 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T1.C2=? and T2.C1=? and T2.C2=?" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"], [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+#Command  "drop table T1";
+#Command  "drop table T2";
+
+Command  "select * from T1";
+Command  "select * from T2";
+
+TerminateSession;
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

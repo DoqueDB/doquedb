@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+  MessageDefinition.xml : メッセージ定義ファイル
+
+  Copyright (c) 2001, 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+   
+      http://www.apache.org/licenses/LICENSE-2.0
+   
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE MessageDefine [
+  <!ELEMENT MessageDefine (Message)*>
+
+  <!ELEMENT Message (Name, Number, Format, Argument*)>
+  <!ELEMENT Name (#PCDATA)>
+  <!ELEMENT Number (#PCDATA)>
+
+  <!ELEMENT Format (English, Japanese)>
+  <!ELEMENT Argument (#PCDATA)>
+
+  <!ELEMENT English (#PCDATA)>
+  <!ELEMENT Japanese (#PCDATA)>
+]>
+
+<!--
+★メッセージ定義に関する注意★
+
+	【メッセージ定義ファイル自体について】
+		・ファイルの文字コードを SJIS から変更してはいけない
+
+	【メッセージ作成の方針について】
+
+	【メッセージ番号について】
+		・Number は16 進8 桁で定義し、
+
+		  上位 2 桁は 0x01
+		  次の 2 桁は モジュールを識別する値
+		  下位 4 桁は モジュール内でのメッセージを一意に識別する値
+		
+		  にすること
+		・決して、Exception/ErrorDefinition.xml の
+		  エラー番号と重なってはならない
+
+	【フォーマットについて】
+		・日本語メッセージは「ですます」調で統一すること
+		・Format に %1 などで挿入されるものが文字列である場合、
+		  できる限り言語に左右されない文字列
+		  (SQL 文、表名、数値など)にすること
+-->
+
+<MessageDefine>
+
+  <Message>
+    <Name>VerifyFailed</Name>
+	<Number>0x01300001</Number>
+	<Format>
+	  <English>Verification has been failed.</English>
+	  <Japanese>整合性検査に失敗しました。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>IllegalFileVersion</Name>
+	<Number>0x01300002</Number>
+	<Format>
+	  <English>Illegal file version.(vers=%1)</English>
+	  <Japanese>不正なファイルバージョンです。(vers=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordKeyNum</Name>
+	<Number>0x01300003</Number>
+	<Format>
+	  <English>The number of objects in file is inconsistent with number of key in leaf page. (object=%1, key=%2)</English>
+	  <Japanese>ファイルヘッダに書かれたオブジェクト数とリーフページのキー数が一致しません。(object=%1, key=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>ExistTopObject</Name>
+	<Number>0x01300004</Number>
+	<Format>
+	  <English>An object has been found in front of the first object.</English>
+	  <Japanese>先頭オブジェクトよりも前にオブジェクトが存在します。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>ExistLastObject</Name>
+	<Number>0x01300005</Number>
+	<Format>
+	  <English>An object has been found behind the last object.</English>
+	  <Japanese>最終オブジェクトよりも後ろにオブジェクトが存在します。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>DiscordRootNode</Name>
+	<Number>0x01300006</Number>
+	<Format>
+	  <English>The root node is inconsistent. (leaf=%1, header=%2, root=%3)</English>
+	  <Japanese>ルートノードが一致しません。(leaf=%1, header=%2, root=%3)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>IllegalTreeDepth</Name>
+	<Number>0x01300007</Number>
+	<Format>
+	  <English>Depth of the tree is inconsistent. (depth=%1)</English>
+	  <Japanese>木の深さがが矛盾しています。(depth=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordDelegateKey</Name>
+	<Number>0x01300008</Number>
+	<Format>
+	  <English>Delegate key in parent node is inconsistent with delegate key in child node. (parentpage=%1, parentarea=%2, childpage=%3, childarea=%4)</English>
+	  <Japanese>親ノードと子ノードの代表キーが一致しません。(parentpage=%1, parentarea=%2, childpage=%3, childarea=%4)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>IllegalKeyInfoIndex</Name>
+	<Number>0x01300009</Number>
+	<Format>
+	  <English>Key information index is inconsistent. (keyindex=%1, keynum=%2)</English>
+	  <Japanese>キー情報のインデックスが矛盾しています。(keyindex=%1, keynum=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>KeyInfoIndexNotEqualZero</Name>
+	<Number>0x0130000A</Number>
+	<Format>
+	  <English>Key information index is not equal zero. (keyindex=%1)</English>
+	  <Japanese>キー情報のインデックスが0ではありません。(keyindex=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DiscordNextLeaf</Name>
+	<Number>0x0130000B</Number>
+	<Format>
+	  <English>The identification of leaf page in parent node page is inconsistent with identification of next leaf page.(parent=%1, leaf=%2)</English>
+	  <Japanese>親ノードページに記録されている次のリーフページの識別子が一致しません。(parent=%1, leaf=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>NotUnique</Name>
+	<Number>0x0130000C</Number>
+	<Format>
+	  <English>Object is not unique. (srcpage=%1, srcarea=%2, dstpage=%3, dstarea=%4)</English>
+	  <Japanese>オブジェクトがユニークではありません。(srcpage=%1, srcarea=%2, dstpage=%3, dstarea=%4)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+	<Name>IllegalNextNodePageID</Name>
+	<Number>0x0130000D</Number>
+	<Format>
+	  <English>Next node page ID is inconsistent. (current=%1, next=%2)</English>
+	  <Japanese>次のノードページの識別子が矛盾しています。(current=%1, next=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+</MessageDefine>
+
+<!--
+  Copyright (c) 2001, 2023 Ricoh Company, Ltd.
+  All rights reserved.
+-->

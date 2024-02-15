@@ -1,0 +1,54 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(C ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(C) values 'エスエフ、サイエンスフィクション、科学小説、空想科学小説, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, エスエフ, 文学'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I on T(C) hint 'kwic, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1 @NORMRSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select kwic(C for 100 enclose with '【' and '】') from T where C contains expand_synonym('エスエフ')
+SydTest::Executor: [INFO] {【エスエフ】、【サイエンスフィクション】、【科学小説】、【空想科学小説】, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, 【エスエフ】, 文学}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select kwic(C for 100 enclose with '【' and '】') from T where C contains synonym('エスエフ' 'サイエンスフィクション' '科学小説' '空想科学小説')
+SydTest::Executor: [INFO] {【エスエフ】、【サイエンスフィクション】、【科学小説】、【空想科学小説】, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, 【エスエフ】, 文学}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select kwic(C for 100 enclose with '【' and '】') from T where C contains (expand_synonym('エスエフ') | '文学')
+SydTest::Executor: [INFO] {【エスエフ】、【サイエンスフィクション】、【科学小説】、【空想科学小説】, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, 【エスエフ】, 【文学】}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select kwic(C for 100 enclose with '【' and '】') from T where C contains (synonym('エスエフ' 'サイエンスフィクション' '科学小説' '空想科学小説') | '文学')
+SydTest::Executor: [INFO] {【エスエフ】、【サイエンスフィクション】、【科学小説】、【空想科学小説】, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, SF, 【エスエフ】, 【文学】}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select kwic(C for 30 enclose with '【' and '】') from T where C contains (expand_synonym('エスエフ') | '文学')
+SydTest::Executor: [INFO] {SF, SF, SF, SF, SF, SF, 【エスエフ】, 【文学】}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select kwic(C for 30 enclose with '【' and '】') from T where C contains (synonym('エスエフ' 'サイエンスフィクション' '科学小説' '空想科学小説') | '文学')
+SydTest::Executor: [INFO] {SF, SF, SF, SF, SF, SF, 【エスエフ】, 【文学】}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

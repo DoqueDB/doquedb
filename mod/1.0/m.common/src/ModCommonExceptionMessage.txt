@@ -1,0 +1,102 @@
+#
+# ModCommonExceptionMessage.txt -- 汎用ライブラリー関連のエラーメッセージの定義
+#
+# Copyright (c) 1998, 1999, 2023 Ricoh Company, Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+module:ModModuleOs
+
+# 例外			メッセージ
+
+ModCommonError:
+Unexpected		Unexpected error
+Assert			Assertion failed
+MemoryExhaust		Memory exhausted
+BadArgument		Bad argument
+NotInitialized		Not initialized or already terminated
+OutOfRange		Out of range
+NotOverLoad		Not overloaded
+NotEnoughMemory		Not enough memory
+EntryNotFound		Entry not found
+NotSupported		Function not supported
+
+ModMemoryError:
+PoolLimitSize		No more space in memory pool
+OverPoolLimit		Required memory is over memory pool limit
+EmergencyLimit		No more space in emergency memory
+OsAlloc			Memory allocation failed
+HandleLimit		No more space for the memory handle
+WrongSize		Wrong free size
+FreeUnAllocated		Freeing unallocated memory
+NegotiateFailed		Negotiation failed
+HandleNotFound		Memory handle not found
+NegotiateRegistered	Negotiation already registered
+NotFreeEmergencyArea	Negotiation not free emergency memory
+EmergencyAreaUsed	Emergency memory is used
+
+ModOsError:
+# 仮想 OS ドライバーのエラー
+# ModOsErrorOtherReason 未満の ModOsErrorUndefined + errno は、
+# ::strerror によりメッセージ文字列を生成する
+# 仮想 OS ドライバーのその他のエラー
+OtherReason		Uncategorized virtual OS error
+# gethostbyname のエラー(netdb.h より)
+HostNotFound		Host not found
+ServerFailed		Can't find host (server error)
+# 上記以外
+FileAlreadyOpened	File already opened
+FileNotOpened		File not opened
+WouldBlock		Would block
+AlreadyBound		Socket already bound
+SocketInvalid		Invalid socket
+ThreadNotFound		Thread not found
+KillSelfThread		Thread self killing
+SetThreadAttribute	Thread attribute set failed
+# WinSock のエラー
+WinSockVersion		WinSock version not supported
+WinSockNotReady		WinSock not ready
+WinSockNetworkDown	Network is down
+WinSockConnectAborted	Connection aborted
+WinSockNotConnect	Not connected
+WinSockTooManyProcess	Too many processes
+#WinSockNotInitialized	WinSock not initialized
+# ファイル、ソケット、メモリ(ModOsErrorUndefind + 2000 以上)
+NotSetCodec		Codec function is not set
+# スレッド、ミューテックス、条件変数(ModOsErrorUndefined + 3000 以上)
+NotLocked		Mutex not locked
+StillLocked		Mutex lock remains
+TooManyThreads		Too many threads
+AlreadySignaled		Already signaled
+ObjectAbandon		Object abandoned
+ThreadStillAlive	Thread still alive
+DeadLock		Deadlock detected
+NotMainThread		Not main thread
+TooManyUnlocked		Too many unlock
+ModThreadNotFound	MOD thread not found
+MainThread		Not handle main thread 
+# アーカイバー、シリアライザー(ModOsErrorUndefined + 4000 以上)
+OutOfMode		Invalid archiver mode
+EndOfFile		Unexpected end of file
+WriteProtocolInCodec	Codec write protocol error
+WriteDataInCodec	Codec write data error
+ReadProtocolInCodec	Codec read protocol error
+ReadDataInCodec		Codec read data error
+WriteNoSpace		No space to write in archive
+# メッセージ出力(ModOsErrorUndefined + 5000 以上)
+
+#
+# Copyright (c) 1998, 1999, 2023 Ricoh Company, Ltd.
+# All rights reserved.
+#

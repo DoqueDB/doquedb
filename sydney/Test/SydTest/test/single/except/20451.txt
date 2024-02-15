@@ -1,0 +1,68 @@
+# TF取得基本テスト
+# TFは、Term Frequencyの略で、term(単語または文字列）の文書内での出現頻度を意味する。
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#１－① 　word indexで次のようなデータベースを作成し、
+#		create table doc ( d_text ntext);
+Command  "create table T1( C1 ntext , L language)";
+Command "create fulltext index FTIndex on T1(C1) language column L
+	hint 'delayed, inverted=(normalized=true, indexing=word,
+	tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+#   次のデータを追加する。   
+#"good bye,world"
+#"hello,world"
+#"good evening,world"
+#"world,world"
+#"world,world,world"
+#"bye,bye"
+#"bye,bye,world"
+
+Command  "insert into T1 (C1) values (?)" ["good bye,world"];
+Command  "insert into T1 (C1) values (?)" ["hello,world"];
+Command  "insert into T1 (C1) values (?)" ["good evening,world"];
+Command  "insert into T1 (C1) values (?)" ["world,world"];
+Command  "insert into T1 (C1) values (?)" ["world,world,world"];
+Command  "insert into T1 (C1) values (?)" ["bye,bye"];
+Command  "insert into T1 (C1) values (?)" ["bye,bye,world"];
+
+#３．エラー処理テスト
+#SQL構文の解釈が正しく行われているかのテスト（wordlist構文以外の検索でTFを取得しようとした時、エラーが発生するかどうか）を行う。
+#３－① wordlist句がないのにTF(?)句が指定された場合エラーになるか？
+#  （基本的にTFを取得する場合には、どの単語のTFか判別できない場合は、エラーとなる）
+#   従って、次の例はエラーになる。
+Command  "select d_id, score(C1),TF(C1) from C1 where C1 contains freetext('押出機を用いて強化熱可塑性樹脂を製造する方法') order by score(C1) desc limit 50";
+
+#wordlist句が指定されている場合にexpand句が指定されているとエラーになるか？
+Command  "select TF(C1) from T1 where C1 contains wordlist('日本語' ,'単語') expand(from(values '形態素解析の問題点')) extractor '@TERMRSCID:1";
+
+
+#TFを取得する場合は、wordlist句がないとエラーになる。
+Command  "select  score(C1),TF(C1) from T1 where C1 contains wordlist ('ます') limit 10";
+Command  "select  score(C1),TF(C1) from T1 where C1 contains 'ます' limit 10";
+
+Command  "select  score(C1),TF(C1) from T1 where C1 contains wordlist ('ます' & 'です') limit 10";
+Command  "select  score(C1),TF(C1) from T1 where C1 contains 'ます' & 'です' limit 10";
+
+Command  "select  score(C1),TF(C1) from T1 where C1 contains wordlist ('ます' | 'です') limit 10";
+Command  "select  score(C1),TF(C1) from T1 where C1 contains 'ます' | 'です' limit 10";
+
+Command  "select rowid,TF(C1) from T1 where C1 contains within('押出機' '方法' asymmetric lower 2 upper 10) order by score(C1) desc limit 10";
+
+#word INDEXを削除
+Command  "drop index FTIndex";
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T1";
+
+TerminateSession;
+Terminate;
+End;

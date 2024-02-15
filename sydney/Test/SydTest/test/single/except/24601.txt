@@ -1,0 +1,56 @@
+
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T(C ntext)";
+
+Command "create fulltext index I on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=10))'";
+
+Command "insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。')";
+
+# 構文エラー
+# スペルミス
+Command "select rowid,score(C),cluster(C).id from T where C contains 'ロハス' cluster limit 0.8";
+Command "select rowid,score(C),cluster(C).id from T where C contains 'ロハス' cluster limit 0.73";
+
+# マイナス値
+Command "select rowid,score(C),cluster(C).id from T where C contains 'ロハス' clustered limit -0.8";
+Command "select rowid,score(C),cluster(C).id from T where C contains 'ロハス' clustered limit -0.73";
+
+# cluster id を指定しない  エラーはでないが無視される
+Command "select rowid,score(C) from T where C contains 'ロハス' CLUSTERED LIMIT 0.8";
+Command "select rowid,score(C) from T where C contains 'ロハス' CLUSTERED LIMIT 0.73";
+
+Command "drop index I";
+
+
+# スペル間違い
+Command "create fulltext index I1 on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,cluster=(feature=10))'";
+
+Command "create fulltext index I2 on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feture=10))'";
+
+# 
+Command "create fulltext index I3 on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=0))'";
+
+Command "create fulltext index I4 on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=0.1))'";
+
+Command "create fulltext index I5 on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=-10))'";
+
+Command "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

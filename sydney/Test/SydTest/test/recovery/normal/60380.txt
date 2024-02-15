@@ -1,0 +1,61 @@
+# insert[2]/fulltext(normalized, delayed)
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 ntext, C2 fulltext)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'delayed, inverted=(nolocation=true, notf=true, normalized=true)'";
+Command  "create fulltext index I1_2 on T1(C2) hint 'delayed, inverted=(nolocation=true, notf=true, normalized=true)'";
+Command  "create table T2(C1 ntext, C2 fulltext)";
+Command  "create fulltext index I2_1 on T2(C1) hint 'delayed, inverted=(nolocation=true, notf=true, normalized=true)'";
+Command  "create fulltext index I2_2 on T2(C2) hint 'delayed, inverted=(nolocation=true, notf=true, normalized=true)'";
+Command  "select C1, C2 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1, C2) values (?, ?), (?, ?)" [textsjisfile "..\\..\\doc\\Teihon.txt", textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt", textsjisfile "..\\..\\doc\\takekurabe.txt", textsjisfile "..\\..\\doc\\RainyNight.txt"];
+# 他のtableからinsert...select
+Command  "insert into T1 (C1, C2) select C1, C2 from T2 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\Teihon.txt", textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"];
+# 自分自身にinsert...select
+Command  "insert into T1 (C1, C2) select C1, C2 from T1 where C1=? and C2=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\kenpou.txt"];
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 ntext array [no limit], C2 fulltext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'delayed, inverted=(nolocation=true, notf=true, normalized=true)'";
+Command  "create fulltext index I1_2 on T1(C2) hint 'delayed, inverted=(nolocation=true, notf=true, normalized=true)'";
+Command  "create table T2(C1 ntext array [no limit], C2 fulltext array [no limit])";
+Command  "create fulltext index I2_1 on T2(C1) hint 'delayed, inverted=(nolocation=true, notf=true, normalized=true)'";
+Command  "create fulltext index I2_2 on T2(C2) hint 'delayed, inverted=(nolocation=true, notf=true, normalized=true)'";
+Command  "select C1, C2 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"]];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1, C2) values (?, ?), (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt", textsjisfile "..\\..\\doc\\kenpou.txt"]];
+# 他のtableからinsert...select
+Command  "insert into T1 select (C1, C2) from T2 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+# 自分自身にinsert...select
+Command  "insert into T1 select (C1, C2) from T1 where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command  "select C1, C2 from T1";
+#Command  "drop table T1";
+#Command  "drop table T2";
+
+Command  "select * from T1";
+Command  "select * from T2";
+
+TerminateSession;
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

@@ -1,0 +1,19 @@
+# 障害票 975
+# 
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+Command "create table T (f int, primary key(f))";
+Command "create table X (g int)";
+
+Command "insert T values 1,2,3";
+Command "insert X values 2,2,2";
+
+Command "select * from T, X where T.f = X.g and T.f in (1,2,3)";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,28 @@
+# Bug report 1415
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T(C ntext)";
+Command "insert T values 'abc'";
+Command "create fulltext index I on T(C)";
+
+Command "select score(C) from T where C contains 'abc'";
+Command "select score(C) from T where C contains weight('abc' scale 0.1)";
+Command "select score(C) from T where C contains weight('abc' scale 1)";
+Command "select score(C) from T where C contains weight('abc' scale 2)";
+Command "select score(C) from T where C contains weight('abc' scale 10)";
+Command "select score(C) from T where C contains wordlist('abc')";
+Command "select score(C) from T where C contains wordlist('abc' scale 0.1)";
+Command "select score(C) from T where C contains wordlist('abc' scale 1)";
+Command "select score(C) from T where C contains wordlist('abc' scale 2)";
+Command "select score(C) from T where C contains wordlist('abc' scale 10)";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;
+

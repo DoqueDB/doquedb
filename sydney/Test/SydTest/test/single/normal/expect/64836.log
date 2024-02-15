@@ -1,0 +1,167 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t (f ntext, g ntext, h ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {abc,あいうえお,123}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bcd,あかさたな,135}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),かきくけこ,246}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {cde,(null),139}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index i on t(f) hint 'inverted=(nolocation=true, notf=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index j on t(g) hint 'inverted=(nolocation=true, notf=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index k on t(h) hint 'inverted=(nolocation=true, notf=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where (f contains 'c' and g contains 'あ')
+SydTest::Executor: [INFO] {abc,あいうえお,123}
+SydTest::Executor: [INFO] {bcd,あかさたな,135}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where (f contains 'c' or g contains 'か')
+SydTest::Executor: [INFO] {abc,あいうえお,123}
+SydTest::Executor: [INFO] {bcd,あかさたな,135}
+SydTest::Executor: [INFO] {(null),かきくけこ,246}
+SydTest::Executor: [INFO] {cde,(null),139}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains 'c')
+SydTest::Executor: [INFO] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains 'a' or (f contains 'b' and f contains 'd')
+SydTest::Executor: [INFO] {abc,あいうえお,123}
+SydTest::Executor: [INFO] {bcd,あかさたな,135}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains 'a' or (g contains 'か' and g contains 'な')
+SydTest::Executor: [INFO] {abc,あいうえお,123}
+SydTest::Executor: [INFO] {bcd,あかさたな,135}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains 'a' or (g contains 'か' and h contains '3')
+SydTest::Executor: [INFO] {abc,あいうえお,123}
+SydTest::Executor: [INFO] {bcd,あかさたな,135}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains 'a' and (f contains 'b' or f contains 'd')
+SydTest::Executor: [INFO] {abc,あいうえお,123}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains 'd' and (g contains 'か' or g contains 'な')
+SydTest::Executor: [INFO] {bcd,あかさたな,135}
+SydTest::Executor: [INFO] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where f contains 'b' and (g contains 'か' or h contains '3')
+SydTest::Executor: [INFO] {abc,あいうえお,123}
+SydTest::Executor: [INFO] {bcd,あかさたな,135}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains 'b' and f contains 'c')
+SydTest::Executor: [INFO] {cde,(null),139}
+SydTest::Executor: [INFO] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains 'b' and g contains 'か')
+SydTest::Executor: [INFO] {abc,あいうえお,123}
+SydTest::Executor: [INFO] {cde,(null),139}
+SydTest::Executor: [INFO] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains 'b') and not (f contains 'c')
+SydTest::Executor: [INFO] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains 'b') and not (g contains 'か')
+SydTest::Executor: [INFO] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains 'b' or f contains 'c')
+SydTest::Executor: [INFO] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains 'b' or g contains 'か')
+SydTest::Executor: [INFO] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains 'b') or not (f contains 'c')
+SydTest::Executor: [INFO] {cde,(null),139}
+SydTest::Executor: [INFO] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from t where not (f contains 'b') or not (g contains 'か')
+SydTest::Executor: [INFO] {abc,あいうえお,123}
+SydTest::Executor: [INFO] {cde,(null),139}
+SydTest::Executor: [INFO] {def,なにぬねの,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

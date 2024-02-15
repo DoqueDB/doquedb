@@ -1,0 +1,26 @@
+# NOT LIKE と他の列とのEqual条件を同じ列に同時に指定する
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(f1 nchar(10),f2 nchar(10),)";
+Command  "insert into T1 (f1, f2) values ('abc', 'abc')";
+Command  "insert into T1 (f1, f2) values ('abc', 'xyz')";
+Command  "insert into T1 (f1, f2) values ('xyz', 'abc')";
+Command  "insert into T1 (f1, f2) values ('xyz', 'xyz')";
+Command  "insert into T1 (f1, f2) values ('aaa', 'aaa')";
+Command  "insert into T1 (f1, f2) values ('bbb', 'bbb')";
+Command  "insert into T1 (f1, f2) values ('ccc', 'ccc')";
+
+Command  "select f1,f2 from T1 where f1 not like '%a%' and f1 = f2";
+Command  "drop table T1";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

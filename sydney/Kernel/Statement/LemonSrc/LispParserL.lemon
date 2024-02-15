@@ -1,0 +1,124 @@
+// -*-Mode: C++; tab-width: 4; c-basic-offset: 4;-*-
+// vi:set ts=4 sw=4:
+//
+// LispParser.lemon -- Lispパーザを生成するlemonルール
+// 
+// Copyright (c) 1999, 2000, 2023 Ricoh Company, Ltd.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+%include {
+// -*-Mode: C++; tab-width: 4; c-basic-offset: 4;-*-
+// vi:set ts=4 sw=4:
+//
+// LispParser.cpp -- Lemonにより生成されたパーザ
+//
+
+namespace {
+	const char moduleName[] = "Statement";
+	const char srcFile[] = __FILE__;
+}
+
+#include "SyDefault.h"
+#include "Common/Assert.h"
+#include "Common/UnicodeString.h"
+#include "Statement/LispParser.h"
+#include "Statement/Object.h"
+#include "Statement/LispScanner.h"
+#include "Statement/IntegerValue.h"
+#include "Statement/StringValue.h"
+#include "Statement/DataValue.h"
+#include "Statement/Token.h"
+#include "Statement/Type.h"
+#include "ModUnicodeString.h"
+#include "ModUnicodeCharTrait.h"
+
+#include <iostream.h>
+
+_SYDNEY_USING
+using namespace _SYDNEY::Statement;
+}
+
+// -*-Mode: Java; tab-width: 4; c-basic-offset: 4;-*-
+// vi:set ts=4 sw=4:
+
+// terminals and non terminals are generated automatically
+
+%name LispParserEngine
+%token_prefix TOKEN__
+%token_type { Statement::Token* }
+%token_destructor { delete $$; }
+
+%extra_argument { Statement::LispParser* pParser }
+%parse_accept { pParser->setState(Statement::LispParser::PARSE_ACCEPT); }
+%parse_failure { pParser->setState(Statement::LispParser::PARSE_SYNTAX_ERROR); }
+
+%start_symbol start
+
+%type start { int }
+%destructor start { }
+start(result) ::= list(list) .
+	{
+		pParser->setResult(list);
+		result = 0;
+	}
+
+%type list { Object* }
+%destructor list { if ($$) $$->destruct(); }
+list(result) ::= body(body) RIGHT_PARENTHESIS .
+	{ result = body; }
+list(result) ::= primitive(primitive) .
+	{ result = primitive; }
+
+%type primitive { Object* }
+%destructor primitive { if ($$) $$->destruct(); }
+primitive(result) ::= LEFT_PARENTHESIS INTEGER_VALUE IDENTIFIER(value) RIGHT_PARENTHESIS .
+	{
+		result = new IntegerValue(ModUnicodeCharTrait::toInt(value->getText()));
+		delete value;
+	}
+primitive(result) ::= LEFT_PARENTHESIS STRING_VALUE STRING(value) RIGHT_PARENTHESIS .
+	{
+		result = new StringValue(value->getText());
+		delete value;
+	}
+primitive(result) ::= LEFT_PARENTHESIS DATA_VALUE STRING/*(value)*/ RIGHT_PARENTHESIS .
+	{
+		// ★todo
+		result = new DataValue();
+	}
+primitive(result) ::= NULL .
+	{
+		result = 0;
+	}
+
+%type body { Object* }
+%destructor body { if ($$) $$->destruct(); }
+body(result) ::= LEFT_PARENTHESIS IDENTIFIER(type) .
+	{
+		ModUnicodeString & strTmp = const_cast<ModUnicodeString&>(type->getText());
+		int iType = Statement::getTypeIDFromName(strTmp.getString(Common::LiteralCode));
+		if (iType == -1) {
+			// parseError("Unknown type: " + type->getText());
+			/*NOTREACHED*/
+		}
+		delete type;
+		result = dynamic_cast<Object*>(Statement::getClassInstance(iType + Common::Externalizable::StatementClasses));
+		result->clearBody();
+	}
+body(result) ::= body(body) list(list) .
+	{
+		body->addBody(list);
+		result = body;
+	}

@@ -1,0 +1,175 @@
+#全文ファイルテスト(FullText_MergeInvPack=2)
+
+Begin;
+
+#マージ閾値を1にする(設定前の既定値は0)
+SetSystemParameter "FullText_InsertMergeTupleSize" 1;
+SetSystemParameter "FullText_ExpungeMergeTupleSize" 1;
+
+Initialize;
+
+# DBを作成
+InitializeSession "";
+Command "create database FullTextTest";
+TerminateSession "";
+
+# 表を作成
+InitializeSession "FullTextTest";
+Command "create table T (N int, C ntext array [no limit] hint heap 'compressed')";
+Command "create fulltext index FTIndex on T(C) hint 'sectionized, delayed, inverted=(nolocation=true, normalized=true)'";
+
+TerminateSession;
+Terminate;
+
+Initialize;
+InitializeSession "FullTextTest";
+
+# 全文ファイルに挿入→マージ
+Command "insert into T (N, C) values (1, ?)" [[textsjisfile "..\\..\\doc\\introduction.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (2, ?)" [[textsjisfile  "..\\..\\doc\\RainyNight.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (3, ?)" [[textsjisfile  "..\\..\\doc\\kenpou.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (4, ?)" [[textsjisfile  "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (5, ?)" [[textsjisfile  "..\\..\\doc\\rasyoumon.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (6, ?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (7, ?)" [[textsjisfile  "..\\..\\doc\\dictionary.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (8, ?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (9, ?)" [[textsjisfile  "..\\..\\doc\\takekurabe.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (10, ?)" [[textsjisfile  "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (11, ?)" [[textsjisfile  "..\\..\\doc\\introduction.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (12, ?)" [[textsjisfile  "..\\..\\doc\\Teihon.txt"]];
+Command "select count(*) from T";
+
+#- 1件ずつ削除→マージ
+Command "delete from T where N= 1";
+Command "delete from T where N= 2";
+Command "delete from T where N= 3";
+Command "delete from T where N= 4";
+Command "delete from T where N= 5";
+Command "delete from T where N= 6";
+Command "delete from T where N= 7";
+Command "delete from T where N= 8";
+Command "delete from T where N= 9";
+Command "delete from T where N=10";
+Command "delete from T where N=11";
+Command "delete from T where N=12";
+
+TerminateSession;
+Terminate;
+
+# マージ閾値を3に変更
+SetSystemParameter "FullText_InsertMergeTupleSize" 3;
+SetSystemParameter "FullText_ExpungeMergeTupleSize" 3;
+
+Initialize;
+InitializeSession "FullTextTest";
+
+# 再びinsertを行う
+Command "insert into T (N, C) values (1, ?)" [[textsjisfile "..\\..\\doc\\introduction.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (2, ?)" [[textsjisfile "..\\..\\doc\\RainyNight.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (3, ?)" [[textsjisfile "..\\..\\doc\\kenpou.txt"]];
+# ここでマージが起こる
+Command "select count(*) from T";
+Command "insert into T (N, C) values (4, ?)" [[textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (5, ?)" [[textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (6, ?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+# ここでマージが起こる
+Command "select count(*) from T";
+Command "insert into T (N, C) values (7, ?)" [[textsjisfile "..\\..\\doc\\dictionary.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (8, ?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (9, ?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+# ここでマージが起こる
+Command "select count(*) from T";
+Command "insert into T (N, C) values (10, ?)" [[textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"]];
+Command "select count(*) from T";
+Command "insert into T (N, C) values (11, ?)" [[textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command "select count(*) from T";
+
+# select(1回目)
+Command "select count(*) from T";
+Command "select N from T where C like '%内閣総理大臣%'";
+Command "select N from T where C like '%老婆%'";
+Command "select N from T where C like '%foo%'";
+Command "select N from T where C like '%ls%'";
+Command "select N from T where C like '%オプション%'";
+Command "select N from T where C like '%打者%'";
+Command "select N from T where C like '%cryptography%'";
+Command "select N from T where C like '%ディレクトリ%'";
+Command "select N from T where C like '%address%'";
+Command "select N from T where C like '%RFC%'";
+
+#- delete 
+Command "delete from T where N= 1";
+Command "delete from T where N= 8";
+Command "delete from T where N= 2";
+# ここでマージが発生
+Command "delete from T where N= 4";
+Command "delete from T where N= 5";
+Command "delete from T where N=11";
+# ここでマージは発生
+# これで残り件数は{3, 6, 7, 9, 10}の5つとなる
+
+#- select(2回目)
+Command "select count(*) from T";
+Command "select N from T where C like '%内閣総理大臣%'";
+Command "select N from T where C like '%老婆%'";
+Command "select N from T where C like '%foo%'";
+Command "select N from T where C like '%ls%'";
+Command "select N from T where C like '%オプション%'";
+Command "select N from T where C like '%打者%'";
+Command "select N from T where C like '%cryptography%'";
+Command "select N from T where C like '%ディレクトリ%'";
+Command "select N from T where C like '%address%'";
+Command "select N from T where C like '%RFC%'";
+
+#- 残り5タプルの内容を全てupdate
+Command "update T set C=? where N= 3" [[textsjisfile "..\\..\\doc\\introduction.txt"]];
+Command "update T set C=? where N= 6" [[textsjisfile "..\\..\\doc\\RainyNight.txt"]];
+Command "update T set C=? where N= 7" [[textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"]];
+Command "update T set C=? where N= 9" [[textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+Command "update T set C=? where N=10" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+
+#- select(3回目)
+Command "select count(*) from T";
+Command "select N from T where C like '%内閣総理大臣%'";
+Command "select N from T where C like '%老婆%'";
+Command "select N from T where C like '%foo%'";
+Command "select N from T where C like '%ls%'";
+Command "select N from T where C like '%オプション%'";
+Command "select N from T where C like '%打者%'";
+Command "select N from T where C like '%cryptography%'";
+Command "select N from T where C like '%ディレクトリ%'";
+Command "select N from T where C like '%address%'";
+Command "select N from T where C like '%RFC%'";
+
+#- 全文ファイルテスト用の表を消去
+Command "drop table T";
+TerminateSession;
+
+#- DBを消去
+InitializeSession "";
+Command "drop database FullTextTest";
+TerminateSession;
+Terminate;
+
+#- Parameterをデフォルト値に戻す
+SetSystemParameter "FullText_InsertMergeTupleSize" 0;
+SetSystemParameter "FullText_ExpungeMergeTupleSize" 0;
+End;
+

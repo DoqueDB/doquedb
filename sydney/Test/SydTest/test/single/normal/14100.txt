@@ -1,0 +1,179 @@
+Begin;
+Initialize;
+
+SetSystemParameter "LogicalFile_BtreeFileDriver" "SyDrvBtr2";
+
+# DBの作成
+InitializeSession "";
+Command "create database IndexHintTest";
+TerminateSession;
+
+# テストを行うセッション
+InitializeSession "IndexHintTest";
+
+Command "create table T2(C1 nvarchar(32))";
+Command "create index I2 on T2(C1) hint 'normalized'";
+Command "insert into T2 values ('ABC')";
+Command "select * from T2 where C1 like 'ab%'";
+Command "select * from T2 where C1 like 'abc'";
+Command "insert into T2 values ('xyz')";
+Command "select * from T2 where C1 like 'XY%'";
+Command "select * from T2 where C1 like 'XYZ'";
+Command "insert into T2 values ('ＡＢＣ')";
+Command "select * from T2 where C1 like 'AB%'";
+Command "select * from T2 where C1 like 'ABC'";
+Command "insert into T2 values ('！＠＃')";
+Command "select * from T2 where C1 like '!@%'";
+Command "select * from T2 where C1 like '!@#'";
+Command "insert into T2 values ('イロハ')";
+Command "select * from T2 where C1 like 'ｲﾛ%'";
+Command "select * from T2 where C1 like 'ｲﾛﾊ'";
+Command "insert into T2 values ('ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ')";
+Command "select * from T2 where C1 like 'バガ%'";
+Command "select * from T2 where C1 like 'バカ%'"; # 濁点なしはヒットしない
+Command "select * from T2 where C1 like 'バガボンドノパパ'";
+Command "insert into T2 values ('ABC')";
+Command "select * from T2 where C1 like 'ＡＢ%'";
+Command "select * from T2 where C1 like 'ＡＢＣ'";
+Command "insert into T2 values ('!@#')";
+Command "select * from T2 where C1 like '！＠%'";
+Command "select * from T2 where C1 like '！＠＃'";
+Command "insert into T2 values ('ｲﾛﾊ')";
+Command "select * from T2 where C1 like 'イロ%'";
+Command "select * from T2 where C1 like 'イロハ'";
+Command "insert into T2 values ('バガボンドノパパ')";
+Command "select * from T2 where C1 like 'ﾊﾞｶﾞ%'";
+Command "select * from T2 where C1 like 'ﾊﾞｶ%'"; # 濁点なしはヒットしない
+Command "select * from T2 where C1 like 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ'";
+Command "drop table T2";
+
+Command "create table T2(C1 int, C2 nvarchar(32))";
+Command "create index I2 on T2(C1, C2) hint 'normalized'";
+Command "insert into T2 values (1, 'ABC')";
+Command "select * from T2 where C1 = 1 and C2 like 'ab%'";
+Command "select * from T2 where C1 = 1 and C2 like 'abc'";
+Command "insert into T2 values (1, 'xyz')";
+Command "select * from T2 where C1 = 1 and C2 like 'XY%'";
+Command "select * from T2 where C1 = 1 and C2 like 'XYZ'";
+Command "insert into T2 values (1, 'ＡＢＣ')";
+Command "select * from T2 where C1 = 1 and C2 like 'AB%'";
+Command "select * from T2 where C1 = 1 and C2 like 'ABC'";
+Command "insert into T2 values (1, '！＠＃')";
+Command "select * from T2 where C1 = 1 and C2 like '!@%'";
+Command "select * from T2 where C1 = 1 and C2 like '!@#'";
+Command "insert into T2 values (1, 'イロハ')";
+Command "select * from T2 where C1 = 1 and C2 like 'ｲﾛ%'";
+Command "select * from T2 where C1 = 1 and C2 like 'ｲﾛﾊ'";
+Command "insert into T2 values (1, 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ')";
+Command "select * from T2 where C1 = 1 and C2 like 'バガ%'";
+Command "select * from T2 where C1 = 1 and C2 like 'バカ%'"; # 濁点なしはヒットしない
+Command "select * from T2 where C1 = 1 and C2 like 'バガボンドノパパ'";
+Command "insert into T2 values (1, 'ABC')";
+Command "select * from T2 where C1 = 1 and C2 like 'ＡＢ%'";
+Command "select * from T2 where C1 = 1 and C2 like 'ＡＢＣ'";
+Command "insert into T2 values (1, '!@#')";
+Command "select * from T2 where C1 = 1 and C2 like '！＠%'";
+Command "select * from T2 where C1 = 1 and C2 like '！＠＃'";
+Command "insert into T2 values (1, 'ｲﾛﾊ')";
+Command "select * from T2 where C1 = 1 and C2 like 'イロ%'";
+Command "select * from T2 where C1 = 1 and C2 like 'イロハ'";
+Command "insert into T2 values (1, 'バガボンドノパパ')";
+Command "select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶﾞ%'";
+Command "select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶ%'"; # 濁点なしはヒットしない
+Command "select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ'";
+Command "drop table T2";
+
+Command "create table T1(C1 int)";
+Command "create index I1 on T1(C1) hint 'normalized'";
+Command "create table T2(C1 nvarchar(32))";
+Command "create index I2 on T2(C1) hint 'normalized'";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "IndexHintTest";
+Command "insert into T1 values (1)";
+Command "insert into T2 values ('ABC')";
+Command "select * from T2 where C1 like 'ab%'";
+Command "select * from T2 where C1 like 'abc'";
+Command "insert into T2 values ('xyz')";
+Command "select * from T2 where C1 like 'XY%'";
+Command "select * from T2 where C1 like 'XYZ'";
+Command "insert into T2 values ('ＡＢＣ')";
+Command "select * from T2 where C1 like 'AB%'";
+Command "select * from T2 where C1 like 'ABC'";
+Command "insert into T2 values ('！＠＃')";
+Command "select * from T2 where C1 like '!@%'";
+Command "select * from T2 where C1 like '!@#'";
+Command "insert into T2 values ('イロハ')";
+Command "select * from T2 where C1 like 'ｲﾛ%'";
+Command "select * from T2 where C1 like 'ｲﾛﾊ'";
+Command "insert into T2 values ('ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ')";
+Command "select * from T2 where C1 like 'バガ%'";
+Command "select * from T2 where C1 like 'バカ%'"; # 濁点なしはヒットしない
+Command "select * from T2 where C1 like 'バガボンドノパパ'";
+Command "insert into T2 values ('ABC')";
+Command "select * from T2 where C1 like 'ＡＢ%'";
+Command "select * from T2 where C1 like 'ＡＢＣ'";
+Command "insert into T2 values ('!@#')";
+Command "select * from T2 where C1 like '！＠%'";
+Command "select * from T2 where C1 like '！＠＃'";
+Command "insert into T2 values ('ｲﾛﾊ')";
+Command "select * from T2 where C1 like 'イロ%'";
+Command "select * from T2 where C1 like 'イロハ'";
+Command "insert into T2 values ('バガボンドノパパ')";
+Command "select * from T2 where C1 like 'ﾊﾞｶﾞ%'";
+Command "select * from T2 where C1 like 'ﾊﾞｶ%'"; # 濁点なしはヒットしない
+Command "select * from T2 where C1 like 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ'";
+Command "drop table T1";
+Command "drop table T2";
+
+Command "create table T1(C1 int, C2 int)";
+Command "create index I1 on T1(C1, C2) hint 'normalized'";
+Command "create table T2(C1 int, C2 nvarchar(32))";
+Command "create index I2 on T2(C1, C2) hint 'normalized'";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "IndexHintTest";
+Command "insert into T1 values (1, 1)";
+Command "insert into T2 values (1, 'ABC')";
+Command "select * from T2 where C1 = 1 and C2 like 'ab%'";
+Command "select * from T2 where C1 = 1 and C2 like 'abc'";
+Command "insert into T2 values (1, 'xyz')";
+Command "select * from T2 where C1 = 1 and C2 like 'XY%'";
+Command "select * from T2 where C1 = 1 and C2 like 'XYZ'";
+Command "insert into T2 values (1, 'ＡＢＣ')";
+Command "select * from T2 where C1 = 1 and C2 like 'AB%'";
+Command "select * from T2 where C1 = 1 and C2 like 'ABC'";
+Command "insert into T2 values (1, '！＠＃')";
+Command "select * from T2 where C1 = 1 and C2 like '!@%'";
+Command "select * from T2 where C1 = 1 and C2 like '!@#'";
+Command "insert into T2 values (1, 'イロハ')";
+Command "select * from T2 where C1 = 1 and C2 like 'ｲﾛ%'";
+Command "select * from T2 where C1 = 1 and C2 like 'ｲﾛﾊ'";
+Command "insert into T2 values (1, 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ')";
+Command "select * from T2 where C1 = 1 and C2 like 'バガ%'";
+Command "select * from T2 where C1 = 1 and C2 like 'バカ%'"; # 濁点なしはヒットしない
+Command "select * from T2 where C1 = 1 and C2 like 'バガボンドノパパ'";
+Command "insert into T2 values (1, 'ABC')";
+Command "select * from T2 where C1 = 1 and C2 like 'ＡＢ%'";
+Command "select * from T2 where C1 = 1 and C2 like 'ＡＢＣ'";
+Command "insert into T2 values (1, '!@#')";
+Command "select * from T2 where C1 = 1 and C2 like '！＠%'";
+Command "select * from T2 where C1 = 1 and C2 like '！＠＃'";
+Command "insert into T2 values (1, 'ｲﾛﾊ')";
+Command "select * from T2 where C1 = 1 and C2 like 'イロ%'";
+Command "select * from T2 where C1 = 1 and C2 like 'イロハ'";
+Command "insert into T2 values (1, 'バガボンドノパパ')";
+Command "select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶﾞ%'";
+Command "select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶ%'"; # 濁点なしはヒットしない
+Command "select * from T2 where C1 = 1 and C2 like 'ﾊﾞｶﾞﾎﾞﾝﾄﾞﾉﾊﾟﾊﾟ'";
+Command "drop table T1";
+Command "drop table T2";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database IndexHintTest";
+TerminateSession;
+Terminate;
+End;

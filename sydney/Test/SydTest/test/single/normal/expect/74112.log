@@ -1,0 +1,242 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DefaultDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (N int, C ntext, L language)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1 (N int, C1 nvarchar(256), L1 language)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTIndex on T(C) language column L hint 'inverted=(nolocation=true, notf=true, normalized=true, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTIndex1 on T1(C1) language column L1 hint 'inverted=(nolocation=true, notf=true, normalized=true, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C, L) values (?, ?, ?)
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins1
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (N, C1, L1) values (?, ?, ?)
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T,T1 where T.C like ? AND T1.C1 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select T.N,T1.N from T,T1 where (T.C like '%ペイジ%' or T1.C1 like '%ペイジ%') and T.N = 3
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select T.N,T1.N from T,T1 where T.C like '%リファレンス%' or T1.C1 like '%アメリカ%' or T.N = 3
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T.C)
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T1.C1)
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T.C),score(T1.C1)
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T1.C1),score(T.C)
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T natural inner join T1 where T.C like ? AND T1.C1 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ペイジ%,%ペイジ%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(No1 int,Sno int, Name nvarchar(32),Memo ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(No2 int, Sno1 int,Name1 nvarchar(32),Memo1 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_IDX on T(No1,Sno,Name)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T1_IDX on T1(No2,Sno1,Name1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(No1,Sno,Name,Memo) values (1,10,'Takeda',null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(No1,Sno,Name,Memo) values (1,10,'Aoki','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(No1,Sno,Name,Memo) values (3,12,'buta','')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(No1,Sno,Name,Memo) values (4,13,'Panda','bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(No1,Sno,Name,Memo) values (5,14,'Kirin','')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1(No2,Sno1,Name1,Memo1) values (1,10,'Sasaki',null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1(No2,Sno1,Name1,Memo1) values (2,10,'Tanaka',null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1(No2,Sno1,Name1,Memo1) values (3,10,'Tanuki','cccccccccccccccccccccccccccccc')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1(No2,Sno1,Name1,Memo1) values (4,13,'kemon','bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1(No2,Sno1,Name1,Memo1) values (5,14,'watanabe','')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from T,T1 where No1=1 and Sno1 = 10 and Name like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%Ta%}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),1,10,Sasaki,(null)}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),2,10,Tanaka,(null)}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),3,10,Tanuki,cccccccccccccccccccccccccccccc}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from T,T1 where No1>3 and Sno1 = 13 and Name like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%an%}
+SydTest::Executor: [INFO] {4,13,Panda,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb,4,13,kemon,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from T,T1 where No1<3 or Sno1 = 14 or Name like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%na%}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),1,10,Sasaki,(null)}
+SydTest::Executor: [INFO] {1,10,Aoki,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,1,10,Sasaki,(null)}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),2,10,Tanaka,(null)}
+SydTest::Executor: [INFO] {1,10,Aoki,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,2,10,Tanaka,(null)}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),3,10,Tanuki,cccccccccccccccccccccccccccccc}
+SydTest::Executor: [INFO] {1,10,Aoki,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,3,10,Tanuki,cccccccccccccccccccccccccccccc}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),4,13,kemon,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
+SydTest::Executor: [INFO] {1,10,Aoki,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,4,13,kemon,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),5,14,watanabe,}
+SydTest::Executor: [INFO] {1,10,Aoki,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,5,14,watanabe,}
+SydTest::Executor: [INFO] {3,12,buta,,5,14,watanabe,}
+SydTest::Executor: [INFO] {4,13,Panda,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb,5,14,watanabe,}
+SydTest::Executor: [INFO] {5,14,Kirin,,5,14,watanabe,}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select T.No1,T1.Sno1,T1.Sno1,T.Name from T,T1 where No1=1 and Sno1 = 10 and Name like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%Ta%}
+SydTest::Executor: [INFO] {1,10,10,Takeda}
+SydTest::Executor: [INFO] {1,10,10,Takeda}
+SydTest::Executor: [INFO] {1,10,10,Takeda}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select T.No1,T1.Sno1,T1.Sno1,T.Name from T,T1 where No1<3 and Sno1 >= 10 and Name like ?  order by T.No1
+SydTest::Executor: [INFO] [[SQL Parameter]] {%a%}
+SydTest::Executor: [INFO] {1,10,10,Takeda}
+SydTest::Executor: [INFO] {1,10,10,Takeda}
+SydTest::Executor: [INFO] {1,10,10,Takeda}
+SydTest::Executor: [INFO] {1,13,13,Takeda}
+SydTest::Executor: [INFO] {1,14,14,Takeda}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select T.No1,T1.Sno1,T1.Sno1,T.Name from T,T1 where No2>1 or Sno1 < 14 or Name like ?  order by T.No1
+SydTest::Executor: [INFO] [[SQL Parameter]] {%a%}
+SydTest::Executor: [INFO] {1,10,10,Takeda}
+SydTest::Executor: [INFO] {1,10,10,Takeda}
+SydTest::Executor: [INFO] {1,10,10,Takeda}
+SydTest::Executor: [INFO] {1,13,13,Takeda}
+SydTest::Executor: [INFO] {1,14,14,Takeda}
+SydTest::Executor: [INFO] {1,10,10,Aoki}
+SydTest::Executor: [INFO] {1,10,10,Aoki}
+SydTest::Executor: [INFO] {1,10,10,Aoki}
+SydTest::Executor: [INFO] {1,13,13,Aoki}
+SydTest::Executor: [INFO] {1,14,14,Aoki}
+SydTest::Executor: [INFO] {3,14,14,buta}
+SydTest::Executor: [INFO] {3,13,13,buta}
+SydTest::Executor: [INFO] {3,10,10,buta}
+SydTest::Executor: [INFO] {3,10,10,buta}
+SydTest::Executor: [INFO] {3,10,10,buta}
+SydTest::Executor: [INFO] {4,10,10,Panda}
+SydTest::Executor: [INFO] {4,10,10,Panda}
+SydTest::Executor: [INFO] {4,10,10,Panda}
+SydTest::Executor: [INFO] {4,13,13,Panda}
+SydTest::Executor: [INFO] {4,14,14,Panda}
+SydTest::Executor: [INFO] {5,10,10,Kirin}
+SydTest::Executor: [INFO] {5,10,10,Kirin}
+SydTest::Executor: [INFO] {5,10,10,Kirin}
+SydTest::Executor: [INFO] {5,13,13,Kirin}
+SydTest::Executor: [INFO] {5,14,14,Kirin}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from T natural inner join T1  where No1=1 and Sno1 = 10 and Name like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%Ta%}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),1,10,Sasaki,(null)}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),2,10,Tanaka,(null)}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),3,10,Tanuki,cccccccccccccccccccccccccccccc}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from T natural inner join T1  where No2 > 1 or Sno1 = 10 or Name like ? order by No1,Sno1,Name1
+SydTest::Executor: [INFO] [[SQL Parameter]] {Ta%}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),1,10,Sasaki,(null)}
+SydTest::Executor: [INFO] {1,10,Aoki,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,1,10,Sasaki,(null)}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),2,10,Tanaka,(null)}
+SydTest::Executor: [INFO] {1,10,Aoki,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,2,10,Tanaka,(null)}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),3,10,Tanuki,cccccccccccccccccccccccccccccc}
+SydTest::Executor: [INFO] {1,10,Aoki,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,3,10,Tanuki,cccccccccccccccccccccccccccccc}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),4,13,kemon,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
+SydTest::Executor: [INFO] {1,10,Aoki,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,4,13,kemon,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
+SydTest::Executor: [INFO] {1,10,Takeda,(null),5,14,watanabe,}
+SydTest::Executor: [INFO] {1,10,Aoki,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,5,14,watanabe,}
+SydTest::Executor: [INFO] {3,12,buta,,1,10,Sasaki,(null)}
+SydTest::Executor: [INFO] {3,12,buta,,2,10,Tanaka,(null)}
+SydTest::Executor: [INFO] {3,12,buta,,3,10,Tanuki,cccccccccccccccccccccccccccccc}
+SydTest::Executor: [INFO] {3,12,buta,,4,13,kemon,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
+SydTest::Executor: [INFO] {3,12,buta,,5,14,watanabe,}
+SydTest::Executor: [INFO] {4,13,Panda,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb,1,10,Sasaki,(null)}
+SydTest::Executor: [INFO] {4,13,Panda,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb,2,10,Tanaka,(null)}
+SydTest::Executor: [INFO] {4,13,Panda,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb,3,10,Tanuki,cccccccccccccccccccccccccccccc}
+SydTest::Executor: [INFO] {4,13,Panda,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb,4,13,kemon,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
+SydTest::Executor: [INFO] {4,13,Panda,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb,5,14,watanabe,}
+SydTest::Executor: [INFO] {5,14,Kirin,,1,10,Sasaki,(null)}
+SydTest::Executor: [INFO] {5,14,Kirin,,2,10,Tanaka,(null)}
+SydTest::Executor: [INFO] {5,14,Kirin,,3,10,Tanuki,cccccccccccccccccccccccccccccc}
+SydTest::Executor: [INFO] {5,14,Kirin,,4,13,kemon,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
+SydTest::Executor: [INFO] {5,14,Kirin,,5,14,watanabe,}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

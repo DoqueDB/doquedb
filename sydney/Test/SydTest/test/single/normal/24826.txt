@@ -1,0 +1,104 @@
+# 障害票 No.1857 用のテスト
+# 全文索引を0件で絞り込むテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+
+Command "create table TBL(f int, g ntext, h int, i ntext, primary key(f))";
+Command "insert TBL values (1, 'abc', 1, 'ABC')";
+Command "insert TBL values (2, 'bcd', 2, 'BCD')";
+Command "insert TBL values (3, 'abc', 3, 'CDE')";
+Command "insert TBL values (4, 'bcd', 5, 'DEF')";
+Command "insert TBL values (5, 'abc', 7, 'EFG')";
+
+Command "create fulltext index IDX_g on TBL(g)";
+Command "create fulltext index IDX_i on TBL(i)";
+
+#################
+#search by bitset
+#################
+
+# normal
+Command "select * from TBL where f > 2 and g contains 'a' order by score(g)";
+AssureCount 2;
+
+# and
+Command "select * from TBL where f > 2 and g contains 'a' and i contains 'C' order by score(i)";
+AssureCount 1;
+
+# or
+Command "select * from TBL where (f > 2 or g contains 'a') and i contains 'C' order by score(i)";
+AssureCount 2;
+
+# no results
+Command "select * from TBL where f < 1 and g contains 'a' order by score(g)";
+AssureCount 0;
+
+# no results; and
+Command "select * from TBL where f > 4 and g contains 'd' and i contains 'C' order by score(i)";
+AssureCount 0;
+
+# no results; or
+Command "select * from TBL where (f < 1 or g contains 'x') and i contains 'C' order by score(i)";
+AssureCount 0;
+
+###########################################
+#search by bitset (with no index predicate)
+###########################################
+
+# normal
+Command "select * from TBL where f > 2 and g contains 'a' and h > 2 order by score(g)";
+AssureCount 2;
+
+# and
+Command "select * from TBL where f > 2 and g contains 'a' and i contains 'C' and h > 2 order by score(i)";
+AssureCount 1;
+
+# or
+Command "select * from TBL where (f > 2 or g contains 'a') and i contains 'C' and h > 2 order by score(i)";
+AssureCount 1;
+
+# no results
+Command "select * from TBL where f < 1 and g contains 'a' and h > 2 order by score(g)";
+AssureCount 0;
+
+# no results; and
+Command "select * from TBL where f > 4 and g contains 'd' and i contains 'C' and h > 2 order by score(i)";
+AssureCount 0;
+
+# no results; or
+Command "select * from TBL where (f < 1 or g contains 'x') and i contains 'C' and h > 2 order by score(i)";
+AssureCount 0;
+
+# normal
+Command "select * from TBL where f > 2 and g contains 'a' or h > 2 order by score(g)";
+AssureCount 3;
+
+# and
+Command "select * from TBL where f > 2 and g contains 'a' and i contains 'C' or h > 2 order by score(i)";
+AssureCount 3;
+
+# or
+Command "select * from TBL where (f > 2 or g contains 'a') and i contains 'C' or h > 2 order by score(i)";
+AssureCount 4;
+
+# no results
+Command "select * from TBL where (f < 1 and g contains 'a') or h > 2 order by score(g)";
+AssureCount 3;
+
+# no results; and
+Command "select * from TBL where (f > 4 and g contains 'd' and i contains 'C') or h > 2 order by score(i)";
+AssureCount 3;
+
+# no results; or
+Command "select * from TBL where ((f < 1 or g contains 'x') and i contains 'C') or h > 2 order by score(i)";
+AssureCount 3;
+
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

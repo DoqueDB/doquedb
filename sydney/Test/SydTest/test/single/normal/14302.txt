@@ -1,0 +1,62 @@
+# 
+# PrepareCommandのテスト
+#障害番号
+# 
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T(C int)";
+
+# 索引作成
+Command "create index I on T(C)";
+#Command "create all rows index I on T(C)";
+
+# 最初はデータが入っていない状態
+
+# 最大値と最小値を取得
+CreatePreparedCommand "max" "select max(C) from T";
+CreatePreparedCommand "min" "select min(C) from T";
+PreparedCommand "max" [];
+PreparedCommand "min" [];
+
+# nullを挿入
+CreatePreparedCommand "insert" "insert into T (C) values (?)";
+
+PreparedCommand "insert" [null];
+# 最大値と最小値を取得(nullではない)
+PreparedCommand "max" [];
+PreparedCommand "min" [];
+
+# 適当にデータを挿入する
+PreparedCommand "insert" [10];
+
+
+# 最大値と最小値を取得
+PreparedCommand "max" [];
+PreparedCommand "min" [];
+
+# 最大値を更新するデータを挿入
+PreparedCommand "insert" [100];
+# 最小値を更新するデータを挿入
+PreparedCommand "insert" [1];
+
+# 最大値と最小値を取得
+PreparedCommand "max" [];
+PreparedCommand "min" [];
+
+ErasePreparedCommand "max";
+ErasePreparedCommand "min";
+ErasePreparedCommand "insert";
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,801 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# ALL ROWS INDEX -- null値も格納するBtree索引のテスト -- データ状態と更新 : 複合索引・2列
+#
+Command "create table T(i int, j int, c1 char(4), c2 nchar(4), c3 varchar(4), c4 nvarchar(4), c5 varchar(4) hint nontruncate, c6 nvarchar(4) hint nontruncate, c7 int, c8 bigint, c9 float, c10 datetime, c11 language, c12 decimal(2,0), primary key(i, j))";
+
+## index
+Command "insert into T values(0, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', 'ja', -1)";
+Command "insert into T values(1, 2, (null), (null), (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', 'zh', 1)";
+Command "create index I on T(c2, c11)";
+Command "insert into T values(1, 3, (null), (null), (null), 'あくう', (null), 'abz', (null), 987654321, (null), '2007-06-01 12:34:56.789', 'de', 0)";
+Command "verify index I cascade continue";
+Command "select c2, c11 from T where c2 is null and c11 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, 'aby', 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c1, c10)";
+Command "update T set c1 = 'abz', c10 = '2007-06-01 12:34:56.789' where i = 1";
+Command "update T set c1 = 'abz' where i = 1";
+Command "update T set c10 = '2007-06-01 12:34:56.789' where i = 1";
+Command "verify index I cascade continue";
+Command "select c1, c10 from T where c1 = 'abz' and c10 = '2007-06-01 12:34:56.789'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c4, c6)";
+Command "update T set c4 = 'あくう', c6 = 'abz' where i = 0";
+Command "update T set c4 = 'あくう' where i = 0";
+Command "update T set c6 = 'abz' where i = 0";
+Command "verify index I cascade continue";
+Command "select c4, c6 from T where c4 = 'あくう' and c6 = 'abz'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), (null), (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "create index I on T(c6, c4)";
+Command "update T set c6 = (null), c4 = (null) where i = 1";
+Command "update T set c6 = (null) where i = 1";
+Command "update T set c4 = (null) where i = 1";
+Command "verify index I cascade continue";
+Command "select c6, c4 from T where c6 is null and c4 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, 3.141592, '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', 'aby', 'あえう', (null), 'aby', (null), 123456789, 1.414213, '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c3, c9)";
+Command "update T set c3 = 'abz', c9 = 3.456789 where c3 is not null and c9 is not null";
+Command "update T set c3 = 'abz' where c3 is not null and c9 is not null";
+Command "update T set c9 = 3.456789 where c3 is not null and c9 is not null";
+Command "verify index I cascade continue";
+Command "select c3, c9 from T where c3 = 'abz' and c9 = 3.456789";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', 123, 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', 'aby', 'aby', 456, 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', (null), 'あおう', 'abc', 'abc', 789, 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', (null), 'あかう', 'abd', 'abd', 234, 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', (null), 'あきう', 'abe', 'abe', 567, 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create index I on T(c5, c7)";
+Command "delete from T where i = 1";
+Command "verify index I cascade continue";
+Command "select c5, c7 from T where c5 is null and c7 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c10, c2)";
+Command "delete from T where c10 is null and c2 is null";
+Command "verify index I cascade continue";
+Command "select c10, c2 from T where c10 is null and c2 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, 1.414213, '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c9, c12)";
+Command "delete from T where c9 is not null and c12 is not null";
+Command "verify index I cascade continue";
+Command "select c9, c12 from T where c9 is not null and c12 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "create index I on T(c12, c6)";
+Command "insert into T values(0, 2, (null), 'あくう', (null), 'あくう', (null), 'abz', (null), 987654321, (null), '2007-06-01 12:34:56.789', (null), 0)";
+Command "verify index I cascade continue";
+Command "select c12, c6 from T where c12 is not null and c6 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), (null), (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(1, 3, (null), (null), (null), 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(1, 4, (null), (null), (null), 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(1, 5, (null), (null), (null), 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create index I on T(c2, c8)";
+Command "delete from T where c2 is not null and c8 is not null";
+Command "verify index I cascade continue";
+Command "select c2, c8 from T where c2 is not null and c8 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', 456, 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', (null), 'あおう', (null), 'abc', 789, 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', (null), 'あかう', (null), 'abd', 234, 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', (null), 'あきう', (null), 'abe', 567, 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create index I on T(c7, c12)";
+Command "update T set c7 = 321, c12 = 0 where c7 is not null and c12 is not null";
+Command "update T set c7 = 321 where c7 is not null and c12 is not null";
+Command "update T set c12 = 0 where c7 is not null and c12 is not null";
+Command "verify index I cascade continue";
+Command "select c7, c12 from T where c7 = 321 and c12 = 0";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', (null), 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', (null), 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', (null), 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create index I on T(c12, c4)";
+Command "update T set c12 = (null), c4 = (null) where i = 0";
+Command "update T set c12 = (null) where i = 0";
+Command "update T set c4 = (null) where i = 0";
+Command "verify index I cascade continue";
+Command "select c12, c4 from T where c12 is null and c4 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, 'abx', 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, 3.141592, '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, 1.414213, '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(1, 3, (null), 'あおう', (null), 'あおう', (null), 'abc', (null), 234567891, 2.718281, '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(1, 4, (null), 'あかう', (null), 'あかう', (null), 'abd', (null), 345678912, 1.234567, '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(1, 5, (null), 'あきう', (null), 'あきう', (null), 'abe', (null), 456789123, 2.345678, '2007-05-01 12:34:56.789', (null), 4)";
+Command "create index I on T(c1, c9)";
+Command "update T set c1 = 'abx', c9 = 3.141592 where i = 0";
+Command "update T set c1 = 'abx' where i = 0";
+Command "update T set c9 = 3.141592 where i = 0";
+Command "verify index I cascade continue";
+Command "select c1, c9 from T where c1 = 'abx' and c9 = 3.141592";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), (null), 3.141592, '2007-01-01 12:34:56.789', (null), -1)";
+Command "create index I on T(c8, c9)";
+Command "delete from T where i = 1";
+Command "verify index I cascade continue";
+Command "select c8, c9 from T where c8 is null and c9 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "create index I on T(c9, c10)";
+Command "insert into T values(0, 1, (null), 'あくう', (null), 'あくう', (null), 'abz', (null), 987654321, 3.456789, '2007-06-01 12:34:56.789', (null), 0)";
+Command "verify index I cascade continue";
+Command "select c9, c10 from T where c9 is not null and c10 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, 3.141592, '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(1, 3, (null), 'あおう', (null), 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(1, 4, (null), 'あかう', (null), 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(1, 5, (null), 'あきう', (null), 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create index I on T(c10, c9)";
+Command "update T set c10 = '2007-06-01 12:34:56.789', c9 = 3.456789 where i = 0";
+Command "update T set c10 = '2007-06-01 12:34:56.789' where i = 0";
+Command "update T set c9 = 3.456789 where i = 0";
+Command "verify index I cascade continue";
+Command "select c10, c9 from T where c10 = '2007-06-01 12:34:56.789' and c9 = 3.456789";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', 'abx', 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', 'aby', 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', 'abc', 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', 'abd', 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', 'abe', 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create index I on T(c2, c3)";
+Command "update T set c2 = (null), c3 = (null) where i = 1";
+Command "update T set c2 = (null) where i = 1";
+Command "update T set c3 = (null) where i = 1";
+Command "verify index I cascade continue";
+Command "select c2, c3 from T where c2 is null and c3 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', 123, 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', 456, 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', (null), 'あおう', (null), 'abc', 789, 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', (null), 'あかう', (null), 'abd', 234, 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', (null), 'あきう', (null), 'abe', 567, 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create index I on T(c2, c7)";
+Command "delete from T where c2 is null and c7 is null";
+Command "verify index I cascade continue";
+Command "select c2, c7 from T where c2 is null and c7 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, (null), 'あいう', (null), 'あいう', 'abx', 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', 'ja', -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', 'zh', 1)";
+Command "create index I on T(c5, c11)";
+Command "update T set c5 = 'abx', c11 = 'ja' where i = 0";
+Command "update T set c5 = 'abx' where i = 0";
+Command "update T set c11 = 'ja' where i = 0";
+Command "verify index I cascade continue";
+Command "select c5, c11 from T where c5 = 'abx' and c11 = 'ja'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, 3.141592, '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, 1.414213, '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c6, c9)";
+Command "update T set c6 = (null), c9 = (null) where c6 is not null and c9 is not null";
+Command "update T set c6 = (null) where c6 is not null and c9 is not null";
+Command "update T set c9 = (null) where c6 is not null and c9 is not null";
+Command "verify index I cascade continue";
+Command "select c6, c9 from T where c6 is null and c9 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "create index I on T(c12, c10)";
+Command "update T set c12 = (null), c10 = (null) where c12 is not null and c10 is not null";
+Command "update T set c12 = (null) where c12 is not null and c10 is not null";
+Command "update T set c10 = (null) where c12 is not null and c10 is not null";
+Command "verify index I cascade continue";
+Command "select c12, c10 from T where c12 is null and c10 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', 123, 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', 456, 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c7, c4)";
+Command "update T set c7 = (null), c4 = (null) where c7 is null and c4 is null";
+Command "update T set c7 = (null) where c7 is null and c4 is null";
+Command "update T set c4 = (null) where c7 is null and c4 is null";
+Command "verify index I cascade continue";
+Command "select c7, c4 from T where c7 is null and c4 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, 3.141592, '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, 'aby', 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, 1.414213, '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c1, c9)";
+Command "delete from T where c1 is null and c9 is null";
+Command "verify index I cascade continue";
+Command "select c1, c9 from T where c1 is null and c9 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, 3.141592, '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', 'aby', 'aby', (null), 123456789, 1.414213, '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c5, c9)";
+Command "update T set c5 = (null), c9 = (null) where c5 is null and c9 is null";
+Command "update T set c5 = (null) where c5 is null and c9 is null";
+Command "update T set c9 = (null) where c5 is null and c9 is null";
+Command "verify index I cascade continue";
+Command "select c5, c9 from T where c5 is null and c9 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, 3.141592, '2007-01-01 12:34:56.789', (null), -1)";
+Command "create index I on T(c9, c8)";
+Command "update T set c9 = 3.456789, c8 = 987654321 where i = 0";
+Command "update T set c9 = 3.456789 where i = 0";
+Command "update T set c8 = 987654321 where i = 0";
+Command "verify index I cascade continue";
+Command "select c9, c8 from T where c9 = 3.456789 and c8 = 987654321";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "create index I on T(c5, c10)";
+Command "update T set c5 = (null), c10 = (null) where i = 1";
+Command "update T set c5 = (null) where i = 1";
+Command "update T set c10 = (null) where i = 1";
+Command "verify index I cascade continue";
+Command "select c5, c10 from T where c5 is null and c10 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "create index I on T(c12, c11)";
+Command "update T set c12 = 0, c11 = 'de' where c12 is null and c11 is null";
+Command "update T set c12 = 0 where c12 is null and c11 is null";
+Command "update T set c11 = 'de' where c12 is null and c11 is null";
+Command "verify index I cascade continue";
+Command "select c12, c11 from T where c12 = 0 and c11 = 'de'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, 'aby', 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c1, c10)";
+Command "delete from T where i = 1";
+Command "verify index I cascade continue";
+Command "select c1, c10 from T where c1 is null and c10 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, 'aby', 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c1, c2)";
+Command "delete from T where c1 is not null and c2 is not null";
+Command "verify index I cascade continue";
+Command "select c1, c2 from T where c1 is not null and c2 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', 'ja', -1)";
+Command "create index I on T(c8, c11)";
+Command "update T set c8 = 987654321, c11 = 'de' where c8 is not null and c11 is not null";
+Command "update T set c8 = 987654321 where c8 is not null and c11 is not null";
+Command "update T set c11 = 'de' where c8 is not null and c11 is not null";
+Command "verify index I cascade continue";
+Command "select c8, c11 from T where c8 = 987654321 and c11 = 'de'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), (null), 'ja', -1)";
+Command "create index I on T(c11, c10)";
+Command "delete from T where c11 is null and c10 is null";
+Command "verify index I cascade continue";
+Command "select c11, c10 from T where c11 is null and c10 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', 'ja', -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, 1.414213, '2007-02-01 12:34:56.789', 'zh', 1)";
+Command "insert into T values(0, 3, (null), 'あおう', (null), 'あおう', (null), 'abc', (null), 234567891, 2.718281, '2007-03-01 12:34:56.789', 'en', 2)";
+Command "insert into T values(0, 4, (null), 'あかう', (null), 'あかう', (null), 'abd', (null), 345678912, 1.234567, '2007-04-01 12:34:56.789', 'fr', 3)";
+Command "insert into T values(0, 5, (null), 'あきう', (null), 'あきう', (null), 'abe', (null), 456789123, 2.345678, '2007-05-01 12:34:56.789', 'it', 4)";
+Command "create index I on T(c11, c9)";
+Command "update T set c11 = (null), c9 = (null) where i = 1";
+Command "update T set c11 = (null) where i = 1";
+Command "update T set c9 = (null) where i = 1";
+Command "verify index I cascade continue";
+Command "select c11, c9 from T where c11 is null and c9 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', 'abx', 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', 'aby', 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create index I on T(c5, c2)";
+Command "update T set c5 = (null), c2 = (null) where i = 0";
+Command "update T set c5 = (null) where i = 0";
+Command "update T set c2 = (null) where i = 0";
+Command "verify index I cascade continue";
+Command "select c5, c2 from T where c5 is null and c2 is null";
+Command "drop index I";
+Command "delete from T";
+
+
+## all rows index
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', 'aby', 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', 'abc', 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', 'abd', 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', 'abe', 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create all rows index I on T(c3, c10)";
+Command "update T set c3 = (null), c10 = (null) where i = 0";
+Command "update T set c3 = (null) where i = 0";
+Command "update T set c10 = (null) where i = 0";
+Command "verify index I cascade continue";
+Command "select c3, c10 from T where c3 is null and c10 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(1, 3, (null), 'あおう', (null), 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(1, 4, (null), 'あかう', (null), 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(1, 5, (null), 'あきう', (null), 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create all rows index I on T(c10, c3)";
+Command "update T set c10 = '2007-06-01 12:34:56.789', c3 = 'abz' where c10 is null and c3 is null";
+Command "update T set c10 = '2007-06-01 12:34:56.789' where c10 is null and c3 is null";
+Command "update T set c3 = 'abz' where c10 is null and c3 is null";
+Command "verify index I cascade continue";
+Command "select c10, c3 from T where c10 = '2007-06-01 12:34:56.789' and c3 = 'abz'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), (null), (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', (null), 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', (null), 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', (null), 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create all rows index I on T(c4, c8)";
+Command "update T set c4 = (null), c8 = (null) where c4 is null and c8 is null";
+Command "update T set c4 = (null) where c4 is null and c8 is null";
+Command "update T set c8 = (null) where c4 is null and c8 is null";
+Command "verify index I cascade continue";
+Command "select c4, c8 from T where c4 is null and c8 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', (null), 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', (null), 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', (null), 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create all rows index I on T(c8, c4)";
+Command "delete from T where i = 0";
+Command "verify index I cascade continue";
+Command "select c8, c4 from T where c8 is not null and c4 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, 'abx', 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', 'ja', -1)";
+Command "create all rows index I on T(c11, c1)";
+Command "update T set c11 = 'de', c1 = 'abz' where i = 0";
+Command "update T set c11 = 'de' where i = 0";
+Command "update T set c1 = 'abz' where i = 0";
+Command "verify index I cascade continue";
+Command "select c11, c1 from T where c11 = 'de' and c1 = 'abz'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, 3.141592, '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', 456, 123456789, 1.414213, '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c7, c9)";
+Command "insert into T values(1, 3, (null), 'あくう', (null), 'あくう', (null), 'abz', (null), 987654321, 3.456789, '2007-06-01 12:34:56.789', (null), 0)";
+Command "verify index I cascade continue";
+Command "select c7, c9 from T where c7 is null and c9 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', 'aby', 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', (null), 'あおう', 'abc', 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', (null), 'あかう', 'abd', 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', (null), 'あきう', 'abe', 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create all rows index I on T(c6, c5)";
+Command "update T set c6 = 'abz', c5 = 'abz' where i = 1";
+Command "update T set c6 = 'abz' where i = 1";
+Command "update T set c5 = 'abz' where i = 1";
+Command "verify index I cascade continue";
+Command "select c6, c5 from T where c6 = 'abz' and c5 = 'abz'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', 123, 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, 'aby', 'あえう', (null), 'あえう', (null), 'aby', 456, 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c1, c7)";
+Command "update T set c1 = (null), c7 = (null) where c1 is not null and c7 is not null";
+Command "update T set c1 = (null) where c1 is not null and c7 is not null";
+Command "update T set c7 = (null) where c1 is not null and c7 is not null";
+Command "verify index I cascade continue";
+Command "select c1, c7 from T where c1 is null and c7 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', 'aby', 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', 'abc', 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', 'abd', 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', 'abe', 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create all rows index I on T(c6, c3)";
+Command "update T set c6 = (null), c3 = (null) where c6 is null and c3 is null";
+Command "update T set c6 = (null) where c6 is null and c3 is null";
+Command "update T set c3 = (null) where c6 is null and c3 is null";
+Command "verify index I cascade continue";
+Command "select c6, c3 from T where c6 is null and c3 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', 'aby', 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', (null), 'あおう', 'abc', 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', (null), 'あかう', 'abd', 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', (null), 'あきう', 'abe', 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create all rows index I on T(c5, c12)";
+Command "update T set c5 = 'abz', c12 = 0 where c5 is null and c12 is null";
+Command "update T set c5 = 'abz' where c5 is null and c12 is null";
+Command "update T set c12 = 0 where c5 is null and c12 is null";
+Command "verify index I cascade continue";
+Command "select c5, c12 from T where c5 = 'abz' and c12 = 0";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', 'ja', -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', 456, 123456789, (null), '2007-02-01 12:34:56.789', 'zh', 1)";
+Command "create all rows index I on T(c7, c11)";
+Command "update T set c7 = 321, c11 = 'de' where i = 0";
+Command "update T set c7 = 321 where i = 0";
+Command "update T set c11 = 'de' where i = 0";
+Command "verify index I cascade continue";
+Command "select c7, c11 from T where c7 = 321 and c11 = 'de'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "create all rows index I on T(c10, c7)";
+Command "update T set c10 = (null), c7 = (null) where c10 is null and c7 is null";
+Command "update T set c10 = (null) where c10 is null and c7 is null";
+Command "update T set c7 = (null) where c10 is null and c7 is null";
+Command "verify index I cascade continue";
+Command "select c10, c7 from T where c10 is null and c7 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), (null), (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "create all rows index I on T(c12, c2)";
+Command "delete from T where i = 1";
+Command "verify index I cascade continue";
+Command "select c12, c2 from T where c12 is null and c2 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', 'abx', 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "create all rows index I on T(c5, c1)";
+Command "insert into T values(1, 2, (null), 'あくう', (null), 'あくう', 'abz', 'abz', (null), 987654321, (null), '2007-06-01 12:34:56.789', (null), 0)";
+Command "verify index I cascade continue";
+Command "select c5, c1 from T where c5 is null and c1 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), (null), (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "create all rows index I on T(c8, c6)";
+Command "insert into T values(0, 2, (null), 'あくう', (null), 'あくう', (null), 'abz', (null), 987654321, (null), '2007-06-01 12:34:56.789', (null), 0)";
+Command "verify index I cascade continue";
+Command "select c8, c6 from T where c8 is not null and c6 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), (null), (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c2, c4)";
+Command "update T set c2 = 'あくう', c4 = 'あくう' where c2 is null and c4 is null";
+Command "update T set c2 = 'あくう' where c2 is null and c4 is null";
+Command "update T set c4 = 'あくう' where c2 is null and c4 is null";
+Command "verify index I cascade continue";
+Command "select c2, c4 from T where c2 = 'あくう' and c4 = 'あくう'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', 'abx', 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), 'あえう', 'aby', 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c1, c5)";
+Command "update T set c1 = (null), c5 = (null) where c1 is null and c5 is null";
+Command "update T set c1 = (null) where c1 is null and c5 is null";
+Command "update T set c5 = (null) where c1 is null and c5 is null";
+Command "verify index I cascade continue";
+Command "select c1, c5 from T where c1 is null and c5 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, 'aby', 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c4, c1)";
+Command "delete from T where i = 0";
+Command "verify index I cascade continue";
+Command "select c4, c1 from T where c4 is not null and c1 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c4, c6)";
+Command "delete from T where c4 is not null and c6 is not null";
+Command "verify index I cascade continue";
+Command "select c4, c6 from T where c4 is not null and c6 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c10, c3)";
+Command "insert into T values(1, 3, (null), 'あくう', (null), 'あくう', (null), 'abz', (null), 987654321, (null), '2007-06-01 12:34:56.789', (null), 0)";
+Command "verify index I cascade continue";
+Command "select c10, c3 from T where c10 is null and c3 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c6, c12)";
+Command "update T set c6 = 'abz', c12 = 0 where c6 is not null and c12 is not null";
+Command "update T set c6 = 'abz' where c6 is not null and c12 is not null";
+Command "update T set c12 = 0 where c6 is not null and c12 is not null";
+Command "verify index I cascade continue";
+Command "select c6, c12 from T where c6 = 'abz' and c12 = 0";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', 'aby', 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c4, c3)";
+Command "update T set c4 = 'あくう', c3 = 'abz' where i = 1";
+Command "update T set c4 = 'あくう' where i = 1";
+Command "update T set c3 = 'abz' where i = 1";
+Command "verify index I cascade continue";
+Command "select c4, c3 from T where c4 = 'あくう' and c3 = 'abz'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), (null), (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), (null), (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c4, c8)";
+Command "insert into T values(0, 3, (null), 'あくう', (null), 'あくう', (null), 'abz', (null), 987654321, (null), '2007-06-01 12:34:56.789', (null), 0)";
+Command "verify index I cascade continue";
+Command "select c4, c8 from T where c4 is not null and c8 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, 3.141592, '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), 'あえう', (null), (null), (null), 123456789, 1.414213, '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c9, c6)";
+Command "update T set c9 = 3.456789, c6 = 'abz' where c9 is not null and c6 is not null";
+Command "update T set c9 = 3.456789 where c9 is not null and c6 is not null";
+Command "update T set c6 = 'abz' where c9 is not null and c6 is not null";
+Command "verify index I cascade continue";
+Command "select c9, c6 from T where c9 = 3.456789 and c6 = 'abz'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, 3.141592, '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', 'aby', 'あえう', (null), 'aby', (null), 123456789, 1.414213, '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c3, c9)";
+Command "update T set c3 = 'abz', c9 = 3.456789 where c3 is null and c9 is null";
+Command "update T set c3 = 'abz' where c3 is null and c9 is null";
+Command "update T set c9 = 3.456789 where c3 is null and c9 is null";
+Command "verify index I cascade continue";
+Command "select c3, c9 from T where c3 = 'abz' and c9 = 3.456789";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, (null), 'あいう', 'abx', 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(1, 3, (null), 'あおう', (null), 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(1, 4, (null), 'あかう', (null), 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(1, 5, (null), 'あきう', (null), 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create all rows index I on T(c3, c6)";
+Command "update T set c3 = (null), c6 = (null) where c3 is not null and c6 is not null";
+Command "update T set c3 = (null) where c3 is not null and c6 is not null";
+Command "update T set c6 = (null) where c3 is not null and c6 is not null";
+Command "verify index I cascade continue";
+Command "select c3, c6 from T where c3 is null and c6 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), (null), (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), (null), (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c12, c4)";
+Command "insert into T values(1, 3, (null), 'あくう', (null), (null), (null), 'abz', (null), 987654321, (null), '2007-06-01 12:34:56.789', (null), 0)";
+Command "verify index I cascade continue";
+Command "select c12, c4 from T where c12 is null and c4 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', 'ja', -1)";
+Command "insert into T values(0, 2, 'aby', 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', 'zh', 1)";
+Command "insert into T values(0, 3, 'abc', 'あおう', (null), 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', 'en', 2)";
+Command "insert into T values(0, 4, 'abd', 'あかう', (null), 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', 'fr', 3)";
+Command "insert into T values(0, 5, 'abe', 'あきう', (null), 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', 'it', 4)";
+Command "create all rows index I on T(c11, c1)";
+Command "update T set c11 = (null), c1 = (null) where c11 is null and c1 is null";
+Command "update T set c11 = (null) where c11 is null and c1 is null";
+Command "update T set c1 = (null) where c11 is null and c1 is null";
+Command "verify index I cascade continue";
+Command "select c11, c1 from T where c11 is null and c1 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c6, c2)";
+Command "update T set c6 = 'abz', c2 = 'あくう' where i = 0";
+Command "update T set c6 = 'abz' where i = 0";
+Command "update T set c2 = 'あくう' where i = 0";
+Command "verify index I cascade continue";
+Command "select c6, c2 from T where c6 = 'abz' and c2 = 'あくう'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', 123, 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', 456, 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c7, c1)";
+Command "insert into T values(0, 3, 'abz', 'あくう', (null), 'あくう', (null), 'abz', 321, 987654321, (null), '2007-06-01 12:34:56.789', (null), 0)";
+Command "verify index I cascade continue";
+Command "select c7, c1 from T where c7 is not null and c1 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', 'aby', 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "insert into T values(0, 3, (null), 'あおう', 'abc', 'あおう', (null), 'abc', (null), 234567891, (null), '2007-03-01 12:34:56.789', (null), 2)";
+Command "insert into T values(0, 4, (null), 'あかう', 'abd', 'あかう', (null), 'abd', (null), 345678912, (null), '2007-04-01 12:34:56.789', (null), 3)";
+Command "insert into T values(0, 5, (null), 'あきう', 'abe', 'あきう', (null), 'abe', (null), 456789123, (null), '2007-05-01 12:34:56.789', (null), 4)";
+Command "create all rows index I on T(c8, c3)";
+Command "update T set c8 = (null), c3 = (null) where c8 is not null and c3 is not null";
+Command "update T set c8 = (null) where c8 is not null and c3 is not null";
+Command "update T set c3 = (null) where c8 is not null and c3 is not null";
+Command "verify index I cascade continue";
+Command "select c8, c3 from T where c8 is null and c3 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', 123, 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', 456, 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c7, c3)";
+Command "delete from T where i = 1";
+Command "verify index I cascade continue";
+Command "select c7, c3 from T where c7 is null and c3 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', 'ja', -1)";
+Command "create all rows index I on T(c7, c11)";
+Command "delete from T where c7 is null and c11 is null";
+Command "verify index I cascade continue";
+Command "select c7, c11 from T where c7 is null and c11 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', 'abx', 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', 'aby', 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c5, c4)";
+Command "delete from T where c5 is not null and c4 is not null";
+Command "verify index I cascade continue";
+Command "select c5, c4 from T where c5 is not null and c4 is not null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, 'aby', 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c1, c12)";
+Command "update T set c1 = (null), c12 = (null) where i = 0";
+Command "update T set c1 = (null) where i = 0";
+Command "update T set c12 = (null) where i = 0";
+Command "verify index I cascade continue";
+Command "select c1, c12 from T where c1 is null and c12 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', 'aby', 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c4, c3)";
+Command "update T set c4 = 'あいう', c3 = 'abx' where i = 0";
+Command "update T set c4 = 'あいう' where i = 0";
+Command "update T set c3 = 'abx' where i = 0";
+Command "verify index I cascade continue";
+Command "select c4, c3 from T where c4 = 'あいう' and c3 = 'abx'";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(0, 1, (null), 'あいう', (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(1, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), (null), (null), 1)";
+Command "insert into T values(1, 3, (null), 'あおう', (null), 'あおう', (null), 'abc', (null), 234567891, (null), (null), (null), 2)";
+Command "insert into T values(1, 4, (null), 'あかう', (null), 'あかう', (null), 'abd', (null), 345678912, (null), (null), (null), 3)";
+Command "insert into T values(1, 5, (null), 'あきう', (null), 'あきう', (null), 'abe', (null), 456789123, (null), (null), (null), 4)";
+Command "create all rows index I on T(c10, c12)";
+Command "update T set c10 = '2007-01-01 12:34:56.789', c12 = -1 where i = 0";
+Command "update T set c10 = '2007-01-01 12:34:56.789' where i = 0";
+Command "update T set c12 = -1 where i = 0";
+Command "verify index I cascade continue";
+Command "select c10, c12 from T where c10 = '2007-01-01 12:34:56.789' and c12 = -1";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), (null), (null), 'あいう', (null), 'abx', (null), 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "insert into T values(0, 2, (null), 'あえう', (null), 'あえう', (null), 'aby', (null), 123456789, (null), '2007-02-01 12:34:56.789', (null), 1)";
+Command "create all rows index I on T(c2, c12)";
+Command "update T set c2 = (null), c12 = (null) where c2 is null and c12 is null";
+Command "update T set c2 = (null) where c2 is null and c12 is null";
+Command "update T set c12 = (null) where c2 is null and c12 is null";
+Command "verify index I cascade continue";
+Command "select c2, c12 from T where c2 is null and c12 is null";
+Command "drop index I";
+Command "delete from T";
+
+Command "insert into T values(1, 1, (null), 'あいう', (null), 'あいう', (null), (null), 123, 847865165, (null), '2007-01-01 12:34:56.789', (null), -1)";
+Command "create all rows index I on T(c7, c6)";
+Command "update T set c7 = 321, c6 = 'abz' where c7 is null and c6 is null";
+Command "update T set c7 = 321 where c7 is null and c6 is null";
+Command "update T set c6 = 'abz' where c7 is null and c6 is null";
+Command "verify index I cascade continue";
+Command "select c7, c6 from T where c7 = 321 and c6 = 'abz'";
+Command "drop index I";
+Command "delete from T";
+
+Command "drop table T";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

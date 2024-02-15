@@ -1,0 +1,78 @@
+#
+# 障害票0584に対応
+# Existsを使ったSQL文で select count(*) すると何件あっても1と返る
+# 2005/11/25 tajima
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+Command "create table T1 (f int)";
+Command "create table T2 (g int, primary key(g))";
+
+
+Command "insert T1 values 1,2,3,4,5";
+Command "insert T2 values 1,2";
+
+
+# 2件ヒットする
+Command "select f from T1 where exists (select * from T2 where f = g)";
+# 2が返るべきなのに1が返る
+Command "select count(*) from T1 where exists (select * from T2 where f = g)";
+
+Command "select max(f) from T1 where exists (select * from T2 where f = g)";
+
+Command "select min(f) from T1 where exists (select * from T2 where f = g)";
+
+
+#outer joinもだった
+# 3件ヒットする
+Command "select f from T1 left outer join T2 on f = g";
+# 3が返るべきなのに1が返る
+Command "select count(*) from T1 left outer join T2 on f = g";
+
+Command "select max(f) from T1 left outer join T2 on f = g";
+
+Command "select min(f) from T1 left outer join T2 on f = g";
+
+
+
+#right join
+#
+Command "select f from T1 right outer join T2 on f = g";
+#
+Command "select count(*) from T1 right outer join T2 on f = g";
+
+Command "select max(f) from T1 right outer join T2 on f = g";
+
+Command "select min(f) from T1 right outer join T2 on f = g";
+
+
+
+#innert join
+Command "select f from T1 inner join T2 on f = g";
+#
+Command "select count(*) from T1 inner join T2 on f = g";
+
+Command "select max(f) from T1 inner join T2 on f = g";
+
+Command "select min(f) from T1 inner join T2 on f = g";
+
+
+# not exist
+
+Command "select f from T1 where not exists (select * from T2 where f = g)";
+
+Command "select count(*) from T1 where not exists (select * from T2 where f = g)";
+
+Command "select max(f) from T1 where not exists (select * from T2 where f = g)";
+
+Command "select min(f) from T1 where not exists (select * from T2 where f = g)";
+
+
+Command "drop table T1";
+Command "drop table T2";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

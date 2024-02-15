@@ -1,0 +1,508 @@
+# 障害票 1974
+# DatabaseやAreaに相対パスを指定した時の仕様変更にともなったテスト
+
+Begin;
+Initialize;
+
+#mountの対象となるデータベースの作成
+InitializeSession "";
+Command "create database DBMountTest";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create table T (f1 int)";
+Command "create index T_f1 on T(f1)";
+NotExists "d:\\dm\\data\\DBMountTest\\T";
+Command "insert T values (0),(1),(2),(3)";
+Exists "d:\\dm\\data\\DBMountTest\\T\\BTR_T_f1";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "select * from T where f1 > 1";
+TerminateSession;
+
+#単純なunmount-mount
+InitializeSession "";
+Command "unmount DBMountTest";
+Command "mount DBMountTest path 'DBMountTest' logicallog 'DBMountTest' system 'DBMountTest'";
+Exists "d:\\dm\\data\\DBMountTest\\T\\BTR_T_f1";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "insert T values (4),(5)";
+Command "select * from T where f1 > 1";
+TerminateSession;
+
+#パスを指定したデータベースのunmount-mount
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+Exists "d:\\dm\\data\\databasetest\\T";
+Exists "d:\\dm\\data\\databasetest\\T\\BTR_T_f1";
+Command "unmount DBMountTest";
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+Exists "d:\\dm\\data\\databasetest\\T";
+Exists "d:\\dm\\data\\databasetest\\T\\BTR_T_f1";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "insert T values (6),(7)";
+Command "select * from T where f1 > 1";
+TerminateSession;
+
+#unmount後ファイルを移動してからのmount
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+Exists "d:\\dm\\data\\databasetest\\T";
+Exists "d:\\dm\\data\\databasetest\\T\\BTR_T_f1";
+Command "unmount DBMountTest";
+System "mv \"d:\\dm\\data\\databasetest\" \"d:\\dm\\data\\alterdatabasetest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\logtest\" \"d:\\dm\\data\\alterlogtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\system\\systemtest\" \"d:\\dm\\system\\altersystemtest\" > /dev/null 2>&1";
+Exists "d:\\dm\\data\\alterdatabasetest\\T";
+Exists "d:\\dm\\data\\alterdatabasetest\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'alterdatabasetest' logicallog 'alterlogtest' system 'altersystemtest'";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "insert T values (8),(9)";
+Command "select * from T where f1 > 1";
+TerminateSession;
+
+#エリアのあるデータベースのmount
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create area area1 'area1'";
+Command "create area area2 'area2'";
+Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+Exists "d:\\dm\\data\\area1\\T";
+Exists "d:\\dm\\data\\area2\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "insert T values (10),(11)";
+Command "select * from T where f1 > 1";
+TerminateSession;
+
+#エリアのあるデータベースを移動してのmount
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mv \"d:\\dm\\data\\databasetest\" \"d:\\dm\\data\\alterdatabasetest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\logtest\" \"d:\\dm\\data\\alterlogtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\system\\systemtest\" \"d:\\dm\\system\\altersystemtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area1\" \"d:\\dm\\data\\alterarea1\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area2\\T\\BTR_T_f1\" \"d:\\dm\\data\\alterarea1\\T\" > /dev/null 2>&1";
+System "rmdir \"d:\\dm\\data\\area2\\T\" > /dev/null 2>&1";
+System "rmdir \"d:\\dm\\data\\area2\" > /dev/null 2>&1";
+Exists "d:\\dm\\data\\alterarea1\\T";
+Exists "d:\\dm\\data\\alterarea1\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'alterdatabasetest' logicallog 'alterlogtest' system 'altersystemtest' alter area area1 modify 'alterarea1' drop area area2";
+Exists "d:\\dm\\data\\alterarea1\\T";
+Exists "d:\\dm\\data\\alterarea1\\T\\BTR_T_f1";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "insert T values (12),(13)";
+Command "select * from T where f1 > 1";
+TerminateSession;
+
+#エリアのあるデータベースを移動してのmount(複数パス)
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create area area3 array ['area3-1', 'area3-2']";
+Command "create area area4 array ['area4-1', 'area4-2']";
+Command "alter table T set area area3";
+Command "alter index T_f1 set area area4";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mv \"d:\\dm\\data\\databasetest\" \"d:\\dm\\data\\alterdatabasetest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\logtest\" \"d:\\dm\\data\\alterlogtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\system\\systemtest\" \"d:\\dm\\system\\altersystemtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area3-1\" \"d:\\dm\\data\\alterarea3-1\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area4-1\" \"d:\\dm\\data\\alterarea4-1\" > /dev/null 2>&1";
+System "mkdir \"d:\\dm\\data\\alterarea4-2\"";
+Exists "d:\\dm\\data\\alterarea3-1\\T";
+Exists "d:\\dm\\data\\alterarea4-1\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'alterdatabasetest' logicallog 'alterlogtest' system 'altersystemtest' alter area area3 modify [0] 'alterarea3-1' alter area area4 modify array ['alterarea4-1', 'alterarea4-2']";
+Exists "d:\\dm\\data\\alterarea3-1\\T";
+Exists "d:\\dm\\data\\alterarea4-1\\T\\BTR_T_f1";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "insert T values (14),(15)";
+Command "select * from T where f1 > 1";
+TerminateSession;
+
+#エリアのあるデータベースを移動してのmount (drop all)
+InitializeSession "DBMountTest";
+Command "alter table T set area area1";
+Command "alter index T_f1 drop area";
+TerminateSession;
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+Exists "d:\\dm\\data\\alterarea1\\T";
+Exists "d:\\dm\\data\\alterarea1\\T\\BTR_T_f1";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create area area2 'area2'";
+#Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+Exists "d:\\dm\\data\\alterarea1\\T";
+Exists "d:\\dm\\data\\area2\\T\\BTR_T_f1";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mkdir \"d:\\dm\\data\\alterdatabasetest\"";
+System "mv \"d:\\dm\\data\\logtest\" \"d:\\dm\\data\\alterlogtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\system\\systemtest\" \"d:\\dm\\system\\altersystemtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\alterarea1\\T\" \"d:\\dm\\data\\alterdatabasetest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area2\\T\\BTR_T_f1\" \"d:\\dm\\data\\alterdatabasetest\\T\" > /dev/null 2>&1";
+System "rmdir \"d:\\dm\\data\\alterarea1\" > /dev/null 2>&1";
+System "rmdir \"d:\\dm\\data\\area2\\T\" > /dev/null 2>&1";
+System "rmdir \"d:\\dm\\data\\area2\" > /dev/null 2>&1";
+Exists "d:\\dm\\data\\alterdatabasetest\\T";
+Exists "d:\\dm\\data\\alterdatabasetest\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'alterdatabasetest' logicallog 'alterlogtest' system 'altersystemtest' drop all area";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "insert T values (16),(17)";
+Command "select * from T where f1 > 1";
+TerminateSession;
+
+#alter area -> unmount -> mount (alter areaのUNDO/REDOが正しく行われるかの検査)
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create area area1 'area1'";
+Command "create area area2 'area2'";
+Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+Command "alter area area1 modify 'alterarea1'";
+Command "alter area area2 modify 'alterarea2'";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+Exists "d:\\dm\\data\\alterarea1\\T";
+Exists "d:\\dm\\data\\alterarea2\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "insert T values (18),(19)";
+Command "select * from T where f1 > 1";
+TerminateSession;
+
+#alter area -> unmount -> area変更を伴うmount (alter areaのUNDO/REDOとMOUNTでの指定が重なるときの検査)
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+Command "alter area area1 modify 'area1'";
+Command "alter area area2 modify 'area2'";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mv \"d:\\dm\\data\\area1\" \"d:\\dm\\data\\altermountarea1\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area2\" \"d:\\dm\\data\\altermountarea2\" > /dev/null 2>&1";
+Exists "d:\\dm\\data\\altermountarea1\\T";
+Exists "d:\\dm\\data\\altermountarea2\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest' alter area area1 modify 'altermountarea1' alter area area2 modify 'altermountarea2'";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "insert T values (20),(21)";
+Command "select * from T where f1 > 1";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database DBMountTest";
+TerminateSession;
+
+#----------------------------------
+# MOUNT後にデータ操作、スキーマ操作ができるかを検査する
+# 検査のためのdrop areaなどが上記でのMOUNTのテストに影響するので別に作る
+#----------------------------------
+
+#mountの対象となるデータベースの作成
+InitializeSession "";
+Command "create database DBMountTest";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create table T (f1 int)";
+Command "create index T_f1 on T(f1)";
+NotExists "d:\\dm\\data\\DBMountTest\\T";
+NotExists "d:\\dm\\data\\DBMountTest\\T\\BTR_T_f1";
+Command "insert T values (1), (2), (3), (4), (5), (6), (7), (8), (9)";
+Exists "d:\\dm\\data\\DBMountTest\\T";
+Exists "d:\\dm\\data\\DBMountTest\\T\\BTR_T_f1";
+TerminateSession;
+
+#単純なunmount-mount
+InitializeSession "";
+Command "unmount DBMountTest";
+Command "mount DBMountTest path 'DBMountTest' logicallog 'DBMountTest' system 'DBMountTest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+TerminateSession;
+
+#パスを指定したデータベースのunmount-mount
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+Command "unmount DBMountTest";
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+TerminateSession;
+
+#unmount後ファイルを移動してからのmount
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mv \"d:\\dm\\data\\databasetest\" \"d:\\dm\\data\\alterdatabasetest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\logtest\" \"d:\\dm\\data\\alterlogtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\system\\systemtest\" \"d:\\dm\\system\\altersystemtest\" > /dev/null 2>&1";
+Exists "d:\\dm\\data\\alterdatabasetest\\T";
+Exists "d:\\dm\\data\\alterdatabasetest\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'alterdatabasetest' logicallog 'alterlogtest' system 'altersystemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+TerminateSession;
+
+#エリアのあるデータベースのmount
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create area area1 'area1'";
+Command "create area area2 'area2'";
+Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+Exists "d:\\dm\\data\\area1\\T";
+Exists "d:\\dm\\data\\area2\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+Command "alter table T set area area2";
+Command "drop area area1";
+Command "alter table T drop area";
+Command "alter index T_f1 drop area";
+Command "drop area area2";
+TerminateSession;
+
+#エリアのあるデータベースを移動してのmount
+InitializeSession "DBMountTest";
+Command "create area area1 'area1'";
+Command "create area area2 'area2'";
+Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mv \"d:\\dm\\data\\databasetest\" \"d:\\dm\\data\\alterdatabasetest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\logtest\" \"d:\\dm\\data\\alterlogtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\system\\systemtest\" \"d:\\dm\\system\\altersystemtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area1\" \"d:\\dm\\data\\alterarea1\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area2\\T\\BTR_T_f1\" \"d:\\dm\\data\\alterarea1\\T\" > /dev/null 2>&1";
+System "rmdir \"d:\\dm\\data\\area2\\T\" > /dev/null 2>&1";
+System "rmdir \"d:\\dm\\data\\area2\" > /dev/null 2>&1";
+Exists "d:\\dm\\data\\alterarea1\\T";
+Exists "d:\\dm\\data\\alterarea1\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'alterdatabasetest' logicallog 'alterlogtest' system 'altersystemtest' alter area area1 modify 'alterarea1' drop area area2";
+Exists "d:\\dm\\data\\alterarea1\\T";
+Exists "d:\\dm\\data\\alterarea1\\T\\BTR_T_f1";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+Command "alter table T drop area";
+Command "drop area area1";
+TerminateSession;
+
+#エリアのあるデータベースを移動してのmount (drop all)
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+Exists "d:\\dm\\data\\databasetest\\T";
+Exists "d:\\dm\\data\\databasetest\\T\\BTR_T_f1";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create area area1 'area1'";
+Command "create area area2 'area2'";
+Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+Exists "d:\\dm\\data\\area1\\T";
+Exists "d:\\dm\\data\\area2\\T\\BTR_T_f1";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mv \"d:\\dm\\data\\databasetest\" \"d:\\dm\\data\\alterdatabasetest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\logtest\" \"d:\\dm\\data\\alterlogtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\system\\systemtest\" \"d:\\dm\\system\\altersystemtest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area1\\T\" \"d:\\dm\\data\\alterdatabasetest\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area2\\T\\BTR_T_f1\" \"d:\\dm\\data\\alterdatabasetest\\T\" > /dev/null 2>&1";
+System "rmdir \"d:\\dm\\data\\area1\" > /dev/null 2>&1";
+System "rmdir \"d:\\dm\\data\\area2\\T\" > /dev/null 2>&1";
+System "rmdir \"d:\\dm\\data\\area2\" > /dev/null 2>&1";
+Exists "d:\\dm\\data\\alterdatabasetest\\T";
+Exists "d:\\dm\\data\\alterdatabasetest\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'alterdatabasetest' logicallog 'alterlogtest' system 'altersystemtest' drop all area";
+TerminateSession;
+
+#alter area -> unmount -> mount (alter areaのUNDO/REDOが正しく行われるかの検査)
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create area area1 'area1'";
+Command "create area area2 'area2'";
+Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+Command "alter area area1 modify 'alterarea1'";
+Command "alter area area2 modify 'alterarea2'";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+Exists "d:\\dm\\data\\alterarea1\\T";
+Exists "d:\\dm\\data\\alterarea2\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+Command "alter table T set area area2";
+Command "drop area area1";
+Command "alter table T drop area";
+Command "alter index T_f1 drop area";
+Command "drop area area2";
+TerminateSession;
+
+#alter area -> unmount -> area変更を伴うmount (alter areaのUNDO/REDOとMOUNTでの指定が重なるときの検査)
+InitializeSession "";
+Command "alter database DBMountTest set path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "create area area1 'area1'";
+Command "create area area2 'area2'";
+Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+Command "alter area area1 modify 'area1'";
+Command "alter area area2 modify 'area2'";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mv \"d:\\dm\\data\\area1\" \"d:\\dm\\data\\altermountarea1\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area2\" \"d:\\dm\\data\\altermountarea2\" > /dev/null 2>&1";
+Exists "d:\\dm\\data\\altermountarea1\\T";
+Exists "d:\\dm\\data\\altermountarea2\\T\\BTR_T_f1";
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest' alter area area1 modify 'altermountarea1' alter area area2 modify 'altermountarea2'";
+TerminateSession;
+InitializeSession "DBMountTest";
+Command "select * from T where f1 < 5";
+Command "alter table T set area area2";
+Command "drop area area1";
+Command "alter table T drop area";
+Command "alter index T_f1 drop area";
+Command "drop area area2";
+TerminateSession;
+
+#---------------------
+#異常系
+#---------------------
+
+#同じパスにalter areaしたときにエラーになることの確認
+InitializeSession "DBMountTest";
+Command "create area area1 'area1'";
+Command "create area area2 'area2'";
+Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+Command "alter area area1 modify 'area1'";
+Command "alter area area2 modify 'area2'";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mv \"d:\\dm\\data\\area1\" \"d:\\dm\\data\\altermountarea1\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\area2\" \"d:\\dm\\data\\altermountarea2\" > /dev/null 2>&1";
+#エラーになるはず
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest' alter area area1 modify 'altermountarea1' alter area area2 modify 'altermountarea1'";
+TerminateSession;
+
+InitializeSession "$$SystemDB";
+Command "select Name from System_Database where Name like 'DBMountTest'";
+AssureCount 0;
+TerminateSession;
+
+#後のテストのため移動しておく
+System "mv \"d:\\dm\\data\\altermountarea1\" \"d:\\dm\\data\\area1\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\altermountarea2\" \"d:\\dm\\data\\area2\" > /dev/null 2>&1";
+
+#すでに存在するデータベースの名前を使ったmount
+InitializeSession "";
+Command "create database DBMountTest";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "create table T (f1 int)";
+Command "create index T_f1 on T(f1)";
+Command "insert T values (0),(1),(2),(3)";
+Exists "d:\\dm\\data\\DBMountTest\\T\\BTR_T_f1";
+TerminateSession;
+
+InitializeSession "";
+#エラーになるはず
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+Command "drop database DBMountTest";
+NotExists "d:\\dm\\data\\DBMountTest";
+NotExists "d:\\dm\\system\\DBMountTest";
+# mountに失敗しているからファイルが残っているはず
+Exists "d:\\dm\\data\\area1\\T\\RCD_T";
+Exists "d:\\dm\\data\\area2\\T\\BTR_T_f1";
+TerminateSession;
+
+#すでに存在するデータベースのパスを使ったmount
+InitializeSession "";
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+
+InitializeSession "";
+#エラーになるはず
+Command "mount DBMountTest2 path 'logtest' logicallog 'systemtest' system 'logtest'";
+#エラーになるはず
+Command "alter database DBMountTest2 set path 'databasetest2' logicallog 'logtest2' system 'systemtest2'";
+# mountに失敗しているからファイルは移動していない
+Exists "d:\\dm\\data\\databasetest";
+Exists "d:\\dm\\data\\logtest";
+Exists "d:\\dm\\system\\systemtest";
+NotExists "d:\\dm\\data\\databasetest2";
+NotExists "d:\\dm\\data\\logtest2";
+NotExists "d:\\dm\\system\\systemtest2";
+TerminateSession;
+
+#後始末
+InitializeSession "";
+Command "drop database DBMountTest";
+TerminateSession;
+
+Terminate;
+End;

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+  MessageDefinition.xml : メッセージ定義ファイル
+
+  Copyright (c) 2001, 2002, 2003, 2005, 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+   
+      http://www.apache.org/licenses/LICENSE-2.0
+   
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE MessageDefine [
+  <!ELEMENT MessageDefine (Message)*>
+
+  <!ELEMENT Message (Name, Number, Format, Argument*)>
+  <!ELEMENT Name (#PCDATA)>
+  <!ELEMENT Number (#PCDATA)>
+
+  <!ELEMENT Format (English, Japanese)>
+  <!ELEMENT Argument (#PCDATA)>
+
+  <!ELEMENT English (#PCDATA)>
+  <!ELEMENT Japanese (#PCDATA)>
+]>
+
+<!--
+★メッセージ定義に関する注意★
+
+	【メッセージ定義ファイル自体について】
+		・ファイルの文字コードを SJIS から変更してはいけない
+
+	【メッセージ作成の方針について】
+
+	【メッセージ番号について】
+		・Number は16 進8 桁で定義し、
+
+		  上位 2 桁は 0x01
+		  次の 2 桁は モジュールを識別する値
+		  下位 4 桁は モジュール内でのメッセージを一意に識別する値
+		
+		  にすること
+		・決して、Exception/ErrorDefinition.xml の
+		  エラー番号と重なってはならない
+
+	【フォーマットについて】
+		・日本語メッセージは「ですます」調で統一すること
+		・Format に %1 などで挿入されるものが文字列である場合、
+		  できる限り言語に左右されない文字列
+		  (SQL 文、表名、数値など)にすること
+-->
+
+<MessageDefine>
+
+  <Message>
+    <Name>CantConvertToTupleID</Name>
+	<Number>0x01330001</Number>
+	<Format>
+	  <English>Can't convert DocID To TupleID.(DocID=%1)</English>
+	  <Japanese>文書IDをタプルIDに変換できません。(DocID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CantConvertToDocID</Name>
+	<Number>0x01330002</Number>
+	<Format>
+	  <English>Can't convert TupleID To DocID.(TupleID=%1)</English>
+	  <Japanese>タプルIDを文書IDに変換できません。(TupleID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>InconsistentDocIDandTupleID</Name>
+	<Number>0x01330003</Number>
+	<Format>
+	  <English>The DocID is inconsist with the TupleID.(DocID=%1 TupleID=%2)</English>
+	  <Japanese>文書IDとタプルIDの整合がとれていません。(DocID=%1 TupleID=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>NullStringNotInserted</Name>
+	<Number>0x01330004</Number>
+	<Format>
+	  <English>Null string isn't inserted.</English>
+	  <Japanese>空文字が登録されていません。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>PreviousLinkOfTopPage</Name>
+	<Number>0x01330005</Number>
+	<Format>
+	  <English>The previous page link of top page exist.(PageID=%1)</English>
+	  <Japanese>先頭ページに前ページへのリンクが存在します。(PageID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>NextLinkOfLastPage</Name>
+	<Number>0x01330006</Number>
+	<Format>
+	  <English>The next page link of last page exist.(PageID=%1)</English>
+	  <Japanese>最終ページに後ページへのリンクが存在します。(PageID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>IllegalIndex</Name>
+	<Number>0x01330007</Number>
+	<Format>
+	  <English>The index isn't in order.</English>
+	  <Japanese>索引が表記順ではありません。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>IllegalIdPage</Name>
+	<Number>0x01330008</Number>
+	<Format>
+	  <English>Can't attach ID Page.(PageID=%1)</English>
+	  <Japanese>IDページがアタッチできません。(PageID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>IllegalLocPage</Name>
+	<Number>0x01330009</Number>
+	<Format>
+	  <English>Can't attach LOC Page.(PageID=%1)</English>
+	  <Japanese>LOCページがアタッチできません。(PageID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>IllegalNextLocPage</Name>
+	<Number>0x0133000a</Number>
+	<Format>
+	  <English>Can't attach next LOC Page.(PageID=%1)</English>
+	  <Japanese>次のLOCページがアタッチできません。(PageID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>IllegalEntryCount</Name>
+	<Number>0x0133000b</Number>
+	<Format>
+	  <English>Illegal entry count.(Header Count=%1 Count=%2)</English>
+	  <Japanese>エントリ数が不正です。(Header Count=%1 Count=%2)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>DisusedIdBlock</Name>
+	<Number>0x0133000c</Number>
+	<Format>
+	  <English>Disused id block. (ID=%1)</English>
+	  <Japanese>不用なIDブロックです。(ID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorrectDisusedIdBlock</Name>
+	<Number>0x0133000d</Number>
+	<Format>
+	  <English>Corrected disused id block. (ID=%1)</English>
+	  <Japanese>不用なIDブロックを削除しました。(ID=%1)</Japanese>
+	</Format>
+	<Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>IllegalTotalDocumentLength</Name>
+	<Number>0x0133000e</Number>
+	<Format>
+	  <English>Illegal total document length.</English>
+	  <Japanese>総文書長が不正です。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>IllegalInvertedListType</Name>
+	<Number>0x0133000f</Number>
+	<Format>
+	  <English>The middle list exists though the number of documents is 0.</English>
+	  <Japanese>登録文書数が0なのに、ミドルリストが存在しています。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>IllegalListCount</Name>
+	<Number>0x01330010</Number>
+	<Format>
+	  <English>The entry exists in the inverted list though the number of documents is 0.</English>
+	  <Japanese>登録文書数が0なのに、転置リストにエントリが存在しています。</Japanese>
+	</Format>
+  </Message>
+
+</MessageDefine>
+
+<!--
+  Copyright (c) 2001, 2002, 2003, 2005, 2023 Ricoh Company, Ltd.
+  All rights reserved.
+-->

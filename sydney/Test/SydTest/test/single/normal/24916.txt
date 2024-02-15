@@ -1,0 +1,57 @@
+# Bug report 1726
+
+# 要素数0個の配列の更新テスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+Command "create table T(C int array[no limit])";
+
+# [] <-> null
+Command "insert T values ?" [[]];
+# [BUG] []のまま
+Command "update T set C = ?" [null];
+Command "select * from T";
+Pause;
+Command "delete T";
+Command "insert T values ?" [null];
+# [BUG] nullのまま
+Command "update T set C = ?" [[]];
+Command "select * from T";
+Pause;
+Command "delete T";
+
+# [] <-> [null]
+Command "insert T values ?" [[]];
+Command "update T set C = ?" [[null]];
+Command "select * from T";
+Command "delete T";
+Command "insert T values ?" [[null]];
+Command "update T set C = ?" [[]];
+Command "select * from T";
+Command "delete T";
+
+# [] <-> [1]
+Command "insert T values ?" [[]];
+Command "update T set C = ?" [[1]];
+Command "select * from T";
+Command "delete T";
+Command "insert T values ?" [[1]];
+Command "update T set C = ?" [[]];
+Command "select * from T";
+Command "delete T";
+
+# おまけ
+Command "insert T values ?" [[]];
+# 条件が[]で検索
+Command "select * from T where C = ?" [[]];
+# 条件が[]で削除
+Command "delete T where C = ?" [[]];
+Command "select * from T";
+Command "delete T";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,27 @@
+#
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command  "create table T1(C1 int, C2 int)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1, C2) values (1, 6)";
+Command  "insert into T1 (C1, C2) values (2, 7)";
+Command  "insert into T1 (C1, C2) values (3, 8)";
+Command  "insert into T1 (C1, C2) values (4, 9)";
+Command  "insert into T1 (C1, C2) values (5,10)";
+
+# 総合障害票#0487
+# intだと大丈夫なのかな?
+Command  "select * from T1 where (C1=1 and C2=6) or (C1=3 and C2=8)";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

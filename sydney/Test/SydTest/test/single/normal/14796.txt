@@ -1,0 +1,270 @@
+# 障害票 No.1064, 1065に対応
+# Array索引でNULLの挿入に失敗することがある。
+#
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# insert --------------------------------------------------
+# B+木, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# B+木, 非配列, 非複合, not null制約
+Command "create table T(c1 int, c2 int not null)";
+Command "create index I on T(c2)";
+# NOT NULL制約違反で例外
+Command "insert T(c1) values (1)";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# B+木, 非配列, 複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create index I on T(c1, c2)";
+Command "insert T(c1) values (1)";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# B+木, 非配列, 複合, not null制約
+Command "create table T(c1 int not null, c2 int)";
+Command "create index I on T(c1, c2)";
+Command "insert T(c1) values (1)";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Bitmap, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create bitmap index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Bitmap, 配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int array[1])";
+Command "create bitmap index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Compressed版Bitmap, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create bitmap index I on T(c2) hint 'compressed'";
+Command "insert T(c1) values (1)";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Compressed版Bitmap, 配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int array[1])";
+Command "create bitmap index I on T(c2) hint 'compressed'";
+Command "insert T(c1) values (1)";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# ALL ROWS, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create all rows index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# ALL ROWS, 非配列, 複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create all rows index I on T(c1, c2)";
+Command "insert T(c1) values (1)";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Array, 配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int array[1])";
+Command "create array index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# delete --------------------------------------------------
+# B+木, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "delete from T where c1 = 1";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# B+木, 非配列, 複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create index I on T(c1, c2)";
+Command "insert T(c1) values (1)";
+Command "delete from T where c1 = 1";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Bitmap, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create bitmap index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "delete from T where c1 = 1";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Bitmap, 配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int array[1])";
+Command "create bitmap index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "delete from T where c1 = 1";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Compressed版Bitmap, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create bitmap index I on T(c2) hint 'compressed'";
+Command "insert T(c1) values (1)";
+Command "delete from T where c1 = 1";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Compressed版Bitmap, 配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int array[1])";
+Command "create bitmap index I on T(c2) hint 'compressed'";
+Command "insert T(c1) values (1)";
+Command "delete from T where c1 = 1";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# ALL ROWS, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create all rows index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "delete from T where c1 = 1";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# ALL ROWS, 非配列, 複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create all rows index I on T(c1, c2)";
+Command "insert T(c1) values (1)";
+Command "delete from T where c1 = 1";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Array, 配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int array[1])";
+Command "create array index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "delete from T where c1 = 1";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# update --------------------------------------------------
+# B+木, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "update T set c1 = 2";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# B+木, 非配列, 複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create index I on T(c1, c2)";
+Command "insert T(c1) values (1)";
+Command "update T set c1 = 2";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Bitmap, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create bitmap index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "update T set c1 = 2";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Bitmap, 配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int array[1])";
+Command "create bitmap index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "update T set c1 = 2";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Compressed版Bitmap, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create bitmap index I on T(c2) hint 'compressed'";
+Command "insert T(c1) values (1)";
+Command "update T set c1 = 2";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Compressed版Bitmap, 配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int array[1])";
+Command "create bitmap index I on T(c2) hint 'compressed'";
+Command "insert T(c1) values (1)";
+Command "update T set c1 = 2";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# ALL ROWS, 非配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create all rows index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "update T set c1 = 2";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# ALL ROWS, 非配列, 複合, 制約なし
+Command "create table T(c1 int, c2 int)";
+Command "create all rows index I on T(c1, c2)";
+Command "insert T(c1) values (1)";
+Command "update T set c1 = 2";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+# Array, 配列, 非複合, 制約なし
+Command "create table T(c1 int, c2 int array[1])";
+Command "create array index I on T(c2)";
+Command "insert T(c1) values (1)";
+Command "update T set c1 = 2";
+Command "select * from T";
+Command "verify index I cascade continue";
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

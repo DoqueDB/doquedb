@@ -1,0 +1,53 @@
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+######################################################################
+#障害表　816
+
+Command  "create table T1 (f int, g int, primary key(f))";
+Command  "create table T2 (f int)";
+
+Command  "insert T1 values (1, 2), (2, 4), (3, 6)";
+Command  "insert T2 values (1), (1), (2), (2), (3)";
+
+Command  "select distinct T1.f, T1.g, T2.f from T1 inner join T2 on T1.f = T2.f";
+
+# tableの後始末
+Command "drop table T1";
+Command "drop table T2";
+
+######################################################################
+#障害表　817
+
+Command "create table T1 (x int)";
+Command "create table T2 (f int, g int)";
+
+Command "insert T1 values (2)";
+Command "insert T2 values (1, 1), (1, 10), (1, 100),
+		 (2, 2), (2, 20), (2, 200),
+		 (3, 3), (3, 30), (3, 300)";
+
+Command "select T1.*, T2.* from
+	T1
+	inner join
+	(select f, min(g) as ming from T2 where g >= 10 group by f) as T2
+	on T1.x = T2.f";
+
+# tableの後始末
+Command "drop table T1";
+Command "drop table T2";
+
+######################################################################
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

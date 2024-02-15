@@ -1,0 +1,96 @@
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create table T(I int)
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] xa start X'00'
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T(I) values (?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter]] {1}
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] checkpoint 1
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T(I) values (?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter]] {2}
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] checkpoint 1
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T(I) values (?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter]] {3}
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] checkpoint 1
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] insert into T(I) values (?)
+SydTest::Executor: [INFO] <<1>> [[SQL Parameter]] {4}
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] xa end X'00'
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] xa prepare X'00'
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] xa commit X'00'
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] xa start X'01'
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T(I) values (?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter]] {11}
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T(I) values (?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter]] {12}
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T(I) values (?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter]] {13}
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T(I) values (?)
+SydTest::Executor: [INFO] <<2>> [[SQL Parameter]] {14}
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] xa end X'01'
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] xa prepare X'01'
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] xa commit X'01'
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] verify database TESTDB cascade
+SydTest::Executor: [INFO] <<0>> End Of Data.
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] select * from T
+SydTest::Executor: [INFO] <<0>> {1}
+SydTest::Executor: [INFO] <<0>> {11}
+SydTest::Executor: [INFO] <<0>> {2}
+SydTest::Executor: [INFO] <<0>> {12}
+SydTest::Executor: [INFO] <<0>> {3}
+SydTest::Executor: [INFO] <<0>> {13}
+SydTest::Executor: [INFO] <<0>> {4}
+SydTest::Executor: [INFO] <<0>> {14}
+SydTest::Executor: [INFO] <<0>> End Of Data.
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] xa recover
+SydTest::Executor: [INFO] <<0>> End Of Data.
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] xa forget X'00'
+Executor: [ERR] (SydTest) <<0>> Object No=xxx (XXX::XXX::XXX) Unknown transaction branch identifier.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] xa forget X'01'
+Executor: [ERR] (SydTest) <<0>> Object No=xxx (XXX::XXX::XXX) Unknown transaction branch identifier.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] drop table T
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

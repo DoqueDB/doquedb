@@ -1,0 +1,67 @@
+#
+# 50文字(MAX)の表名、索引名、列名が作成できることを確認するテスト
+# 障害票 0508に対応
+#
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database testdb";
+TerminateSession;
+
+InitializeSession "testdb";
+
+#
+#表名に50文字作成
+#
+Command "create table t1234567890123456789012345678901234567890123456789(i int)";
+Command "insert into t1234567890123456789012345678901234567890123456789 values (1000)";
+Command "select * from t1234567890123456789012345678901234567890123456789";
+
+
+#
+#インデックス名に50文字作成
+#
+Command "create table IdxTest(i int,C1 nvarchar(32))";
+Command "create INDEX I1234567890123456789012345678901234567890123456789 on IdxTest(i,C1)";
+Command "insert into IdxTest(i,C1) values (2000,'あいうえお')";
+Command "select * from IdxTest";
+
+
+#
+#インデックス名に50文字作成 rename
+#
+Command "create table IdxTest1(i int,C1 nvarchar(32))";
+Command "create INDEX I_dx1 on IdxTest1(i,C1)";
+Command "ALTER INDEX \"I_dx1\" RENAME \"t1234567890123456789012345678901234567890123456789\"";
+Command "insert into IdxTest1(i,C1) values (2000,'インデックス名が長い')";
+Command "select * from IdxTest1";
+
+
+#
+#列名に50文字作成
+#
+Command "create table Coltest(i int,t1234567890123456789012345678901234567890123456789 nvarchar(32))";
+Command "insert into Coltest(i,t1234567890123456789012345678901234567890123456789) values (1,'列名が長い')";
+Command "select t1234567890123456789012345678901234567890123456789 from Coltest";
+
+
+#
+#表名に50文字作成 rename
+#
+
+Command "create table t(i int)";
+Command "insert into t values (1)";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+
+
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database testdb";
+TerminateSession;
+
+Terminate;
+End;

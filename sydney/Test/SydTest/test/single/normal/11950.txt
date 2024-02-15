@@ -1,0 +1,86 @@
+# ORDER BYをつかった副問い合わせでSELECT句にそのORDER BYのキーがないとき、その副問い合わせをJOINに使用する
+# 障害票807, 808
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+Command "create table T1 (f1 int, f2 int, f3 int, f4 int)";
+Command "insert T1 values (?,?,?,?), (?,?,?,?), (?,?,?,?), (?,?,?,?), (?,?,?,?)"
+	[1,50,300,2000,null,40,500,4000,3,null,200,1000,4,20,null,3000,5,10,100,null];
+Command "create index I1 on T1(f1)";
+Command "create index I2 on T1(f2,f3)";
+
+Command "create table T2 (f1 int not null, f2 int not null, f3 int, f4 int not null)";
+Command "insert T2 values (?,?,?,?), (?,?,?,?), (?,?,?,?), (?,?,?,?), (?,?,?,?)"
+	[1,50,300,2000,2,40,500,4000,3,30,200,1000,4,20,400,3000,5,10,100,5000];
+Command "create index I3 on T2(f1)";
+Command "create index I4 on T2(f2,f3)";
+Command "select f4 from T1 X  order by f4 asc limit 4";
+AssureCount 4;
+Command "select f1,f2 from T2 X where f1 > 0 order by f1 desc limit 4";
+AssureCount 4;
+Command "select * from (select f3,f4 from T2 X  order by f4 asc limit 4) as X ";
+AssureCount 4;
+Command "select * from (select f1 from T1 X where f1 > 0 order by f1 desc limit 4) as X ";
+AssureCount 4;
+Command "select * from (select f1,f4 from T1 X where f2 > 0 order by f2 asc, f3 asc limit 4) as X order by X.f1 asc";
+AssureCount 4;
+Command "select * from (select f1,f2,f3 from T2 X  order by f4 desc limit 4) as X order by X.f1 desc";
+AssureCount 4;
+Command "select * from (select f2,f3 from T2 X  order by f2 desc, f3 desc limit 4) as X natural inner join T2 ";
+AssureCount 4;
+#########################
+#known BUG
+#Command "select * from (select f1,f2 from T1 X  order by f1 asc limit 4) as X natural inner join T2 ";
+#AssureCount 4;
+#########################
+#Command "select * from (select f4 from T2 X where f4 > 0 order by f4 asc limit 4) as X natural inner join T2 order by X.f4 asc";
+#Command "select * from T2";
+#Command "select f4 from T2 X where f4 > 0 order by f4 asc limit 4";
+Command "select * from T2 natural inner join (select f4 from T2 X where f4 > 0 order by f4 asc limit 4) as X ";
+AssureCount 4;
+#########################
+#known BUG
+#Command "select * from (select f2,f3,f4 from T1 X  order by f1 desc limit 4) as X natural inner join T2 order by X.f2 desc";
+#AssureCount 4;
+#########################
+Command "select * from T2 natural left join (select f1,f2,f3 from T1 X where f2 > 0 order by f2 desc, f3 desc limit 4) as X ";
+AssureCount 5;
+Command "select * from T2 natural left join (select f1,f2,f3 from T2 X  order by f4 asc limit 4) as X ";
+AssureCount 5;
+Command "select * from T2 natural left join (select f3,f4 from T1 X where f4 > 0 order by f4 desc limit 4) as X order by X.f3 desc";
+AssureCount 5;
+Command "select * from T2 natural left join (select f1,f4 from T2 X  order by f2 asc, f3 asc limit 4) as X order by X.f1 asc";
+AssureCount 5;
+#########################
+#known BUG
+#Command "select * from (select f1,f2,f3 from T1 X where f4 > 0 order by f4 desc limit 4) as X natural inner join T2 ";
+#AssureCount 4;
+#########################
+Command "select f1,f4 from T2 X where f2 > 0 order by f2 asc, f3 asc limit 4";
+AssureCount 4;
+Command "select * from (select f1,f4 from T1 X  order by f2 desc, f3 desc limit 4) as X ";
+AssureCount 4;
+Command "select * from (select f1 from T2 X where f1 > 0 order by f1 asc limit 4) as X order by X.f1 asc";
+AssureCount 4;
+Command "select * from (select f1,f2,f3 from T2 X  order by f2 asc, f3 asc limit 4) as X natural inner join T2 order by X.f1 asc";
+AssureCount 4;
+Command "select * from T2 natural left join (select f1 from T1 X  order by f1 asc limit 4) as X ";
+AssureCount 5;
+Command "select * from T2 natural left join (select f1 from T2 X where f1 > 0 order by f1 desc limit 4) as X order by X.f1 desc";
+AssureCount 5;
+Command "select * from (select f1,f2 from T1 X  order by f1 desc limit 4) as X order by X.f1 desc";
+AssureCount 4;
+
+Command "select * from (select f4 from T2 X where f4 > 0 order by f1 asc limit 4) as X natural inner join (select * from T2 order by f1) as T2 order by X.f4 asc"; 
+AssureCount 4;
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

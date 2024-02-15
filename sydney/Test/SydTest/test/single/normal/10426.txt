@@ -1,0 +1,117 @@
+# select * from T where〈 列リスト1個 〉in〈 subquery - where句がinの左辺を含む 〉
+#
+# 列A in (select .. where 列A)テスト
+# 単索引
+# --T1索引き無し, T2索引き無し
+# --同種テスト 104[2-5]6
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# メインテーブル
+Command  "create table T1(C1 int, C2 int, C3 varchar(2), C4 nvarchar(4), C5 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, 111,  "1", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 222,  "2", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 222,  "3", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 222,  "4", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, null, "1",  null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 333,  "2", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 333,  "3", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 333,  "4", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, 444,  "1", "ピヨ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, null, "2",  null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 444,  "3", "ピヨ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 111,  "4", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, null, "1", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 111,  "2",  null,  textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 222,  "3", "ほげ", null                                 ];
+
+
+# --int
+Command  "create table T2(C1 int)";
+Command  "insert into T2 (C1) values (?)" [111 ];
+Command  "insert into T2 (C1) values (?)" [222 ];
+Command  "insert into T2 (C1) values (?)" [null];
+Command  "insert into T2 (C1) values (?)" [333 ];
+Command  "insert into T2 (C1) values (?)" [555 ];
+
+
+# --サブクエリのwhere句がinの左辺を含む
+# -- --T1.C2 in (.. where T1.C2)
+Command  "select * from T1 where T1.C2 in (select T2.C1 from T2 where T1.C2 is null)";
+
+Command  "select * from T1 where T1.C2 in (select T2.C1 from T2 where T1.C2 >= ?)" [333];
+Command  "select * from T1 where T1.C2 in (select T2.C1 from T2 where T1.C2 = T2.C1)";
+
+# -- --T2.C1 in (.. where T2.C1)
+Command  "select * from T2 where T2.C1 in (select T1.C2 from T1 where T2.C1 is null)";
+
+Command  "select * from T2 where T2.C1 in (select T1.C2 from T1 where T2.C1 >= ?)" [333];
+Command  "select * from T2 where T2.C1 in (select T1.C2 from T1 where T2.C1 = T1.C2)";
+
+Command  "drop table T2";
+
+
+# --char
+Command  "create table T2(C1 nvarchar(4))";
+Command  "insert into T2 (C1) values (?)" ["ほげ"];
+Command  "insert into T2 (C1) values (?)" ["ホゲ"];
+Command  "insert into T2 (C1) values (?)" [ null ];
+Command  "insert into T2 (C1) values (?)" ["ぴよ"];
+Command  "insert into T2 (C1) values (?)" ["ぷう"];
+
+# --サブクエリのwhere句がinの左辺を含む
+# -- --T1.C4 in (.. where T1.C4)
+Command  "select * from T1 where T1.C4 in (select T2.C1 from T2 where T1.C4 is null)";
+
+Command  "select * from T1 where T1.C4 in (select T2.C1 from T2 where T1.C4 >= ?)" ["ほげ"];
+Command  "select * from T1 where T1.C4 in (select T2.C1 from T2 where T1.C4 = T2.C1)";
+
+# -- --T2.C1 in (.. where T2.C1)
+Command  "select * from T2 where T2.C1 in (select T1.C4 from T1 where T2.C1 is null)";
+
+Command  "select * from T2 where T2.C1 in (select T1.C4 from T1 where T2.C1 >= ?)" ["ほげ"];
+Command  "select * from T2 where T2.C1 in (select T1.C4 from T1 where T2.C1 = T1.C4)";
+
+Command  "drop table T2";
+
+
+# nvarchar - text型
+Command  "create table T2(C1 nvarchar(448))";
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C1) values (?)" [null                                 ];
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\dictionary.txt"  ];
+
+# --サブクエリのwhere句がinの左辺を含む
+# -- --T1.C5 in (.. where T1.C5)
+Command  "select * from T1 where T1.C5 in (select T2.C1 from T2 where T1.C5 is null)";
+
+Command  "select * from T1 where T1.C5 in (select T2.C1 from T2 where T1.C5 like ?)" ["ソフトウェア研究%"];
+Command  "select * from T1 where T1.C5 in (select T2.C1 from T2 where T1.C5 = T2.C1)";
+
+# -- --T2.C1 in (.. where T2.C1)
+Command  "select * from T2 where T2.C1 in (select T1.C5 from T1 where T2.C1 is null)";
+
+Command  "select * from T2 where T2.C1 in (select T1.C5 from T1 where T2.C1 like ?)" ["ソフトウェア研究%"];
+Command  "select * from T2 where T2.C1 in (select T1.C5 from T1 where T2.C1 = T1.C5)";
+
+Command  "drop table T2";
+
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

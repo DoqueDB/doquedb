@@ -1,0 +1,526 @@
+# select〈 集約関数1個 〉from テーブル group by〈 列2個 〉having〈 条件 - セレクト句にない関数 〉
+#
+# 集約関数 group by, having 別集約関数テスト
+# --havingがselect句にない関数を使用
+# --boolean条件有り
+# 索引
+# --索引無し
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# メインテーブル
+Command  "create table T(C1 int, C2 varchar(2), C3 nvarchar(4), C4 int, C5 nvarchar(32))";
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 1, "1", "ほげ", 111,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 2, "1", "ホゲ", 222,  null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 3, "2",  null,  222,  null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 4, "3", "ホゲ", 222,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 5, "4", "ホゲ", null, textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 6, "1", "ぴよ", 333,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 7, "2",  null,  333,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 8, "3", "ぴよ", 333,  textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 9, "1", "ピヨ", 444,  textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [10, "2", "ピヨ", null, null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [11, "3", "ピヨ", 444,  textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [12, "5",  null,  null, textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [13, "2",  null,  null, null                                 ];
+
+
+# --count, --avg
+Command  "select count(C1) from T group by (C1, C1) having avg(C1) is null";
+Command  "select count(C4) from T group by (C4, C4) having avg(C4) is null";
+
+Command  "select count(*) from T group by (C1, C1) having avg(C1) > (?)" [3.0];
+Command  "select count(*) from T group by (C4, C4) having avg(C4) > (?)" [222];
+
+Command  "select count(C1) from T group by (C1, C1) having avg(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C2) having avg(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C3) having avg(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C4) having avg(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C5) having avg(C1) > (?)" [3.0];
+
+Command  "select count(C4) from T group by (C4, C1) having avg(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C2) having avg(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C3) having avg(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C4) having avg(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C5) having avg(C4) > (?)" [222];
+
+# --count, --sum
+Command  "select count(C1) from T group by (C1, C1) having sum(C1) is null";
+Command  "select count(C4) from T group by (C4, C4) having sum(C4) is null";
+
+Command  "select count(*) from T group by (C1, C1) having sum(C1) > (?)" [3.0];
+Command  "select count(*) from T group by (C4, C4) having sum(C4) > (?)" [222];
+
+Command  "select count(C1) from T group by (C1, C1) having sum(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C2) having sum(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C3) having sum(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C4) having sum(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C5) having sum(C1) > (?)" [3.0];
+
+Command  "select count(C4) from T group by (C4, C1) having sum(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C2) having sum(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C3) having sum(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C4) having sum(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C5) having sum(C4) > (?)" [222];
+
+# --count, --max
+Command  "select count(C1) from T group by (C1, C1) having max(C1) is null";
+Command  "select count(C2) from T group by (C2, C2) having max(C2) is null";
+Command  "select count(C3) from T group by (C3, C3) having max(C3) is null";
+Command  "select count(C4) from T group by (C4, C4) having max(C4) is null";
+Command  "select count(C5) from T group by (C5, C5) having max(C5) is null";
+
+Command  "select count(*) from T group by (C1, C1) having max(C1) > (?)" [3.0];
+Command  "select count(*) from T group by (C2, C2) having max(C2) > (?)" ["2.0"];
+Command  "select count(*) from T group by (C3, C3) having max(C3) > (?)" ["ほげ"];
+Command  "select count(*) from T group by (C4, C4) having max(C4) > (?)" [222];
+Command  "select count(*) from T group by (C5, C5) having max(C5) like (?)" ["株式会社リコー%"];
+
+Command  "select count(C1) from T group by (C1, C1) having max(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C2) having max(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C3) having max(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C4) having max(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C5) having max(C1) > (?)" [3.0];
+
+Command  "select count(C2) from T group by (C2, C1) having max(C2) > (?)" ["2.0"];
+Command  "select count(C2) from T group by (C2, C2) having max(C2) > (?)" ["2.0"];
+Command  "select count(C2) from T group by (C2, C3) having max(C2) > (?)" ["2.0"];
+Command  "select count(C2) from T group by (C2, C4) having max(C2) > (?)" ["2.0"];
+Command  "select count(C2) from T group by (C2, C5) having max(C2) > (?)" ["2.0"];
+
+Command  "select count(C3) from T group by (C3, C1) having max(C3) > (?)" ["ほげ"];
+Command  "select count(C3) from T group by (C3, C2) having max(C3) > (?)" ["ほげ"];
+Command  "select count(C3) from T group by (C3, C3) having max(C3) > (?)" ["ほげ"];
+Command  "select count(C3) from T group by (C3, C4) having max(C3) > (?)" ["ほげ"];
+Command  "select count(C3) from T group by (C3, C5) having max(C3) > (?)" ["ほげ"];
+
+Command  "select count(C4) from T group by (C4, C1) having max(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C2) having max(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C3) having max(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C4) having max(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C5) having max(C4) > (?)" [222];
+
+Command  "select count(C5) from T group by (C5, C1) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C5) from T group by (C5, C2) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C5) from T group by (C5, C3) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C5) from T group by (C5, C4) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C5) from T group by (C5, C5) having max(C5) like (?)" ["株式会社リコー%"];
+
+# --count, --min
+Command  "select count(C1) from T group by (C1, C1) having min(C1) is null";
+Command  "select count(C2) from T group by (C2, C2) having min(C2) is null";
+Command  "select count(C3) from T group by (C3, C3) having min(C3) is null";
+Command  "select count(C4) from T group by (C4, C4) having min(C4) is null";
+Command  "select count(C5) from T group by (C5, C5) having min(C5) is null";
+
+Command  "select count(*) from T group by (C1, C1) having min(C1) > (?)" [3.0];
+Command  "select count(*) from T group by (C2, C2) having min(C2) > (?)" ["2.0"];
+Command  "select count(*) from T group by (C3, C3) having min(C3) > (?)" ["ほげ"];
+Command  "select count(*) from T group by (C4, C4) having min(C4) > (?)" [222];
+Command  "select count(*) from T group by (C5, C5) having min(C5) like (?)" ["株式会社リコー%"];
+
+Command  "select count(C1) from T group by (C1, C1) having min(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C2) having min(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C3) having min(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C4) having min(C1) > (?)" [3.0];
+Command  "select count(C1) from T group by (C1, C5) having min(C1) > (?)" [3.0];
+
+Command  "select count(C2) from T group by (C2, C1) having min(C2) > (?)" ["2.0"];
+Command  "select count(C2) from T group by (C2, C2) having min(C2) > (?)" ["2.0"];
+Command  "select count(C2) from T group by (C2, C3) having min(C2) > (?)" ["2.0"];
+Command  "select count(C2) from T group by (C2, C4) having min(C2) > (?)" ["2.0"];
+Command  "select count(C2) from T group by (C2, C5) having min(C2) > (?)" ["2.0"];
+
+Command  "select count(C3) from T group by (C3, C1) having min(C3) > (?)" ["ほげ"];
+Command  "select count(C3) from T group by (C3, C2) having min(C3) > (?)" ["ほげ"];
+Command  "select count(C3) from T group by (C3, C3) having min(C3) > (?)" ["ほげ"];
+Command  "select count(C3) from T group by (C3, C4) having min(C3) > (?)" ["ほげ"];
+Command  "select count(C3) from T group by (C3, C5) having min(C3) > (?)" ["ほげ"];
+
+Command  "select count(C4) from T group by (C4, C1) having min(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C2) having min(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C3) having min(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C4) having min(C4) > (?)" [222];
+Command  "select count(C4) from T group by (C4, C5) having min(C4) > (?)" [222];
+
+Command  "select count(C5) from T group by (C5, C1) having min(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C5) from T group by (C5, C2) having min(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C5) from T group by (C5, C3) having min(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C5) from T group by (C5, C4) having min(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C5) from T group by (C5, C5) having min(C5) like (?)" ["株式会社リコー%"];
+
+# --avg, --count
+Command  "select avg(C1) from T group by (C1, C1) having count(C1) is null";
+Command  "select avg(C4) from T group by (C4, C4) having count(C4) is null";
+
+Command  "select avg(C1) from T group by (C1, C1) having count(*) > (?)" [0.0];
+Command  "select avg(C4) from T group by (C4, C4) having count(*) > (?)" [0.0];
+
+Command  "select avg(C1) from T group by (C1, C1) having count(C1) > (?)" [1.0];
+Command  "select avg(C1) from T group by (C1, C2) having count(C1) > (?)" [1.0];
+Command  "select avg(C1) from T group by (C1, C3) having count(C1) > (?)" [1.0];
+Command  "select avg(C1) from T group by (C1, C4) having count(C1) > (?)" [1.0];
+Command  "select avg(C1) from T group by (C1, C5) having count(C1) > (?)" [1.0];
+
+Command  "select avg(C4) from T group by (C4, C1) having count(C4) > (?)" [1.0];
+Command  "select avg(C4) from T group by (C4, C2) having count(C4) > (?)" [1.0];
+Command  "select avg(C4) from T group by (C4, C3) having count(C4) > (?)" [1.0];
+Command  "select avg(C4) from T group by (C4, C4) having count(C4) > (?)" [1.0];
+Command  "select avg(C4) from T group by (C4, C5) having count(C4) > (?)" [1.0];
+
+# --avg, --sum
+Command  "select avg(C1) from T group by (C1, C1) having sum(C1) is null";
+Command  "select avg(C4) from T group by (C4, C4) having sum(C4) is null";
+
+Command  "select avg(C1) from T group by (C1, C1) having sum(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C2) having sum(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C3) having sum(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C4) having sum(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C5) having sum(C1) > (?)" [3.0];
+
+Command  "select avg(C4) from T group by (C4, C1) having sum(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C2) having sum(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C3) having sum(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C4) having sum(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C5) having sum(C4) > (?)" [222];
+
+# -avg, --max
+Command  "select avg(C1) from T group by (C1, C1) having max(C1) is null";
+Command  "select avg(C4) from T group by (C4, C4) having max(C4) is null";
+
+Command  "select avg(C1) from T group by (C1, C1) having max(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C2) having max(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C3) having max(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C4) having max(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C5) having max(C1) > (?)" [3.0];
+
+Command  "select avg(C4) from T group by (C4, C1) having max(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C2) having max(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C3) having max(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C4) having max(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C5) having max(C4) > (?)" [222];
+
+# -avg, --min
+Command  "select avg(C1) from T group by (C1, C1) having min(C1) is null";
+Command  "select avg(C4) from T group by (C4, C4) having min(C4) is null";
+
+Command  "select avg(C1) from T group by (C1, C1) having min(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C2) having min(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C3) having min(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C4) having min(C1) > (?)" [3.0];
+Command  "select avg(C1) from T group by (C1, C5) having min(C1) > (?)" [3.0];
+
+Command  "select avg(C4) from T group by (C4, C1) having min(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C2) having min(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C3) having min(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C4) having min(C4) > (?)" [222];
+Command  "select avg(C4) from T group by (C4, C5) having min(C4) > (?)" [222];
+
+# --sum, --count
+Command  "select sum(C1) from T group by (C1, C1) having count(C1) is null";
+Command  "select sum(C4) from T group by (C4, C4) having count(C4) is null";
+
+Command  "select sum(C1) from T group by (C1, C1) having count(*) > (?)" [0.0];
+Command  "select sum(C4) from T group by (C4, C4) having count(*) > (?)" [0.0];
+
+Command  "select sum(C1) from T group by (C1, C1) having count(C1) > (?)" [1.0];
+Command  "select sum(C1) from T group by (C1, C2) having count(C1) > (?)" [1.0];
+Command  "select sum(C1) from T group by (C1, C3) having count(C1) > (?)" [1.0];
+Command  "select sum(C1) from T group by (C1, C4) having count(C1) > (?)" [1.0];
+Command  "select sum(C1) from T group by (C1, C5) having count(C1) > (?)" [1.0];
+
+Command  "select sum(C4) from T group by (C4, C1) having count(C4) > (?)" [1.0];
+Command  "select sum(C4) from T group by (C4, C2) having count(C4) > (?)" [1.0];
+Command  "select sum(C4) from T group by (C4, C3) having count(C4) > (?)" [1.0];
+Command  "select sum(C4) from T group by (C4, C4) having count(C4) > (?)" [1.0];
+Command  "select sum(C4) from T group by (C4, C5) having count(C4) > (?)" [1.0];
+
+# --sum, --avg
+Command  "select sum(C1) from T group by (C1, C1) having avg(C1) is null";
+Command  "select sum(C4) from T group by (C4, C4) having avg(C4) is null";
+
+Command  "select sum(C1) from T group by (C1, C1) having avg(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C2) having avg(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C3) having avg(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C4) having avg(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C5) having avg(C1) > (?)" [3.0];
+
+Command  "select sum(C4) from T group by (C4, C1) having avg(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C2) having avg(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C3) having avg(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C4) having avg(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C5) having avg(C4) > (?)" [222];
+
+# --sum, --max
+Command  "select sum(C1) from T group by (C1, C1) having max(C1) is null";
+Command  "select sum(C4) from T group by (C4, C4) having max(C4) is null";
+
+Command  "select sum(C1) from T group by (C1, C1) having max(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C2) having max(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C3) having max(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C4) having max(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C5) having max(C1) > (?)" [3.0];
+
+Command  "select sum(C4) from T group by (C4, C1) having max(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C2) having max(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C3) having max(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C4) having max(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C5) having max(C4) > (?)" [222];
+
+# --sum, --min
+Command  "select sum(C1) from T group by (C1, C1) having min(C1) is null";
+Command  "select sum(C4) from T group by (C4, C4) having min(C4) is null";
+
+Command  "select sum(C1) from T group by (C1, C1) having min(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C2) having min(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C3) having min(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C4) having min(C1) > (?)" [3.0];
+Command  "select sum(C1) from T group by (C1, C5) having min(C1) > (?)" [3.0];
+
+Command  "select sum(C4) from T group by (C4, C1) having min(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C2) having min(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C3) having min(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C4) having min(C4) > (?)" [222];
+Command  "select sum(C4) from T group by (C4, C5) having min(C4) > (?)" [222];
+
+# --max, --count
+Command  "select max(C1) from T group by (C1, C1) having count(C1) is null";
+Command  "select max(C2) from T group by (C2, C2) having count(C2) is null";
+Command  "select max(C3) from T group by (C3, C3) having count(C3) is null";
+Command  "select max(C4) from T group by (C4, C4) having count(C4) is null";
+Command  "select max(C5) from T group by (C5, C5) having count(C5) is null";
+
+Command  "select max(C1) from T group by (C1, C1) having count(*) > (?)" [0.0];
+Command  "select max(C2) from T group by (C2, C2) having count(*) > (?)" [0.0];
+Command  "select max(C3) from T group by (C3, C3) having count(*) > (?)" [0.0];
+Command  "select max(C4) from T group by (C4, C4) having count(*) > (?)" [0.0];
+Command  "select max(C5) from T group by (C5, C5) having count(*) > (?)" [0.0];
+
+Command  "select max(C1) from T group by (C1, C1) having count(C1) > (?)" [1.0];
+Command  "select max(C1) from T group by (C1, C2) having count(C1) > (?)" [1.0];
+Command  "select max(C1) from T group by (C1, C3) having count(C1) > (?)" [1.0];
+Command  "select max(C1) from T group by (C1, C4) having count(C1) > (?)" [1.0];
+Command  "select max(C1) from T group by (C1, C5) having count(C1) > (?)" [1.0];
+
+Command  "select max(C2) from T group by (C2, C1) having count(C2) > (?)" [1.0];
+Command  "select max(C2) from T group by (C2, C2) having count(C2) > (?)" [1.0];
+Command  "select max(C2) from T group by (C2, C3) having count(C2) > (?)" [1.0];
+Command  "select max(C2) from T group by (C2, C4) having count(C2) > (?)" [1.0];
+Command  "select max(C2) from T group by (C2, C5) having count(C2) > (?)" [1.0];
+
+Command  "select max(C3) from T group by (C3, C1) having count(C3) > (?)" [1.0];
+Command  "select max(C3) from T group by (C3, C2) having count(C3) > (?)" [1.0];
+Command  "select max(C3) from T group by (C3, C3) having count(C3) > (?)" [1.0];
+Command  "select max(C3) from T group by (C3, C4) having count(C3) > (?)" [1.0];
+Command  "select max(C3) from T group by (C3, C5) having count(C3) > (?)" [1.0];
+
+Command  "select max(C4) from T group by (C4, C1) having count(C4) > (?)" [1.0];
+Command  "select max(C4) from T group by (C4, C2) having count(C4) > (?)" [1.0];
+Command  "select max(C4) from T group by (C4, C3) having count(C4) > (?)" [1.0];
+Command  "select max(C4) from T group by (C4, C4) having count(C4) > (?)" [1.0];
+Command  "select max(C4) from T group by (C4, C5) having count(C4) > (?)" [1.0];
+
+Command  "select max(C5) from T group by (C5, C1) having count(C5) > (?)" [1.0];
+Command  "select max(C5) from T group by (C5, C2) having count(C5) > (?)" [1.0];
+Command  "select max(C5) from T group by (C5, C3) having count(C5) > (?)" [1.0];
+Command  "select max(C5) from T group by (C5, C4) having count(C5) > (?)" [1.0];
+Command  "select max(C5) from T group by (C5, C5) having count(C5) > (?)" [1.0];
+
+# --max, --avg
+Command  "select max(C1) from T group by (C1, C1) having avg(C1) is null";
+Command  "select max(C4) from T group by (C4, C4) having avg(C4) is null";
+
+Command  "select max(C1) from T group by (C1, C1) having avg(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C2) having avg(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C3) having avg(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C4) having avg(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C5) having avg(C1) > (?)" [3.0];
+
+Command  "select max(C4) from T group by (C4, C1) having avg(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C2) having avg(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C3) having avg(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C4) having avg(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C5) having avg(C4) > (?)" [222];
+
+# --max, --sum
+Command  "select max(C1) from T group by (C1, C1) having sum(C1) is null";
+Command  "select max(C4) from T group by (C4, C4) having sum(C4) is null";
+
+Command  "select max(C1) from T group by (C1, C1) having sum(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C2) having sum(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C3) having sum(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C4) having sum(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C5) having sum(C1) > (?)" [3.0];
+
+Command  "select max(C4) from T group by (C4, C1) having sum(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C2) having sum(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C3) having sum(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C4) having sum(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C5) having sum(C4) > (?)" [222];
+
+# --max, --min
+Command  "select max(C1) from T group by (C1, C1) having min(C1) is null";
+Command  "select max(C2) from T group by (C2, C2) having min(C2) is null";
+Command  "select max(C3) from T group by (C3, C3) having min(C3) is null";
+Command  "select max(C4) from T group by (C4, C4) having min(C4) is null";
+Command  "select max(C5) from T group by (C5, C5) having min(C5) is null";
+
+Command  "select max(C1) from T group by (C1, C1) having min(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C2) having min(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C3) having min(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C4) having min(C1) > (?)" [3.0];
+Command  "select max(C1) from T group by (C1, C5) having min(C1) > (?)" [3.0];
+
+Command  "select max(C2) from T group by (C2, C1) having min(C2) > (?)" ["2.0"];
+Command  "select max(C2) from T group by (C2, C2) having min(C2) > (?)" ["2.0"];
+Command  "select max(C2) from T group by (C2, C3) having min(C2) > (?)" ["2.0"];
+Command  "select max(C2) from T group by (C2, C4) having min(C2) > (?)" ["2.0"];
+Command  "select max(C2) from T group by (C2, C5) having min(C2) > (?)" ["2.0"];
+
+Command  "select max(C3) from T group by (C3, C1) having min(C3) > (?)" ["ほげ"];
+Command  "select max(C3) from T group by (C3, C2) having min(C3) > (?)" ["ほげ"];
+Command  "select max(C3) from T group by (C3, C3) having min(C3) > (?)" ["ほげ"];
+Command  "select max(C3) from T group by (C3, C4) having min(C3) > (?)" ["ほげ"];
+Command  "select max(C3) from T group by (C3, C5) having min(C3) > (?)" ["ほげ"];
+
+Command  "select max(C4) from T group by (C4, C1) having min(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C2) having min(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C3) having min(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C4) having min(C4) > (?)" [222];
+Command  "select max(C4) from T group by (C4, C5) having min(C4) > (?)" [222];
+
+Command  "select max(C5) from T group by (C5, C1) having min(C5) like (?)" ["株式会社リコー%"];
+Command  "select max(C5) from T group by (C5, C2) having min(C5) like (?)" ["株式会社リコー%"];
+Command  "select max(C5) from T group by (C5, C3) having min(C5) like (?)" ["株式会社リコー%"];
+Command  "select max(C5) from T group by (C5, C4) having min(C5) like (?)" ["株式会社リコー%"];
+Command  "select max(C5) from T group by (C5, C5) having min(C5) like (?)" ["株式会社リコー%"];
+
+# --min, --count
+Command  "select min(C1) from T group by (C1, C1) having count(C1) is null";
+Command  "select min(C2) from T group by (C2, C2) having count(C2) is null";
+Command  "select min(C3) from T group by (C3, C3) having count(C3) is null";
+Command  "select min(C4) from T group by (C4, C4) having count(C4) is null";
+Command  "select min(C5) from T group by (C5, C5) having count(C5) is null";
+
+Command  "select min(C1) from T group by (C1, C1) having count(*) > (?)" [0.0];
+Command  "select min(C2) from T group by (C2, C2) having count(*) > (?)" [0.0];
+Command  "select min(C3) from T group by (C3, C3) having count(*) > (?)" [0.0];
+Command  "select min(C4) from T group by (C4, C4) having count(*) > (?)" [0.0];
+Command  "select min(C5) from T group by (C5, C5) having count(*) > (?)" [0.0];
+
+Command  "select min(C1) from T group by (C1, C1) having count(C1) > (?)" [1.0];
+Command  "select min(C1) from T group by (C1, C2) having count(C1) > (?)" [1.0];
+Command  "select min(C1) from T group by (C1, C3) having count(C1) > (?)" [1.0];
+Command  "select min(C1) from T group by (C1, C4) having count(C1) > (?)" [1.0];
+Command  "select min(C1) from T group by (C1, C5) having count(C1) > (?)" [1.0];
+
+Command  "select min(C2) from T group by (C2, C1) having count(C2) > (?)" [1.0];
+Command  "select min(C2) from T group by (C2, C2) having count(C2) > (?)" [1.0];
+Command  "select min(C2) from T group by (C2, C3) having count(C2) > (?)" [1.0];
+Command  "select min(C2) from T group by (C2, C4) having count(C2) > (?)" [1.0];
+Command  "select min(C2) from T group by (C2, C5) having count(C2) > (?)" [1.0];
+
+Command  "select min(C3) from T group by (C3, C1) having count(C3) > (?)" [1.0];
+Command  "select min(C3) from T group by (C3, C2) having count(C3) > (?)" [1.0];
+Command  "select min(C3) from T group by (C3, C3) having count(C3) > (?)" [1.0];
+Command  "select min(C3) from T group by (C3, C4) having count(C3) > (?)" [1.0];
+Command  "select min(C3) from T group by (C3, C5) having count(C3) > (?)" [1.0];
+
+Command  "select min(C4) from T group by (C4, C1) having count(C4) > (?)" [1.0];
+Command  "select min(C4) from T group by (C4, C2) having count(C4) > (?)" [1.0];
+Command  "select min(C4) from T group by (C4, C3) having count(C4) > (?)" [1.0];
+Command  "select min(C4) from T group by (C4, C4) having count(C4) > (?)" [1.0];
+Command  "select min(C4) from T group by (C4, C5) having count(C4) > (?)" [1.0];
+
+Command  "select min(C5) from T group by (C5, C1) having count(C5) > (?)" [1.0];
+Command  "select min(C5) from T group by (C5, C2) having count(C5) > (?)" [1.0];
+Command  "select min(C5) from T group by (C5, C3) having count(C5) > (?)" [1.0];
+Command  "select min(C5) from T group by (C5, C4) having count(C5) > (?)" [1.0];
+Command  "select min(C5) from T group by (C5, C5) having count(C5) > (?)" [1.0];
+
+# --min, --avg
+Command  "select min(C1) from T group by (C1, C1) having avg(C1) is null";
+Command  "select min(C4) from T group by (C4, C4) having avg(C4) is null";
+
+Command  "select min(C1) from T group by (C1, C1) having avg(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C2) having avg(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C3) having avg(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C4) having avg(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C5) having avg(C1) > (?)" [3.0];
+
+Command  "select min(C4) from T group by (C4, C1) having avg(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C2) having avg(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C3) having avg(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C4) having avg(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C5) having avg(C4) > (?)" [222];
+
+# --min, --sum
+Command  "select min(C1) from T group by (C1, C1) having sum(C1) is null";
+Command  "select min(C4) from T group by (C4, C4) having sum(C4) is null";
+
+Command  "select min(C1) from T group by (C1, C1) having sum(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C2) having sum(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C3) having sum(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C4) having sum(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C5) having sum(C1) > (?)" [3.0];
+
+Command  "select min(C4) from T group by (C4, C1) having sum(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C2) having sum(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C3) having sum(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C4) having sum(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C5) having sum(C4) > (?)" [222];
+
+# --min, --max
+Command  "select min(C1) from T group by (C1, C1) having max(C1) is null";
+Command  "select min(C2) from T group by (C2, C2) having max(C2) is null";
+Command  "select min(C3) from T group by (C3, C3) having max(C3) is null";
+Command  "select min(C4) from T group by (C4, C4) having max(C4) is null";
+Command  "select min(C5) from T group by (C5, C5) having max(C5) is null";
+
+Command  "select min(C1) from T group by (C1, C1) having max(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C2) having max(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C3) having max(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C4) having max(C1) > (?)" [3.0];
+Command  "select min(C1) from T group by (C1, C5) having max(C1) > (?)" [3.0];
+
+Command  "select min(C2) from T group by (C2, C1) having max(C2) > (?)" ["2.0"];
+Command  "select min(C2) from T group by (C2, C2) having max(C2) > (?)" ["2.0"];
+Command  "select min(C2) from T group by (C2, C3) having max(C2) > (?)" ["2.0"];
+Command  "select min(C2) from T group by (C2, C4) having max(C2) > (?)" ["2.0"];
+Command  "select min(C2) from T group by (C2, C5) having max(C2) > (?)" ["2.0"];
+
+Command  "select min(C3) from T group by (C3, C1) having max(C3) > (?)" ["ほげ"];
+Command  "select min(C3) from T group by (C3, C2) having max(C3) > (?)" ["ほげ"];
+Command  "select min(C3) from T group by (C3, C3) having max(C3) > (?)" ["ほげ"];
+Command  "select min(C3) from T group by (C3, C4) having max(C3) > (?)" ["ほげ"];
+Command  "select min(C3) from T group by (C3, C5) having max(C3) > (?)" ["ほげ"];
+
+Command  "select min(C4) from T group by (C4, C1) having max(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C2) having max(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C3) having max(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C4) having max(C4) > (?)" [222];
+Command  "select min(C4) from T group by (C4, C5) having max(C4) > (?)" [222];
+
+Command  "select min(C5) from T group by (C5, C1) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select min(C5) from T group by (C5, C2) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select min(C5) from T group by (C5, C3) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select min(C5) from T group by (C5, C4) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select min(C5) from T group by (C5, C5) having max(C5) like (?)" ["株式会社リコー%"];
+
+Command  "drop table T";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

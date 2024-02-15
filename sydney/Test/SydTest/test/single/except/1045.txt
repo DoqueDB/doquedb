@@ -1,0 +1,23 @@
+# 一時表テスト(異常系3)
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# 一時表にエリアを指定すると?
+Command "create area area1 'd:\\dm\\area\\1'";
+Command "create table #1 (C1 int)";
+Command "select * from #1";
+# ↓失敗すること
+Command "alter table #1 set area area1";
+Command "drop table #1";
+Command "drop area area1";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

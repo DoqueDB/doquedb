@@ -1,0 +1,32 @@
+# Bug report 2438
+# within 中間要素の文字列長も考慮したテスト
+
+Begin;
+Initialize;
+
+InitializeSession "TEST";
+Command "create database TEST";
+Command "create table T(ID int, F nvarchar(512), primary key(ID))";
+Command "create fulltext index T_F on T(F) hint 'inverted=(indexing=dual, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1 @NORMRSCID:1)'";
+
+Command "insert into T values (1, '熱定着可能な装置を提供すると同時に、高速度印刷を可能とする装置における各相の電力の偏りを少なくし、安価で信頼性の高い電子写真式印刷装置を実現する。')";
+
+# ヒットしない
+Command "select count(*) from T where F contains within('定着' '高速' '速' symmetric upper 40)";
+Command "select count(*) from T where F contains within('定着' '高速' '速度' symmetric upper 40)";
+
+# ヒットする
+Command "select count(*) from T where F contains within('定着' '高速' '装置' symmetric upper 40)";
+Command "select count(*) from T where F contains within('定着' '安価' '装置' symmetric upper 120)";
+
+# ヒットしない
+Command "select count(*) from T where F contains within('定着' '同時' '高速' '速' symmetric upper 40)";
+Command "select count(*) from T where F contains within('定着' '同時' '高速' '速度' symmetric upper 40)";
+
+# ヒットする
+Command "select count(*) from T where F contains within('定着' '同時' '高速' '装置' symmetric upper 40)";
+Command "select count(*) from T where F contains within('定着' '高速' '安価' '装置' symmetric upper 120)";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,27 @@
+Begin;
+SetSystemParameter "Exception_FakeError" "Inverted::ShortListIterator::expunge count=11";
+
+Initialize;
+InitializeSession "TEST";
+
+
+Command "create database TEST";
+Command "create table T (ID int, F nvarchar(no limit), primary key(ID))";
+Command "create fulltext index T_F on T(F)";
+
+
+Command "insert into T values (1, 'リコーの環境への取り組み')";
+Command "insert into T values (2, 'リコーの環境とエコバナシ')";
+Command "insert into T values (3, 'リコーのエコ')";
+
+Command "delete from T where ID = 2";	# エラー
+
+Command "verify table T cascade continue";
+Command "select * from T where F contains 'リコー'";
+Command "select * from T where F contains '環境'";
+Command "select * from T where F contains 'エコ'";
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

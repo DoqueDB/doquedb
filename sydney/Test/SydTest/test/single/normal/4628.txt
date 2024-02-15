@@ -1,0 +1,68 @@
+# テスト追加: FileAccess_Lock.cpp
+#             LockForAllObject::reset
+#             トランザクションの中で全文索引のついた表を2つ用意し、それぞれに全文検索しただけでJoin条件を指定しないSELECT文を実行
+# 2005.07.25 Tajima
+Begin;
+
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (N int, C ntext, L language)";
+
+Command "create table T1 (N int, C1 nvarchar(256), L1 language)";
+
+
+# 索引作成
+Command "create fulltext index FTIndex on T(C) language column L hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+Command "create fulltext index FTIndex1 on T1(C1) language column L1 hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+#トランザクション開始
+#Command  "start transaction read write";
+#データセット
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, null, "ja+en"];
+PreparedCommand "ins" [1, textucsfile "..\\..\\doc\\takekurabe.txt", "ja+en"];
+PreparedCommand "ins" [2, textucsfile "..\\..\\doc\\Teihon.txt", "ja+en"];
+PreparedCommand "ins" [3, "あああああああああああああああああページあああああああ", "ja+en"];
+ErasePreparedCommand "ins";
+
+CreatePreparedCommand "ins1" "insert into T1 (N, C1, L1) values (?, ?, ?)";
+PreparedCommand "ins1" [0, null, "ja+en"];
+PreparedCommand "ins1" [1, "このページはボロボロで読みにくい", "ja+en"];
+PreparedCommand "ins1" [2, "あああああああああああああああああページあああああああ", "ja+en"];
+PreparedCommand "ins1" [3, "あああああページあああああああああページあああああああ", "ja+en"];
+ErasePreparedCommand "ins1";
+
+#
+#それぞれのページに全文検索
+#
+Command "select * from T,T1 where T.C like ? AND T1.C1 like ?" ["%ペイジ%","%ペイジ%"];  # 「ページ」の異表記"
+Command "select T.N,T1.N from T,T1 where (T.C like '%ペイジ%' or T1.C1 like '%ペイジ%') and T.N = 3";
+Command "select T.N,T1.N from T,T1 where T.C like '%リファレンス%' or T1.C1 like '%アメリカ%' or T.N = 3";
+
+
+Command "select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ?" ["%ペイジ%","%ペイジ%"];  # 「ページ」の異表記"
+Command "select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T.C)" ["%ペイジ%","%ペイジ%"];  # 「ページ」の異表記"
+Command "select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T1.C1)" ["%ペイジ%","%ペイジ%"];  # 「ページ」の異表記"
+
+#Order by 2項目（指定以外のScoreがnullになる障害があった）
+Command "select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T.C),score(T1.C1)" ["%ペイジ%","%ペイジ%"];  # 「ページ」の異表記
+Command "select score(T.C),score(T1.C1) from T,T1 where T.C like ? AND T1.C1 like ? order by score(T1.C1),score(T.C)" ["%ペイジ%","%ペイジ%"];  # 「ページ」の異表記
+
+
+Command "select * from T natural inner join T1 where T.C like ? AND T1.C1 like ?" ["%ペイジ%","%ペイジ%"];
+Command "select * from T natural inner join T1";
+
+
+
+#Command "commit";
+# テスト用の表を消去
+Command "drop table T";
+Command "drop table T1";
+
+
+TerminateSession;
+Terminate;
+End;
+

@@ -1,0 +1,128 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL1(f int, g int, h int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL2(x int, y int, z int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX1_f on TBL1(f)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX1_g on TBL1(g)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX2_x on TBL2(x)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX2_y on TBL2(y)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,10,100}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,20,400}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,30,900}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,10,100}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,20,300}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,30,400}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,40,600}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,40,800}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,40,500}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,20,100}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,60,900}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,90,300}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1 join (select count(z) from TBL2 where g = y group by y) X(c) on (f = c)
+SydTest::Executor: [INFO] {1,10,100,1}
+SydTest::Executor: [INFO] {2,20,400,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL2 join (select count(h) from TBL1 where y = g group by g) X(c) on (x = c)
+SydTest::Executor: [INFO] {1,10,100,1}
+SydTest::Executor: [INFO] {1,20,300,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, (select count(z) from TBL2 where g = y group by y) X(c)
+SydTest::Executor: [INFO] {1,10,100,1}
+SydTest::Executor: [INFO] {2,20,400,2}
+SydTest::Executor: [INFO] {3,30,900,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL2, (select count(h) from TBL1 where y = g group by g) X(c)
+SydTest::Executor: [INFO] {1,10,100,1}
+SydTest::Executor: [INFO] {1,20,300,1}
+SydTest::Executor: [INFO] {2,30,400,1}
+SydTest::Executor: [INFO] {3,20,100,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select TBL1.*, (select count(z) from TBL2 where g = y group by y) from TBL1
+SydTest::Executor: [INFO] {1,10,100,1}
+SydTest::Executor: [INFO] {2,20,400,2}
+SydTest::Executor: [INFO] {3,30,900,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select TBL2.*, (select count(h) from TBL1 where y = g group by g) from TBL2
+SydTest::Executor: [INFO] {1,10,100,1}
+SydTest::Executor: [INFO] {1,20,300,1}
+SydTest::Executor: [INFO] {2,30,400,1}
+SydTest::Executor: [INFO] {2,40,600,(null)}
+SydTest::Executor: [INFO] {2,40,800,(null)}
+SydTest::Executor: [INFO] {3,40,500,(null)}
+SydTest::Executor: [INFO] {3,20,100,1}
+SydTest::Executor: [INFO] {3,60,900,(null)}
+SydTest::Executor: [INFO] {3,90,300,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

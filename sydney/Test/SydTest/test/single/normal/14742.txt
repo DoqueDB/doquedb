@@ -1,0 +1,54 @@
+# 1226 ALL ROWS版
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession "";
+
+InitializeSession "TESTDB";
+Command "create table T(SN int, F1 datetime, F2 language, F3 float)";
+Command "create all rows index T_SN on T(SN)";
+Command "create all rows index T_F1 on T(F1)";
+Command "create all rows index T_F2 on T(F2)";
+Command "create all rows index T_F3 on T(F3)";
+
+Command "insert into T values (1, '2004-01-01 00:00:00', 'ja', 10.0)";
+Command "insert into T values (2, '2004-01-02 00:00:00', 'zh', 9.0)";
+Command "insert into T values (3, '2004-01-03 00:00:00', 'en', 8.0)";
+Command "insert into T values (4, '2004-01-04 00:00:00', 'de', 7.0)";
+Command "insert into T values (5, '2004-01-05 00:00:00', 'fr', 6.0)";
+Command "insert into T values (6, '2004-01-06 00:00:00', 'nl', 5.0)";
+Command "insert into T values (7, '2004-01-07 00:00:00', 'es', 4.0)";
+Command "insert into T values (8, '2004-01-08 00:00:00', 'it', 3.0)";
+Command "insert into T values (9, '2004-01-09 00:00:00', 'ga', 2.0)";
+Command "insert into T values (10, '2004-01-10 00:00:00', 'ar', 1.0)";
+
+Command "select F1 from T";
+Command "select F2 from T";
+Command "select F3 from T";
+
+Command "select F1 from T where F1 = '2004-01-01 00:00:00'";
+Command "select F1 from T where F1 > '2004-01-01 00:00:00' and F1 < '2004-01-03 00:00:00'";
+Command "select F1 from T where F1 >= '2004-01-01 00:00:00' and F1 < '2004-01-03 00:00:00'";
+Command "select F1 from T where F1 > '2004-01-01 00:00:00' and F1 <= '2004-01-03 00:00:00'";
+
+Command "select F2 from T where F2 = 'ja'";
+Command "select F2 from T where F2 > 'ja' and F2 < 'zh'";
+Command "select F2 from T where F2 >= 'ja' and F2 < 'zh'";
+Command "select F2 from T where F2 > 'ja' and F2 <= 'zh'";
+
+Command "select F3 from T where F3 = 5.0";
+Command "select F3 from T where F3 > 5.0 and F3 < 7.0";
+Command "select F3 from T where F3 >= 5.0 and F3 < 7.0";
+Command "select F3 from T where F3 > 5.0 and F3 <= 7.0";
+
+TerminateSession;
+
+InitializeSession "";
+Command "unmount TESTDB";
+Command "mount TESTDB path 'D:\\dm\\data\\TESTDB' system 'D:\\dm\\system\\TESTDB' logicallog 'D:\\dm\\data\\TESTDB'";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

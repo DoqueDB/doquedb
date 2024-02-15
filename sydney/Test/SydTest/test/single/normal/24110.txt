@@ -1,0 +1,56 @@
+# hint uniqueつきのB木索引
+# 障害票 1375
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table TBL
+(
+	f int,
+	g int,
+	h int,
+	x nvarchar(20),
+	y nvarchar(20),
+	primary key(f)
+)";
+
+Command "insert TBL values
+	(1,10,100,'ABC','DEF'),
+	(2,20,100,'abc','def'),
+	(3,30,200,'xyz','uvw'),
+	(4,40,200,'XYZ','UVW'),
+	(5,50,300,'aBc','dEf')";
+
+Command "create index IDX_g on TBL(g) hint unique";
+Command "create index IDX_h on TBL(h)";
+Command "create index IDX_x on TBL(x) hint 'normalized'";
+Command "create index IDX_y on TBL(y)";
+
+Command "start explain execute hint 'file'";
+#-- retrieve TBLから始まる
+Command "select * from TBL where f > 0 order by f desc";
+#-- retrieve TBLから始まるべきだが障害時はsort order byから始まる
+Command "select * from TBL where g > 0 order by g desc";
+#-- retrieve TBLから始まる
+Command "select * from TBL where h > 0 order by h desc";
+#-- sort order byから始まる
+Command "select * from TBL where x > '' order by x desc";
+#-- retrieve TBLから始まる
+Command "select * from TBL where y > '' order by y desc";
+Command "end explain";
+
+Command  "drop table TBL";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

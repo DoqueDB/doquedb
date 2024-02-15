@@ -1,0 +1,34 @@
+# Bug report 2519
+# IS NULLとIS NOT NULLを同時に指定したときのテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB_150907";
+
+Command "drop database TESTDB_150907 if exists";
+
+Command "create database TESTDB_150907";
+Command "create table test
+(
+        id      int,
+        f1      varchar(10),
+        flag    char(1),
+        lasttime        datetime default current_timestamp using on update
+)";
+Command "insert into test (id, flag) values (1, '1')";
+Command "insert into test (id, f1, flag) values (10, 'ABC', '1')";
+
+
+Command "select id, f1
+from test
+where (
+    lasttime > '2015-09-04 11:18:00' and
+    (
+      ( f1 is not null and (flag != '1') ) or
+      ( f1 is null and not (flag != '1') )
+    )
+)";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,49 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# 明示的に開始したトランザクションを実行中のセッションにおけるトランザクションブランチ関連の実行テスト
+#
+
+Command "create table T(I int)";
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [1];
+Command "xa end X'00'";
+Command "xa start X'01'";
+Command "xa end X'01'";
+Command "xa start X'02'";
+Command "xa end X'02'";
+Command "start transaction read write";
+
+# XA PREPARE
+Command "xa prepare X'00'";
+
+# XA COMMIT
+Command "xa commit X'01' one phase";
+
+# XA ROLLBACK
+Command "xa rollback X'02'";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "start transaction read write";
+
+# XA RECOVER
+Command "xa recover";
+
+# XA FORGET
+Command "xa forget X'00'";
+
+Command "commit";
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

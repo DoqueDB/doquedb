@@ -1,0 +1,79 @@
+# 障害票1419
+# B木索引とBitmap索引が同時に定義された列に対するジョイン順序のテスト
+# 障害票1419
+# B木索引とBitmap索引が同時に定義された列に対するジョイン順序のテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+
+Command "create table TBL1(f int, g nvarchar(16), primary key(f, g))";
+Command "create table TBL2(x int, primary key(x))";
+
+Command "create bitmap index IDX_g on TBL1(g)";
+
+Command "insert TBL1 values (?,?)" [1,"奇数"];
+Command "insert TBL1 values (?,?)" [1,"素数"];
+Command "insert TBL1 values (?,?)" [2,"偶数"];
+Command "insert TBL1 values (?,?)" [2,"素数"];
+Command "insert TBL1 values (?,?)" [3,"奇数"];
+Command "insert TBL1 values (?,?)" [4,"偶数"];
+Command "insert TBL1 values (?,?)" [5,"奇数"];
+Command "insert TBL1 values (?,?)" [6,"偶数"];
+Command "insert TBL1 values (?,?)" [7,"奇数"];
+Command "insert TBL1 values (?,?)" [8,"偶数"];
+Command "insert TBL1 values (?,?)" [9,"奇数"];
+Command "insert TBL1 values (?,?)" [10,"偶数"];
+
+Command "insert TBL1 select f + 10, g from TBL1 where g = '偶数' or g = '奇数'";
+Command "insert TBL1 select f + 20, g from TBL1 where g = '偶数' or g = '奇数'";
+Command "insert TBL1 select f + 40, g from TBL1 where g = '偶数' or g = '奇数'";
+Command "insert TBL1 select f + 80, g from TBL1 where g = '偶数' or g = '奇数'";
+Command "insert TBL1 select f + 160, g from TBL1 where g = '偶数' or g = '奇数'";
+
+Command "create table #1(f int, g nvarchar(16))";
+Command "insert #1 select f, '素数' from TBL1 where f > 2 and g = '奇数' and not exists (select * from TBL1 A, TBL1 B where A.g = '奇数' and B.g = '奇数' and TBL1.f >= A.f * 2 and A.f >= B.f and TBL1.f = A.f * B.f)";
+Command "insert TBL1 select * from #1";
+Command "insert TBL2 values (1),(2),(3),(4),(5),(6),(7),(8),(9),(10)";
+Command "insert TBL2 select x + 10 from TBL2";
+Command "insert TBL2 select x + 20 from TBL2";
+Command "insert TBL2 select x + 40 from TBL2";
+Command "insert TBL2 select x + 80 from TBL2";
+Command "insert TBL2 select x + 160 from TBL2";
+Command "insert TBL2 select x + 320 from TBL2";
+Command "insert TBL2 select x + 640 from TBL2";
+Command "insert TBL2 select x + 1280 from TBL2";
+
+#############################
+## test main
+#############################
+
+Command "start explain execute hint 'file'";
+Command "select x, g from TBL1, TBL2 where f = x and x between 1 and 10 and g = '素数'";
+
+#バグありの場合:
+# [INFO] {index join
+#    <-- retrieve TBL1
+#            index scan on BMP_IDX_g for
+#                TBL1.g = 素数
+#    <-- retrieve TBL2
+#            index fetch on BTR_TBL2_$$PrimaryKey for
+#                (TBL1.f = TBL2.x and TBL2.x >= 1 and TBL2.x <= 10)}
+#バグなしの場合:
+# [INFO] {index join
+#    <-- retrieve TBL2
+#            index scan on BTR_TBL2_$$PrimaryKey for
+#                (TBL2.x >= 1
+#                and TBL2.x <= 10)
+#    <-- retrieve TBL1
+#            index fetch on BTR_TBL1_$$PrimaryKey for
+#                (TBL1.f = TBL2.x
+#                and TBL1.g = 素数)}# [INFO] {index join
+
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,41 @@
+#backup full discard snapshot
+#read write transactionでDBをbackupし、そのままdropする
+#対象モジュール: Admin
+
+Begin;
+Initialize;
+
+InitializeSession "DefaultDB";
+
+Command "start transaction read write";
+#fullは現在必須、discard snapshotもトランザクションがread writeならば必須
+Command "start backup full discard snapshot";
+Command "end backup";
+#rollbackしてもエラーにならないことを確認する
+Command "rollback";
+
+# やり直し
+Command "start transaction read write";
+Command "start backup full discard snapshot";
+Command "end backup";
+#こんどはcommitする
+Command "commit";
+
+# backupは繰り返して実行可能である
+Command "start transaction read write";
+Command "start backup full discard snapshot";
+#再びcommitする
+#end backupなしにcommitしても、commitの途中でend backupが行われる
+#このとき、Admin::EndBackup::EndAllが呼ばれる
+Command "commit";
+
+#DBの検査を行う
+Command "start transaction read write";
+Command "verify database DefaultDB cascade continue";
+Command "commit";
+
+TerminateSession;
+
+Terminate;
+End;
+

@@ -1,0 +1,23 @@
+Begin;
+SetSystemParameter "Exception_FakeError" "Inverted::IndexFile::move count=(12)";
+
+Initialize;
+InitializeSession "TEST";
+
+
+Command "create database TEST";
+Command "create table T (F nvarchar(no limit))";
+Command "insert into T values 'リコーの環境への取り組み'";
+Command "create fulltext index T_F on T(F) hint 'delayed=(vacuum=false)'";
+Command "insert into T values 'リコーのエコバナシ'";
+
+Command "alter database TEST set path 'd:\\dm\\db_area'";	# エラー
+
+Command "verify table T cascade continue";
+Command "select * from T where F contains 'リコーの環境'";
+Command "select * from T where F contains 'リコーのエコ'";
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

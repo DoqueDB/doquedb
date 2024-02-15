@@ -1,0 +1,62 @@
+#alter table area (複数パス、異常系)
+#(<tetsuya)
+Begin;
+Initialize;
+
+#テストに使うデータベースを作成する
+InitializeSession "";
+NotExists "d:\\dm\\data\\AreaTest";
+Command "create database AreaTest";
+Exists "d:\\dm\\data\\AreaTest";
+TerminateSession;
+
+InitializeSession "AreaTest";
+
+#複数のパスが設定される場合に単一のパスに変更しようとして
+#エラーになることの確認
+Command "create area area1 array ['d:\\dm\\area\\1', 'd:\\dm\\area\\2']";
+Command "create table T (f1 int, f2 ntext array[no limit]) area area1 index area1 fulltext area1";
+Command "insert into T values (1, ?)" [["hoge"]];
+Command "create index T_f1 on T(f1)";
+Command "create fulltext index T_f2 on T(f2)";
+#これは大丈夫
+Command "alter area area1 modify [1] 'd:\\dm\\area\\alter2'";
+#↓ここがエラーになる
+Command "alter area area1 modify 'd:\\dm\\area\\alter'";
+Exists "d:\\dm\\area\\1\\T";
+NotExists "d:\\dm\\area\\alter2\\T";
+Command "drop index T_f2";
+Command "drop index T_f1";
+Command "drop table T";
+Command "drop area area1";
+
+#単一のパスを設定し、あとから複数のパスに
+#変更しようとした場合もエラー
+Command "create area area1 'd:\\dm\\area\\alter'";
+Command "create table T (f1 int, f2 ntext array [no limit]) area area1 index area1 fulltext area1";
+Command "insert into T values (1, ?)" [["hoge"]];
+Command "create index T_f1 on T(f1)";
+Command "create fulltext index T_f2 on T(f2)";
+#↓ここがエラーになる([1]は存在しない)
+Command "alter area area1 modify [1] 'd:\\dm\\area\\2'";
+#↓ここがエラーになる
+Command "alter area area1 modify 
+	array ['d:\\dm\\area\\1', 'd:\\dm\\area\\2']";
+Exists "d:\\dm\\area\\alter\\T";
+Command "drop index T_f2";
+Command "drop index T_f1";
+Command "drop table T";
+Command "drop area area1";
+
+TerminateSession;
+
+#テストに使ったデータベースの破棄
+InitializeSession "";
+Exists "d:\\dm\\data\\AreaTest";
+Command "drop database AreaTest";
+NotExists "d:\\dm\\data\\AreaTest";
+TerminateSession;
+
+Terminate;
+End;
+

@@ -1,0 +1,151 @@
+#
+# 障害表0467に対応
+#　　joinに使用されている項目がDistinctに使われていると、アサートにかかる
+#    joinを使用していてOrder by 付きのSelect句に別名を使用
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  null, "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", null                                 ];
+
+# テーブルT2
+Command  "create table T2(C5 int, C6 varchar(2), C7 nvarchar(4), C8 nvarchar(448))";
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null, "3",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  null, "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "3",  "ぷう", null                                 ];
+
+
+#
+# 障害表0467に対応
+#　　joinに使用されている項目がDistinctに使われていると、アサートにかかる
+
+#joinに使う項目をSelect,Distinctを使わない
+Command "select T1.C1 T1_C1 from T1, T2  where T1.C1 = T2.C5";
+
+Command "select distinct T1.C1 T1_C1 from T1, T2  where T1.C1 = T2.C5";
+
+#joinに使う項目をSelect 2項目,Distinctを使わない
+Command "select T1.C1 T1_C1,T2.C5 T2_C5 from T1, T2  where T1.C1 = T2.C5";
+
+#joinに使う項目をSelect 2項目,Distinct使用
+Command "select distinct T1.C1 T1_C1,T2.C5 T2_C5 from T1, T2  where T1.C1 = T2.C5";
+
+
+#joinに使う項目以外をSelect
+Command "select T2.C6 T2_C6 from T1, T2  where T1.C1 = T2.C5";
+
+#joinに使う項目以外をSelectしてDistinct
+Command "select distinct T2.C6 T2_C6 from T1, T2  where T1.C1 = T2.C5";
+
+#joinに使う項目をSelectしてDistinct,Where句使用
+Command "select distinct T1.C1 from T1, T2  where T1.C1 = T2.C5 and T1.C1='111'";
+
+
+#
+# --joinを使用していてOrder by 付きのSelect句に別名を使用
+#
+
+# inner 
+
+# inner
+# --joinに使われる列が含まれる
+Command  "select C1 T1_C1 from T1 inner join T2 on C1 = C5 order by C1";
+Command  "select C2 T1_C2 from T1 inner join T2 on C2 = C6 order by C2";
+Command  "select C3 T1_C3 from T1 inner join T2 on C3 = C7 order by C3";
+Command  "select C4 T1_C4 from T1 inner join T2 on C4 = C8 order by C4";
+
+# --joinに使われる列が一部含まれる
+Command  "select C1 T1_C1,C2 T1_C2 from T1 inner join T2 on C1 = C5 order by C1, C2";
+Command  "select C2 T1_C2,C3 T1_C3 from T1 inner join T2 on C2 = C6 order by C2, C3";
+Command  "select C3 T1_C3,C4 T1_C4 from T1 inner join T2 on C3 = C7 order by C3, C4";
+Command  "select C4 T1_C4,C1 T1_C1 from T1 inner join T2 on C4 = C8 order by C4, C1";
+
+# --joinに使われる列が一部含まれない
+Command  "select C2 T1_C2 from T1 inner join T2 on C1 = C5 order by C2";
+Command  "select C3 T1_C3 from T1 inner join T2 on C1 = C5 order by C3";
+Command  "select C4 T1_C4 from T1 inner join T2 on C1 = C5 order by C4";
+
+
+# left outer
+# --joinに使われる列が含まれる
+Command  "select C1 T1_C1 from T1 left outer join T2 on C1 = C5 order by C1";
+Command  "select C2 T1_C2 from T1 left outer join T2 on C2 = C6 order by C2";
+Command  "select C3 T1_C3 from T1 left outer join T2 on C3 = C7 order by C3";
+Command  "select C4 T1_C4 from T1 left outer join T2 on C4 = C8 order by C4";
+
+# --joinに使われる列が一部含まれる
+Command  "select C1 T1_C1,C2 T1_C2 from T1 left outer join T2 on C1 = C5 order by C1, C2";
+Command  "select C2 T1_C2,C3 T1_C3 from T1 left outer join T2 on C2 = C6 order by C2, C3";
+Command  "select C3 T1_C3,C4 T1_C4 from T1 left outer join T2 on C3 = C7 order by C3, C4";
+Command  "select C4 T1_C4,C1 T1_C1 from T1 left outer join T2 on C4 = C8 order by C4, C1";
+
+# --joinに使われる列が一部含まれない
+Command  "select C2 T1_C2 from T1 left outer join T2 on C1 = C5 order by C2";
+Command  "select C3 T1_C3 from T1 left outer join T2 on C1 = C5 order by C3";
+Command  "select C4 T1_C4 from T1 left outer join T2 on C1 = C5 order by C4";
+
+
+# right outer
+# --joinに使われる列が含まれる
+Command  "select C1 T1_C1 from T1 right outer join T2 on C1 = C5 order by C1";
+Command  "select C2 T1_C2 from T1 right outer join T2 on C2 = C6 order by C2";
+
+Command  "select * from T1 right outer join T2 on C3 = C7 order by C3";
+Command  "select C3 T1_C3 from T1 right outer join T2 on C3 = C7 order by C3";
+
+Command  "select C4 T1_C4 from T1 right outer join T2 on C4 = C8 order by C4";
+
+# --joinに使われる列が一部含まれる
+Command  "select C1 T1_C1,C2 T1_C2 from T1 right outer join T2 on C1 = C5 order by C1, C2";
+Command  "select C2 T1_C2,C3 T1_C3 from T1 right outer join T2 on C2 = C6 order by C2, C3";
+Command  "select C3 T1_C3,C4 T1_C4 from T1 right outer join T2 on C3 = C7 order by C3, C4";
+Command  "select C4 T1_C4,C1 T1_C1 from T1 right outer join T2 on C4 = C8 order by C4, C1";
+
+# --joinに使われる列が一部含まれない
+Command  "select C2 T1_C2 from T1 right outer join T2 on C1 = C5 order by C2";
+Command  "select C3 T1_C3 from T1 right outer join T2 on C1 = C5 order by C3";
+Command  "select C4 T1_C4 from T1 right outer join T2 on C1 = C5 order by C4";
+
+#
+#2005/12/22 * にdistinctを付けると落ちる。
+#
+#
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", null                                 ];
+
+Command "select * from T1 left outer join T2 on C1 = C5 order by C1";
+Command "select distinct * from T1 left outer join T2 on C1 = C5 order by C1";
+
+
+
+
+Command  "drop table T2";
+
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

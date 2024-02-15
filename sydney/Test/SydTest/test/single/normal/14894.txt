@@ -1,0 +1,158 @@
+# 障害票 1063
+
+Begin;
+Initialize;
+InitializeSession "";
+
+Command "create table T(c char(8) not null)";
+
+#Command "insert T values (null)";
+#Command "insert T values (null)";
+Command "insert T values ''";
+Command "insert T values 'abc'";
+Command "insert T values ' abc'";
+Command "insert T values 'abc '";
+Command "insert T values ' abc '";
+#Command "insert T values (null), (null)";
+Command "insert T values 'def'";
+Command "insert T values 'ghi'";
+Command "insert T values 'jkl', 'mno'";
+
+Command "create bitmap index I on T(c)";
+
+#Command "insert T values (null)";
+#Command "insert T values (null)";
+Command "insert T values ''";
+Command "insert T values 'abc'";
+Command "insert T values ' abc'";
+Command "insert T values 'abc '";
+Command "insert T values ' abc '";
+#Command "insert T values (null), (null)";
+Command "insert T values 'def'";
+Command "insert T values 'ghi'";
+Command "insert T values 'jkl', 'mno'";
+
+Command "select * from T where c = null";
+Command "select * from T where c = ''";
+Command "select * from T where c = 'abc'";
+Command "select * from T where c = 'xyz'";
+Command "select * from T where c > null";
+Command "select * from T where c > ''";
+Command "select * from T where c > 'abc'";
+Command "select * from T where c > 'xyz'";
+Command "select * from T where c >= null";
+Command "select * from T where c >= ''";
+Command "select * from T where c >= 'abc'";
+Command "select * from T where c >= 'xyz'";
+Command "select * from T where c < null";
+Command "select * from T where c < ''";
+Command "select * from T where c < 'abc'";
+Command "select * from T where c < 'xyz'";
+Command "select * from T where c <= null";
+Command "select * from T where c <= ''";
+Command "select * from T where c <= 'abc'";
+Command "select * from T where c <= 'xyz'";
+Command "select * from T where c like null";
+Command "select * from T where c like ''";
+Command "select * from T where c like 'abc'";
+Command "select * from T where c like 'ab%'";
+Command "select * from T where c like 'a%c'";
+Command "select * from T where c like 'xyz'";
+# Command "select * from T where c like '%bc'";
+Command "select * from T where c like 'ab_'";
+Command "select * from T where c like 'a_c'";
+# Command "select * from T where c like '_bc'";
+# Command "select * from T where c like '%b%'";
+Command "select * from T where c between null and null";
+Command "select * from T where c between '' and null";
+Command "select * from T where c between 'abc' and null";
+Command "select * from T where c between 'xyz' and null";
+Command "select * from T where c between null and ''";
+Command "select * from T where c between '' and ''";
+Command "select * from T where c between 'abc' and ''";
+Command "select * from T where c between 'xyz' and ''";
+Command "select * from T where c between null and 'abc'";
+Command "select * from T where c between '' and 'abc'";
+Command "select * from T where c between 'abc' and 'abc'";
+Command "select * from T where c between 'xyz' and 'abc'";
+Command "select * from T where c between null and 'xyz'";
+Command "select * from T where c between '' and 'xyz'";
+Command "select * from T where c between 'abc' and 'xyz'";
+Command "select * from T where c between 'xyz' and 'xyz'";
+Command "select * from T where c is null";
+Command "select * from T where c is not null";
+#Command "select * from T where c is null";
+Command "select * from T where c is not null";
+Command "select * from T where c = null or c = 'abc'";
+Command "select * from T where c = '' or c = 'abc'";
+Command "select * from T where c = 'abc' or c = 'abc'";
+
+# update to same data
+#Command "update T set c = (null) where c is null";
+#Command "select * from T";
+Command "update T set c = '' where c = ''";
+Command "select * from T";
+Command "update T set c = 'jkl' where c = 'jkl'";
+Command "select * from T";
+
+# update to the data in the another tree
+Command "update T set c = 'na->d' where c is null";
+Command "select * from T";
+#Command "update T set c = (null) where c = 'na->d'";
+#Command "select * from T";
+#Command "update T set c = (null) where c = ''";
+#Command "select * from T";
+Command "update T set c = '' where c is null";
+Command "select * from T";
+#Command "update T set c = (null) where c is null";
+#Command "select * from T";
+#Command "update T set c = (null) where c is null";
+#Command "select * from T";
+
+# update to the data which have the different number of array fields in the same tree.
+Command "update T set c = 'a1a2->a1' where c = 'jkl'";
+Command "select * from T";
+Command "update T set c = 'jkl' where c = 'a1a2->a1'";
+Command "select * from T";
+#Command "update T set c = (null) where c = ''";
+#Command "select * from T";
+#Command "update T set c = (null), (null) where c is null";
+#Command "select * from T";
+#Command "update T set c = (null) where c is null";
+#Command "select * from T";
+
+# update to the data which have the different number of array fields in the another tree.
+#Command "update T set c = (null) where c = 'jkl'";
+#Command "select * from T";
+Command "update T set c = 'jkl' where c is null";
+Command "select * from T";
+#Command "update T set c = (null), (null) where c is null";
+#Command "select * from T";
+#Command "update T set c = (null) where c is null";
+#Command "select * from T";
+#Command "update T set c = (null), (null) where c is null";
+#Command "select * from T";
+
+# update to the conbination data which have null data and not null data.
+Command "update T set c = 'jkl' where c = 'jkl'";
+Command "select * from T";
+#Command "update T set c = (null), 'jkl' where c = 'jkl'";
+#Command "select * from T";
+
+Command "verify table T cascade continue";
+
+#Command "delete from T where c is null";
+Command "select * from T";
+Command "delete from T where c is null";
+Command "select * from T";
+Command "delete from T where c >= ''";
+Command "select * from T";
+
+Command "verify table T cascade continue";
+
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;
+

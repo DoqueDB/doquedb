@@ -1,0 +1,490 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_2 (col1 decimal(18,9))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I_T_2 on T_2(col1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_2 values ('21'), ('-654321098.765432109'), ('                  0.654321098765432109876543210987654321'), ('-0.65'), ('210987654.321098765'), ('0.654321098765432109876543210987654321098765432109876543210987654321098765'), (' 65'), ('-0000000000.654321098765432109'), ('-2.1'), ('-0.210987654321098765432109876543210987'), ('0.210987654321098765432109876543210987654321098765432109876543210987654321'), ('06.5')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_2 values ('-000000000000000000000000000000000000654321098765432109876543210987654321098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_2 values ('000000000000000000654321098765432109.876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_2 values ('                                    -654321098765432109876543210987654321.098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_2 values ('-210987654321098765432109876543210987')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_2 values ('654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_2 values ('         -654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_2 values ('654321098765432109876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2
+SydTest::Executor: [INFO] {21.000000000}
+SydTest::Executor: [INFO] {-654321098.765432109}
+SydTest::Executor: [INFO] {0.654321098}
+SydTest::Executor: [INFO] {-0.650000000}
+SydTest::Executor: [INFO] {210987654.321098765}
+SydTest::Executor: [INFO] {0.654321098}
+SydTest::Executor: [INFO] {65.000000000}
+SydTest::Executor: [INFO] {-0.654321098}
+SydTest::Executor: [INFO] {-2.100000000}
+SydTest::Executor: [INFO] {-0.210987654}
+SydTest::Executor: [INFO] {0.210987654}
+SydTest::Executor: [INFO] {6.500000000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_5 (col1 decimal(18,0))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I_T_5 on T_5(col1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_5 values ('21'), ('-654321098.765432109'), ('                  0.654321098765432109876543210987654321'), ('-0.65'), ('210987654.321098765'), ('000000000000000000654321098765432109.876543210987654321'), ('0.654321098765432109876543210987654321098765432109876543210987654321098765'), (' 65'), ('-0000000000.654321098765432109'), ('-2.1'), ('654321098765432109'), ('-0.210987654321098765432109876543210987'), ('0.210987654321098765432109876543210987654321098765432109876543210987654321'), ('06.5'), ('         -654321098765432109')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_5 values ('-000000000000000000000000000000000000654321098765432109876543210987654321098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_5 values ('                                    -654321098765432109876543210987654321.098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_5 values ('-210987654321098765432109876543210987')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_5 values ('654321098765432109876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_5
+SydTest::Executor: [INFO] {21}
+SydTest::Executor: [INFO] {-654321098}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {210987654}
+SydTest::Executor: [INFO] {654321098765432109}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {65}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {-2}
+SydTest::Executor: [INFO] {654321098765432109}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {6}
+SydTest::Executor: [INFO] {-654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_5
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_3 (col1 decimal(36,36))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I_T_3 on T_3(col1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('                  0.654321098765432109876543210987654321'), ('-0.65'), ('0.654321098765432109876543210987654321098765432109876543210987654321098765'), ('-0000000000.654321098765432109'), ('-0.210987654321098765432109876543210987'), ('0.210987654321098765432109876543210987654321098765432109876543210987654321')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('21')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('-654321098.765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('-000000000000000000000000000000000000654321098765432109876543210987654321098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('210987654.321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('000000000000000000654321098765432109.876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('                                    -654321098765432109876543210987654321.098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('-210987654321098765432109876543210987')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values (' 65')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('-2.1')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('06.5')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('         -654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 values ('654321098765432109876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_3
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] {-0.650000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] {-0.654321098765432109000000000000000000}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_6 (col1 decimal(36,0))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I_T_6 on T_6(col1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_6 values ('21'), ('-654321098.765432109'), ('                  0.654321098765432109876543210987654321'), ('-0.65'), ('210987654.321098765'), ('000000000000000000654321098765432109.876543210987654321'), ('                                    -654321098765432109876543210987654321.098765432109876543210987654321098765'), ('-210987654321098765432109876543210987'), ('0.654321098765432109876543210987654321098765432109876543210987654321098765'), (' 65'), ('-0000000000.654321098765432109'), ('-2.1'), ('654321098765432109'), ('-0.210987654321098765432109876543210987'), ('0.210987654321098765432109876543210987654321098765432109876543210987654321'), ('06.5'), ('         -654321098765432109'), ('654321098765432109876543210987654321')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_6 values ('-000000000000000000000000000000000000654321098765432109876543210987654321098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_6
+SydTest::Executor: [INFO] {21}
+SydTest::Executor: [INFO] {-654321098}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {210987654}
+SydTest::Executor: [INFO] {654321098765432109}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {65}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {-2}
+SydTest::Executor: [INFO] {654321098765432109}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {6}
+SydTest::Executor: [INFO] {-654321098765432109}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_6
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_9 (col1 decimal(36,18))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I_T_9 on T_9(col1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_9 values ('21'), ('-654321098.765432109'), ('                  0.654321098765432109876543210987654321'), ('-0.65'), ('210987654.321098765'), ('000000000000000000654321098765432109.876543210987654321'), ('0.654321098765432109876543210987654321098765432109876543210987654321098765'), (' 65'), ('-0000000000.654321098765432109'), ('-2.1'), ('654321098765432109'), ('-0.210987654321098765432109876543210987'), ('0.210987654321098765432109876543210987654321098765432109876543210987654321'), ('06.5'), ('         -654321098765432109')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_9 values ('-000000000000000000000000000000000000654321098765432109876543210987654321098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_9 values ('                                    -654321098765432109876543210987654321.098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_9 values ('-210987654321098765432109876543210987')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_9 values ('654321098765432109876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_9
+SydTest::Executor: [INFO] {21.000000000000000000}
+SydTest::Executor: [INFO] {-654321098.765432109000000000}
+SydTest::Executor: [INFO] {0.654321098765432109}
+SydTest::Executor: [INFO] {-0.650000000000000000}
+SydTest::Executor: [INFO] {210987654.321098765000000000}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321}
+SydTest::Executor: [INFO] {0.654321098765432109}
+SydTest::Executor: [INFO] {65.000000000000000000}
+SydTest::Executor: [INFO] {-0.654321098765432109}
+SydTest::Executor: [INFO] {-2.100000000000000000}
+SydTest::Executor: [INFO] {654321098765432109.000000000000000000}
+SydTest::Executor: [INFO] {-0.210987654321098765}
+SydTest::Executor: [INFO] {0.210987654321098765}
+SydTest::Executor: [INFO] {6.500000000000000000}
+SydTest::Executor: [INFO] {-654321098765432109.000000000000000000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_9
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_1 (col1 decimal(2,0))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I_T_1 on T_1(col1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_1 values ('21'), ('                  0.654321098765432109876543210987654321'), ('-0.65'), ('0.654321098765432109876543210987654321098765432109876543210987654321098765'), (' 65'), ('-0000000000.654321098765432109'), ('-2.1'), ('-0.210987654321098765432109876543210987'), ('0.210987654321098765432109876543210987654321098765432109876543210987654321'), ('06.5')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_1 values ('-654321098.765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_1 values ('-000000000000000000000000000000000000654321098765432109876543210987654321098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_1 values ('210987654.321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_1 values ('000000000000000000654321098765432109.876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_1 values ('                                    -654321098765432109876543210987654321.098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_1 values ('-210987654321098765432109876543210987')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_1 values ('654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_1 values ('         -654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_1 values ('654321098765432109876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_1
+SydTest::Executor: [INFO] {21}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {65}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {-2}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {6}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_4 (col1 decimal(2,1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I_T_4 on T_4(col1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values ('                  0.654321098765432109876543210987654321'), ('-0.65'), ('0.654321098765432109876543210987654321098765432109876543210987654321098765'), ('-0000000000.654321098765432109'), ('-2.1'), ('-0.210987654321098765432109876543210987'), ('0.210987654321098765432109876543210987654321098765432109876543210987654321'), ('06.5')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values ('21')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values ('-654321098.765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values ('-000000000000000000000000000000000000654321098765432109876543210987654321098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values ('210987654.321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values ('000000000000000000654321098765432109.876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values ('                                    -654321098765432109876543210987654321.098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values ('-210987654321098765432109876543210987')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values (' 65')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values ('654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values ('         -654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 values ('654321098765432109876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_4
+SydTest::Executor: [INFO] {0.6}
+SydTest::Executor: [INFO] {-0.6}
+SydTest::Executor: [INFO] {0.6}
+SydTest::Executor: [INFO] {-0.6}
+SydTest::Executor: [INFO] {-2.1}
+SydTest::Executor: [INFO] {-0.2}
+SydTest::Executor: [INFO] {0.2}
+SydTest::Executor: [INFO] {6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_4
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_7 (col1 decimal(2,2))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I_T_7 on T_7(col1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('                  0.654321098765432109876543210987654321'), ('-0.65'), ('0.654321098765432109876543210987654321098765432109876543210987654321098765'), ('-0000000000.654321098765432109'), ('-0.210987654321098765432109876543210987'), ('0.210987654321098765432109876543210987654321098765432109876543210987654321')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('21')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('-654321098.765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('-000000000000000000000000000000000000654321098765432109876543210987654321098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('210987654.321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('000000000000000000654321098765432109.876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('                                    -654321098765432109876543210987654321.098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('-210987654321098765432109876543210987')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values (' 65')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('-2.1')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('06.5')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('         -654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 values ('654321098765432109876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_7
+SydTest::Executor: [INFO] {0.65}
+SydTest::Executor: [INFO] {-0.65}
+SydTest::Executor: [INFO] {0.65}
+SydTest::Executor: [INFO] {-0.65}
+SydTest::Executor: [INFO] {-0.21}
+SydTest::Executor: [INFO] {0.21}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_7
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_8 (col1 decimal(18,18))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I_T_8 on T_8(col1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('                  0.654321098765432109876543210987654321'), ('-0.65'), ('0.654321098765432109876543210987654321098765432109876543210987654321098765'), ('-0000000000.654321098765432109'), ('-0.210987654321098765432109876543210987'), ('0.210987654321098765432109876543210987654321098765432109876543210987654321')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('21')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('-654321098.765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('-000000000000000000000000000000000000654321098765432109876543210987654321098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('210987654.321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('000000000000000000654321098765432109.876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('                                    -654321098765432109876543210987654321.098765432109876543210987654321098765')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('-210987654321098765432109876543210987')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values (' 65')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('-2.1')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('06.5')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('         -654321098765432109')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 values ('654321098765432109876543210987654321')
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_8
+SydTest::Executor: [INFO] {0.654321098765432109}
+SydTest::Executor: [INFO] {-0.650000000000000000}
+SydTest::Executor: [INFO] {0.654321098765432109}
+SydTest::Executor: [INFO] {-0.654321098765432109}
+SydTest::Executor: [INFO] {-0.210987654321098765}
+SydTest::Executor: [INFO] {0.210987654321098765}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_8
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,180 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(f1 ntext, f2 float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values ('aaa', 1), ('aab', 10), ('abc', 10)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I1 on T(f1) score column f2 hint 'inverted=(clustered)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' order by score(f1) asc
+SydTest::Executor: [INFO] {abc,1.939576052705E-1}
+SydTest::Executor: [INFO] {aab,2.586101403607E-1}
+SydTest::Executor: [INFO] {aaa,2.909364079058E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) asc
+SydTest::Executor: [INFO] {aaa,2.909364079058E-1}
+SydTest::Executor: [INFO] {abc,1.939576052705E0}
+SydTest::Executor: [INFO] {aab,2.586101403607E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) asc limit 1
+SydTest::Executor: [INFO] {aaa,2.909364079058E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) asc limit 1 offset 3
+SydTest::Executor: [INFO] {aab,2.586101403607E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) desc
+SydTest::Executor: [INFO] {aab,2.586101403607E0}
+SydTest::Executor: [INFO] {abc,1.939576052705E0}
+SydTest::Executor: [INFO] {aaa,2.909364079058E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) desc limit 1
+SydTest::Executor: [INFO] {aab,2.586101403607E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) desc limit 1 offset 3
+SydTest::Executor: [INFO] {aaa,2.909364079058E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) asc
+SydTest::Executor: [INFO] {aaa,1.290936407905E0}
+SydTest::Executor: [INFO] {abc,1.019395760527E1}
+SydTest::Executor: [INFO] {aab,1.025861014036E1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) asc limit 1
+SydTest::Executor: [INFO] {aaa,1.290936407905E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) asc limit 1 offset 3
+SydTest::Executor: [INFO] {aab,1.025861014036E1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) desc
+SydTest::Executor: [INFO] {aab,1.025861014036E1}
+SydTest::Executor: [INFO] {abc,1.019395760527E1}
+SydTest::Executor: [INFO] {aaa,1.290936407905E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) desc limit 1
+SydTest::Executor: [INFO] {aab,1.025861014036E1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) desc limit 1 offset 3
+SydTest::Executor: [INFO] {aaa,1.290936407905E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a'
+SydTest::Executor: [INFO] {1,aaa,2.909364079058E-1}
+SydTest::Executor: [INFO] {1,aab,2.586101403607E-1}
+SydTest::Executor: [INFO] {2,abc,1.939576052705E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Sum'
+SydTest::Executor: [INFO] {1,aab,2.586101403607E0}
+SydTest::Executor: [INFO] {1,aaa,2.909364079058E-1}
+SydTest::Executor: [INFO] {2,abc,1.939576052705E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) desc partition by cluster(f1).id limit 1
+SydTest::Executor: [INFO] {1,aab,2.586101403607E0}
+SydTest::Executor: [INFO] {1,aaa,2.909364079058E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) desc partition by cluster(f1).id limit 1 offset 2
+SydTest::Executor: [INFO] {2,abc,1.939576052705E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Multiply'
+SydTest::Executor: [INFO] {1,aab,1.025861014036E1}
+SydTest::Executor: [INFO] {1,aaa,1.290936407905E0}
+SydTest::Executor: [INFO] {2,abc,1.019395760527E1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) desc partition by cluster(f1).id limit 1
+SydTest::Executor: [INFO] {1,aab,1.025861014036E1}
+SydTest::Executor: [INFO] {1,aaa,1.290936407905E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) desc partition by cluster(f1).id limit 1 offset 2
+SydTest::Executor: [INFO] {2,abc,1.019395760527E1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8
+SydTest::Executor: [INFO] {1,aaa,2.909364079058E-1}
+SydTest::Executor: [INFO] {2,aab,2.586101403607E-1}
+SydTest::Executor: [INFO] {3,abc,1.939576052705E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Sum'
+SydTest::Executor: [INFO] {1,aab,2.586101403607E0}
+SydTest::Executor: [INFO] {2,abc,1.939576052705E0}
+SydTest::Executor: [INFO] {3,aaa,2.909364079058E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Sum' order by score(f1) desc partition by cluster(f1).id limit 1
+SydTest::Executor: [INFO] {1,aab,2.586101403607E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Sum' order by score(f1) desc partition by cluster(f1).id limit 1 offset 3
+SydTest::Executor: [INFO] {3,aaa,2.909364079058E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Multiply'
+SydTest::Executor: [INFO] {1,aab,1.025861014036E1}
+SydTest::Executor: [INFO] {2,abc,1.019395760527E1}
+SydTest::Executor: [INFO] {3,aaa,1.290936407905E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Multiply' order by score(f1) desc partition by cluster(f1).id limit 1
+SydTest::Executor: [INFO] {1,aab,1.025861014036E1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Multiply' order by score(f1) desc partition by cluster(f1).id limit 1 offset 3
+SydTest::Executor: [INFO] {3,aaa,1.290936407905E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

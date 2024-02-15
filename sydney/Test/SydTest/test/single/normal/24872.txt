@@ -1,0 +1,77 @@
+# 障害票 1993
+# SELECT OUTPUT TO 機能のテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "create table T2 (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T input from path '../../doc/bulk_1_data1.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' from T";
+Command "insert T2 input from path 'temp.out'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "create table T2 (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T(f1,f3,f4,g1) input from path '../../doc/bulk_1_data3.utf8' WITH PATH '../../doc/bulk_1_spec3.utf8' HINT 'RecordSeparator=\"\\n===\\n\" Code=\"utf-8\" InputRecord=(-3,5,8-10)'";
+Command "select f1,f3,f4,g1 output to path 'temp.out' WITH PATH '../../doc/bulk_1_spec3.utf8' HINT 'RecordSeparator=\"\\n===\\n\" Code=\"utf-8\"' from T";
+Command "INSERT T2(f1,f3,f4,g1) input from path 'temp.out' WITH PATH '../../doc/bulk_1_spec3.utf8' HINT 'RecordSeparator=\"\\n===\\n\" Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "create table T2 (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T input from path '../../doc/bulk_1_data6.txt' WITH PATH '../../doc/bulk_1_spec6.txt' HINT 'FieldSeparator=\"\\t\" RecordSeparator=\"\\n===\\n\" Code=\"utf-8\" InputField=(2-3,5,8-11) InputRecord=(-3,5,8-10)'";
+Command "select * output to path 'temp.out' WITH PATH '../../doc/bulk_1_spec6.txt' HINT 'FieldSeparator=\"\\t\" RecordSeparator=\"\\n===\\n\" Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' WITH PATH '../../doc/bulk_1_spec6.txt' HINT 'FieldSeparator=\"\\t\" RecordSeparator=\"\\n===\\n\" Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "create table T2 (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T(f1,f3,f4,g1) input from path '../../doc/bulk_1_data8.txt' WITH PATH '../../doc/bulk_1_spec8.txt' HINT 'RecordSeparator=\"\\n===\\n\" ElementSeparator=\"@\" Code=\"utf-8\" InputField=(1,3-4,7)'";
+Command "select f1,f3,f4,g1 output to path 'temp.out' WITH PATH '../../doc/bulk_1_spec8.txt' HINT 'RecordSeparator=\"\\n===\\n\" ElementSeparator=\"@\" Code=\"utf-8\"' from T";
+Command "INSERT T2(f1,f3,f4,g1) input from path 'temp.out' WITH PATH '../../doc/bulk_1_spec8.txt' HINT 'RecordSeparator=\"\\n===\\n\" ElementSeparator=\"@\" Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+Command "create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "create table T2 (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint,
+			 g1 int array[10])";
+Command "INSERT T input from path '../../doc/bulk_1_data10.txt' WITH PATH '../../doc/bulk_1_spec10.txt' HINT 'Code=\"utf-8\"'";
+Command "select * output to path 'temp.out' WITH PATH '../../doc/bulk_1_spec10.txt' HINT 'Code=\"utf-8\"' from T";
+Command "insert T2 input from path 'temp.out' WITH PATH '../../doc/bulk_1_spec10.txt' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+Command "select * from T2";
+Command "drop table T";
+Command "drop table T2";
+
+TerminateSession;
+InitializeSession "TESTDB";
+System "rm temp.out";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

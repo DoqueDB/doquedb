@@ -1,0 +1,48 @@
+#ビットマップ検索でNOT
+#障害表793
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#--テーブル作成
+Command "create table T (C1 int,C2 UNIQUEIDENTIFIER array[no limit])";
+
+#--4つのデータを追加
+Command "insert into T values
+ (0,ARRAY['00000000-0000-0ba3-3cc1-8fe400050000','00000000-0000-0ba3-3cc1-8fe400050001','00000000-0000-0ba3-3cc1-8fe400050002'])";
+Command "insert into T values (1,null)";
+Command "insert into T values
+ (2,ARRAY['99999999-0000-0ba3-3cc1-8fe400050000','99999999-0000-0ba3-3cc1-8fe400050001','99999999-0000-0ba3-3cc1-8fe400050002'])";
+Command "insert into T values
+ (3,ARRAY['00000000-0000-0ba3-3cc1-8fe400050000','99999999-0000-0ba3-3cc1-8fe400050000'])";
+
+#--インデックスなし
+Command "select * from T where C2[] <> '00000000-0000-0ba3-3cc1-8fe400050000'";
+Command "select * from T where not (C2[] = '2')";
+Command "select * from T where (C2[] = '2')";
+Command "select * from T where not (C1 = 2)";
+
+#--インデックス作成
+Command "create bitmap index test_T_index on T(C2) hint 'compressed'";
+
+#--検索
+Command "select * from T where C2[] <> '00000000-0000-0ba3-3cc1-8fe400050000'";
+Command "select * from T where not (C2[] = '2')";
+Command "select * from T where (C2[] = '2')";
+Command "select * from T where not (C1 = 2)";
+
+Command  "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

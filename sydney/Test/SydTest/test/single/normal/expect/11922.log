@@ -1,0 +1,144 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL1(f int, g nvarchar(16), primary key(f, g))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL2(x int, primary key(x))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index IDX_g on TBL1(g)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,奇数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,素数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,偶数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,素数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,奇数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {4,偶数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {5,奇数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {6,偶数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {7,奇数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {8,偶数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {9,奇数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {10,偶数}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 select f + 10, g from TBL1 where g = '偶数' or g = '奇数'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 select f + 20, g from TBL1 where g = '偶数' or g = '奇数'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 select f + 40, g from TBL1 where g = '偶数' or g = '奇数'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 select f + 80, g from TBL1 where g = '偶数' or g = '奇数'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 select f + 160, g from TBL1 where g = '偶数' or g = '奇数'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table #1(f int, g nvarchar(16))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert #1 select f, '素数' from TBL1 where f > 2 and g = '奇数' and not exists (select * from TBL1 A, TBL1 B where A.g = '奇数' and B.g = '奇数' and TBL1.f >= A.f * 2 and A.f >= B.f and TBL1.f = A.f * B.f)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 select * from #1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values (1),(2),(3),(4),(5),(6),(7),(8),(9),(10)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 select x + 10 from TBL2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 select x + 20 from TBL2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 select x + 40 from TBL2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 select x + 80 from TBL2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 select x + 160 from TBL2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 select x + 320 from TBL2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 select x + 640 from TBL2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 select x + 1280 from TBL2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start explain execute hint 'file'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select x, g from TBL1, TBL2 where f = x and x between 1 and 10 and g = '素数'
+SydTest::Executor: [INFO] {nested loop join
+    <-- index scan on BTR_TBL2_$$PrimaryKey
+            execute:
+    <-- index fetch on BTR_TBL1_$$PrimaryKey
+            execute:
+    execute:
+           xx:file fetch on VCT_TBL1_$$Conversion
+           xx:file fetch on RCD_TBL1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {1,素数}
+SydTest::Executor: [INFO] {2,素数}
+SydTest::Executor: [INFO] {3,素数}
+SydTest::Executor: [INFO] {5,素数}
+SydTest::Executor: [INFO] {7,素数}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

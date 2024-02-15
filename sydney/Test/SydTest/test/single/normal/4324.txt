@@ -1,0 +1,93 @@
+# Bug report 1720
+
+# 配列索引のテスト
+# 更新中に例外が発生しても不整合が起きないことを確認する。
+# FakeErrorを使うのでdebug版で実行する
+
+Begin;
+
+SetSystemParameter "Exception_FakeError" "Array::ArrayFile::update count=(1 2 3 4 5 6 7 8)";
+
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+
+Command "create table T(C1 int, C2 int array[no limit])";
+Command "create array index I on T(C2)";
+
+#
+# null, [], [null], [1] の全ての組み合わせをテストする
+#
+
+# [YET] 更新の結果、更新元の木が0件になったり、
+#  0件にならなかったりする場合について、
+#  全ての組み合わせでテストしていない。
+
+# null <-> []
+Command "insert T values (1, ?)" [null];
+Command "update T set C2 = ? where C1 = 1" [[]];
+Command "verify table T cascade continue";
+Command "delete T";
+Command "insert T values (1, ?)" [[]];
+Command "update T set C2 = ? where C1 = 1" [null];
+Command "verify table T cascade continue";
+Command "delete T";
+
+# null <-> [null]
+Command "insert T values (1, ?)" [null];
+Command "update T set C2 = ? where C1 = 1" [[null]];
+Command "verify table T cascade continue";
+Command "delete T";
+Command "insert T values (1, ?)" [[null]];
+Command "update T set C2 = ? where C1 = 1" [null];
+Command "verify table T cascade continue";
+Command "delete T";
+
+# null <-> [1]
+Command "insert T values (1, ?)" [null];
+Command "update T set C2 = ? where C1 = 1" [[1]];
+Command "verify table T cascade continue";
+Command "delete T";
+Command "insert T values (1, ?)" [[1]];
+Command "update T set C2 = ? where C1 = 1" [null];
+Command "verify table T cascade continue";
+Command "delete T";
+
+# [] <-> [null]
+# [NOTE] 以下は内部的には挿入または削除だけなのでFakeErrorに該当しない
+Command "insert T values (1, ?)" [[]];
+Command "update T set C2 = ? where C1 = 1" [[null]];
+Command "verify table T cascade continue";
+Command "delete T";
+Command "insert T values (1, ?)" [[null]];
+Command "update T set C2 = ? where C1 = 1" [[]];
+Command "verify table T cascade continue";
+Command "delete T";
+
+# [] <-> [1]
+# [NOTE] 以下は内部的には挿入または削除だけなのでFakeErrorに該当しない
+Command "insert T values (1, ?)" [[]];
+Command "update T set C2 = ? where C1 = 1" [[1]];
+Command "verify table T cascade continue";
+Command "delete T";
+Command "insert T values (1, ?)" [[1]];
+Command "update T set C2 = ? where C1 = 1" [[]];
+Command "verify table T cascade continue";
+Command "delete T";
+
+# [null] <-> [1]
+Command "insert T values (1, ?)" [[null]];
+Command "update T set C2 = ? where C1 = 1" [[1]];
+Command "verify table T cascade continue";
+Command "delete T";
+Command "insert T values (1, ?)" [[1]];
+Command "update T set C2 = ? where C1 = 1" [[null]];
+Command "verify table T cascade continue";
+Command "delete T";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+SetSystemParameter "Exception_FakeError" "";
+End;
+

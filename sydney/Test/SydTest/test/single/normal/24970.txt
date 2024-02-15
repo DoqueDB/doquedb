@@ -1,0 +1,22 @@
+# Bug report 2553
+# UPDATE文に括弧を使うテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB_160127";
+
+Command "drop database TESTDB_160127 if exists";
+Command "create database TESTDB_160127";
+
+Command "create table TBL (f int, g int)";
+
+Command "insert TBL values (?,?)" [1,2];
+Command "insert TBL values (?,?)" [3,4];
+
+Command "update TBL set (f) = (CASE g WHEN 2 THEN 3 WHEN 4 THEN 5 ELSE null END)";
+
+Command "select * from TBL";
+
+TerminateSession;
+Terminate;
+End;

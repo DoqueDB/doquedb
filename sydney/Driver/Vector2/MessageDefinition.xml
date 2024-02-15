@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+  MessageDefinition.xml : メッセージ定義ファイル
+
+  Copyright (c) 2005, 2006, 2009, 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+   
+      http://www.apache.org/licenses/LICENSE-2.0
+   
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE MessageDefine [
+  <!ELEMENT MessageDefine (Message)*>
+
+  <!ELEMENT Message (Name, Number, Format, Argument*)>
+  <!ELEMENT Name (#PCDATA)>
+  <!ELEMENT Number (#PCDATA)>
+
+  <!ELEMENT Format (English, Japanese)>
+  <!ELEMENT Argument (#PCDATA)>
+
+  <!ELEMENT English (#PCDATA)>
+  <!ELEMENT Japanese (#PCDATA)>
+]>
+
+<!--
+★メッセージ定義に関する注意★
+
+	【メッセージ定義ファイル自体について】
+		・ファイルの文字コードを SJIS から変更してはいけない
+
+	【メッセージ作成の方針について】
+
+	【メッセージ番号について】
+		・Number は16 進8 桁で定義し、
+
+		  上位 2 桁は 0x01
+		  次の 2 桁は モジュールを識別する値
+		  下位 4 桁は モジュール内でのメッセージを一意に識別する値
+		
+		  にすること
+		・決して、Exception/ErrorDefinition.xml の
+		  エラー番号と重なってはならない
+
+	【フォーマットについて】
+		・日本語メッセージは「ですます」調で統一すること
+		・Format に %1 などで挿入されるものが文字列である場合、
+		  できる限り言語に左右されない文字列
+		  (SQL 文、表名、数値など)にすること
+-->
+
+<MessageDefine>
+
+  <Message>
+    <Name>VerifyFailed</Name>
+	<Number>0x01380001</Number>
+	<Format>
+	  <English>Verification has been failed.</English>
+	  <Japanese>整合性検査に失敗しました。</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>CorruptTotalObjectCount</Name>
+    <Number>0x01380002</Number>
+    <Format>
+      <English>Total object count conflicts (%1 in the header page, but %2 in the data pages). </English>
+      <Japanese>オブジェクトカウンタに矛盾があります(ヘッダページでは%1個、データページでの合計は%2個)。</Japanese>
+    </Format>
+    <Argument>%d</Argument>
+    <Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorruptObjectCount</Name>
+    <Number>0x01380003</Number>
+    <Format>
+      <English>A number of objects conflicts in a page (ID = %1). The numbers are %2 in the header of the page, %3 in the page ,%4 in the page manager('0' means the page is not in use, '1' means the page is in use.) </English>
+      <Japanese>ページID %1 のオブジェクト数に矛盾があります。ページのヘッダは%2個、ページ自身は%3個、管理テーブルは%4（「0」は非使用中、「１」は使用中を表します）を示しています。</Japanese>
+    </Format>
+    <Argument>%d</Argument>
+    <Argument>%d</Argument>
+    <Argument>%d</Argument>
+    <Argument>%d</Argument>
+  </Message>
+
+<!--
+  <Message>
+    <Name>CorruptMaxPage</Name>
+    <Number>0x01380004</Number>
+    <Format>
+      <English>A page(ID = %1) over the max page(ID = %2) is attached.</English>
+      <Japanese>最大ページ（ID = %2）より大きいページ（ID = %1）がアタッチされています。</Japanese>
+    </Format>
+    <Argument>%d</Argument>
+    <Argument>%d</Argument>
+  </Message>
+-->
+
+  <Message>
+    <Name>CorruptPageUsage</Name>
+    <Number>0x01380005</Number>
+    <Format>
+      <English>The page manager indicates a page(ID = %1) over the max page(ID = %2) is in use.</English>
+      <Japanese>最大ページ（ID = %2）より大きいページ（ID = %1）が使用中であると管理テーブルページに記録されています。</Japanese>
+    </Format>
+    <Argument>%d</Argument>
+    <Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>GettingPageFailed</Name>
+    <Number>0x01380006</Number>
+    <Format>
+      <English>Getting a page(ID = %1) failed. (The max page ID is %2.)</English>
+      <Japanese>ページ（ID = %1）の取得に失敗しました。(最大ページIDは%2です)</Japanese>
+    </Format>
+    <Argument>%d</Argument>
+    <Argument>%d</Argument>
+  </Message>
+
+</MessageDefine>
+
+<!--
+  Copyright (c) 2005, 2006, 2009, 2023 Ricoh Company, Ltd.
+  All rights reserved.
+-->

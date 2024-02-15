@@ -1,0 +1,706 @@
+# alter database area
+# DBの各種エリア(本体、システム、論理ログ)について設定や移動を行う。
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+## alter database時のエリア指定の全ての可能なパターンの各々について
+## (path, logicallog, systemの各々について 指定する/しない の合計2^3通り)
+## alter database set path -> alter database drop pathを行う。
+## set pathのパターンは、どれも指定しない場合を除くので、2^3-1通り。
+
+### パスのリセット
+InitializeSession "";
+Command "create table T (f1 int)";
+Command "insert into T values (1)";
+Command "alter database DefaultDB drop path '' logicallog '' system ''";
+TerminateSession;
+Exists "d:\\dm\\data\\DefaultDB";
+Exists "d:\\dm\\data\\DefaultDB";
+Exists "d:\\dm\\system\\DefaultDB";
+
+InitializeSession "";
+
+## alter area (..S)
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path system ''";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (.L.)
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path logicallog '' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area  (.LS)
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+Exists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path logicallog '' system ''";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (P..)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+Exists "d:\\dm\\area\\path";
+Command "alter database DefaultDB drop path '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (P.S)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' system 'd:\\dm\\area\\system'";
+Exists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path '' system ''";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (PL.)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' ";
+Exists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path '' logicallog '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (PLS)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+Exists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path '' logicallog '' system ''";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+TerminateSession;
+
+### alter db (..S)
+InitializeSession "";
+Command "alter database DefaultDB drop path '' logicallog '' system ''";
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+TerminateSession;
+Exists "d:\\dm\\data\\DefaultDB";
+Exists "d:\\dm\\data\\DefaultDB";
+Exists "d:\\dm\\area\\system";
+
+InitializeSession "";
+
+## alter area (..S)
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\altersystem'";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+
+## alter area (.L.)
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path logicallog '' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (.LS)
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\altersystem'";
+Exists "d:\\dm\\area\\log";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path logicallog '' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (P..)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+Exists "d:\\dm\\area\\path";
+Command "alter database DefaultDB drop path '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (P.S)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' system 'd:\\dm\\area\\altersystem'";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (PL.)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' ";
+Exists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path '' logicallog '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (PLS)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\altersystem'";
+Exists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\log";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path '' logicallog '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+TerminateSession;
+
+### alter db (.L.)
+InitializeSession "";
+Command "alter database DefaultDB drop path '' logicallog '' system ''";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+TerminateSession;
+Exists "d:\\dm\\data\\DefaultDB";
+Exists "d:\\dm\\area\\log";
+Exists "d:\\dm\\system\\DefaultDB";
+
+
+InitializeSession "";
+## alter area (..S) 
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path system ''";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (.L.) 
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\alterlog' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+
+## alter area (.LS) 
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\alterlog' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path system ''";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (P..)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+Exists "d:\\dm\\area\\path";
+Command "alter database DefaultDB drop path '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (P.S)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' system 'd:\\dm\\area\\system'";
+Exists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path '' system ''";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (PL.)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\alterlog' ";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (PLS)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\alterlog' system 'd:\\dm\\area\\system'";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path '' system ''";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+TerminateSession;
+
+### alter db (.LS)
+InitializeSession "";
+Command "alter database DefaultDB drop path '' logicallog '' system ''";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+TerminateSession;
+Exists "d:\\dm\\data\\DefaultDB";
+Exists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\system";
+
+
+InitializeSession "";
+
+## alter area (..S) 
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\altersystem'";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+
+## alter area (.L.) 
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\alterlog' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+
+## alter area (.LS) 
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\alterlog' system 'd:\\dm\\area\\altersystem'";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+
+## alter area (P..) 
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+Exists "d:\\dm\\area\\path";
+Command "alter database DefaultDB drop path '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (P.S)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' system 'd:\\dm\\area\\altersystem'";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (PL.)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\alterlog' ";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (PLS)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\alterlog' system 'd:\\dm\\area\\altersystem'";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path '' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+TerminateSession;
+
+### alter db (P..)
+InitializeSession "";
+Command "alter database DefaultDB drop path '' logicallog '' system ''";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+TerminateSession;
+Exists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+Exists "d:\\dm\\system\\DefaultDB";
+
+
+InitializeSession "";
+
+## alter area (..S) 
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path system ''";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (.L.)
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path logicallog '' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (.LS)
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+Exists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path logicallog '' system ''";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (P..)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+
+## alter area (P.S)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+Command "alter database DefaultDB drop path system ''";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (PL.)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+Command "alter database DefaultDB drop path logicallog '' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (PLS)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+Command "alter database DefaultDB drop path logicallog '' system ''";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+TerminateSession;
+
+### alter db (P.S)
+InitializeSession "";
+Command "alter database DefaultDB drop path '' logicallog '' system ''";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' system 'd:\\dm\\area\\system'";
+TerminateSession;
+Exists "d:\\dm\\area\\path";
+Exists "d:\\dm\\data\\DefaultDB";
+Exists "d:\\dm\\area\\system";
+
+
+InitializeSession "";
+
+## alter area (..S)
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\altersystem'";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+
+## alter area (.L.)
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path logicallog '' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (.LS)
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\altersystem'";
+Exists "d:\\dm\\area\\log";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path logicallog '' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (P..)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+
+## alter area (P.S)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' system 'd:\\dm\\area\\altersystem'";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+
+## alter area (PL.)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+Command "alter database DefaultDB drop path logicallog '' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+
+## alter area (PLS)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\altersystem'";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\log";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path logicallog '' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\data\\DefaultDB";
+TerminateSession;
+
+### alter db (PL.)
+InitializeSession "";
+Command "alter database DefaultDB drop path '' logicallog '' system ''";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' ";
+TerminateSession;
+Exists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\log";
+Exists "d:\\dm\\system\\DefaultDB";
+
+
+InitializeSession "";
+
+## alter area (..S)
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB drop path system ''";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (.L.)
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\alterlog' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+
+## alter area (.LS)
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\alterlog' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path system ''";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (P..)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+
+## alter area (P.S)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+Command "alter database DefaultDB drop path system ''";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+
+## alter area (PL.)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' logicallog 'd:\\dm\\area\\alterlog' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+
+## alter area (PLS)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' logicallog 'd:\\dm\\area\\alterlog' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\system";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+Command "alter database DefaultDB drop path system ''";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\system\\DefaultDB";
+TerminateSession;
+
+### alter db (PLS)
+InitializeSession "";
+Command "alter database DefaultDB drop path '' logicallog '' system ''";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+TerminateSession;
+Exists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\system";
+
+InitializeSession "";
+
+## alter area (..S) 
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\altersystem'";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+
+## alter area (.L.) 
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\alterlog' ";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+
+## alter area (.LS) 
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\alterlog' system 'd:\\dm\\area\\altersystem'";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+
+## alter area (P..)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+
+## alter area (P.S)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' system 'd:\\dm\\area\\altersystem'";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+
+## alter area (PL.)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' logicallog 'd:\\dm\\area\\alterlog' ";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' ";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+
+## alter area (PLS)
+Command "alter database DefaultDB set path 'd:\\dm\\area\\alterdb' logicallog 'd:\\dm\\area\\alterlog' system 'd:\\dm\\area\\altersystem'";
+NotExists "d:\\dm\\area\\path";
+Exists "d:\\dm\\area\\alterdb";
+NotExists "d:\\dm\\area\\log";
+Exists "d:\\dm\\area\\alterlog";
+NotExists "d:\\dm\\area\\system";
+Exists "d:\\dm\\area\\altersystem";
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+NotExists "d:\\dm\\area\\alterdb";
+Exists "d:\\dm\\area\\path";
+NotExists "d:\\dm\\area\\alterlog";
+Exists "d:\\dm\\area\\log";
+NotExists "d:\\dm\\area\\altersystem";
+Exists "d:\\dm\\area\\system";
+
+TerminateSession;
+
+### パスのリセット
+InitializeSession "";
+Command "alter database DefaultDB drop path '' logicallog '' system ''";
+TerminateSession;
+Exists "d:\\dm\\data\\DefaultDB";
+Exists "d:\\dm\\data\\DefaultDB";
+Exists "d:\\dm\\system\\DefaultDB";
+#念のためareaを掃除
+System "rm -rf d:\\dm\\area";
+
+Terminate;
+End;
+

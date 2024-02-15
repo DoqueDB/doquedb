@@ -1,0 +1,78 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (I1 int, I2 int, I3 int array [no limit],
+			 F1 float, NVC nvarchar(256))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (12, 34, ?, 12.0, '12')
+SydTest::Executor: [INFO] [[SQL Parameter]] {{1,4,7}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (66, 55, ?, 34.5, '34.5')
+SydTest::Executor: [INFO] [[SQL Parameter]] {{2,5,8}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (56, 78, ?, 99.9, 'Foo')
+SydTest::Executor: [INFO] [[SQL Parameter]] {{3,6,9}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Rowset
+SydTest::Executor: [INFO] [[SQL Query]] select NVC from T where I1=I2
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Rowset
+SydTest::Executor: [INFO] [[SQL Query]] select NVC from T where I1=NVC
+SydTest::Executor: [INFO] {12}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Rowset
+SydTest::Executor: [INFO] [[SQL Query]] select NVC from T where NVC=I1
+SydTest::Executor: [INFO] {12}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Rowset
+SydTest::Executor: [INFO] [[SQL Query]] select I1 from T where I1=F1
+SydTest::Executor: [INFO] {12}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Rowset
+SydTest::Executor: [INFO] [[SQL Query]] select I1 from T where F1=I1
+SydTest::Executor: [INFO] {12}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Rowset
+SydTest::Executor: [INFO] [[SQL Query]] select NVC from T where NVC=F1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Rowset
+SydTest::Executor: [INFO] [[SQL Query]] select NVC from T where F1=NVC
+SydTest::Executor: [INFO] {12}
+SydTest::Executor: [INFO] {34.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

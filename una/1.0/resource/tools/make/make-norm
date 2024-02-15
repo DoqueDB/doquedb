@@ -1,0 +1,248 @@
+# 
+# Copyright (c) 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+# 各種設定
+
+# 辞書バージョン
+UNAUMK_VER       = umk1.2
+UNAUC_VER        = uc1.3
+
+# パスの設定
+TOOLS            = ../tools
+TOOLS_INCL       = $(TOOLS)/include
+TOOLS_SRC        = $(TOOLS)/src
+TOOLS_BIN        = $(TOOLS)/bin
+TOOLS_PERL       = $(TOOLS)/perl
+
+# 辞書ビルドツール
+MKDIC            = $(TOOLS_BIN)/mkunadic
+MKCONN           = $(TOOLS_BIN)/mkcontbl
+MKUMKTBL         = $(TOOLS_BIN)/mkumktbl
+MKUCTBL          = $(TOOLS_BIN)/mkuctbl
+ADDREC           = $(TOOLS_BIN)/addrecno
+UNASORT          = $(TOOLS_BIN)/unasort
+NORM             = $(TOOLS_BIN)/norm
+SORTU            = perl $(TOOLS_PERL)/sortu.pl
+GROUP            = perl $(TOOLS_PERL)/group.pl
+UNGROUP          = perl $(TOOLS_PERL)/ungroup.pl
+
+# ツールの設定
+INSTALL          = cp
+CP               = cp
+MKDIR            = /bin/mkdir -p
+RM               = /bin/rm -f
+RMDIR            = /bin/rm -fr
+JOIN             = LC_COLLATE=C join
+ICONV_8TO2       = iconv -f UTF8 -t UCS2
+SH               = sh -x
+
+# 出力先ディレクトリ
+OUT_DIR          = ./unadic
+
+# データディレクトリ
+NORM_SRC_DIR     = ../src-data/norm
+UNA_SRC_DIR      = ../src-data/una
+
+# 作業用ディレクトリ
+WORK_DIR         = ./nwork
+WORK_NORM        = ./nwork/norm
+
+# 実行データ
+DATA             = $(BIN_RULDICS) $(BIN_EXPDICS) $(BIN_EXPSTRDICS) \
+                   $(BIN_NULLDICS) $(BIN_CONNECT) $(BIN_UNKMK) $(BIN_UNKCOST) \
+                   $(BIN_UNKMK_NORM) $(BIN_UNKCOST_NORM) $(MAP_DATA) 
+
+# 実行用異表記正規化辞書
+BIN_RULDICS      = $(WORK_DIR)/ruleWrd.dic $(WORK_DIR)/ruleApp.dic
+BIN_EXPDICS      = $(WORK_DIR)/expWrd.dic $(WORK_DIR)/expApp.dic
+BIN_EXPSTRDICS   = $(WORK_DIR)/expStrStrWrd.dic $(WORK_DIR)/expStrStrApp.dic
+BIN_NULLDICS     = $(WORK_DIR)/nullWrd.dic $(WORK_DIR)/nullApp.dic
+BIN_CONNECT      = $(WORK_DIR)/connect.tbl
+BIN_UNKMK        = $(WORK_DIR)/unkmk.tbl
+BIN_UNKCOST      = $(WORK_DIR)/unkcost.tbl
+BIN_UNKMK_NORM   = $(WORK_DIR)/unkmk_norm.tbl
+BIN_UNKCOST_NORM = $(WORK_DIR)/unkcost_norm.tbl
+NORM_DATA_READY  = $(WORK_DIR)/norm-data.ready
+
+# 前処理/後処理/結合処理実行データ (ASCII)
+MAP_DATA         = $(MAP_COMBI) $(MAP_PRE) $(MAP_POST)
+MAP_COMBI        = $(WORK_DIR)/combiMap.dat
+MAP_PRE          = $(WORK_DIR)/preMap.dat
+MAP_POST         = $(WORK_DIR)/postMap.dat
+MAP_DATA_READY   = $(WORK_DIR)/map-data.ready
+
+# MAP_DATAを作成するためのツール
+SH_MKNORM        = $(TOOLS_PERL)/mknorm.sh
+
+# 異表記正規化/文字列展開ソース
+SRC_NORM         = $(NORM_SRC_DIR)/src_norm.txt
+SRC_EXP          = $(NORM_SRC_DIR)/src_exp.txt
+SRC_DEF          = $(NORM_SRC_DIR)/src_default.txt
+
+# 文字列展開用同義語データサンプル
+SRC_SYN_SAMPLE   = $(NORM_SRC_DIR)/src_synonym_sample.txt
+
+# 正規化辞書UNAソース
+SRC_CMAX         = $(NORM_SRC_DIR)/una/costmax.log
+SRC_HINLST       = $(NORM_SRC_DIR)/una/unahin.utf8
+SRC_HINLST_FIXED = $(NORM_SRC_DIR)/una/unahin-fixed.utf8
+SRC_CONN_FIXED   = $(NORM_SRC_DIR)/una/unacon-fixed.utf8
+SRC_UNKMK        = $(UNA_SRC_DIR)/subdata/umktmdf.txt
+SRC_UNKCOST      = $(UNA_SRC_DIR)/subdata/unkcost.txt
+
+# 正規化辞書作業用データ
+WRK_CMAX         = $(WORK_DIR)/costmax.log
+WRK_HINLST       = $(WORK_DIR)/unahin.ucs2
+WRK_HINLST_FIXED = $(WORK_DIR)/unahin-fixed.ucs2
+WRK_CONN_FIXED   = $(WORK_DIR)/unacon-fixed.ucs2
+WRK_UNKMK        = $(WORK_DIR)/umktmdf.ucs2
+WRK_UNKCOST      = $(WORK_DIR)/unkcost.ucs2
+
+# Unicode.orgから取得するファイル
+UNICODE_FILES    = $(NORM_SRC_DIR)/UnicodeData-1.1.5.txt \
+                   $(NORM_SRC_DIR)/JIS0201.TXT \
+                   $(NORM_SRC_DIR)/JIS0208.TXT \
+                   $(NORM_SRC_DIR)/JIS0212.TXT
+
+all: $(DATA)
+
+$(MAP_DATA): $(MAP_DATA_READY)
+
+$(MAP_DATA_READY): $(SH_MKNORM) $(WORK_DIR) $(UNICODE_FILES)
+	$(SH) $(SH_MKNORM)
+	touch $(MAP_DATA_READY)
+
+$(WORK_DIR): $(UNICODE_FILES)
+	$(MKDIR) $(WORK_DIR)
+
+$(UNICODE_FILES):
+	#############################################################################
+	#
+	# Required Unicode data files are not found.  Get the files listed below
+	# from specified URLs and place them into src-data/norm/ directory.
+	#
+	#  https://www.unicode.org/Public/1.1-Update/UnicodeData-1.1.5.txt
+	#  https://www.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0201.TXT
+	#  https://www.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0208.TXT
+	#  https://www.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0212.TXT
+	#
+	#############################################################################
+	exit 1
+
+$(BIN_RULDICS): $(SRC_NORM) $(SRC_DEF) $(WRK_CMAX) $(WRK_HINLST) $(WORK_DIR) $(MAP_DATA_READY)
+	perl $(TOOLS_PERL)/tmp_norm.pl $(SRC_NORM) | $(SORTU) > $(WORK_DIR)/src_norm.tmp
+	perl $(TOOLS_PERL)/tmp_norm.pl $(SRC_DEF)  | $(SORTU) > $(WORK_DIR)/src_default.tmp
+	$(JOIN) -a1 -a2 $(WORK_DIR)/src_norm.tmp $(WORK_DIR)/src_default.tmp | \
+	    perl $(TOOLS_PERL)/mk_norm.pl | $(SORTU) | $(ICONV_8TO2) -o $(WORK_DIR)/ruleDic.tmp1
+	$(ADDREC) $(WORK_DIR)/ruleDic.tmp1 $(WORK_DIR)/ruleDic.tmp2
+	$(UNASORT) $(WORK_DIR)/ruleDic.tmp2 $(WORK_DIR)/ruleDic.ucs2
+	$(MKDIC) -b $(WRK_CMAX) $(WRK_HINLST) $(WORK_DIR)/ruleDic.ucs2 $(BIN_RULDICS)
+
+$(BIN_NULLDICS): $(WRK_CMAX) $(WRK_HINLST) $(WORK_DIR)
+	touch $(WORK_DIR)/nullDic.ucs2
+	$(MKDIC) -b $(WRK_CMAX) $(WRK_HINLST) $(WORK_DIR)/nullDic.ucs2 $(BIN_NULLDICS)
+
+$(BIN_EXPDICS): $(SRC_EXP) $(SRC_DEF) $(WRK_CMAX) $(WRK_HINLST) $(NORM_DATA_READY)
+	perl $(TOOLS_PERL)/exp1.pl $(SRC_EXP) > $(WORK_DIR)/src_exp.tmp1
+	$(NORM) -l -r $(WORK_NORM) < $(WORK_DIR)/src_exp.tmp1 > $(WORK_DIR)/src_exp.tmp2
+	perl $(TOOLS_PERL)/exp3pre.pl < $(WORK_DIR)/src_exp.tmp2 | \
+		perl $(TOOLS_PERL)/exp3.pl | $(SORTU) | $(GROUP) | \
+		$(UNGROUP) | $(SORTU) | $(GROUP) | perl -pe "s/[01]://g" | \
+		perl $(TOOLS_PERL)/tmp_exp3.pl > $(WORK_DIR)/src_exp.tmp3
+	perl $(TOOLS_PERL)/tmp_norm.pl $(SRC_DEF) | $(SORTU) | \
+		perl $(TOOLS_PERL)/tmp_default1.pl > $(WORK_DIR)/src_default.tmp1
+	$(JOIN) -a1 -a2 $(WORK_DIR)/src_exp.tmp3 $(WORK_DIR)/src_default.tmp1 | \
+		$(ICONV_8TO2) -o $(WORK_DIR)/expDic.tmp1
+	$(ADDREC) $(WORK_DIR)/expDic.tmp1 $(WORK_DIR)/expDic.tmp2
+	$(UNASORT) $(WORK_DIR)/expDic.tmp2 $(WORK_DIR)/expDic.ucs2
+	$(MKDIC) -b $(WRK_CMAX) $(WRK_HINLST) $(WORK_DIR)/expDic.ucs2 $(BIN_EXPDICS)
+
+$(BIN_EXPSTRDICS): $(SRC_SYN_SAMPLE) $(WRK_CMAX) $(WRK_HINLST) $(NORM_DATA_READY)
+	perl $(TOOLS_PERL)/exp1.pl $(SRC_SYN_SAMPLE) > $(WORK_DIR)/src_syn.tmp1
+	$(NORM) -l -r $(WORK_NORM) -k < $(WORK_DIR)/src_syn.tmp1 > $(WORK_DIR)/src_syn.tmp2
+	perl $(TOOLS_PERL)/exp3pre.pl < $(WORK_DIR)/src_syn.tmp2 | \
+		perl $(TOOLS_PERL)/exp3.pl | $(SORTU) | $(GROUP) | \
+		$(UNGROUP) | $(SORTU) | $(GROUP) | perl -pe "s/[01]://g" | \
+		perl $(TOOLS_PERL)/tmp_exp3.pl | $(ICONV_8TO2) -o $(WORK_DIR)/synDic.tmp1
+	$(ADDREC) $(WORK_DIR)/synDic.tmp1 $(WORK_DIR)/synDic.tmp2
+	$(UNASORT) $(WORK_DIR)/synDic.tmp2 $(WORK_DIR)/synDic.ucs2
+	$(MKDIC) -c -a dougigo0.1 $(WRK_CMAX) $(WRK_HINLST) $(WORK_DIR)/synDic.ucs2 $(BIN_EXPSTRDICS)
+
+$(BIN_CONNECT): $(WRK_CMAX) $(SRC_HINLST_FIXED) $(SRC_CONN_FIXED) $(WORK_DIR)
+	$(ICONV_8TO2) $(SRC_HINLST_FIXED) -o $(WRK_HINLST_FIXED)
+	$(ICONV_8TO2) $(SRC_CONN_FIXED)   -o $(WRK_CONN_FIXED)
+	$(MKCONN) $(WRK_CMAX) $(WRK_HINLST_FIXED) $(WRK_CONN_FIXED) $(BIN_CONNECT)
+
+$(BIN_UNKMK_NORM) $(BIN_UNKMK): $(SRC_UNKMK) $(WORK_DIR)
+	$(ICONV_8TO2) $(SRC_UNKMK) -o $(WRK_UNKMK)
+	$(MKUMKTBL)                  -m $(WRK_UNKMK) $(BIN_UNKMK_NORM)
+	$(MKUMKTBL) -a $(UNAUMK_VER) -m $(WRK_UNKMK) $(BIN_UNKMK)
+
+$(BIN_UNKCOST_NORM) $(BIN_UNKCOST): $(SRC_UNKCOST) $(WORK_DIR)
+	$(ICONV_8TO2) $(SRC_UNKCOST) -o $(WRK_UNKCOST)
+	$(MKUCTBL)                 $(WRK_UNKCOST) $(BIN_UNKCOST_NORM)
+	$(MKUCTBL) -a $(UNAUC_VER) $(WRK_UNKCOST) $(BIN_UNKCOST)
+
+$(WRK_CMAX): $(SRC_CMAX) $(WORK_DIR) $(MAP_DATA_READY)
+	$(CP) $(NORM_SRC_DIR)/una/costmax.log $(WRK_CMAX)
+
+$(WRK_HINLST): $(SRC_HINLST) $(WORK_DIR) $(MAP_DATA_READY)
+	$(ICONV_8TO2) $(SRC_HINLST) -o $(WRK_HINLST)
+
+$(NORM_DATA_READY): $(MAP_DATA) $(BIN_RULDICS) $(BIN_NULLDICS) \
+		$(BIN_CONNECT) $(BIN_UNKCOST_NORM) $(BIN_UNKMK_NORM) $(WORK_DIR)
+	$(MKDIR) $(WORK_NORM)
+	$(CP) $(MAP_COMBI)            $(WORK_NORM)/combiMap.dat
+	$(CP) $(MAP_PRE)              $(WORK_NORM)/preMap.dat
+	$(CP) $(MAP_POST)             $(WORK_NORM)/postMap.dat
+	$(CP) $(WORK_DIR)/ruleWrd.dic $(WORK_NORM)/ruleWrd.dic
+	$(CP) $(WORK_DIR)/ruleApp.dic $(WORK_NORM)/ruleApp.dic
+	$(CP) $(WORK_DIR)/nullWrd.dic $(WORK_NORM)/expWrd.dic
+	$(CP) $(WORK_DIR)/nullApp.dic $(WORK_NORM)/expApp.dic
+	$(CP) $(BIN_CONNECT)          $(WORK_NORM)/connect.tbl
+	$(CP) $(BIN_UNKMK_NORM)       $(WORK_NORM)/unkmk.tbl
+	$(CP) $(BIN_UNKCOST_NORM)     $(WORK_NORM)/unkcost.tbl
+	touch $(NORM_DATA_READY)
+
+clean: clean-all
+
+clean-all: clean-data clean-install
+
+clean-data:
+	$(RMDIR) $(WORK_DIR)
+
+clean-install:
+	$(RMDIR) $(OUT_DIR)/norm
+
+install: install-all
+
+install-all: $(DATA) install-data
+
+install-data: make-dir
+	$(INSTALL) $(MAP_COMBI)                 $(OUT_DIR)/norm/combiMap.dat
+	$(INSTALL) $(MAP_PRE)                   $(OUT_DIR)/norm/preMap.dat
+	$(INSTALL) $(MAP_POST)                  $(OUT_DIR)/norm/postMap.dat
+	$(INSTALL) $(WORK_DIR)/ruleWrd.dic      $(OUT_DIR)/norm/ruleWrd.dic
+	$(INSTALL) $(WORK_DIR)/ruleApp.dic      $(OUT_DIR)/norm/ruleApp.dic
+	$(INSTALL) $(WORK_DIR)/expWrd.dic       $(OUT_DIR)/norm/expWrd.dic
+	$(INSTALL) $(WORK_DIR)/expApp.dic       $(OUT_DIR)/norm/expApp.dic
+	$(INSTALL) $(WORK_DIR)/expStrStrWrd.dic $(OUT_DIR)/norm/expStrStrWrd.dic
+	$(INSTALL) $(WORK_DIR)/expStrStrApp.dic $(OUT_DIR)/norm/expStrStrApp.dic
+	$(INSTALL) $(BIN_CONNECT)               $(OUT_DIR)/norm/connect.tbl
+	$(INSTALL) $(BIN_UNKMK)                 $(OUT_DIR)/norm/unkmk.tbl     
+	$(INSTALL) $(BIN_UNKCOST)               $(OUT_DIR)/norm/unkcost.tbl     
+
+make-dir:
+	$(MKDIR) $(OUT_DIR)/norm

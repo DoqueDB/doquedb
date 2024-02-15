@@ -1,0 +1,43 @@
+#障害票506対応　作成時に READ ONLY 指定をした DB を UNMOUNT すると MOUNT できなくなる
+
+Begin;
+Initialize;
+
+InitializeSession "";
+
+#
+# まずは…
+# read write モードの DB をつくって、
+# あとから read only モードに変えて、
+# その DB を unmount → mount するテスト。
+#
+
+Command "create database ROTEST";
+Command "alter database ROTEST read only";
+
+Command "unmount ROTEST";
+
+Command "mount ROTEST path 'd:\\dm\\data\\ROTEST' system 'd:\\dm\\system\\ROTEST' read only";
+
+Command "alter database ROTEST read write";
+Command "drop database ROTEST";
+
+#
+# 次は…
+# read only モードの DB をつくって（そんなことする人はいないであろうが…）、
+# その DB を unmount → mount するテスト。
+#
+
+Command "create database ROTEST read only";
+
+Command "unmount ROTEST";
+
+Command "mount ROTEST path 'd:\\dm\\data\\ROTEST' system 'd:\\dm\\system\\ROTEST' read only";
+
+Command "alter database ROTEST read write";
+Command "drop database ROTEST";
+
+TerminateSession;
+
+Terminate;
+End;

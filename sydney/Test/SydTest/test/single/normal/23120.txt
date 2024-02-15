@@ -1,0 +1,452 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# XA START -- トランザクションモードに関するテスト
+#
+
+# 指定なし
+Command "xa start X'00'";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# トランザクションアクセスモード(A)のみ指定
+Command "xa start X'00' read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 隔離性水準(B)のみ指定
+Command "xa start X'00' isolation level read uncommitted";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level read committed";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level repeatable read";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level serializable";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# スナップショット指定(C)のみ指定
+Command "xa start X'00' using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ A, B
+Command "xa start X'00' read only, isolation level read uncommitted";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, isolation level read committed";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read only, isolation level repeatable read";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, isolation level serializable";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, isolation level read uncommitted";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read only, isolation level read committed";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, isolation level repeatable read";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read only, isolation level serializable";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ A, C
+Command "xa start X'00' read only, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ B, A
+Command "xa start X'00' isolation level read uncommitted, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level read committed, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level repeatable read, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level serializable, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level read uncommitted, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level read committed, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level repeatable read, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level serializable, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ B, C
+Command "xa start X'00' isolation level read uncommitted, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level read committed, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level repeatable read, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level serializable, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ C, A
+Command "xa start X'00' using snapshot, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ C, B
+Command "xa start X'00' using snapshot, isolation level read uncommitted";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, isolation level read committed";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, isolation level repeatable read";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, isolation level serializable";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ A, B, C
+Command "xa start X'00' read only, isolation level read uncommitted, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, isolation level read committed, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read only, isolation level repeatable read, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, isolation level serializable, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, isolation level read uncommitted, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read only, isolation level read committed, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, isolation level repeatable read, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read only, isolation level serializable, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ A, C, B
+Command "xa start X'00' read only, using snapshot, isolation level read uncommitted";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, using snapshot, isolation level read committed";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read only, using snapshot, isolation level repeatable read";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, using snapshot, isolation level serializable";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, using snapshot, isolation level read uncommitted";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read only, using snapshot, isolation level read committed";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read write, using snapshot, isolation level repeatable read";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' read only, using snapshot, isolation level serializable";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ B, A, C
+Command "xa start X'00' isolation level read uncommitted, read only, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level read committed, read write, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level repeatable read, read only, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level serializable, read write, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level read uncommitted, read write, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level read committed, read only, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level repeatable read, read write, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level serializable, read only, using snapshot";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ B, C, A
+Command "xa start X'00' isolation level read uncommitted, using snapshot, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level read committed, using snapshot, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level repeatable read, using snapshot, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level serializable, using snapshot, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level read uncommitted, using snapshot, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level read committed, using snapshot, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level repeatable read, using snapshot, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' isolation level serializable, using snapshot, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ C, A, B
+Command "xa start X'00' using snapshot, read only, isolation level read uncommitted";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, read write, isolation level read committed";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, read only, isolation level repeatable read";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, read write, isolation level serializable";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, read write, isolation level read uncommitted";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, read only, isolation level read committed";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, read write, isolation level repeatable read";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, read only, isolation level serializable";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 組み合わせ C, B, A
+Command "xa start X'00' using snapshot, isolation level read uncommitted, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, isolation level read committed, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, isolation level repeatable read, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, isolation level serializable, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, isolation level read uncommitted, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, isolation level read committed, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, isolation level repeatable read, read write";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+Command "xa start X'00' using snapshot, isolation level serializable, read only";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

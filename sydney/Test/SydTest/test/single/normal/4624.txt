@@ -1,0 +1,56 @@
+#PrepareStatement した後に、その中で使用されている列に索引を定義してから、
+#その PreparedStatement を使うようなテストを追加
+#coverage計測後の不足テスト追加(FileInfo.cpp)
+#2005.07.25 Tajima
+Begin;
+
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (ID int, C NVARCHAR(10),N ntext,Amt BIGINT)";
+
+#データセット
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [1,"C000000001",textsjisfile "..\\..\\doc\\hello.txt",integer64 1100000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [2,"C000000002",textsjisfile "..\\..\\doc\\hello.txt",integer64 1200000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [3,"C000000003",textsjisfile "..\\..\\doc\\hello.txt",integer64 1300000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [4,"C000000004",textsjisfile "..\\..\\doc\\hello.txt",integer64 1400000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [5,"C000000005",textsjisfile "..\\..\\doc\\hello.txt",integer64 1500000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [6,"C000000006",textsjisfile "..\\..\\doc\\hello.txt",integer64 1600000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [7,"C000000007",textsjisfile "..\\..\\doc\\hello.txt",integer64 1700000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [8,"C000000008",textsjisfile "..\\..\\doc\\hello.txt",integer64 1800000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [9,"C000000009",textsjisfile "..\\..\\doc\\hello.txt",integer64 1900000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [10,"C00000010",textsjisfile "..\\..\\doc\\hello.txt",integer64 2000000];
+
+#PrePare Commandの実行
+CreatePreparedCommand "sel" "select ID,C,Amt from T where  ID = ? and C = ?";
+CreatePreparedCommand "sel1" "select ID,C,Amt from T where  ID >= ? and C >=? and Amt >=?";
+
+#索引定義
+Command  "create index IDX on T(ID,C)";
+#sel
+PreparedCommand "sel" ["1", "C000000001"];
+PreparedCommand "sel" ["2", "C000000002"];
+PreparedCommand "sel" ["3", "C000000003"];
+PreparedCommand "sel" ["4", "C000000004"];
+PreparedCommand "sel" ["5", "C000000005"];
+#sel1
+PreparedCommand "sel1" ["1", "C000000001",1100000];
+PreparedCommand "sel1" ["2", "C000000002",1200000];
+PreparedCommand "sel1" ["3", "C000000003",1300000];
+PreparedCommand "sel1" ["4", "C000000004",1400000];
+PreparedCommand "sel1" ["5", "C000000005",1500000];
+
+
+
+ErasePreparedCommand "sel";
+ErasePreparedCommand "sel1";
+
+
+# テスト用の表を消去
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;
+

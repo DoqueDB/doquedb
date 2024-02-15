@@ -1,0 +1,48 @@
+Begin;
+Initialize;
+InitializeSession "";
+
+#
+#mount TESTDB2 path 'c:/Sydney/data/TESTDB2' logicallog 'c:/Sydney/data/TESTDB2' system 'c:/Sydney/system/TESTDB2';
+
+Command "mount TESTDB2 path 'd:\\dm\\data\\TESTDB2' logicallog 'd:\\dm\\data\\TESTDB2' system 'd:\\dm\\system\\TESTDB2'";
+
+TerminateSession;
+Terminate;
+
+Initialize;
+InitializeSession "TESTDB2";
+
+#再び g の値を指定せずに数件の挿入を数回繰り返す(SessionのデータベースはTESTDB2であることに注意)
+#
+#insert T(f, h) values (10, 100), (20, 200), (30, 300);
+#insert T(f, h) values (40, 400), (50, 500), (60, 600);
+
+Command "insert T(f, h) values (10, 100), (20, 200), (30, 300)";
+Command "insert T(f, h) values (40, 400), (50, 500), (60, 600)";
+
+#g が続きから順番に割り当てられていることを確認する
+#
+#select * from T;
+#⇒ 期待結果:
+#   {10, 6, 100}
+#   {20, 7, 200}
+#   {30, 8, 300}
+#   {40, 9, 400}
+#   {50, 10, 500}
+#   {60, 11, 600}
+
+Command "select * from T";
+
+######################################################################
+
+# tableの後始末
+Command "drop table T";
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB2";
+TerminateSession;
+Terminate;
+End;

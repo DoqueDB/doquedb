@@ -1,0 +1,569 @@
+# select * from T1 inner join T2 on and<条件, 列2個>
+#                  left outer join on and 
+#                  right outer join on and 
+# on <条件>付きjoinテスト 
+# where, order by, subquery
+# NULLデータのテスト 
+# 	NULL 0
+#	     1個　T1のみ、T2のみ
+#	     2個以上 T1のみ、T2のみ
+#	     2個以上 両方
+# 単索引
+# --T1索引無し, T2索引無し
+# --同種テスト
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#
+#NULL 0個
+#
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "1",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",  "らら",  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", "今日は雨のち曇り"                    ];
+
+
+# テーブルT2
+Command  "create table T2(C5 int, C6 varchar(2), C7 nvarchar(4), C8 nvarchar(448))";
+Command  "create index I2_1 on T2(C5, C6)";
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "2",  "ほげ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "3",   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "3", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "3",   "ぶぶ",  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "3",  "ぷう", "今日は水曜日"                         ];
+
+# inner
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C1 >= (?)"   [222];
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 inner join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 inner join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 inner join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 inner join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 inner join T2 on C1 = C5) as T3 inner join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 inner join T1 on C5 = C1) as T3 inner join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# left outer
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 left outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 left outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 left outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 left outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 left outer join T2 on C1 = C5) as T3 left outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 left outer join T1 on C5 = C1) as T3 left outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# right outer
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 right outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 right outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 right outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 right outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 right outer join T2 on C1 = C5) as T3 right outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 right outer join T1 on C5 = C1) as T3 right outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+Command  "drop table T1";
+
+#
+#NULL 1個 T1のみ
+#
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "1",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",  "らら",  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", "今日は雨のち曇り"                    ];
+
+# inner
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 inner join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 inner join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 inner join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 inner join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 inner join T2 on C1 = C5) as T3 inner join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 inner join T1 on C5 = C1) as T3 inner join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# left outer
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 left outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 left outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 left outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 left outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 left outer join T2 on C1 = C5) as T3 left outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 left outer join T1 on C5 = C1) as T3 left outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# right outer
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 right outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 right outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 right outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 right outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 right outer join T2 on C1 = C5) as T3 right outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 right outer join T1 on C5 = C1) as T3 right outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+Command "drop table T1";
+Command "drop table T2";
+
+#
+#NULL 1個 T2のみ
+#
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "1",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",  "らら",  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", "今日は雨のち曇り"                    ];
+
+
+# テーブルT2
+Command  "create table T2(C5 int, C6 varchar(2), C7 nvarchar(4), C8 nvarchar(448))";
+Command  "create index I2_1 on T2(C5, C6)";
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "2",  "ほげ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null,  "3",   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "3", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "3",   "ぶぶ",  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null,  "3",  "ぷう", "今日は水曜日"                         ];
+
+# inner
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 inner join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 inner join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 inner join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 inner join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 inner join T2 on C1 = C5) as T3 inner join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 inner join T1 on C5 = C1) as T3 inner join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# left outer
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 left outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 left outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 left outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 left outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 left outer join T2 on C1 = C5) as T3 left outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 left outer join T1 on C5 = C1) as T3 left outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# right outer
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 right outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 right outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 right outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 right outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 right outer join T2 on C1 = C5) as T3 right outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 right outer join T1 on C5 = C1) as T3 right outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+Command "drop table T1";
+Command "drop table T2";
+
+#
+#NULL 2個以上 T1のみ
+#
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  null,  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  null,  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  "3",  "らら",  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", "今日は雨のち曇り"                    ];
+
+
+# テーブルT2
+Command  "create table T2(C5 int, C6 varchar(2), C7 nvarchar(4), C8 nvarchar(448))";
+Command  "create index I2_1 on T2(C5, C6)";
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "2",  "ほげ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "3",   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "3", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "3",   "ぶぶ",  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "3",  "ぷう", "今日は水曜日"                         ];
+
+# inner
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 inner join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 inner join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 inner join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 inner join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 inner join T2 on C1 = C5) as T3 inner join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 inner join T1 on C5 = C1) as T3 inner join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# left outer
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 left outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 left outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 left outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 left outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 left outer join T2 on C1 = C5) as T3 left outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 left outer join T1 on C5 = C1) as T3 left outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# right outer
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 right outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 right outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 right outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 right outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 right outer join T2 on C1 = C5) as T3 right outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 right outer join T1 on C5 = C1) as T3 right outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+Command "drop table T1";
+Command "drop table T2";
+
+#
+#NULL 2個以上 T2のみ
+#先頭キーにNULLあり
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "1",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",  "らら",  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", "今日は雨のち曇り"                    ];
+
+
+# テーブルT2
+Command  "create table T2(C5 int, C6 varchar(2), C7 nvarchar(4), C8 nvarchar(448))";
+Command  "create index I2_1 on T2(C5, C6)";
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null,  "1",  "ほげ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "2",  "ほげ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null,  null,  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "3",   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "3", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null,  "3",   "ぶぶ",  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  null,  "ぷう", "今日は水曜日"                         ];
+
+# inner
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 inner join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 inner join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 inner join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 inner join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 inner join T2 on C1 = C5) as T3 inner join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 inner join T1 on C5 = C1) as T3 inner join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# left outer
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 left outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 left outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 left outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 left outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 left outer join T2 on C1 = C5) as T3 left outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 left outer join T1 on C5 = C1) as T3 left outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# right outer
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 right outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 right outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 right outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 right outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 right outer join T2 on C1 = C5) as T3 right outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 right outer join T1 on C5 = C1) as T3 right outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+Command "drop table T1";
+Command "drop table T2";
+
+#
+#NULL 2個以上 T2のみ
+#先頭キーにNULLなし
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "1",  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "1",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",  "らら",  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "4",  "ぴよ", "今日は雨のち曇り"                    ];
+
+
+# テーブルT2
+Command  "create table T2(C5 int, C6 varchar(2), C7 nvarchar(4), C8 nvarchar(448))";
+Command  "create index I2_1 on T2(C5, C6, C7)";
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "2",  "ほげ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  null,  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "3",   null, textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "3", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "3",   "ぶぶ",  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  null,  null, "今日は水曜日"                         ];
+
+# inner
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 and C3 = C7";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 and C3 = C7 where C1 >= (?)" [222];
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 and C3 = C7 where C8 like (?)" ["%リ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 and C3 = C7 order by C1";
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 and C3 = C7 order by C8";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 inner join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 inner join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 inner join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 inner join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 inner join T2 on C1 = C5) as T3 inner join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 inner join T1 on C5 = C1) as T3 inner join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# left outer
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 and C3 = C7 ";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 and C3 = C7 where C1 >= (?)" [222];
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 and C3 = C7 where C8 like (?)" ["%リ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 and C3 = C7 order by C1";
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 and C3 = C7 order by C8";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 left outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 left outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 left outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 left outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 left outer join T2 on C1 = C5) as T3 left outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 left outer join T1 on C5 = C1) as T3 left outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# right outer
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 and C3 = C7 where C1 >= (?)" [222];
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 and C3 = C7 where C8 like (?)" ["%リ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 and C3 = C7 order by C1";
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 and C3 = C7 order by C8";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 right outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 right outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 right outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 right outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 right outer join T2 on C1 = C5) as T3 right outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 right outer join T1 on C5 = C1) as T3 right outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+Command "drop table T1";
+Command "drop table T2";
+
+
+#
+#NULL 2個 以上両方
+#
+# テーブルT1
+
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ぴよ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  null,  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  null,  "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "1",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "3",  "らら",  textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  "4",  "ぴよ", "今日は雨のち曇り"                    ];
+
+
+# テーブルT2
+Command  "create table T2(C5 int, C6 varchar(2), C7 nvarchar(4), C8 nvarchar(448))";
+Command  "create index I2_1 on T2(C5, C6)";
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null,  "1",  "ほげ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  null,  "ほげ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null,  null,   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "3", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "3",   "ぶぶ",  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "3",  "ぷう", "今日は水曜日"                         ];
+
+# inner
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 inner join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 inner join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 inner join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 inner join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 inner join T2 on C1 = C5) as T3 inner join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 inner join T1 on C5 = C1) as T3 inner join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# left outer
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 left outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 left outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 left outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 left outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 left outer join T2 on C1 = C5) as T3 left outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 left outer join T1 on C5 = C1) as T3 left outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+# right outer
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6";
+#where(joinに使用する列を含む,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C1 >= (?)" [222];
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 where C7 like (?)" ["ほ%"];
+#order by(joinに使われる列が含まれる,含まない)
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 order by C1";
+Command  "select * from T1 right outer join T2 on C1 = C5 order by C7";
+#サブクエリ&Jointed
+Command  "select * from (select C1, C2 from T1) as T3 right outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from (select C5, C7 from T2) as T3 right outer join T1 on C1 = C5 and C3 = C7";
+Command  "select * from (select C1, C2 from T1 where C1 >= (?)) as T3 right outer join T2 on C1 = C5 and C2 = C6" [333];
+Command  "select * from (select C5, C7 from T2 where C7 like (?)) as T3 right outer join T1 on  C1 = C5 and C3 = C7" ["ほ%"];
+Command  "select * from (select * from T1 right outer join T2 on C1 = C5) as T3 right outer join T2 on T3.C1 = T2.C5 and T3.C2 = T2.C6";
+Command  "select * from (select * from T2 right outer join T1 on C5 = C1) as T3 right outer join T1 on T3.C5 = T1.C1 and T3.C6 = T1.C2";
+
+Command  "drop table T1";
+Command  "drop table T2";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

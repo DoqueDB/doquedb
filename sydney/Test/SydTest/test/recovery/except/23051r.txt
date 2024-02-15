@@ -1,0 +1,33 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+#別のスクリプトで再び g の値を指定せずに数件の挿入を繰り返す
+
+#insert T(f, h) values (1, 10), (2, 20), (3, 30);
+#insert T(f, h) values (4, 40), (5, 50), (6, 60);
+
+Command  "insert T(f, h) values (7, 70), (8, 80), (9, 90)";
+Command  "insert T(f, h) values (10, 100), (11, 110), (12, 120)";
+
+#g の値が 6 から始まっていることを確認する
+
+#select * from T;
+#⇒ 期待結果:
+#   {1, 6, 10}
+#   {2, 7, 20}
+#   {3, 8, 30}
+#   {4, 9, 40}
+#   {5, 10, 50}
+#   {6, 11, 60}
+#   {7, 12, 70}
+#   {8, 13, 80}
+#   {9, 14, 90}
+#   {10, 15, 100}
+#   {11, 16, 110}
+#   {12, 17, 120}
+
+Command  "select * from T";
+TerminateSession;
+Terminate;
+End;

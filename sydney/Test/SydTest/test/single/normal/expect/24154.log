@@ -1,0 +1,517 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] CreateThread
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] JoinThread
+SydTest::Executor: [INFO] Prepare begin.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB if exists
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table JP (AN varchar(12), AB ntext hint heap, PRODUCT varchar(10), TITLE ntext hint heap)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP values ('JP2010181694', '管理', 'MFP', 'クラウドネットワークソリューション')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP values ('JP2010181695', '検索', 'MFP', 'プリントソリューション')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP select * from JP
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP select * from JP
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP select * from JP
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP select * from JP
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP select * from JP
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP select * from JP
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP select * from JP
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP select * from JP
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP select * from JP
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP select * from JP
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP select * from JP
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP values ('JP2010181691', '文書', 'SCANNER', 'ドキュメントソリューション')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP values ('JP2010181692', '文書', 'FAX', 'ペーパーレスソリューション')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP values ('JP2010181693', '文書', 'MFP', 'デジタルドキュメント検索サービス')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP values ('JP2010181696', '管理', 'FAX', 'ネクストジェネレーションネットワークサービス')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP values ('JP2010181697', '管理', 'CAMERA', '類似画像検索システム')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP values ('JP2010181698', '保管', 'FAX', 'クラウドプリントサービス')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert JP values ('JP2010181699', '文書', 'MFP', 'デジタルサイネージサービス')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index JP_AN on JP(AN)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index JP_AB on JP(AB)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index JP_PRODUCT on JP(PRODUCT)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Prepare] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index JP_TITLE on JP(TITLE)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] Prepare end.
+SydTest::Executor: [INFO] [SydTest Option] Prepare
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where (JP.AB contains '管理' and JP.AN='JP2010181696') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181696,管理,2.508333696884E-2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where (JP.AB contains '文書' and not JP.AN='JP2010181692') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181699,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where (not JP.AB contains '管理' and JP.AN='JP2010181698') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181698,保管,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where (not JP.AB contains '管理' and not JP.AN='JP2010181695') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,0E0}
+SydTest::Executor: [INFO] {JP2010181692,文書,0E0}
+SydTest::Executor: [INFO] {JP2010181693,文書,0E0}
+SydTest::Executor: [INFO] {JP2010181698,保管,0E0}
+SydTest::Executor: [INFO] {JP2010181699,文書,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where not (JP.TITLE contains 'ソリューション' and JP.PRODUCT='MFP') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,SCANNER,ドキュメントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181692,FAX,ペーパーレスソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181693,MFP,デジタルドキュメント検索サービス,0E0}
+SydTest::Executor: [INFO] {JP2010181696,FAX,ネクストジェネレーションネットワークサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181697,CAMERA,類似画像検索システム,0E0}
+SydTest::Executor: [INFO] {JP2010181698,FAX,クラウドプリントサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181699,MFP,デジタルサイネージサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where JP.AB contains '文書' or JP.AN = 'JP2010181697' order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181699,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181697,管理,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where (JP.AB contains '文書' or not JP.PRODUCT=='MFP') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181699,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181696,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181697,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181698,保管,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where (not JP.AB contains '文書' or JP.AN='JP2010181694') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181694,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where (not JP.AB contains '文書' or not JP.AN='JP2010181692') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181694,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where not (JP.AB contains '管理' or JP.AN ='JP2010181695') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,0E0}
+SydTest::Executor: [INFO] {JP2010181692,文書,0E0}
+SydTest::Executor: [INFO] {JP2010181693,文書,0E0}
+SydTest::Executor: [INFO] {JP2010181698,保管,0E0}
+SydTest::Executor: [INFO] {JP2010181699,文書,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where JP.AB contains '文書' or (JP.AB contains '管理' and JP.AN='JP2010181696') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181699,文書,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181696,管理,2.508333696884E-2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.AB) from JP where (not JP.TITLE contains 'ソリューション') or (JP.AB contains '文書' and JP.AN='JP2010181692') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,デジタルドキュメント検索サービス,0E0}
+SydTest::Executor: [INFO] {JP2010181696,管理,ネクストジェネレーションネットワークサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181697,管理,類似画像検索システム,0E0}
+SydTest::Executor: [INFO] {JP2010181698,保管,クラウドプリントサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181699,文書,デジタルサイネージサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.AB) from JP where JP.TITLE contains 'サービス' or JP.AB contains '文書' or JP.AN='JP2010181692' order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,ドキュメントソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,デジタルドキュメント検索サービス,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181699,文書,デジタルサイネージサービス,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181696,管理,ネクストジェネレーションネットワークサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181698,保管,クラウドプリントサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.AB) from JP where (not JP.TITLE contains 'ソリューション') or JP.AB contains '文書' or JP.AN='JP2010181697' order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,ドキュメントソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,デジタルドキュメント検索サービス,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181699,文書,デジタルサイネージサービス,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181696,管理,ネクストジェネレーションネットワークサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181697,管理,類似画像検索システム,0E0}
+SydTest::Executor: [INFO] {JP2010181698,保管,クラウドプリントサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where not ((JP.AB contains '管理' and not JP.AN='JP2010181696') or JP.AB contains '検索') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,0E0}
+SydTest::Executor: [INFO] {JP2010181692,文書,0E0}
+SydTest::Executor: [INFO] {JP2010181693,文書,0E0}
+SydTest::Executor: [INFO] {JP2010181696,管理,0E0}
+SydTest::Executor: [INFO] {JP2010181698,保管,0E0}
+SydTest::Executor: [INFO] {JP2010181699,文書,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, PRODUCT, TITLE, score(JP.AB) from JP where JP.TITLE contains 'ソリューション' and JP.AB contains '文書' and JP.PRODUCT='FAX' order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181692,文書,FAX,ペーパーレスソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, PRODUCT, TITLE, score(JP.AB) from JP where (not JP.TITLE contains 'ソリューション') and JP.AB contains '管理' and JP.PRODUCT='FAX' order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181696,管理,FAX,ネクストジェネレーションネットワークサービス,2.508333696884E-2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.AB) from JP where JP.TITLE contains 'ソリューション' and (JP.AB contains '文書' or JP.AN='JP2010181692') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,ドキュメントソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.AB) from JP where (not JP.TITLE contains 'システム') and (JP.AB contains '文書' or JP.AN='JP2010181696') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,ドキュメントソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,デジタルドキュメント検索サービス,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181699,文書,デジタルサイネージサービス,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181696,管理,ネクストジェネレーションネットワークサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.AB) from JP where not (JP.TITLE contains 'ソリューション' and not JP.AB contains '文書' and not JP.AN='JP2010181692') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,ドキュメントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181693,文書,デジタルドキュメント検索サービス,0E0}
+SydTest::Executor: [INFO] {JP2010181696,管理,ネクストジェネレーションネットワークサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181697,管理,類似画像検索システム,0E0}
+SydTest::Executor: [INFO] {JP2010181698,保管,クラウドプリントサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181699,文書,デジタルサイネージサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, TITLE, score(JP.TITLE) from JP where JP.AN = 'JP2010181693' or (not JP.TITLE contains 'ソリューション' and JP.AN='JP2010181696') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181693,デジタルドキュメント検索サービス,0E0}
+SydTest::Executor: [INFO] {JP2010181696,ネクストジェネレーションネットワークサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, PRODUCT, score(JP.AB) from JP where (not JP.PRODUCT = 'MFP') or (JP.AB contains '文書' and JP.AN='JP2010181693') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181693,文書,MFP,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181691,文書,SCANNER,0E0}
+SydTest::Executor: [INFO] {JP2010181692,文書,FAX,0E0}
+SydTest::Executor: [INFO] {JP2010181696,管理,FAX,0E0}
+SydTest::Executor: [INFO] {JP2010181697,管理,CAMERA,0E0}
+SydTest::Executor: [INFO] {JP2010181698,保管,FAX,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, PRODUCT, score(JP.AB) from JP where JP.PRODUCT ='CAMERA' or JP.AB contains '文書' or JP.AN='JP2010181696' order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,SCANNER,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,FAX,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,MFP,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181699,文書,MFP,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181696,管理,FAX,0E0}
+SydTest::Executor: [INFO] {JP2010181697,管理,CAMERA,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, PRODUCT, score(JP.AB) from JP where (not JP.PRODUCT = 'MFP') or JP.AB contains '文書' or JP.AN='JP2010181697' order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,SCANNER,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,FAX,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,MFP,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181699,文書,MFP,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181696,管理,FAX,0E0}
+SydTest::Executor: [INFO] {JP2010181697,管理,CAMERA,0E0}
+SydTest::Executor: [INFO] {JP2010181698,保管,FAX,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, score(JP.AB) from JP where not (JP.AN = 'JP2010181694' or (JP.AB contains 'ソリューション' and not JP.AN='JP2010181692')) order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where JP.PRODUCT = 'FAX'  and (not JP.TITLE contains 'ソリューション' and not JP.AN='JP2010181696') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181698,FAX,クラウドプリントサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where (not JP.PRODUCT = 'MFP') and JP.TITLE contains 'ソリューション' and  (not JP.AN='JP2010181691') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181692,FAX,ペーパーレスソリューション,1.372095591706E-2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  JP.PRODUCT = 'FAX' and (JP.TITLE contains 'サービス' or  JP.AN='JP2010181692') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181698,FAX,クラウドプリントサービス,4.042089860516E-1}
+SydTest::Executor: [INFO] {JP2010181696,FAX,ネクストジェネレーションネットワークサービス,3.705253827685E-1}
+SydTest::Executor: [INFO] {JP2010181692,FAX,ペーパーレスソリューション,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, PRODUCT, score(JP.AB) from JP where (not JP.PRODUCT = 'MFP') and (JP.AB contains '文書' or JP.AN='JP2010181697') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,SCANNER,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,FAX,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181697,管理,CAMERA,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where not (JP.PRODUCT = 'MFP' and JP.TITLE contains 'サービス' and (not JP.AN='JP2010181693')) order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181694,MFP,クラウドネットワークソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181695,MFP,プリントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181694,MFP,クラウドネットワークソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181695,MFP,プリントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181694,MFP,クラウドネットワークソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181695,MFP,プリントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181694,MFP,クラウドネットワークソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181695,MFP,プリントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181694,MFP,クラウドネットワークソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181695,MFP,プリントソリューション,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (JP.PRODUCT = 'SCANNER' or JP.TITLE contains 'クラウド') and (JP.TITLE contains 'プリント' or JP.TITLE contains 'サービス')  order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181698,FAX,クラウドプリントサービス,4.042089860516E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (JP.PRODUCT = 'MFP' and JP.TITLE contains 'サービス') or (JP.TITLE contains 'サービス' and JP.PRODUCT = 'FAX')  order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181698,FAX,クラウドプリントサービス,4.042089860516E-1}
+SydTest::Executor: [INFO] {JP2010181699,MFP,デジタルサイネージサービス,4.005675196241E-1}
+SydTest::Executor: [INFO] {JP2010181693,MFP,デジタルドキュメント検索サービス,3.900264268605E-1}
+SydTest::Executor: [INFO] {JP2010181696,FAX,ネクストジェネレーションネットワークサービス,3.705253827685E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (JP.TITLE contains 'サービス' and JP.PRODUCT = 'FAX') or (JP.PRODUCT = 'MFP' and JP.TITLE contains 'サービス')  order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181698,FAX,クラウドプリントサービス,4.042089860516E-1}
+SydTest::Executor: [INFO] {JP2010181699,MFP,デジタルサイネージサービス,4.005675196241E-1}
+SydTest::Executor: [INFO] {JP2010181693,MFP,デジタルドキュメント検索サービス,3.900264268605E-1}
+SydTest::Executor: [INFO] {JP2010181696,FAX,ネクストジェネレーションネットワークサービス,3.705253827685E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (JP.PRODUCT = 'FAX' or JP.TITLE contains 'カラ集合') and (JP.TITLE contains 'サービス' or JP.TITLE = 'ソリューション')  order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181698,FAX,クラウドプリントサービス,4.042089860516E-1}
+SydTest::Executor: [INFO] {JP2010181696,FAX,ネクストジェネレーションネットワークサービス,3.705253827685E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  not (JP.PRODUCT = 'MFP' and JP.TITLE contains 'ソリューション') or ((not JP.TITLE contains 'ソリューション') and JP.TITLE contains 'クラウド')  order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181698,FAX,クラウドプリントサービス,2.555002841959E-2}
+SydTest::Executor: [INFO] {JP2010181691,SCANNER,ドキュメントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181692,FAX,ペーパーレスソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181693,MFP,デジタルドキュメント検索サービス,0E0}
+SydTest::Executor: [INFO] {JP2010181696,FAX,ネクストジェネレーションネットワークサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181697,CAMERA,類似画像検索システム,0E0}
+SydTest::Executor: [INFO] {JP2010181699,MFP,デジタルサイネージサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (JP.TITLE = 'デジタルドキュメント検索サービス' and JP.TITLE contains 'ソリューション') or (JP.TITLE contains 'ソリューション' and JP.PRODUCT = 'FAX') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181692,FAX,ペーパーレスソリューション,1.372095591706E-2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (not JP.TITLE = 'デジタルドキュメント検索サービス') and JP.PRODUCT = 'FAX' and (JP.TITLE contains 'ソリューション' or not JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181692,FAX,ペーパーレスソリューション,1.372095591706E-2}
+SydTest::Executor: [INFO] {JP2010181696,FAX,ネクストジェネレーションネットワークサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181698,FAX,クラウドプリントサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.AB) from JP where (JP.AB contains '管理' and JP.TITLE contains 'サービス') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181696,管理,ネクストジェネレーションネットワークサービス,2.508333696884E-2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.AB contains '管理' and JP.TITLE contains 'サービス') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181696,管理,ネクストジェネレーションネットワークサービス,3.705253827685E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.AB contains '管理' and not JP.TITLE contains 'ソリューション') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181696,管理,ネクストジェネレーションネットワークサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181697,管理,類似画像検索システム,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.AB) from JP where (JP.AB contains '文書' and JP.TITLE contains 'ドキュメント') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,ドキュメントソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,デジタルドキュメント検索サービス,3.969902145118E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, TITLE, score(JP.TITLE) from JP where (JP.TITLE = 'ドキュメントソリューション' and JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,ドキュメントソリューション,4.524909727170E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.AB contains '文書' or JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,ドキュメントソリューション,4.524909727170E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,デジタルドキュメント検索サービス,4.405834937418E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181699,文書,デジタルサイネージサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.AB contains '文書' or not JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181695,検索,プリントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,クラウドネットワークソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,プリントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,クラウドネットワークソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,プリントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,クラウドネットワークソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,プリントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,クラウドネットワークソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181695,検索,プリントソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181694,管理,クラウドネットワークソリューション,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.AB) from JP where not (not JP.AB contains '文書' or JP.TITLE contains 'ドキュメント') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181699,文書,デジタルサイネージサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.TITLE) from JP where not (not JP.AB contains '文書' or JP.TITLE contains 'ドキュメント') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,0E0}
+SydTest::Executor: [INFO] {JP2010181699,文書,デジタルサイネージサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.TITLE contains 'プリントサービス' or JP.TITLE contains 'サービス') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181698,保管,クラウドプリントサービス,5.090918759153E-1}
+SydTest::Executor: [INFO] {JP2010181699,文書,デジタルサイネージサービス,4.005675196241E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,デジタルドキュメント検索サービス,3.900264268605E-1}
+SydTest::Executor: [INFO] {JP2010181696,管理,ネクストジェネレーションネットワークサービス,3.705253827685E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.AB) from JP where (JP.TITLE contains 'サービス' or JP.AB contains '保管') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181698,保管,クラウドプリントサービス,5E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,デジタルドキュメント検索サービス,0E0}
+SydTest::Executor: [INFO] {JP2010181696,管理,ネクストジェネレーションネットワークサービス,0E0}
+SydTest::Executor: [INFO] {JP2010181699,文書,デジタルサイネージサービス,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.TITLE = 'ドキュメントソリューション' or JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,ドキュメントソリューション,4.524909727170E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,デジタルドキュメント検索サービス,4.405834937418E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.AB contains '文書' or JP.TITLE contains 'ドキュメント') and JP.TITLE contains 'ソリューション' order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,ドキュメントソリューション,4.524909727170E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,1.372095591706E-2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.AB) from JP where  JP.TITLE contains 'ソリューション' and (JP.AB contains '文書' or JP.TITLE contains 'ドキュメント') order by score(JP.AB) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,ドキュメントソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,3.969902145118E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AN, AB, TITLE, score(JP.TITLE) from JP where JP.AB contains '文書' and (JP.TITLE contains 'ソリューション' or JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10
+SydTest::Executor: [INFO] {JP2010181691,文書,ドキュメントソリューション,4.524909727170E-1}
+SydTest::Executor: [INFO] {JP2010181693,文書,デジタルドキュメント検索サービス,4.405834937418E-1}
+SydTest::Executor: [INFO] {JP2010181692,文書,ペーパーレスソリューション,1.372095591706E-2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

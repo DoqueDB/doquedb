@@ -1,0 +1,16 @@
+
+Begin;
+Initialize;
+BeginTimeSpan;
+InitializeSession "TESTDB";
+
+#read only transactionではcorrectできないのでエラー
+#Command "verify database TESTDB cascade continue";
+
+#Command "commit";
+
+TerminateSession;
+
+EndTimeSpan;
+Terminate;
+End;

@@ -1,0 +1,32 @@
+# delete[1]/fulltext(sectionized, delayed)/heap
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'sectionized, delayed'";
+Command  "select C1 from T1";
+# 2タプル挿入する
+Command  "insert into T1 (C1) values (?), (?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"]];
+# 1つずつ消す
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"]];
+# 正常にいけば浮ヘ空になっているはず
+#Command  "select C1 from T1";
+#Command  "drop table T1";
+
+Command  "select * from T1";
+
+TerminateSession;
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

@@ -1,0 +1,9 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+CreatePreparedCommand "1" "select count(this_.b_id) as y0_ from BOOK this_ where (this_.b_title like ? escape '\\' or exists (select * from PAGE this0__ where this_.b_id=this0__.p_bid and this0__.p_body like ? escape '\\'))";
+PreparedCommand "1" ["%小泉%","%小泉%"];
+ErasePreparedCommand "1";
+TerminateSession;
+Terminate;
+End;

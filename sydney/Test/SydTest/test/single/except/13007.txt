@@ -1,0 +1,36 @@
+# 初期化中にエラーを発生させる
+#
+# このスクリプトのファイルアクセス(新たに生成されるページのインスタンス)は
+# 以下のようになっている。
+#
+# 初期化
+#	論理ログ		2ページ
+# 最初のselect文
+#	スキーマ情報		139ページ
+#	レコードのFixed		7ページ
+# 2番目のselect文
+#	レコードのVariable	7ページ
+# 3番目のselect文
+#	B木			4ページ
+#	ベクター		4ページ
+#	B木			1ページ
+#	ベクター		3ページ
+
+Begin;
+SetSystemParameter "Exception_FakeError" "Buffer::Page::attach count=(143 150 152 156)";
+
+Initialize;
+InitializeSession "TEST";
+# レコードのFixedのVERSION.SYDのヘッダーでエラー
+Command "select A from T";
+# レコードのVariableのVERSION.SYDのヘッダーでエラー
+Command "select B from T";
+# Ｂ木のVERSION.SYDのヘッダーでエラー
+Command "select * from T where A = 2";
+# ベクターのVERSION.SYDのヘッダーでエラー
+Command "select * from T where A = 2";
+TerminateSession;
+Terminate;
+
+SetSystemParameter "Exception_FakeError" "";
+End;

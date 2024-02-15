@@ -1,0 +1,327 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DefaultDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (N int, C ntext array [no limit], L language array [no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_I on T(N)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTIndex on T(C) language column L hint 'delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C, L) values (?, ?, ?)
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 1608]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 11467]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter: length = 6331]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,{(null),(null)},{ja+en,ja+en}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] ins
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where L=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {{ja+en,ja+en}}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index FTIndex cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [[SQL Query]] update T set C=? where N=?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [[SQL Parameter]] {{良書紹介
+宮本百合子
+
+
+
+　China : The March Toward Unity, by Mao Tse-Tung & others.
+　Red Star over China, by E. Snow.
+後者には最近新しい章も追加され、今日の中国の現実を知るために極めて有益な本であると思います。丸善に折々入荷されます。そして忽ち売切れになります。
+〔一九三九年十二月〕
+
+
+
+
+底本：「宮本百合子全集　第十七巻」新日本出版社
+　　　1981（昭和56）年3月20日初版発行
+　　　1986（昭和61）年3月20日第4刷発行
+初出：「図書」
+　　　1939（昭和14）年12月号
+入力：柴田卓治
+校正：磐余彦
+2003年9月15日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。
+,(null)},0}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12588]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [[SQL Parameter: length = 67262]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [[SQL Parameter]] {{(null),良書紹介
+宮本百合子
+
+
+
+　China : The March Toward Unity, by Mao Tse-Tung & others.
+　Red Star over China, by E. Snow.
+後者には最近新しい章も追加され、今日の中国の現実を知るために極めて有益な本であると思います。丸善に折々入荷されます。そして忽ち売切れになります。
+〔一九三九年十二月〕
+
+
+
+
+底本：「宮本百合子全集　第十七巻」新日本出版社
+　　　1981（昭和56）年3月20日初版発行
+　　　1986（昭和61）年3月20日第4刷発行
+初出：「図書」
+　　　1939（昭和14）年12月号
+入力：柴田卓治
+校正：磐余彦
+2003年9月15日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。
+},3}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [[SQL Parameter: length = 60964]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [[SQL Parameter: length = 6317]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [[SQL Parameter: length = 1154]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [[SQL Parameter: length = 11453]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd2
+SydTest::Executor: [INFO] [[SQL Query]] update T set C=? where C like ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd2
+SydTest::Executor: [INFO] [[SQL Parameter]] {{(null),(null)},%最高裁判所%}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd2
+SydTest::Executor: [INFO] [[SQL Parameter]] {{(null),(null)},%打率%}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd2
+SydTest::Executor: [INFO] [[SQL Parameter: length = 67265]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd2
+SydTest::Executor: [INFO] [[SQL Parameter: length = 12595]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd2
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd3
+SydTest::Executor: [INFO] [[SQL Query]] update T set C=? where C like ? and C like ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd3
+SydTest::Executor: [INFO] [[SQL Parameter: length = 17762]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd3
+SydTest::Executor: [INFO] [[SQL Parameter: length = 62108]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd3
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index FTIndex cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C=? where C is not null
+SydTest::Executor: [INFO] [[SQL Parameter]] {{(null),(null)}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index FTIndex cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where N=3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [[SQL Parameter]] {{良書紹介
+宮本百合子
+
+
+
+　China : The March Toward Unity, by Mao Tse-Tung & others.
+　Red Star over China, by E. Snow.
+後者には最近新しい章も追加され、今日の中国の現実を知るために極めて有益な本であると思います。丸善に折々入荷されます。そして忽ち売切れになります。
+〔一九三九年十二月〕
+
+
+
+
+底本：「宮本百合子全集　第十七巻」新日本出版社
+　　　1981（昭和56）年3月20日初版発行
+　　　1986（昭和61）年3月20日第4刷発行
+初出：「図書」
+　　　1939（昭和14）年12月号
+入力：柴田卓治
+校正：磐余彦
+2003年9月15日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。
+,株式会社リコー
+},2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set C=? where C=?
+SydTest::Executor: [INFO] [[SQL Parameter: length = 72412]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where C like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%電話帳%}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [[SQL Parameter]] {{良書紹介
+宮本百合子
+
+
+
+　China : The March Toward Unity, by Mao Tse-Tung & others.
+　Red Star over China, by E. Snow.
+後者には最近新しい章も追加され、今日の中国の現実を知るために極めて有益な本であると思います。丸善に折々入荷されます。そして忽ち売切れになります。
+〔一九三九年十二月〕
+
+
+
+
+底本：「宮本百合子全集　第十七巻」新日本出版社
+　　　1981（昭和56）年3月20日初版発行
+　　　1986（昭和61）年3月20日第4刷発行
+初出：「図書」
+　　　1939（昭和14）年12月号
+入力：柴田卓治
+校正：磐余彦
+2003年9月15日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。
+,株式会社リコー
+},1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select N from T where C like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%の%}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] upd1
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T where L=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {{en+ja,ja+en}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from T
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index FTIndex cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

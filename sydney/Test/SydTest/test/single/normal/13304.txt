@@ -1,0 +1,22 @@
+Begin;
+Initialize;
+InitializeSession "DBAreaTest";
+#------------------------------------
+NotExists "d:\\dm\\data\\alterareatest";
+Exists "d:\\dm\\data\\areatest\\T\\BTR_T_f1";
+Exists "d:\\dm\\data\\areatest\\T\\FTS_T_f2";
+Command "drop table T";
+NotExists "d:\\dm\\data\\areatest\\T";
+Exists "d:\\dm\\data\\areatest";
+Command "drop area area1";
+NotExists "d:\\dm\\data\\areatest";
+#------------------------------------
+TerminateSession;
+
+#テストに使ったデータベースの破棄
+InitializeSession "";
+Command "drop database DBAreaTest";
+TerminateSession;
+
+Terminate;
+End;

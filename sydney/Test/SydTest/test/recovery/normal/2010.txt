@@ -1,0 +1,75 @@
+## -*-Mode: text; tab-width: 4; c-basic-offset: 4;-*-
+## vi:set ts=4 sw=4:
+##
+## xxxx.txt -- index 作成のテスト
+##
+##	TEST CONTENTS
+##		index の構築、変更、破棄を行う
+##
+##	START CONDITIONS
+##		特に無し
+##		
+##	END CONDITIONS
+##		satart 前と同じ状態である
+##
+##	CHECK
+##		Exists、NotExists が正しいか
+##
+##	NOTE
+##		シングルスレッド
+##		正常系
+##		Schema の単体テストも兼ねる
+##
+## Copyright (c) 2001 Ricoh Company, Ltd.
+## All rights reserved.
+##
+##		$Author$
+##		$Date$
+##		$Revision$
+##
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create area IDX_AREA 'd:\\dm\\test_area'";
+Command "create table T(A int, B int)";
+Command "insert into T values (1, 2)"; #030122追加
+
+# 作成
+Command "create index IDX_1 on T(A)";
+Exists "d:\\dm\\data\\TESTDB\\T\\BTR_IDX_1";
+
+Command "create index IDX_2 on T(B) area IDX_AREA";
+Exists "d:\\dm\\test_area\\T\\BTR_IDX_2";
+
+# 変更
+Command "alter index IDX_1 set area IDX_AREA";
+NotExists "d:\\dm\\data\\TESTDB\\T\\BTR_IDX_1";
+Exists "d:\\dm\\test_area\\T\\BTR_IDX_1";
+
+# 破棄
+Command "drop index IDX_1";
+Command "drop index IDX_2";
+
+NotExists "d:\\dm\\data\\TESTDB\\T\\BTR_IDX_1";
+NotExists "d:\\dm\\data\\TESTDB\\T\\BTR_IDX_2";
+
+#Command "drop database TESTDBx";
+
+Command  "select * from T";
+
+TerminateSession;
+
+#下三行は伊戸川が追加
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

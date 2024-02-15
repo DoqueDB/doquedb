@@ -1,0 +1,482 @@
+#!/usr/bin/perl
+# 
+# Copyright (c) 2000,2002, 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+#
+# mkmodic - make morphological dictionary source
+
+=head1 NAME
+
+ mkmodic - 形態素辞書ソース作成ツール
+
+=head1 SYNOPSIS
+
+ mkmodic [オプション]
+
+=head1 DESCRIPTION
+
+ 主に、日本語形態素解析UNA V3(unamk)の形態素辞書ソースを作成する
+ ためのツールである。
+ mkmodicは、UNA::MkMoDicのフロントエンドとして動作する。
+ 詳しくは、UNA::MkMoDicのマニュアルを参照のこと。
+ 
+ オプションは以下の通り。(一部のみ。詳しくは、-hオプションを実行のこと。)
+
+=item -r I<出力ディレクトリ>
+
+ UNA用ソースデータ(UTF-8形式)の出力ディレクトリを指定する。
+ デフォルトは、./ である。
+ 指定したディレクトリにサブディレクトリ uwork/ が作成され、
+ UNA用ソースデータ(UTF-8形式)が出力される。
+ 既にサブディレクトリが存在する場合は、ファイルを上書きする。
+ さらに、下記サブディレクトリに中間ファイルが作成される。実行後は削除される。
+   tmp
+
+=item -E I<UNAツールディレクトリ>
+
+ UNA用ソースデータ作成ツールおよびetcデータなどのあるディレクトリを指定する。
+ デフォルトは、../src-data/unaである。
+
+=item -u
+
+ 単語IDをユニークIDに変換する。
+ 現バージョンでは機能しない。
+
+=item -d I<コモン辞書:コモン辞書:...>
+
+ コモン辞書を指定する。:を区切りとして複数のコモン辞書を指定できる。
+ デフォルトは、common.dic である。
+
+=item -p I<辞書マークパターン>
+
+ 辞書マークパターンで指定したマーク行を読み込む。
+ デフォルトは、'h0m0t1f0g0e0u0' である。
+
+=item -g I<品詞グループ定義:品詞グループ定義:...>
+
+ 品詞グループ定義を指定する。:を区切りとして複数の品詞グループ定義を指定できる。
+ デフォルトは、hinsi.grp である。
+
+=item -t I<語尾テーブル:語尾テーブル:...>
+
+ 語尾テーブルを指定する。:を区切りとして複数の語尾テーブルを指定できる。
+ デフォルトは、gobi.tbl である。
+
+=item -f I<素性定義リスト:素性定義リスト:...>
+
+ 素性定義リストを指定する。:を区切りとして複数の素性定義リストを指定できる。
+ デフォルトは、mfeature.lst である。
+
+=item -m I<アプリ品詞定義:アプリ品詞定義:...>
+
+ アプリ品詞定義を指定する。:を区切りとして複数のアプリ品詞定義を指定できる。
+ デフォルトは、etc/hinmap.src である。
+
+=item -M I<統合品詞定義:統合品詞定義:...>
+
+ 統合品詞定義を指定する。:を区切りとして複数の統合品詞定義を指定できる。
+ デフォルトは、etc/unihinmap.src である。
+
+=item -T I<検索語タイプリスト:検索語タイプリスト:...>
+
+ 検索語タイプの名称と値のペアをもつ検索語タイプリストを指定する。
+ デフォルトは、etc/termtype.lst である。
+
+=item -Y I<検索語タイプマップ:検索語タイプマップ:...>
+
+ 品詞名パターンと検索語タイプ名のペアをもつ検索語タイプマップを指定する。
+ デフォルトは、etc/termtypemap.lst である。
+
+=item -l I<固定品詞リスト:固定品詞リスト:...>
+
+ 固定品詞リストを指定する。:を区切りとして複数の固定品詞リストを指定できる。
+ デフォルトは、etc/fixhin.lst である。
+
+=item -e I<単語頻度推定テーブル>
+
+ 単語頻度推定テーブルを指定する。
+ hindomap.tbl が標準だがデフォルトは指定なし。
+
+=item -s I<半角記号登録ファイル>
+
+ 全角記号エントリに対して、半角記号登録ファイルに記載される半角記号エントリを
+ UNA用辞書ソースに追加登録する。
+ han.tbl が標準だがデフォルトは指定なし。
+
+=item -O I<UNA用辞書ソース>
+
+ UNA用辞書ソースを指定する。
+ デフォルトは、uwork/unadic.utf8 である。
+
+=item -b I<基本情報パターン>
+
+ 基本情報パターンにより、UNA用辞書ソースに出力する情報を指定する。
+ デフォルトは、"<uniqids> <hyouki:unite> <hin> <cost> " である。
+
+=item -a I<アプリケーション情報パターン>
+
+ アプリケーション情報パターンにより、UNA用辞書ソースに出力する情報を指定する。
+ デフォルトは、"<info:a>" である。
+
+=item -L I<UNA品詞リスト>
+
+ UNA品詞リストを指定する。
+ デフォルトは、uwork/unahin.utf8 である。
+
+=item -H I<UNA品詞ヘッダー>
+
+ fixhin.lstに基づいて作られ、unamorph.hに取り込むUNA品詞ヘッダーの出力先を指定する。
+ デフォルトは、./unamorph_h.dat である。
+
+=item -J I<アプリ品詞番号変換テーブル
+
+ hinmap.srcに基づいて作られ、getConcept()で参照されるアプリ品詞番号変換テーブルの
+ 出力先を指定する。デフォルトは、./jpTrans_tbl.dat である。
+
+=item -V I<統合品詞番号変換テーブル>
+
+ unihinmap.srcに基づいて作られる統合品詞番号変換テーブルの出力先を指定する。
+ デフォルトは、./convTable.dat である。
+
+=item -P I<検索語タイプ>
+
+ termtype.lst、termtypemap.lstに基づいて作られる検索語タイプの出力先を指定する。
+ デフォルトは、./termType_utf8.dat である。
+
+=item -B I<辞書頻度テーブル>
+
+ 辞書頻度テーブルを指定する。
+ 辞書頻度テーブルが指定された場合、テーブルの頻度を用いて単語コストや品詞頻度を算出する。
+ デフォルトは、未定義。
+
+=item -C I<コスト最大値ファイル>
+
+ コスト最大値ファイルを指定する。
+ デフォルトは、uwork/costmax.log である。
+
+=item -F
+
+ 基本辞書品詞頻度テーブルに登録の品詞頻度を使用する。
+
+=item -j
+
+ 基本品詞による品詞頻度を用いて単語コストや品詞頻度を算出する。
+
+=item -N
+
+ 活用語尾の数から特殊活用を除いて単語コストや品詞頻度を算出する。
+
+=item -U
+
+ コスト最大値ファイルを更新する。
+
+=item -x I<PREFIX>
+
+ UNA品詞ヘッダーのマクロ定義の引数の接頭辞を指定する。
+ デフォルトは、XXX_HIN である。
+
+=item -z I<品詞グループ定義ログ>
+
+ 指定したファイルに品詞グループ定義のログを出力する。
+
+=item -v
+
+ 不必要に詳細な情報を出力する(Verbose)。
+
+=item -D
+
+ デバッグ用の情報を出力する(Debug)。ただし、現バージョンでは未使用。
+
+=item -h
+
+ 簡単なヘルプを出力する(Help)。
+
+=head1 HISTORY
+
+ Ver.2.01 2001/12/14 /proj/una/local/binからコピーしパスを変更
+ Ver.5.00 2002/04/30 UNA-CmnToolsとしてRCS管理に
+ Ver.5.01 2002/05/16 hindomap.tblの読み込み箇所のバグを修正
+ Ver.5.02 2002/05/20 -Tオプションを追加
+ Ver.5.03 2002/05/20 -sオプションを追加
+ Ver.5.04 2002/07/31 mkmodicレビューにより見つかったバグを修正 
+ Ver.5.05 2002/08/20 ツールの実行環境を/proj/nlp/tools/UNA-CmnTools/v1.2.dist
+                     に変更
+                     -Eオプションを追加
+                     perldocを補足
+ Ver.5.06 2002/09/11 -rオプションの動作を変更。これに伴い、-Tオプションを削除
+ Ver.5.07 2014/12/04 -Hオプションの動作を変更、-M、-J、-Vオプションを追加
+=head1 BUG
+
+=cut
+
+use lib "../tools/perl/lib";
+use utf8;
+
+# デフォールトの設定
+my $out_dir = "./";
+my $cmn_dir = "../src-data/una";
+my $tmp_dir = "./tmp";
+my $dic_files = "../src-data/una/common.dic";
+my $mpat = 'h0m0t1f0g0e0';
+my $hingrp_files = "../src-data/una/hinsi.grp";
+my $gobitbl_files = "../src-data/una/gobi.tbl";
+my $fealst_files = "../src-data/una/mfeature.lst";
+my $hinmap_files = "../src-data/una/etc/hinmap.src";
+my $unihinmap_files = "../src-data/una/etc/unihinmap.src";
+my $termtype_files = "../src-data/una/etc/termtype.lst";
+my $termtypemap_files = "../src-data/una/etc/termtypemap.lst";
+my $modic_file = "./uwork/unadic.utf8";
+my $fixhin_files = "../src-data/una/etc/fixhin.lst";
+my $hindomap_file = ""; # "hindomap.tbl"が標準だがデフォルトは指定なし
+my $hantbl_file = "";   # "han.tbl"が標準だがデフォルトは指定なし
+my $costmax_file = "../src-data/una/etc/costmax.dat";
+my $hinhindotbl_file = "";   # "hinhindo.tbl"が標準だがデフォルトは指定なし
+my $baseinfo_pat = "<uniqids> <hyouki:unite> <hin> <cost> ";
+my $appinfo_pat = "<info:a>";
+my $hinlst_file = "./uwork/unahin.utf8";
+# 以下の4ファイルはデフォルトで生成しないようにした
+# 引数で陽に指定されたときのみ生成される
+# my $morph_h_file = "./uwork/unamorph_h.dat";
+# my $jptbl_file = "./uwork/jpTrans_tbl.dat";
+# my $convtbl_file = "./uwork/convTable.dat";
+# my $termtypetbl_file = "./uwork/termType_utf8.dat";
+my $morph_h_file = "";
+my $jptbl_file = "";
+my $convtbl_file = "";
+my $termtypetbl_file = "";
+my $dichindotbl_file = "";
+my $prefix = "XXX_HIN";
+
+# 引数の評価
+use Getopt::Std;
+getopts('r:E:ud:p:g:t:f:l:m:Ne:s:O:b:a:L:C:FjUH:x:z:kvDhM:J:V:T:Y:P:B:');
+if ($opt_h || $#ARGV >= 0) {
+        die <<EOU;
+mkmodic
+Usage: mkmodic [OPTIONS]
+	-r OUTDIR           output directory ($out_dir)
+	-E COMMONDIR        common source directory ($cmn_dir)
+	-u                  changes word ID to Unique number
+	-d FILE1:FILE2:...  dictionaries of common format ($dic_files)
+	-p PATTERN          dictionary mark pattern ($mpat)
+	-g FILE1:FILE2:...  hinshi group ($hingrp_files)
+	-t FILE1:FILE2:...  gobi table ($gobitbl_files)
+	-f FILE1:FILE2:...  feature list ($fealst_files)
+	-m FILE1:FILE2:...  hinshi map ($hinmap_files)
+	-M FILE1:FILE2:...  unified hinshi map ($unihinmap_files)
+	-l FILE1:FILE2:...  fixed hinshi list ($fixhin_files)
+	-T FILE1:FILE2:...  term type list ($termtype_files)
+	-Y FILE1:FILE2:...  term type map list ($termtypemap_files)
+	-e FILE             hindo map table ($hindomap_file)
+	-s FILE             add 1byte entry on han table ($hantbl_file) to dictionary
+	-O FILE             produced dictionary ($modic_file)
+	-b PATTERN          base information pattern ($baseinfo_pat)
+	-a PATTERN          application information pattern ($appinfo_pat)
+	-L FILE             produced hinshi list ($hinlst_file)
+	-H FILE             produced hinshi header data (as in unamorph.h) ($morph_h_file)
+	-J FILE             produced TransTable data ($jptbl_file)
+	-V FILE             produced convTable data ($convtbl_file)
+	-P FILE             produced termType data ($termtypetbl_file)
+	-B FILE             use dichindo table ($dichindotbl_file)
+	-C FILE             maximum cost file ($costmax_file)
+	-F                  use hinhindo table (hinhindo.tbl or hinhindo_N.tbl) to fix word cost
+	-j                  use basic part of speech for calculating cost
+	-U                  updates maximum cost file
+	-N                  the number of inflections excluding colloquial and literal style
+	-x PREFIX           hinshi header macro prefix ($prefix)
+	-z FILE             makes hinshi group defenition log file
+	-v                  verbose (show max/min cost)
+	-D                  Debug
+	-h                  Help
+EOU
+}
+if($opt_r){
+	$out_dir = $opt_r; 
+	$tmp_dir = "$out_dir/tmp";
+}
+$cmn_dir = $opt_E if defined $opt_E;
+$dic_files = $opt_d if $opt_d;
+$mpat = $opt_p if $opt_p;
+$hingrp_files = $opt_g if $opt_g;
+$gobitbl_files = $opt_t if $opt_t;
+$fealst_files = $opt_f if $opt_f;
+$hinmap_files = $opt_m if $opt_m;
+$unihinmap_files = $opt_M if $opt_M;
+$termtype_files = $opt_T if $opt_T;
+$termtypemap_files = $opt_Y if $opt_Y;
+$fixhin_files = $opt_l if $opt_l;
+$hindomap_file = $opt_e if defined $opt_e;
+$hantbl_file = $opt_s if defined $opt_s;
+$modic_file = $opt_O if defined $opt_O;
+$baseinfo_pat = $opt_b if defined $opt_b;
+$appinfo_pat = $opt_a if defined $opt_a;
+$hinlst_file = $opt_L if defined $opt_L;
+$morph_h_file = $opt_H if defined $opt_H;
+$jptbl_file = $opt_J if defined $opt_J;
+$convtbl_file = $opt_V if defined $opt_V;
+$termtypetbl_file = $opt_P if defined $opt_P;
+$dichindotbl_file = $opt_B if defined $opt_B;
+$prefix = $opt_x if defined $opt_x;
+mkdir $tmp_dir, 0775 || die "can't create $tmp_dir: $!\n" if(! -d $tmp_dir);
+$costmax_file = $opt_C if defined $opt_C;
+if($opt_F){
+	if($opt_N){
+		$hinhindotbl_file = "hinhindo_N.tbl";
+	} else {
+		$hinhindotbl_file = "hinhindo.tbl";
+	}
+}
+
+use UNA::MkMoDic;
+my $mkdic = new UNA::MkMoDic;
+$mkdic->{tmpfile1} = "$tmp_dir/\#MkMoDic.$$.1";
+$mkdic->{tmpfile2} = "$tmp_dir/\#MkMoDic.$$.2";
+
+# ファイルの読みこみ
+for (split(/:/, $dic_files)) {
+	if(/etc\//){
+		$mkdic->load('dic', &mkfile($cmn_dir, $_), $mpat);
+	}
+	else{
+		$mkdic->load('dic', $_, $mpat);
+	}
+}
+for (split(/:/, $hingrp_files)) {
+	$mkdic->load('hingrp', $_);
+}
+for (split(/:/, $gobitbl_files)) {
+	$mkdic->load('gobitbl', $_);
+}
+for (split(/:/, $fealst_files)) {
+	$mkdic->load('fealst', $_);
+}
+for (split(/:/, $hinmap_files)) {
+	$mkdic->load('hinmap', &mkfile($cmn_dir, $_));
+}
+for (split(/:/, $unihinmap_files)) {
+	$mkdic->load('unihinmap', &mkfile($cmn_dir, $_));
+}
+for (split(/:/, $termtype_files)) {
+	$mkdic->load('termtype', &mkfile($cmn_dir, $_));
+}
+for (split(/:/, $termtypemap_files)) {
+	$mkdic->load('termtypemap', &mkfile($cmn_dir, $_));
+}
+for (split(/:/, $fixhin_files)) {
+	$mkdic->load('fixhin', &mkfile($cmn_dir, $_));
+}
+if ($hindomap_file) {
+	$mkdic->load('hindomap', &mkfile($cmn_dir, $hindomap_file));
+}
+if (defined $opt_s) {
+	$mkdic->load('hantbl', &mkfile($cmn_dir, $hantbl_file), $tmp_dir);
+}
+if ($opt_F) {
+	$mkdic->load('hinhindotbl', &mkfile("$cmn_dir/etc", $hinhindotbl_file));
+}
+if (defined $opt_B) {
+	&check_option(&mkfile("$cmn_dir/etc", $dichindotbl_file));
+	$mkdic->load('dichindotbl', &mkfile("$cmn_dir/etc", $dichindotbl_file));
+}
+# 複数ソース辞書から実行用データを作成する際にeucdata/unahin.eucが作成されている場合は
+# 'hinlst'を指定して読み込む
+if (-f $hinlst_file) {
+	&check_option($hinlst_file);
+	$mkdic->load('hinlst', $hinlst_file);
+}
+
+# 辞書ソースの作成
+$info_pat = "$baseinfo_pat$appinfo_pat";
+$mkdic->make_morphdic(&mkfile($out_dir, $modic_file),
+	$info_pat, \&arranger, $opt_s, $opt_F, $opt_N, $opt_j, $opt_B);
+$mkdic->make_hinlst(&mkfile($out_dir, $hinlst_file),
+	&mkfile($out_dir, $morph_h_file), &mkfile($out_dir, $jptbl_file),
+	$prefix, $opt_F, $opt_j, $opt_B, $dic_files);
+print "generated unamorph.h macro: $morph_h_file (utf8)\n" if $morph_h_file;
+print "generated jpTrans.tbl data: $jptbl_file (utf8)\n" if $jptbl_file;
+if ($convtbl_file) {
+	$mkdic->make_convtbl(&mkfile($out_dir, $convtbl_file), $prefix, $opt_B);
+	print "generated convTable[] data: $convtbl_file (utf8)\n";
+}
+if ($termtypetbl_file) {
+	$mkdic->make_termtypetbl(&mkfile($out_dir, $termtypetbl_file), $opt_B);
+	print "generated termType data:    $termtypetbl_file (utf8)\n";
+}
+if ($info_pat =~ /<hin_code>/) {
+	# <hin_code>がある場合は、make_hinlst後にもう一度実行しなければならない。
+	# 2回めの呼び出しでも$opt_s, $opt_Fを指定する必要がある
+	$mkdic->make_morphdic(&mkfile($out_dir, $modic_file),
+		$info_pat, \&arranger, $opt_s, $opt_F, $opt_N, $opt_j, $opt_B);
+}
+
+# 品詞グループ定義のログの出力
+$mkdic->{hingrp}->dump_groups(&mkfile($out_dir, $opt_z)) if $opt_z;
+
+rmdir $tmp_dir if !$opt_D;
+
+# サンプル的な意味合いの出力加工関数
+sub arranger {
+	my($line) = @_;     # これを加工する
+	$line =~ s/ $//;    # 行末の空白を取る
+	$line;              # これが出力される
+}
+
+# ディレクトリと相対パスからファイル名を作る
+sub mkfile {
+	my($dir, $path) = @_;
+	return '' if $path eq '';        # 空ならそのまま
+	$dir =~ s/\/$//g if $dir ne '/'; # 最後の/を取る
+	my $file = "$dir/$path";
+	$file =~ s/.*\/\//\//;           # // があったらそこまでを / に変える
+	$file;
+}
+
+# UNA品詞リストあるいは辞書頻度テーブルの作成コマンドオプションのチェック
+sub check_option {
+	my($file) = @_;
+	open(FILE, $file) || die "can't read $file: $!\n";
+	while (<FILE>) {
+		chomp;
+		if($. == 1){
+			s/^#\s{1}//;
+
+			# UNA品詞リストあるいは辞書頻度テーブルの作成コマンドオプション
+			my $file_opt = "-F" if(/-F/);
+			$file_opt .= " -j" if(/-j/);
+			$file_opt .= " -N" if(/-N/);
+
+			# 実行コマンドオプション
+			my $exec_opt = "-F" if($opt_F);
+			$exec_opt .= " -j" if($opt_j);
+			$exec_opt .= " -N" if($opt_N);
+
+			if($file_opt ne $exec_opt){
+				die "check the execution option and the option described in file.\n".
+				"execution option : $exec_opt\n".
+				"$file option: $file_opt\n";
+			}
+		}
+	}
+	close FILE;
+}
+=head1 SEE ALSO
+
+L<NLP::MkMoDic2>, L<mkunadata>, L<unamk>, L<mkmoconn>, L<mkkutbl>, L<paco>
+
+=head1 COPYRIGHT
+
+ Copyright 2000,2002, 2023 RICOH Co, Ltd. All rights reserved.
+
+=cut

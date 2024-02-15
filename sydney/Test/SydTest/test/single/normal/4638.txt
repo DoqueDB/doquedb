@@ -1,0 +1,19 @@
+# 障害票 942
+# OR条件とFetchを同時に使用する
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+Command "create table T (f int, primary key(f))";
+Command "create table X (g int)";
+
+Command "insert T values 1,2,3";
+Command "insert X values 1,2,3";
+
+Command "select * from T, X where T.f = X.g and T.f in (1,2,3)";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,21 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# XA ROLLBACK -- バックアップ中の状態でロールバックする
+#
+
+Command "xa start X'00' read only";
+Command "start backup";
+Command "xa end X'00'";
+Command "xa rollback X'00'";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

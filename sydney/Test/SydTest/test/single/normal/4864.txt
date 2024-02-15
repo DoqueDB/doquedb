@@ -1,0 +1,55 @@
+# Bug report 1678, 1681
+# GORDER BY に max
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+CreateThread "Prepare";
+JoinThread "Prepare";
+
+CreateThread "Test";
+JoinThread "Test";
+
+CreateThread "Finish";
+JoinThread "Finish";
+
+TerminateSession;
+Terminate;
+End;
+
+Prepare
+{
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+
+Command  "create table T(C1 int not null, C2 int)";
+Command  "create index I1 on T(C1)";
+Command  "create index I2 on T(C2)";
+Command  "insert into T values (?, ?)" [1,1];
+Command  "insert into T values (?, ?)" [2,1];
+Command  "insert into T values (?, ?)" [3,1];
+Command  "insert into T select C1+C2, C2+1 from T";
+Command  "insert into T select C1+C2, C2+2 from T";
+Command  "insert into T select C1+C2, C2+4 from T";
+Command  "insert into T select C1+C2, C2+8 from T";
+Command  "insert into T select C1+C2, C2+16 from T";
+Command  "insert into T select C1+C2, C2+32 from T";
+Command  "insert into T select C1+C2, C2+64 from T";
+Command  "insert into T select C1+C2, C2+128 from T";
+Command  "insert into T select C1+C2, C2+256 from T";
+}
+
+Test
+{
+Command  "select C1, max(C2) from T where C1 is null group by C1";
+#期待結果:End of data
+
+Command  "select C1, max(C2) from T where C2 > 0 group by C1 having max(C2) = 401";
+#期待結果:{164,401},{165,401},{166,401}
+}
+
+Finish
+{
+Command  "drop database TESTDB";
+}

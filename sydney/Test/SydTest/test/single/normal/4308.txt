@@ -1,0 +1,51 @@
+#rename.sydtest
+#障害票 775
+#障害表 746 rename後のindex
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB path 'd:\\dm\\data\\TESTDB' logicallog 'd:\\dm\\data\\TESTDB' system 'd:\\dm\\data\\TESTDB'";
+Command "create table T (f int, primary key(f))";
+Command "create index I on T(f)";
+Command "insert T values 1,2,3";
+Command "checkpoint";
+
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T2 (f int, primary key(f))";
+Command "create index J on T2(f)";
+Command "insert T2 select * from T";
+Command "checkpoint";
+Command "drop table T";
+Command "select * from System_Index";
+Command "alter table T2 rename T";
+Command "alter index J rename I";
+Command "select * from System_Index";
+
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "start transaction read only";
+Command "start backup";
+System "rm -rf d:\\dm\\data\\TESTDB_bak";
+System "cp -Rf d:\\dm\\data\\TESTDB d:\\dm\\data\\TESTDB_bak";
+Command "end backup";
+Command "commit";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+System "cp -Rf d:\\dm\\data\\TESTDB_bak d:\\dm\\data\\TESTDB";
+Command "mount TESTDB path 'd:\\dm\\data\\TESTDB' logicallog 'd:\\dm\\data\\TESTDB' system 'd:\\dm\\data\\TESTDB'";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+End;

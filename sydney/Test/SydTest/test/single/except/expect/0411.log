@@ -1,0 +1,1064 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nvarchar(30), C2 nvarchar(460), primary key(C1, C2))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ,hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ホゲ,株式会社リコー
+}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=?, C2=? where C1=? and C2=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ,hello world
+konnnitiha.
+,ホゲ,株式会社リコー
+}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] {ほげ,hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nchar(30), C2 nvarchar(460), primary key(C1, C2))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+,星めぐりの歌
+宮澤賢治
+
+
+
+あかいめだまの　さそり
+ひろげた鷲の　　つばさ
+あをいめだまの　小いぬ、
+ひかりのへびの　とぐろ。
+
+オリオンは高く　うたひ
+つゆとしもとを　おとす、
+アンドロメダの　くもは
+さかなのくちの　かたち。
+
+大ぐまのあしを　きたに
+五つのばした　　ところ。
+小熊のひたいの　うへは
+そらのめぐりの　めあて。
+
+
+
+
+底本：「【新】校本宮澤賢治全集　第六巻　詩5［＃「5」はローマ数字、1-13-25］　本文篇」筑摩書房
+　　　1996（平成8）年5月30日初版第1刷発行
+入力：田中敬三
+校正：土屋隆
+2006年7月26日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {株式会社リコー
+,童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {株式会社リコー
+,童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=?, C2=? where C1=? and C2=?
+SydTest::Executor: [INFO] [[SQL Parameter: length = 826]] 
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] {hello world
+konnnitiha.
+    ,星めぐりの歌
+宮澤賢治
+
+
+
+あかいめだまの　さそり
+ひろげた鷲の　　つばさ
+あをいめだまの　小いぬ、
+ひかりのへびの　とぐろ。
+
+オリオンは高く　うたひ
+つゆとしもとを　おとす、
+アンドロメダの　くもは
+さかなのくちの　かたち。
+
+大ぐまのあしを　きたに
+五つのばした　　ところ。
+小熊のひたいの　うへは
+そらのめぐりの　めあて。
+
+
+
+
+底本：「【新】校本宮澤賢治全集　第六巻　詩5［＃「5」はローマ数字、1-13-25］　本文篇」筑摩書房
+　　　1996（平成8）年5月30日初版第1刷発行
+入力：田中敬三
+校正：土屋隆
+2006年7月26日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] {株式会社リコー
+                     ,童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nchar(400), primary key(C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {星めぐりの歌
+宮澤賢治
+
+
+
+あかいめだまの　さそり
+ひろげた鷲の　　つばさ
+あをいめだまの　小いぬ、
+ひかりのへびの　とぐろ。
+
+オリオンは高く　うたひ
+つゆとしもとを　おとす、
+アンドロメダの　くもは
+さかなのくちの　かたち。
+
+大ぐまのあしを　きたに
+五つのばした　　ところ。
+小熊のひたいの　うへは
+そらのめぐりの　めあて。
+
+
+
+
+底本：「【新】校本宮澤賢治全集　第六巻　詩5［＃「5」はローマ数字、1-13-25］　本文篇」筑摩書房
+　　　1996（平成8）年5月30日初版第1刷発行
+入力：田中敬三
+校正：土屋隆
+2006年7月26日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where C1=?
+SydTest::Executor: [INFO] [[SQL Parameter: length = 789]] 
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] {星めぐりの歌
+宮澤賢治
+
+
+
+あかいめだまの　さそり
+ひろげた鷲の　　つばさ
+あをいめだまの　小いぬ、
+ひかりのへびの　とぐろ。
+
+オリオンは高く　うたひ
+つゆとしもとを　おとす、
+アンドロメダの　くもは
+さかなのくちの　かたち。
+
+大ぐまのあしを　きたに
+五つのばした　　ところ。
+小熊のひたいの　うへは
+そらのめぐりの　めあて。
+
+
+
+
+底本：「【新】校本宮澤賢治全集　第六巻　詩5［＃「5」はローマ数字、1-13-25］　本文篇」筑摩書房
+　　　1996（平成8）年5月30日初版第1刷発行
+入力：田中敬三
+校正：土屋隆
+2006年7月26日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆}
+SydTest::Executor: [INFO] {童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。                   }
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nvarchar(30), primary key(C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ホゲ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ホゲ}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where C1=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ,ホゲ}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] {ほげ}
+SydTest::Executor: [INFO] {ホゲ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nvarchar(30), C2 nvarchar(460), primary key(C1, C2))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ホゲ,株式会社リコー
+}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=?, C2=? where C1=? and C2=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null),ホゲ,株式会社リコー
+}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] {ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nchar(30), C2 nvarchar(460), primary key(C1, C2))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {株式会社リコー
+,童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {株式会社リコー
+,童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=?, C2=? where C1=? and C2=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null),株式会社リコー
+,童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] {株式会社リコー
+                     ,童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nchar(400), primary key(C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where C1=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] {童謡
+小川未明
+
+
+
+みいちゃんみいちゃん、なぜ泣なく、
+青あおい空そら見みて泣なくんだ。
+青あおい空そら見みてなぜ泣なく、
+つばめの行方ゆくえが悲かなしくて、
+母かかを思おもうて泣なくんだ。
+
+
+
+
+底本：「定本小川未明童話全集　3」講談社
+　　　1977（昭和52）年1月10日第1刷
+　　　1981（昭和56）年1月6日第7刷
+初出：「新潮」
+　　　1906（明治39）年1月
+※表題は底本では、「童謡どうよう」となっています。
+入力：ぷろぼの青空工作員チーム入力班
+校正：江村秀之
+2013年12月5日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。                   }
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nvarchar(30), primary key(C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ホゲ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ホゲ}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) UNIQUE constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where C1=?
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),ホゲ}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] {ホゲ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nvarchar(30), C2 nvarchar(460), primary key(C1, C2))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ,hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=?, C2=? where C1 is null and C2 is null
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ,hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] {ほげ,hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nchar(30), C2 nvarchar(460), primary key(C1, C2))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+,星めぐりの歌
+宮澤賢治
+
+
+
+あかいめだまの　さそり
+ひろげた鷲の　　つばさ
+あをいめだまの　小いぬ、
+ひかりのへびの　とぐろ。
+
+オリオンは高く　うたひ
+つゆとしもとを　おとす、
+アンドロメダの　くもは
+さかなのくちの　かたち。
+
+大ぐまのあしを　きたに
+五つのばした　　ところ。
+小熊のひたいの　うへは
+そらのめぐりの　めあて。
+
+
+
+
+底本：「【新】校本宮澤賢治全集　第六巻　詩5［＃「5」はローマ数字、1-13-25］　本文篇」筑摩書房
+　　　1996（平成8）年5月30日初版第1刷発行
+入力：田中敬三
+校正：土屋隆
+2006年7月26日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=?, C2=? where C1 is null and C2 is null
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello world
+konnnitiha.
+,星めぐりの歌
+宮澤賢治
+
+
+
+あかいめだまの　さそり
+ひろげた鷲の　　つばさ
+あをいめだまの　小いぬ、
+ひかりのへびの　とぐろ。
+
+オリオンは高く　うたひ
+つゆとしもとを　おとす、
+アンドロメダの　くもは
+さかなのくちの　かたち。
+
+大ぐまのあしを　きたに
+五つのばした　　ところ。
+小熊のひたいの　うへは
+そらのめぐりの　めあて。
+
+
+
+
+底本：「【新】校本宮澤賢治全集　第六巻　詩5［＃「5」はローマ数字、1-13-25］　本文篇」筑摩書房
+　　　1996（平成8）年5月30日初版第1刷発行
+入力：田中敬三
+校正：土屋隆
+2006年7月26日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2 from T1
+SydTest::Executor: [INFO] {hello world
+konnnitiha.
+    ,星めぐりの歌
+宮澤賢治
+
+
+
+あかいめだまの　さそり
+ひろげた鷲の　　つばさ
+あをいめだまの　小いぬ、
+ひかりのへびの　とぐろ。
+
+オリオンは高く　うたひ
+つゆとしもとを　おとす、
+アンドロメダの　くもは
+さかなのくちの　かたち。
+
+大ぐまのあしを　きたに
+五つのばした　　ところ。
+小熊のひたいの　うへは
+そらのめぐりの　めあて。
+
+
+
+
+底本：「【新】校本宮澤賢治全集　第六巻　詩5［＃「5」はローマ数字、1-13-25］　本文篇」筑摩書房
+　　　1996（平成8）年5月30日初版第1刷発行
+入力：田中敬三
+校正：土屋隆
+2006年7月26日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nchar(400), primary key(C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {星めぐりの歌
+宮澤賢治
+
+
+
+あかいめだまの　さそり
+ひろげた鷲の　　つばさ
+あをいめだまの　小いぬ、
+ひかりのへびの　とぐろ。
+
+オリオンは高く　うたひ
+つゆとしもとを　おとす、
+アンドロメダの　くもは
+さかなのくちの　かたち。
+
+大ぐまのあしを　きたに
+五つのばした　　ところ。
+小熊のひたいの　うへは
+そらのめぐりの　めあて。
+
+
+
+
+底本：「【新】校本宮澤賢治全集　第六巻　詩5［＃「5」はローマ数字、1-13-25］　本文篇」筑摩書房
+　　　1996（平成8）年5月30日初版第1刷発行
+入力：田中敬三
+校正：土屋隆
+2006年7月26日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where C1 is null
+SydTest::Executor: [INFO] [[SQL Parameter]] {星めぐりの歌
+宮澤賢治
+
+
+
+あかいめだまの　さそり
+ひろげた鷲の　　つばさ
+あをいめだまの　小いぬ、
+ひかりのへびの　とぐろ。
+
+オリオンは高く　うたひ
+つゆとしもとを　おとす、
+アンドロメダの　くもは
+さかなのくちの　かたち。
+
+大ぐまのあしを　きたに
+五つのばした　　ところ。
+小熊のひたいの　うへは
+そらのめぐりの　めあて。
+
+
+
+
+底本：「【新】校本宮澤賢治全集　第六巻　詩5［＃「5」はローマ数字、1-13-25］　本文篇」筑摩書房
+　　　1996（平成8）年5月30日初版第1刷発行
+入力：田中敬三
+校正：土屋隆
+2006年7月26日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆さんです。}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] {星めぐりの歌
+宮澤賢治
+
+
+
+あかいめだまの　さそり
+ひろげた鷲の　　つばさ
+あをいめだまの　小いぬ、
+ひかりのへびの　とぐろ。
+
+オリオンは高く　うたひ
+つゆとしもとを　おとす、
+アンドロメダの　くもは
+さかなのくちの　かたち。
+
+大ぐまのあしを　きたに
+五つのばした　　ところ。
+小熊のひたいの　うへは
+そらのめぐりの　めあて。
+
+
+
+
+底本：「【新】校本宮澤賢治全集　第六巻　詩5［＃「5」はローマ数字、1-13-25］　本文篇」筑摩書房
+　　　1996（平成8）年5月30日初版第1刷発行
+入力：田中敬三
+校正：土屋隆
+2006年7月26日作成
+青空文庫作成ファイル：
+このファイルは、インターネットの図書館、青空文庫（http://www.aozora.gr.jp/）で作られました。入力、校正、制作にあたったのは、ボランティアの皆}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nvarchar(30), primary key(C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null)}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) NOT NULL constraint violation.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T1 set C1=? where C1 is null
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 from T1
+SydTest::Executor: [INFO] {ほげ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

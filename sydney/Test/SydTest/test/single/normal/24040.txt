@@ -1,0 +1,36 @@
+# GET MAXに現れないContains述語が含まれるSQL文の処理確認テスト
+# Bug report 2416
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+
+Command "create table TBL_x(x ntext)";
+Command "create table TBL_y(y ntext)";
+Command "create table TBL_z(z ntext)";
+Command "insert TBL_x values (?)" ["test"];
+Command "insert TBL_y values (?)" ["just"];
+Command "insert TBL_z values (?)" ["jump"];
+
+Command "create table TBL(f ntext, g ntext, h ntext, i ntext, j ntext)";
+Command "insert TBL select * from TBL_x for_f, TBL_x for_g, TBL_y for_h, TBL_y for_i, TBL_z for_j";
+Command "insert TBL select * from TBL";
+Command "insert TBL select * from TBL";
+Command "insert TBL select * from TBL";
+Command "insert TBL select * from TBL";
+Command "insert TBL select * from TBL";
+
+Command "create fulltext index IDX_fgh on TBL(f, g, h)";
+Command "create fulltext index IDX_ghi on TBL(g, h, i)";
+Command "create fulltext index IDX_ij on TBL(i, j)";
+
+Command "select f, score(f, g), score(h, i), get max(score(f, g), score(h, i)) from TBL where (f, g) contains 'te' and (h, i) contains 'st' or (i, j) contains 'ju' order by get max(score(f, g), score(h, i)) desc limit 1";
+Command "select f, score(f, g), score(h, i), get max(score(f, g), score(h, i)) from TBL where (f, g) contains 'te' or (h, i) contains 'st' and (i, j) contains 'ju' order by get max(score(f, g), score(h, i)) desc limit 1";
+Command "select f, score(f, g), score(h, i), get max(score(f, g), score(h, i)) from TBL where (f, g) contains 'te' or (h, i) contains 'st' or (i, j) contains 'ju' order by get max(score(f, g), score(h, i)) desc limit 1";
+
+TerminateSession;
+Terminate;
+End;

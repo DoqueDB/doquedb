@@ -1,0 +1,13 @@
+#recoveryを行わせるためのSydTest
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "mount DefaultDB path 'd:\\dm\\data\\DefaultDB' using snapshot";
+Command "start transaction read write";
+Command "verify database DefaultDB cascade continue";
+Command "commit";
+TerminateSession;
+Terminate;
+End;

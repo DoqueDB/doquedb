@@ -1,0 +1,48 @@
+# 障害票 No.2350 用のテスト
+# 複合索引に対するCONTAINSがORの中にあるときのテスト（スコア値が取得できない行については0になる確認）
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+
+Command "create table TBL(btr int, ary int array[no limit], bmp char(2), text ntext, text2 ntext)";
+Command "create index IDX_btr on TBL(btr)";
+Command "create array index IDX_ary on TBL(ary)";
+Command "create bitmap index IDX_bmp on TBL(bmp)";
+Command "create fulltext index IDX_text on TBL(text, text2)";
+
+Command "insert TBL values (1, array[1,2,3], 'aa', 'foo bar', 'trmeister')";
+Command "insert TBL values (2, array[2,3,4], 'ab', 'bar hoo', 'tr sydney')";
+Command "insert TBL values (4, array[1,2,10], 'aa', 'foo bar', 'trmeister')";
+Command "insert TBL values (5, array[2,3,4], 'ab', 'bar hoo', 'tr sydney')";
+
+Command "insert TBL values (3, array[3,4,5], 'bc', 'hoge', 'sydney')";
+Command "insert TBL values (6, array[3,4,10], 'dd', 'hoge', 'sydney')";
+Command "insert TBL values (2, array[2,3,4], 'ab', 'ba hoo', 'sydney')";
+
+###########
+# fulltext
+###########
+
+Command "select btr, score(text, text2) from TBL where (btr = 3 or  (text, text2) contains 'r') order by score(text, text2) desc";
+Command "select btr, score(text, text2) from TBL where (btr = 2 or  (text, text2) contains 'r') order by score(text, text2) desc";
+Command "select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 10 or (text, text2) contains 'r') order by score(text, text2) desc";
+Command "select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 100 and (text, text2) contains 'p') order by score(text, text2) desc";
+Command "select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 100 or (text, text2) contains 'p') order by score(text, text2) desc";
+Command "select btr, score(text) from TBL where (btr = 3 or  text contains 'r') order by score(text) desc";
+
+Command "drop index IDX_btr";
+Command "select btr, score(text, text2) from TBL where (btr = 3 or  (text, text2) contains 'r') order by score(text, text2) desc";
+Command "select btr, score(text, text2) from TBL where (btr = 2 or  (text, text2) contains 'r') order by score(text, text2) desc";
+Command "select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 10 or (text, text2) contains 'r') order by score(text, text2) desc";
+Command "select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 100 and (text, text2) contains 'p') order by score(text, text2) desc";
+Command "select btr, score(text, text2) from TBL where (btr = 3 or ary[] = 100 or (text, text2) contains 'p') order by score(text, text2) desc";
+Command "select btr, score(text) from TBL where (btr = 3 or  text contains 'r') order by score(text) desc";
+
+
+
+TerminateSession;
+Terminate;
+End;

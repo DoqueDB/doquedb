@@ -1,0 +1,291 @@
+/*
+ * Makefile.tmpl -- Makefileのテンプレート
+ * 
+ * Copyright (c) 1996, 1999, 2002, 2003, 2004, 2005, 2006, 2023 Ricoh Company, Ltd.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "Makefile.rule"
+
+#ifdef linux
+#undef linux
+#endif
+
+/*
+ * defineシンボルで与えられる定数値
+ */
+UNAINSTTOP = CONFTOP
+OSNAME = CONFOS
+TAPELIBPATH = TAPELIB
+MODVERSION = 1.0
+UNAVERSION = 1.0
+
+/* ディレクトリセパレータ */
+
+#ifdef OS_RHLINUX6_0
+S	= /
+#endif
+
+/*
+ * ヘッダの参照場所 include$(SUFFIX)
+ * (現バージョンではすべて空)
+ */
+#ifdef OS_RHLINUX6_0
+SUFFIX = 
+#endif
+
+UNATOP = $(UNAINSTTOP)
+
+/*
+ * ツールの場所
+ */
+COMMONTOP = $(UNATOP)$(S)..$(S)..$(S)common
+TOOLSDIR = $(COMMONTOP)$(S)tools$(S)build
+
+/*
+ * 外部ライブラリーの場所
+ */
+#ifdef MOD64
+COMMONEXTLIB = $(COMMONTOP)$(S)lib$(S)$(OSNAME)64
+UNAEXTLIB = $(UNATOP)$(S)..$(S)lib$(S)$(OSNAME)64
+#else
+COMMONEXTLIB = $(COMMONTOP)$(S)lib$(S)$(OSNAME)
+UNAEXTLIB = $(UNATOP)$(S)..$(S)lib$(S)$(OSNAME)
+#endif
+
+/*
+ * リソースの場所
+ */
+UNARESOURCE = $(UNATOP)$(S)resource
+
+/*
+ * 使用する外部ライブラリー
+ */
+MOD_INCLDIR = $(COMMONEXTLIB)$(S)mod$(S)$(MODVERSION)$(S)include
+MOD_LIBDIR = $(COMMONEXTLIB)$(S)mod$(S)$(MODVERSION)$(S)$(TAPELIBPATH)
+MODLIBNAME = common
+
+/*
+ * 各種設定
+ */
+UNALIBTOP = $(UNATOP)
+UNAINSTLIBTOP = $(UNAINSTTOP)
+
+UNALIBDIR = $(UNALIBTOP)$(S)c.CONF
+UNAINCLDIR = $(UNALIBTOP)$(S)include$(SUFFIX)
+
+/* make installのためのディレクトリ */
+UNAINSTLIBDIR = $(UNAINSTLIBTOP)$(S)c.CONF
+UNAINSTINCLDIR = $(UNAINSTLIBTOP)$(S)include$(SUFFIX)
+
+/* make tapeのためのディレクトリ */
+UNATAPELIBDIR = $(COMMONEXTLIB)$(S)una$(S)$(UNAVERSION)$(S)$(TAPELIBPATH)
+UNATAPEINCLDIR = $(COMMONEXTLIB)$(S)una$(S)$(UNAVERSION)$(S)include$(SUFFIX)
+
+/*
+ * 以下は汎用
+ */
+
+/* 拡張子 */
+
+#ifdef OS_RHLINUX6_0
+O	= .o
+E	=
+L	= .a
+D	= .so
+P	= lib
+#endif
+
+/* コンパイラの指定 */
+
+#ifdef OS_RHLINUX6_0
+#ifdef CC_GCC
+#ifdef CC_GCC_COV
+CC = /usr/bin/g++ -coverage
+#else
+CC = /usr/bin/g++
+#endif
+#endif
+#endif
+
+/* コンパイラーに指定するオプション */
+
+/*
+ * ヘッダーファイルを include$(SUFFIX) で参照する
+ * 公開ヘッダもこの場所にインストールされる
+ */
+INC0 = -I..
+INC1 = -I..$(S)include$(SUFFIX)
+INC2 = -I..$(S)..$(S)include$(SUFFIX)
+INC3 = -I..$(S)..$(S)..$(S)include$(SUFFIX)
+INC4 = -I..$(S)..$(S)..$(S)..$(S)include$(SUFFIX)
+INC5 = -I..$(S)..$(S)..$(S)..$(S)..$(S)include$(SUFFIX)
+
+INCLUDES = $(INC0) $(INC1) $(INC2) $(INC3) $(INC4) $(INC5) -I$(MOD_INCLDIR)
+
+DEFINES = -DDLLSUFFIX=\"\"
+
+CFLAGS = $(EXTRALOCALCFLAGS) $(INCLUDES) $(DEFINES) FLAGS $(EXTRACFLAGS)
+
+/* リンカー */
+
+#ifdef OS_RHLINUX6_0
+#ifdef CC_GCC
+#ifdef PURIFY
+LD = $(PURIFYCOM) $(PURIFYFLAGS) $(CC) FLAGS
+#elif defined(QUANTIFY)
+LD = $(QUANTIFYCOM) $(QUANTIFYFLAGS) $(CC) FLAGS
+#elif defined(PURECOV)
+LD = $(PURECOVCOM) $(PURECOVFLAGS) $(CC) FLAGS
+#else
+LD = $(CC)
+#endif
+#endif
+#endif
+
+/* 標準に使用するライブラリー */
+
+#ifdef OS_RHLINUX6_0
+#ifdef CC_GCC
+STDLIB = -lnsl -lpthread -ldl
+#endif
+#endif
+
+/* リンカーに指定するオプション */
+
+#ifdef OS_RHLINUX6_0
+LPATHOP	= -L
+#endif
+
+LIB0 = $(LPATHOP).
+LIB1 = $(LPATHOP)..$(S)c.CONF
+LIB2 = $(LPATHOP)..$(S)..$(S)c.CONF
+LIB3 = $(LPATHOP)..$(S)..$(S)..$(S)c.CONF
+LIB4 = $(LPATHOP)..$(S)..$(S)..$(S)..$(S)c.CONF
+LIB5 = $(LPATHOP)..$(S)..$(S)..$(S)..$(S)..$(S)c.CONF
+
+#if defined(OS_RHLINUX6_0)
+LIBRARIES = $(LIB0) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5) $(LPATHOP)$(MOD_LIBDIR)
+MODLIBS = -l$(MODLIBNAME)
+#endif
+
+LDFLAGS = $(LOCALLDFLAGS) $(EXTRALOCALLDFLAGS) $(LIBRARIES) $(EXTRALDFLAGS) $(MODLIBS) $(STDLIB)
+PURIFYLDFLAGS = $(LOCALLDFLAGS) $(PURIFYLOCALLDFLAGS) $(LIBRARIES) $(EXTRALDFLAGS) $(MODLIBS) $(STDLIB)
+QUANTIFYLDFLAGS = $(LOCALLDFLAGS) $(QUANTIFYLOCALLDFLAGS) $(LIBRARIES) $(EXTRALDFLAGS) $(MODLIBS) $(STDLIB)
+
+/* アーカイバー */
+
+#ifdef OS_RHLINUX6_0
+#ifdef CC_GCC
+#ifdef MOD_DLL
+AR = $(CC)
+#else
+AR = /usr/bin/ar
+#endif
+#endif
+#endif
+
+/* アーカイバーオプション */
+
+#ifdef OS_RHLINUX6_0
+#ifdef CC_GCC
+#ifdef MOD_DLL
+ARFLAGS = -shared -o
+#else
+ARFLAGS = cr
+#endif
+#endif
+#endif
+
+/* テンプレートデータベース名 */
+
+#ifdef OS_RHLINUX6_0
+#ifdef CC_GCC
+CC_TEMPLATEDB =
+#endif
+#endif
+
+/* その他 */
+
+#ifdef OS_RHLINUX6_0
+MV = /bin/mv -f
+CP = /bin/cp
+RM = /bin/rm -f
+CAT = /bin/cat
+RMALL = $(RM) -r
+MKDIR = /bin/mkdir -p
+RANLIB = /usr/bin/ranlib
+SYMLINK = /usr/bin/ln -sf
+#endif
+
+MKCONFDIR = $(TOOLSDIR)$(S)mkconfdir -f
+INSTALL = $(TOOLSDIR)$(S)install
+INSTALLBINFLAGS = 0755
+INSTALLLIBFLAGS = 0644
+INSTALLINCLFLAGS = 0644
+
+#ifdef OS_RHLINUX6_0
+MAKE = /usr/bin/make -r
+NKF = /usr/bin/nkf -s
+SED = /usr/bin/sed
+AWK = /usr/bin/awk
+WC = /usr/bin/wc
+#endif
+
+MAKEFILE_H_MAK = \
+	$(UNAINSTTOP)$(S)conf$(S)$(OSNAME)$(S)makefile_h.mak
+
+MAKEMAKEFILEFLAGS = \
+	"MAKE=$(MAKE)" \
+	"MAKEFILE_H_MAK=$(MAKEFILE_H_MAK)" \
+	"TOOLSDIR=$(TOOLSDIR)" \
+	"MOD_INCLDIR=$(MOD_INCLDIR)"
+
+PURIFYFLAGS = $(EXTRAPURIFYFLAGS)
+QUANTIFYFLAGS = $(EXTRAQUANTIFYFLAGS)
+PURECOVFLAGS = $(EXTRAPURECOVFLAGS) -follow-child-processes -counts-file=%v%p.pcv -best-effort
+
+#ifdef OS_RHLINUX6_0
+A2PS = $(TOOLSDIR)/a2ps -T4
+CTAGS = /usr/bin/ctags
+ETAGS = /usr/bin/etags
+PERL = /usr/bin/perl
+
+PURIFYCOM = purify
+QUANTIFYCOM = quantify
+PURECOVCOM = purecov
+
+PR = /usr/bin/lpr
+#endif
+
+/* Makefile がある場所 */
+#if defined(OS_RHLINUX6_0)
+MAKEDIR = `pwd`
+#endif
+
+@@
+#include "Makefile.c"
+@@
+/*
+ * 以下は汎用ターゲット
+ */
+AllRTarget()				/* make all-r */
+
+ConfRTarget()				/* make conf-r */
+ReConfRTarget()				/* make reconf-r */
+InstallRTarget()			/* make install-r */
+
+CleanRTarget()				/* make clean-r */
+
+TapeRTarget()				/* make tape-r */

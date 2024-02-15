@@ -1,0 +1,152 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] checkmeta
+SydTest::Executor: [INFO] [[SQL Query]] select Name, MetaData from System_Column where
+		exists (select * from System_Table where Name = ? and rowid = System_Column.ParentID)
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_1 (dec1 numeric,dec2 decimal,dec3 dec)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] checkmeta
+SydTest::Executor: [INFO] [[SQL Parameter]] {T_1}
+SydTest::Executor: [INFO] {ROWID,{12,int,4,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec1,{14,decimal,9,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec2,{14,decimal,9,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec3,{14,decimal,9,0,0,(null),(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_2 (dec1 numeric(1),dec2 decimal(10),dec3 dec(36),dec4 numeric(10),dec5 decimal(1),dec6 dec(1),dec7 numeric(36),dec8 decimal(36),dec9 dec(10))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] checkmeta
+SydTest::Executor: [INFO] [[SQL Parameter]] {T_2}
+SydTest::Executor: [INFO] {ROWID,{12,int,4,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec1,{14,decimal,1,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec2,{14,decimal,10,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec3,{14,decimal,36,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec4,{14,decimal,10,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec5,{14,decimal,1,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec6,{14,decimal,1,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec7,{14,decimal,36,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec8,{14,decimal,36,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec9,{14,decimal,10,0,0,(null),(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_3 (dec1 numeric(1,0),dec2 numeric(10,5),dec3 numeric(36,36),dec4 decimal(1,0),dec5 decimal(10,0),dec6 decimal(36,0),dec7 dec(1,1),dec8 dec(10,0),dec9 dec(36,18),dec10 decimal(10,10))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] checkmeta
+SydTest::Executor: [INFO] [[SQL Parameter]] {T_3}
+SydTest::Executor: [INFO] {ROWID,{12,int,4,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec1,{14,decimal,1,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec2,{14,decimal,10,5,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec3,{14,decimal,36,36,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec4,{14,decimal,1,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec5,{14,decimal,10,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec6,{14,decimal,36,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec7,{14,decimal,1,1,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec8,{14,decimal,10,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec9,{14,decimal,36,18,0,(null),(null)}}
+SydTest::Executor: [INFO] {dec10,{14,decimal,10,10,0,(null),(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] checkmeta
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec1 numeric(0))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - precision(0) specified to column 'dec1' exceeds the limit value(1).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec2 numeric(-1,-1))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) SQL syntax error ' near token XXX "-" at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec3 decimal(0,0))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - precision(0) specified to column 'dec3' exceeds the limit value(1).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec4 decimal(-1))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) SQL syntax error ' near token XXX "-" at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec5 dec(0))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - precision(0) specified to column 'dec5' exceeds the limit value(1).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec6 dec(-1,-1))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) SQL syntax error ' near token XXX "-" at line 1'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec1 numeric(1,2))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - scale(2) specified to column 'dec1' exceeds the limit value(1).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec2 decimal(10,20))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - scale(20) specified to column 'dec2' exceeds the limit value(10).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec3 dec(36,72))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - scale(72) specified to column 'dec3' exceeds the limit value(36).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec4 numeric(10,20))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - scale(20) specified to column 'dec4' exceeds the limit value(10).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec5 decimal(1,2))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - scale(2) specified to column 'dec5' exceeds the limit value(1).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec6 dec(1,2))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - scale(2) specified to column 'dec6' exceeds the limit value(1).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec7 numeric(36,72))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - scale(72) specified to column 'dec7' exceeds the limit value(36).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec8 decimal(36,72))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - scale(72) specified to column 'dec8' exceeds the limit value(36).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec9 dec(10,20))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - scale(20) specified to column 'dec9' exceeds the limit value(10).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec1 numeric(37))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - precision(37) specified to column 'dec1' exceeds the limit value(36).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec2 numeric(72,72))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - precision(72) specified to column 'dec2' exceeds the limit value(36).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec3 decimal(37,37))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - precision(37) specified to column 'dec3' exceeds the limit value(36).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec4 decimal(72))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - precision(72) specified to column 'dec4' exceeds the limit value(36).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec5 dec(37))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - precision(37) specified to column 'dec5' exceeds the limit value(36).
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_x (dec6 dec(72,72))
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Invalid column definition - precision(72) specified to column 'dec6' exceeds the limit value(36).
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,324 @@
+# insert[1]/btree(index)
+# 0210 not null
+# 障害票 1063
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 nvarchar(32) not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(32) not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+Command  "insert into T1 (C1) values (?)" ["ホゲ"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?), (?)" ["ぴよ", "ピヨ"];
+# 他のtableからinsert...select
+Command  "insert into T1 (C1) select C1 from T2 where C1=?" ["ぴよ"];
+# 自分自身にinsert...select
+Command  "insert into T1 (C1) select C1 from T1 where C1=?" ["ほげ"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?), (?)" [textsjisfile "..\\..\\doc\\ublab.txt", textsjisfile "..\\..\\doc\\dictionary.txt"];
+# 他のtableからinsert...select
+Command  "insert into T1 select (C1) from T2 where C1=?" [textsjisfile "..\\..\\doc\\ublab.txt"];
+# 自分自身にinsert...select
+Command  "insert into T1 select (C1) from T1 where C1=?" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\speak.txt"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?), (?)" [textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt", textsjisfile "..\\..\\doc\\dictionary.txt"];
+# 他のtableからinsert...select
+Command  "insert into T1 select C1 from T2 where C1=?" [textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+# 自分自身にinsert...select
+Command  "insert into T1 select C1 from T1 where C1=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 int not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 int not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [777];
+Command  "insert into T1 (C1) values (?)" [555];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?), (?)" [333, 99999999];
+# 他のtableからinsert...select
+Command  "insert into T1 (C1) select (C1) from T2 where C1=?" [333];
+# 自分自身にinsert...select
+Command  "insert into T1 (C1) select (C1) from T1 where C1=?" [777];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 float not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 float not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [3.141592];
+Command  "insert into T1 (C1) values (?)" [2.718281];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?), (?)" [1.414213, -0.789878];
+# 他のtableからinsert...select
+Command  "insert into T1 (C1) select C1 from T2 where C1=?" [1.414213];
+# 自分自身にinsert...select
+Command  "insert into T1 (C1) select C1 from T1 where C1=?" [3.141592];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 datetime not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 datetime not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1) values (?)" [time "2001-09-09 00:00:00.000"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?), (?)" [time "2002-10-11 17:34:51.000", time "1999-07-21 13:20:00.600"];
+# 他のtableからinsert...select
+Command  "insert into T1 select (C1) from T2 where C1=?" [time "2002-10-11 17:34:51.000"];
+# 自分自身にinsert...select
+Command  "insert into T1 select (C1) from T1 where C1=?" [time "2001-07-07 12:34:56.789"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(32) not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(32) not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" ["ホゲ"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" ["ピヨ"];
+# 他のtableからinsert...select
+Command  "insert into T1 select C1 from T2 where C1 is null" [];
+# 自分自身にinsert...select
+Command  "insert into T1 select C1 from T1 where C1 is null" [];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\dictionary.txt"];
+# 他のtableからinsert...select
+# 自分自身にinsert...select
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\speak.txt"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\dictionary.txt"];
+# 他のtableからinsert...select
+# 自分自身にinsert...select
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 int not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 int not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [555];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" [99999999];
+# 他のtableからinsert...select
+Command  "insert into T1 select (C1) from T2 where C1 is null" [];
+# 自分自身にinsert...select
+Command  "insert into T1 select (C1) from T1 where C1 is null" [];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 float not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 float not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [2.718281];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" [-0.789878];
+# 他のtableからinsert...select
+Command  "insert into T1 select C1 from T2 where C1 is null" [];
+# 自分自身にinsert...select
+Command  "insert into T1 select C1 from T1 where C1 is null" [];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 datetime not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 datetime not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [time "2001-09-09 00:00:00.000"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" [time "1999-07-21 13:20:00.600"];
+# 他のtableからinsert...select
+# 自分自身にinsert...select
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(32) not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(32) not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" ["ぴよ"];
+# 他のtableからinsert...select
+Command  "insert into T1 (C1) select C1 from T2 where C1=?" ["ぴよ"];
+# 自分自身にinsert...select
+Command  "insert into T1 (C1) select C1 from T1 where C1=?" ["ほげ"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\ublab.txt"];
+# 他のtableからinsert...select
+Command  "insert into T1 select (C1) from T2 where C1=?" [textsjisfile "..\\..\\doc\\ublab.txt"];
+# 自分自身にinsert...select
+Command  "insert into T1 select (C1) from T1 where C1=?" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+# 他のtableからinsert...select
+Command  "insert into T1 select C1 from T2 where C1=?" [textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+# 自分自身にinsert...select
+Command  "insert into T1 select C1 from T1 where C1=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 int not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 int not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [777];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" [333];
+# 他のtableからinsert...select
+Command  "insert into T1 (C1) select (C1) from T2 where C1=?" [333];
+# 自分自身にinsert...select
+Command  "insert into T1 (C1) select (C1) from T1 where C1=?" [777];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 float not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 float not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [3.141592];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" [1.414213];
+# 他のtableからinsert...select
+Command  "insert into T1 (C1) select C1 from T2 where C1=?" [1.414213];
+# 自分自身にinsert...select
+Command  "insert into T1 (C1) select C1 from T1 where C1=?" [3.141592];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 datetime not null)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 datetime not null)";
+Command  "create index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?)" [time "2002-10-11 17:34:51.000"];
+# 他のtableからinsert...select
+Command  "insert into T1 select (C1) from T2 where C1=?" [time "2002-10-11 17:34:51.000"];
+# 自分自身にinsert...select
+Command  "insert into T1 select (C1) from T1 where C1=?" [time "2001-07-07 12:34:56.789"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

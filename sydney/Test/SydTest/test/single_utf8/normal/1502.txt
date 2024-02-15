@@ -1,0 +1,43 @@
+Begin;
+SetEncodingType "utf8";
+# English
+
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (N int, C ntext array [no limit], L language array [no limit])";
+
+# 索引作成
+Command "create fulltext index FTIndex on T(C) language column L hint 'sectionized, delayed, inverted=(normalized=true, indexing=word, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+#insert
+CreatePreparedCommand "ins" "insert into T (N, C, L) values (?, ?, ?)";
+PreparedCommand "ins" [0, [textsjisfile "..\\..\\doc\\Teihon.txt",
+			   textsjisfile "..\\..\\doc\\dictionary.txt"], ["en", "en+ja"]];
+PreparedCommand "ins" [1, [textsjisfile "..\\..\\doc\\Teihon.txt",
+			   textsjisfile "..\\..\\doc\\takekurabe.txt"], ["en", "en+ja"]];
+PreparedCommand "ins" [2, [textsjisfile "..\\..\\doc\\hello.txt",
+			   textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"], ["en", "en+ja"]];
+ErasePreparedCommand "ins";
+
+# verify
+Command "verify index FTIndex cascade continue";
+
+# いろいろ検索
+Command "select N, sectionized(C) from T where C like ?" ["%foo%"];
+Command "select N, sectionized(C) from T where C like ?" ["%the%"];
+
+Command "drop index FTIndex";
+
+Command "select N from T where C like ?" ["foo%"];
+Command "select N from T where C like ?" ["the%"];
+
+# 全文ファイルテスト用の表を消去
+Command "drop table T";
+
+
+TerminateSession;
+Terminate;
+End;
+

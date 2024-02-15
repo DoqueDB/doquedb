@@ -1,0 +1,32 @@
+# default条件 (Record)
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#default値の設定
+Command "create table T(
+	CCC	int default '777',
+	DDD	ntext default '債務不履行(違)',
+)";
+
+Command "insert into T (CCC) values (88)";
+Command "insert into T (DDD) values ('踏み倒し')";
+Command "insert into T (CCC, DDD) values (101, '夜逃げ')";
+#注: 全ての列がdefaultであっても「insert into T」だけで済ますことはできない
+
+#default値が補完されていることを確かめる
+Command "select * from T";
+
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

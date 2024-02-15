@@ -1,0 +1,187 @@
+#!/usr/bin/perl
+# 
+# Copyright (c) 2018, 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+# updatedic - update word cost, maximun cost and minimun cost in UNA dictionary source
+
+=head1 NAME
+
+ updatedic - UNA辞書ソースのコスト更新
+
+=head1 SYNOPSIS
+
+ updatedic [オプション]
+
+=head1 DESCRIPTION
+
+ 日本語形態素解析UNA V16のUNA辞書ソースのコストを更新する
+ ためのツールである。
+ updatedicは、mksrcdataから呼ばれる。
+ 
+ オプションは以下の通り。(一部のみ。詳しくは、-hオプションを実行のこと。)
+
+=item -c I<コスト最大値ファイル>
+
+ コスト最大値ファイルを指定する。
+ デフォルトは、../src-data/una/etc/costmax.dat である。
+
+=item -d I<UNA用辞書ソース>
+
+ UNA用辞書ソースを指定する。
+ デフォルトはなし。
+ 
+=item -e I<UNA用辞書ソースディレクトリ>
+
+ UNA用辞書ソースディレクトリを指定する。
+ デフォルトは、./uwork である。
+
+=item -v
+
+ 不必要に詳細な情報を出力する(Verbose)。
+
+=item -D
+
+ デバッグ用の情報を出力する(Debug)。ただし、現バージョンでは未使用。
+
+=item -h
+
+ 簡単なヘルプを出力する(Help)。
+
+=head1 HISTORY
+
+ Ver.1.00 2018/01/19 初版
+
+=head1 BUG
+
+=cut
+
+use lib "../tools/perl/lib";
+use utf8;
+use open IN  => ":utf8";
+use open OUT => ":utf8";
+
+# デフォールトの設定
+my $costmax_file = "../src-data/una/etc/costmax.dat";
+my $dic_files = "";
+my $dic_dir = "./uwork";
+my $hinlst_file = "unahin.utf8";
+my $tmp_dir = "./tmp";
+my $max_cost = 0;
+my $min_cost = 0;
+
+# 引数の評価
+use Getopt::Std;
+getopts('c:d:e:L:vDh');
+if ($opt_h || $#ARGV >= 0) {
+        die <<EOU;
+updatedic
+Usage: updatedic [OPTIONS]
+	-c FILE             maximum cost file ($costmax_file)
+	-d FILE1:FILE2:...  UNA dictionary sources ($dic_files)
+	-e DICSRCDIR        UNA dictionary source directory ($dic_dir)
+	-L FILE             hinshi list ($hinlst_file)
+	-v                  verbose (show max/min cost)
+	-D                  Debug
+	-h                  Help
+FILE is FILEPATH[,CODE]
+EOU
+}
+
+$costmax_file = $opt_c if(defined $opt_c);
+$dic_files = $opt_d if(defined $opt_d);
+$dic_dir = $opt_e if(defined $opt_e);
+$hinlst_file = $opt_L if(defined $opt_L);
+
+mkdir $tmp_dir, 0775 || die "can't create $tmp_dir: $!\n";
+
+use UNA::HinLst;
+use UNA::UnaDicSrc;
+
+my $hinlst = new UNA::HinLst;
+
+# ファイルの読み込み
+$hinlst->load(&mkfile($dic_dir, $hinlst_file));
+
+# UNA用辞書ソースの更新
+for (split(/:/, $dic_files)) {
+	# UNA用辞書ソースの読み込み
+	my $dic = $_;
+	my $tmp_dic = $dic.".tmp";
+	$dic = &mkfile($dic_dir, $dic);
+	my $unadicsrc = new UNA::UnaDicSrc;
+	$unadicsrc->load($dic);
+
+	# UNA用辞書ソースの更新
+	$tmp_dic = &mkfile($tmp_dir, $tmp_dic);
+	my $cost = &update_dic($unadicsrc, $tmp_dic);
+
+	# コストの最大値と最小値の更新
+	$max_cost = $cost if $cost > $max_cost;
+	$min_cost = $cost if $cost < $min_cost;
+
+	# UNA用辞書ソースの更新
+	system("cp -fp $dic $dic.bak") if($opt_D);
+	system("mv -f $tmp_dic $dic");
+}
+
+use UNA::CostMax;
+# コストの最大値と最小値の表示と更新
+if ($opt_v) {
+    printf "maximum cost=%f\n", $max_cost;
+    printf "minimum cost=%f\n", $min_cost;
+}
+
+&update_costmax($costmax_file, $max_cost);
+
+# UNA用辞書ソースの頻度を更新する
+sub update_dic {
+	my($unadicsrc, $tmp_dic) = @_;
+	my $hinhindo;
+	my $cost;
+	open(TMP, ">$tmp_dic") || die "can't write $tmp_dic: $!\n";
+	select TMP;
+	for(@{$unadicsrc->{unadicsrcinfo}}){
+		my($maedicinfo, $hin, $hindo, $atodicinfo) = @$_;
+		print "$maedicinfo$hin ";
+		$hinhindo = $hinlst->{hindo}{$hin};
+		$cost = -log($hindo / $hinhindo);
+		$cost = sprintf("%f", $cost);
+		$cost =~ s/^\-(0\.0+)$/$1/; # -0.000...を防ぐ
+		print "$cost";
+		print "$atodicinfo\n";
+	}
+	close TMP;
+	$cost;
+}
+
+# ディレクトリと相対パスからファイル名を作る
+sub mkfile {
+	my($dir, $path) = @_;
+	return '' if $path eq '';        # 空ならそのまま
+	$dir =~ s/\/$//g if $dir ne '/'; # 最後の/を取る
+	my $file = "$dir/$path";
+	$file =~ s/.*\/\//\//;           # // があったらそこまでを / に変える
+	$file;
+}
+
+=head1 SEE ALSO
+
+L<UNA::CostMax>, L<mksrcdata>, L<mkmodic>, L<mkmoconn>
+
+=head1 COPYRIGHT
+
+ Copyright 2018, 2023 RICOH Co, Ltd. All rights reserved.
+
+=cut

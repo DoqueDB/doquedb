@@ -1,0 +1,165 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Execution_LikeNormalizedString
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Execution_LikeNormalizedString, 1
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TEST
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (F nvarchar(100))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values 'Ａ０　＃％あが'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values 'ａ０　＃＠アガ'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values 'A0 #%アガ'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values 'a0 #@アガ'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%Ａ%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%０%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%　%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%＃%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%％%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%*％%' escape '*'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%あ%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%が%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%A%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%0%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '% %'
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%#%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%%%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%*%%' escape '*'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%ア%'
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%ガ%'
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%ア%'
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%ガ%'
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where F like '%a%'
+SydTest::Executor: [INFO] {Ａ０　＃％あが}
+SydTest::Executor: [INFO] {ａ０　＃＠アガ}
+SydTest::Executor: [INFO] {A0 #%アガ}
+SydTest::Executor: [INFO] {a0 #@アガ}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,187 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1( C1 ntext , L language)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index FTIndex on T1(C1) language column L
+	hint 'delayed, inverted=(normalized=true, indexing=ngram,
+	tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {good bye,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {hello,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {good evening,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {world,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {world,world,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bye,bye}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1) values (?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bye,bye,world}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select TF(C1)  from T1 where C1 contains  wordlist('bye','hello')
+SydTest::Executor: [INFO] {{1,0}}
+SydTest::Executor: [INFO] {{0,1}}
+SydTest::Executor: [INFO] {{2,0}}
+SydTest::Executor: [INFO] {{2,0}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,TF(C1)  from T1 where C1 contains  wordlist('bye','hello')
+SydTest::Executor: [INFO] {0,{1,0}}
+SydTest::Executor: [INFO] {1,{0,1}}
+SydTest::Executor: [INFO] {5,{2,0}}
+SydTest::Executor: [INFO] {6,{2,0}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,TF(C1)  from T1 where C1 contains  wordlist('good','hello')
+SydTest::Executor: [INFO] {0,{1,0}}
+SydTest::Executor: [INFO] {1,{0,1}}
+SydTest::Executor: [INFO] {2,{1,0}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,TF(C1)  from T1 where C1 contains  wordlist('good','world')
+SydTest::Executor: [INFO] {0,{1,1}}
+SydTest::Executor: [INFO] {1,{0,1}}
+SydTest::Executor: [INFO] {2,{1,1}}
+SydTest::Executor: [INFO] {3,{0,2}}
+SydTest::Executor: [INFO] {4,{0,3}}
+SydTest::Executor: [INFO] {6,{0,1}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,TF(C1)  from T1 where C1 contains  wordlist('good','world','evening')
+SydTest::Executor: [INFO] {0,{1,1,0}}
+SydTest::Executor: [INFO] {1,{0,1,0}}
+SydTest::Executor: [INFO] {2,{1,1,1}}
+SydTest::Executor: [INFO] {3,{0,2,0}}
+SydTest::Executor: [INFO] {4,{0,3,0}}
+SydTest::Executor: [INFO] {6,{0,1,0}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,TF(C1)  from T1 where C1 contains  wordlist('hello','good','world','evening')
+SydTest::Executor: [INFO] {0,{0,1,1,0}}
+SydTest::Executor: [INFO] {1,{1,0,1,0}}
+SydTest::Executor: [INFO] {2,{0,1,1,1}}
+SydTest::Executor: [INFO] {3,{0,0,2,0}}
+SydTest::Executor: [INFO] {4,{0,0,3,0}}
+SydTest::Executor: [INFO] {6,{0,0,1,0}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select rowid,TF(C1)  from T1 where C1 contains  wordlist('bye')
+SydTest::Executor: [INFO] {0,{1}}
+SydTest::Executor: [INFO] {5,{2}}
+SydTest::Executor: [INFO] {6,{2}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ROWID, C1 from T1
+SydTest::Executor: [INFO] {0,good bye,world}
+SydTest::Executor: [INFO] {1,hello,world}
+SydTest::Executor: [INFO] {2,good evening,world}
+SydTest::Executor: [INFO] {3,world,world}
+SydTest::Executor: [INFO] {4,world,world,world}
+SydTest::Executor: [INFO] {5,bye,bye}
+SydTest::Executor: [INFO] {6,bye,bye,world}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ROWID, C1 from T1 order by ROWID desc
+SydTest::Executor: [INFO] {6,bye,bye,world}
+SydTest::Executor: [INFO] {5,bye,bye}
+SydTest::Executor: [INFO] {4,world,world,world}
+SydTest::Executor: [INFO] {3,world,world}
+SydTest::Executor: [INFO] {2,good evening,world}
+SydTest::Executor: [INFO] {1,hello,world}
+SydTest::Executor: [INFO] {0,good bye,world}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select(ROWID, score(C1)) from T1 where C1 like ('%good%') order by C1 desc
+SydTest::Executor: [INFO] {2,2.908009486359E-1}
+SydTest::Executor: [INFO] {0,3.022049074059E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select(ROWID, score(C1)) from T1 where C1 like ('%good%') order by C1 asc
+SydTest::Executor: [INFO] {0,3.022049074059E-1}
+SydTest::Executor: [INFO] {2,2.908009486359E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select(ROWID, score(C1)) from T1 where C1 like ('%world%') order by C1 desc
+SydTest::Executor: [INFO] {4,1.759572446175E-1}
+SydTest::Executor: [INFO] {3,1.615163091376E-1}
+SydTest::Executor: [INFO] {1,1.218294446066E-1}
+SydTest::Executor: [INFO] {2,1.149334383081E-1}
+SydTest::Executor: [INFO] {0,1.194406319673E-1}
+SydTest::Executor: [INFO] {6,1.194406319673E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select(ROWID, score(C1)) from T1 where C1 like ('%world%') order by C1 asc
+SydTest::Executor: [INFO] {6,1.194406319673E-1}
+SydTest::Executor: [INFO] {0,1.194406319673E-1}
+SydTest::Executor: [INFO] {2,1.149334383081E-1}
+SydTest::Executor: [INFO] {1,1.218294446066E-1}
+SydTest::Executor: [INFO] {3,1.615163091376E-1}
+SydTest::Executor: [INFO] {4,1.759572446175E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select(ROWID, score(C1)) from T1 where C1 like ('%bye%') order by C1 desc
+SydTest::Executor: [INFO] {0,2.181228343922E-1}
+SydTest::Executor: [INFO] {6,2.911022500112E-1}
+SydTest::Executor: [INFO] {5,3.029955325993E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select(ROWID, score(C1)) from T1 where C1 like ('%bye%') order by C1 asc
+SydTest::Executor: [INFO] {5,3.029955325993E-1}
+SydTest::Executor: [INFO] {6,2.911022500112E-1}
+SydTest::Executor: [INFO] {0,2.181228343922E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index FTIndex
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

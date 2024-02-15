@@ -1,0 +1,31 @@
+# Combiner のついた & を Contains に渡す
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(f1 int,f2 ntext,f3 ntext)";
+Command  "create fulltext index I1_2 on T1(f3)";
+Command  "insert into T1 (f1, f2 ,f3) values (1, 'abc','sum')";
+Command  "insert into T1 (f1, f2 ,f3) values (2, 'abc','abc')";
+Command  "insert into T1 (f1, f2 ,f3) values (3, 'xyz','suma')";
+Command  "insert into T1 (f1, f2 ,f3) values (4, 'sum','sum')";
+Command  "insert into T1 (f1, f2 ,f3) values (5, 'sum','abc')";
+Command  "insert into T1 (f1, f2 ,f3) values (6, 'aaa','sumb')";
+Command  "insert into T1 (f1, f2 ,f3) values (7, 'sum','sumab')";
+Command  "insert into T1 (f1, f2 ,f3) values (8, 'sum','suma')";
+Command  "insert into T1 (f1, f2 ,f3) values (9, 'sum','sumb')";
+Command  "insert into T1 (f1, f2 ,f3) values (10, 'sum','sumc')";
+
+Command  "select score(f3) from T1 where f3 contains 'a' & 'a' combiner 'sum'";
+Command  "select score(f3) from T1 where f3 contains 'a' | 'b' combiner 'sum'";
+Command  "drop table T1";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

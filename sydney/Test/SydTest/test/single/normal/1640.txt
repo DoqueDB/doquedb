@@ -1,0 +1,170 @@
+#障害票507対応 (SELECT 文の ORDER BY で配列型の列を指定すると Can't cast class. が発生)
+# Sydney でサポートしている以下のデータ型の列での ORDER BY のテスト
+#
+# int not null
+# int <- primary key
+# int
+# bigint
+# char(8) not null
+# char(8)
+# float
+# datetime
+# uniqueidentifier
+# image
+# language
+# nchar(6)
+# nvarchar(256)
+# varchar(128)
+# ntext
+# ntext hint heap 'compressed'
+# fulltext
+# binary(50)
+# blob
+# nclob
+# int array[no limit]
+# bigint array[no limit]
+# char(8) array[no limit]
+# float array[no limit]
+# datetime array[no limit]
+# uniqueidentifier array[no limit]
+# image array[no limit]
+# language array[no limit]
+# nchar(6) array[no limit]
+# nvarchar(256) array[no limit]
+# varchar(128) array[no limit]
+# ntext array[no limit]
+# ntext array[no limit] hint heap 'compressed'
+# fulltext array[no limit]
+# binary(50) array[no limit]
+#
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table t (f_int_not_null int not null, f_int1 int, f_int2 int, f_bigint bigint, f_char8_not_null char(8) not null, f_char8 char(8), f_float float, f_datetime datetime, f_id uniqueidentifier, f_image image, f_language language, f_nchar6 nchar(6), f_nvarchar256 nvarchar(256), f_varchar128 varchar(128), f_ntext ntext, f_ntext_compressed ntext hint heap 'compressed', f_fulltext fulltext, f_binary50 binary(50), f_blob blob, f_nclob nclob, af_int int array[no limit], af_bigint bigint array[no limit], af_char8 char(8) array[no limit], af_float float array[no limit], af_datetime datetime array[no limit], af_id uniqueidentifier array[no limit], af_image image array[no limit], af_language language array[no limit], af_nchar6 nchar(6) array[no limit], af_nvarchar256 nvarchar(256) array[no limit], af_varchar128 varchar(128) array[no limit], af_ntext ntext array[no limit], af_ntext_compressed ntext array[no limit] hint heap 'compressed', af_fulltext fulltext array[no limit], af_binary50 binary(50) array[no limit], primary key(f_int1))";
+# 1 件目挿入（ null 値含まず）
+Command "insert into t (f_int_not_null, f_int1, f_int2, f_bigint, f_char8_not_null, f_char8, f_float, f_datetime, f_id, f_image, f_language, f_nchar6, f_nvarchar256, f_varchar128, f_ntext, f_ntext_compressed, f_fulltext, f_binary50, f_blob, f_nclob, af_int, af_bigint, af_char8, af_float, af_datetime, af_id, af_image, af_language, af_nchar6, af_nvarchar256, af_varchar128, af_ntext, af_ntext_compressed, af_fulltext, af_binary50) values (3, 50, 2, 5900030, 'hogehoge', 'foo', 0.86, '2005-12-07 19:18:53.487', '0DEA3504-6A8C-4751-97E2-5674850F2CB6', ?, 'fr', 'あいう', 'データ構造', 'Java Native Interface', ?, ?, ?, 'binary', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" [binaryfile "..\\..\\doc\\rnd10k", textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\Teihon.txt", textsjisfile "..\\..\\doc\\takekurabe.txt", binaryfile "..\\..\\doc\\rnd20k", textsjisfile "..\\..\\doc\\rnd1M-b.txt", [5, 8376, 432, 0, 26, 3, 788792, 16, -8923, 9, 156736, 3, 9743, 2429, 1245, 4, 7662, 3, 45, 86, 163, 4114, 26, 63], [198432768, 2987764, 32, 43978, 2983, 198, -5800, 4], ["hoge", "abcdef", "foo", "AAAAA", "abcdef", "XYZ"], [43879234.7879, 4837294.0, 7.87798273, 0.097872, 59873.7872, 9873.8379215, 0.098743, 0.387], ["2004-12-15 18:20:38.481", "2001-11-29 13:18:41.036", "2004-03-05 14:49:52.739", "2002-12-30 04:58:43.008"], ["9819CE92-60F8-4d0c-BEEC-6CCA36EDD4A1", "161F520E-90BE-4465-9276-A3CA12338475", "9819CE92-60F8-4d0c-BEEC-6CCA36EDD4A1", "161F520E-90BE-4465-9276-A3CA12338475", "5C3BF8C3-B1BE-420e-B0FF-15637B4C971F", "8EEB89AB-40D9-42f3-8123-20858BED13FB"], [binaryfile "..\\..\\doc\\rnd10k", binaryfile "..\\..\\doc\\rnd50k", binaryfile "..\\..\\doc\\rnd100k"], ["en", "ja", "de", "ko", "is", "zh", "af"], ["sql", "ｔｅｓｔ", "134-00", "東京都", "文京区", "渋谷区"], ["指定された SQL 文を実行します。", "このオブジェクトへの参照がないと、ガベージコレクションによって判断されたときに、ガベージコレクタによって呼び出されます。", "指定されたパラメータの値を、指定されたオブジェクトを使用して設定します"], ["public java.sql.ParameterMetaData getParameterMetaData() throws java.sql.SQLException", "public java.sql.ResultSet executeQuery(java.lang.String sql_) throws java.sql.SQLException", "public int executeUpdate(java.lang.String sql_) throws java.sql.SQLException", "public int executeUpdate(java.lang.String sql_) throws java.sql.SQLException"], [textsjisfile "..\\..\\doc\\Teihon.txt", textsjisfile "..\\..\\doc\\takekurabe.txt", textsjisfile "..\\..\\doc\\rnd5k-a.txt"], [textsjisfile "..\\..\\doc\\rnd5k-a.txt", textsjisfile "..\\..\\doc\\rnd5k-b.txt", textsjisfile "..\\..\\doc\\rnd5k-c.txt"], [textsjisfile "..\\..\\doc\\Teihon.txt", textsjisfile "..\\..\\doc\\takekurabe.txt"], ["foo", "abc", "test", "hogehoge"]];
+# 各列で ORDER BY
+Command "select * from t order by f_int_not_null";
+Command "select * from t order by f_int1";
+Command "select * from t order by f_int2";
+Command "select * from t order by f_bigint";
+Command "select * from t order by f_char8_not_null";
+Command "select * from t order by f_char8";
+Command "select * from t order by f_float";
+Command "select * from t order by f_datetime";
+Command "select * from t order by f_id";
+Command "select * from t order by f_image";
+Command "select * from t order by f_language";
+Command "select * from t order by f_nchar6";
+Command "select * from t order by f_nvarchar256";
+Command "select * from t order by f_varchar128";
+Command "select * from t order by f_ntext";
+Command "select * from t order by f_ntext_compressed";
+Command "select * from t order by f_fulltext";
+Command "select * from t order by f_binary50";
+Command "select * from t order by f_blob";
+Command "select * from t order by f_nclob";
+Command "select * from t order by af_int";
+Command "select * from t order by af_bigint";
+Command "select * from t order by af_char8";
+Command "select * from t order by af_float";
+Command "select * from t order by af_datetime";
+Command "select * from t order by af_id";
+Command "select * from t order by af_image";
+Command "select * from t order by af_language";
+Command "select * from t order by af_nchar6";
+Command "select * from t order by af_nvarchar256";
+Command "select * from t order by af_varchar128";
+Command "select * from t order by af_ntext";
+Command "select * from t order by af_ntext_compressed";
+Command "select * from t order by af_fulltext";
+Command "select * from t order by af_binary50";
+# 2 件目挿入（ null 値含む）
+Command "insert into t (f_int_not_null, f_int1, f_int2, f_bigint, f_char8_not_null, f_char8, f_float, f_datetime, f_id, f_image, f_language, f_nchar6, f_nvarchar256, f_varchar128, f_ntext, f_ntext_compressed, f_fulltext, f_binary50, f_blob, f_nclob, af_int, af_bigint, af_char8, af_float, af_datetime, af_id, af_image, af_language, af_nchar6, af_nvarchar256, af_varchar128, af_ntext, af_ntext_compressed, af_fulltext, af_binary50) values (5, 3, ?, ?, 'abc', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
+# 各列で ORDER BY
+Command "select * from t order by f_int_not_null";
+Command "select * from t order by f_int1";
+Command "select * from t order by f_int2";
+Command "select * from t order by f_bigint";
+Command "select * from t order by f_char8_not_null";
+Command "select * from t order by f_char8";
+Command "select * from t order by f_float";
+Command "select * from t order by f_datetime";
+Command "select * from t order by f_id";
+Command "select * from t order by f_image";
+Command "select * from t order by f_language";
+Command "select * from t order by f_nchar6";
+Command "select * from t order by f_nvarchar256";
+Command "select * from t order by f_varchar128";
+Command "select * from t order by f_ntext";
+Command "select * from t order by f_ntext_compressed";
+Command "select * from t order by f_fulltext";
+Command "select * from t order by f_binary50";
+Command "select * from t order by f_blob";
+Command "select * from t order by f_nclob";
+Command "select * from t order by af_int";
+Command "select * from t order by af_bigint";
+Command "select * from t order by af_char8";
+Command "select * from t order by af_float";
+Command "select * from t order by af_datetime";
+Command "select * from t order by af_id";
+Command "select * from t order by af_image";
+Command "select * from t order by af_language";
+Command "select * from t order by af_nchar6";
+Command "select * from t order by af_nvarchar256";
+Command "select * from t order by af_varchar128";
+Command "select * from t order by af_ntext";
+Command "select * from t order by af_ntext_compressed";
+Command "select * from t order by af_fulltext";
+Command "select * from t order by af_binary50";
+# 3 件目挿入（配列型の列値に null 要素含む）
+Command "insert into t (f_int_not_null, f_int1, f_int2, f_bigint, f_char8_not_null, f_char8, f_float, f_datetime, f_id, f_image, f_language, f_nchar6, f_nvarchar256, f_varchar128, f_ntext, f_ntext_compressed, f_fulltext, f_binary50, f_blob, f_nclob, af_int, af_bigint, af_char8, af_float, af_datetime, af_id, af_image, af_language, af_nchar6, af_nvarchar256, af_varchar128, af_ntext, af_ntext_compressed, af_fulltext, af_binary50) values (6, 2, 2, 5900030, 'hogehoge', 'foo', 0.86, '2005-12-07 19:18:53.487', '0DEA3504-6A8C-4751-97E2-5674850F2CB6', ?, 'fr', 'あいう', 'データ構造', 'Java Native Interface', ?, ?, ?, 'binary', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" [binaryfile "..\\..\\doc\\rnd10k", textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\Teihon.txt", textsjisfile "..\\..\\doc\\takekurabe.txt", binaryfile "..\\..\\doc\\rnd20k", textsjisfile "..\\..\\doc\\rnd1M-b.txt", [5, 8376, null, 0, 26, 3, 788792, 16, -8923, 9, 156736, 3, 9743, 2429, 1245, 4, 7662, 3, 45, 86, 163, 4114, 26, 63], [198432768, 2987764, 32, null, 2983, 198, -5800, 4], ["hoge", "abcdef", "foo", null, "abcdef", "XYZ"], [43879234.7879, 4837294.0, 7.87798273, 0.097872, null, 9873.8379215, 0.098743, 0.387], ["2004-12-15 18:20:38.481", null, "2004-03-05 14:49:52.739", "2002-12-30 04:58:43.008"], ["9819CE92-60F8-4d0c-BEEC-6CCA36EDD4A1", "161F520E-90BE-4465-9276-A3CA12338475", "9819CE92-60F8-4d0c-BEEC-6CCA36EDD4A1", "161F520E-90BE-4465-9276-A3CA12338475", "5C3BF8C3-B1BE-420e-B0FF-15637B4C971F", null], [binaryfile "..\\..\\doc\\rnd10k", null, binaryfile "..\\..\\doc\\rnd100k"], ["en", "ja", "de", "ko", null, "zh", "af"], ["sql", "ｔｅｓｔ", "134-00", null, "文京区", "渋谷区"], [null, "このオブジェクトへの参照がないと、ガベージコレクションによって判断されたときに、ガベージコレクタによって呼び出されます。", "指定されたパラメータの値を、指定されたオブジェクトを使用して設定します"], ["public java.sql.ParameterMetaData getParameterMetaData() throws java.sql.SQLException", "public java.sql.ResultSet executeQuery(java.lang.String sql_) throws java.sql.SQLException", null, "public int executeUpdate(java.lang.String sql_) throws java.sql.SQLException"], [textsjisfile "..\\..\\doc\\Teihon.txt", textsjisfile "..\\..\\doc\\takekurabe.txt", null], [textsjisfile "..\\..\\doc\\rnd5k-a.txt", null, textsjisfile "..\\..\\doc\\rnd5k-c.txt"], [null, textsjisfile "..\\..\\doc\\takekurabe.txt"], ["foo", "abc", null, "hogehoge"]];
+# 各列で ORDER BY
+Command "select * from t order by f_int_not_null";
+Command "select * from t order by f_int1";
+Command "select * from t order by f_int2";
+Command "select * from t order by f_bigint";
+Command "select * from t order by f_char8_not_null";
+Command "select * from t order by f_char8";
+Command "select * from t order by f_float";
+Command "select * from t order by f_datetime";
+Command "select * from t order by f_id";
+Command "select * from t order by f_image";
+Command "select * from t order by f_language";
+Command "select * from t order by f_nchar6";
+Command "select * from t order by f_nvarchar256";
+Command "select * from t order by f_varchar128";
+Command "select * from t order by f_ntext";
+Command "select * from t order by f_ntext_compressed";
+Command "select * from t order by f_fulltext";
+Command "select * from t order by f_binary50";
+Command "select * from t order by f_blob";
+Command "select * from t order by f_nclob";
+Command "select * from t order by af_int";
+Command "select * from t order by af_bigint";
+Command "select * from t order by af_char8";
+Command "select * from t order by af_float";
+Command "select * from t order by af_datetime";
+Command "select * from t order by af_id";
+Command "select * from t order by af_image";
+Command "select * from t order by af_language";
+Command "select * from t order by af_nchar6";
+Command "select * from t order by af_nvarchar256";
+Command "select * from t order by af_varchar128";
+Command "select * from t order by af_ntext";
+Command "select * from t order by af_ntext_compressed";
+Command "select * from t order by af_fulltext";
+Command "select * from t order by af_binary50";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

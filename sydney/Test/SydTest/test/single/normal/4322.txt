@@ -1,0 +1,52 @@
+# Bug report 1720
+
+# 配列索引のテスト
+# 挿入中に例外が発生しても不整合が起きないことを確認する。
+# FakeErrorを使うのでdebug版で実行する
+
+Begin;
+
+SetSystemParameter "Exception_FakeError" 
+"Array::ArrayFile::expunge count=(1 3 5)";
+
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+
+Command "create table T(C1 int, C2 int array[no limit])";
+Command "create array index I on T(C2)";
+Command "insert T values (1, array[1]), (2, array[1]), (3, array[null])";
+
+# 複数件入っている状態
+# 1度目はエラー
+Command "delete T where C1 = 1";
+Command "select * from T";
+Command "verify table T cascade continue";
+# 2度目はOK
+Command "delete T where C1 = 1";
+Command "select * from T";
+
+# 他の木にはデータが入っているが、これから削除する木は削除で空になる状態
+# 3度目はエラー
+Command "delete T where C1 = 2";
+Command "select * from T";
+Command "verify table T cascade continue";
+# 4度目はOK
+Command "delete T where C1 = 2";
+Command "select * from T";
+
+# 1件だけ入っている状態
+# 5度目はエラー
+Command "delete T where C1 = 3";
+Command "select * from T";
+Command "verify table T cascade continue";
+# 6度目はOK
+Command "delete T where C1 = 3";
+Command "select * from T";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+SetSystemParameter "Exception_FakeError" "";
+End;
+

@@ -1,0 +1,258 @@
+#tableを含むDBのareaの移動(正常系)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+InitializeSession "DefaultDB";
+
+## tableエリアの指定
+Command "create area TableArea 'd:\\dm\\area\\table'";
+NotExists "d:\\dm\\area\\table";
+Command "create table T (f1 int) area TableArea";
+Command "insert into T values (1)";
+Exists "d:\\dm\\area\\table\\T";
+NotExists "d:\\dm\\data\\DefaultDB\\T";
+
+## tableエリアの指定変更
+Command "create area AlterTableArea 'd:\\dm\\area\\altertable'";
+NotExists "d:\\dm\\area\\altertable";
+Command "alter table T set area AlterTableArea";
+NotExists "d:\\dm\\area\\table\\T";
+Exists "d:\\dm\\area\\altertable\\T";
+#載っている表が移動したので消せるはず
+Command "drop area TableArea";	
+NotExists "d:\\dm\\area\\table";
+
+#別のtableエリアに表を移動
+Command "create area TableArea 'd:\\dm\\area\\table'";
+NotExists "d:\\dm\\area\\table";
+Command "alter table T set area TableArea";
+NotExists "d:\\dm\\area\\altertable\\T";
+Exists "d:\\dm\\area\\table\\T";
+#載っている表が移動したので消せるはず
+Command "drop area AlterTableArea"; 
+NotExists "d:\\dm\\area\\altertable";
+
+#表のエリアを元に戻す
+Command "alter table T drop area default";
+NotExists "d:\\dm\\area\\table\\T";
+Exists "d:\\dm\\data\\DefaultDB\\T";
+#載っている表が移動したので消せるはず
+Command "drop area TableArea";	
+NotExists "d:\\dm\\area\\table";
+Command "drop table T";
+
+## Default以外のエリアを作成
+Command "create area TableArea 'd:\\dm\\area\\table'";
+Command "create area HeapArea 'd:\\dm\\area\\heap'";
+Command "create area IndexArea 'd:\\dm\\area\\index'";
+Command "create area FullTextArea 'd:\\dm\\area\\fulltext'";
+
+## heapについてエリアを指定する
+Command "create table T (f1 int, f2 ntext array [no limit] hint heap 'compressed')
+	 area TableArea heap HeapArea";
+Command "insert into T values (1, ?)" [["hoge"]];
+Exists "d:\\dm\\area\\table\\T";
+Exists "d:\\dm\\area\\heap\\T";
+Exists "d:\\dm\\area\\heap\\T\\RHP_f2";
+Command "create index T_f1 on T(f1)";
+Exists "d:\\dm\\area\\table\\T\\BTR_T_f1";
+Command "create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'";
+Exists "d:\\dm\\area\\table\\T\\FTS_T_f2";
+
+#heapエリアを指定したtableについてエリアの移動
+Command "create area AlterTableArea 'd:\\dm\\area\\altertable'";
+NotExists "d:\\dm\\area\\altertable";
+Command "alter table T set area AlterTableArea";
+NotExists "d:\\dm\\area\\table\\T";
+Exists "d:\\dm\\area\\heap\\T";
+Exists "d:\\dm\\area\\altertable\\T";
+Command "drop area TableArea";
+NotExists "d:\\dm\\area\\table";
+Command "create area TableArea 'd:\\dm\\area\\table'";
+NotExists "d:\\dm\\area\\table";
+#heapエリアを指定したtableのエリアを元に戻す
+Command "alter table T set area TableArea";
+NotExists "d:\\dm\\area\\altertable\\T";
+Exists "d:\\dm\\area\\table\\T";
+Exists "d:\\dm\\area\\heap\\T";
+
+# エリアの抹消
+Command "drop area AlterTableArea";
+NotExists "d:\\dm\\area\\altertable";
+Command "alter table T drop area default";
+NotExists "d:\\dm\\area\\table\\T";
+Exists "d:\\dm\\data\\DefaultDB\\T";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Exists "d:\\dm\\area\\heap\\T\\RHP_f2";
+Command "drop area TableArea";
+NotExists "d:\\dm\\area\\table";
+
+## heapエリアの移動のテスト
+Command "create area AlterHeapArea 'd:\\dm\\alterheaparea'";
+NotExists "d:\\dm\\alterheaparea";
+Command "alter table T set area heap AlterHeapArea";
+NotExists "d:\\dm\\area\\heap\\T";
+Exists "d:\\dm\\alterheaparea\\T";
+Exists "d:\\dm\\alterheaparea\\T\\RHP_f2";
+Exists "d:\\dm\\data\\DefaultDB\\T";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Command "drop area HeapArea";
+NotExists "d:\\dm\\area\\heap";
+
+Command "create area HeapArea 'd:\\dm\\area\\heap'";
+NotExists "d:\\dm\\area\\heap";
+# 元に戻す
+Command "alter table T set area heap HeapArea";
+NotExists "d:\\dm\\alterheaparea\\T";
+Exists "d:\\dm\\area\\heap\\T";
+Exists "d:\\dm\\area\\heap\\T\\RHP_f2";
+Exists "d:\\dm\\data\\DefaultDB\\T";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Command "drop area AlterHeapArea";
+NotExists "d:\\dm\\alterheaparea";
+
+# エリアや表のdrop
+Command "alter table T drop area heap";
+NotExists "d:\\dm\\area\\heap\\T";
+Exists "d:\\dm\\data\\DefaultDB\\T";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Exists "d:\\dm\\data\\DefaultDB\\T\\RHP_f2";
+Command "drop area HeapArea";
+NotExists "d:\\dm\\area\\heap";
+
+## indexエリアの移動
+Command "create area AlterIndexArea 'd:\\dm\\area\\alterindex'";
+NotExists "d:\\dm\\area\\alterindex";
+Command "alter table T set area index AlterIndexArea";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Exists "d:\\dm\\area\\alterindex\\T\\BTR_T_f1";
+Command "drop area IndexArea";
+NotExists "d:\\dm\\area\\index";
+Command "create area IndexArea 'd:\\dm\\area\\index'";
+NotExists "d:\\dm\\area\\index";
+# 元に戻す
+Command "alter table T set area index IndexArea";
+NotExists "d:\\dm\\area\\alterindex\\T\\BTR_T_f1";
+Exists "d:\\dm\\area\\index\\T\\BTR_T_f1";
+# エリアや表のdrop
+Command "drop area AlterIndexArea";
+NotExists "d:\\dm\\area\\alterindex";
+Command "alter table T drop area index";
+NotExists "d:\\dm\\area\\index\\T";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Command "drop area IndexArea";
+NotExists "d:\\dm\\area\\index";
+
+## fulltextエリアの移動
+Command "create area AlterFullTextArea 'd:\\dm\\area\\alterfulltext'";
+NotExists "d:\\dm\\area\\alterfulltext";
+Command "alter table T set area fulltext AlterFullTextArea";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f2";
+Exists "d:\\dm\\area\\alterfulltext\\T\\FTS_T_f2";
+Command "drop area FullTextArea";
+NotExists "d:\\dm\\area\\fulltext";
+Command "create area FullTextArea 'd:\\dm\\area\\fulltext'";
+NotExists "d:\\dm\\area\\fulltext";
+# 元に戻す
+Command "alter table T set area fulltext FulltextArea";
+NotExists "d:\\dm\\area\\alterfulltext\\T\\FTS_T_f2";
+Exists "d:\\dm\\area\\fulltext\\T\\FTS_T_f2";
+Command "drop area AlterFullTextArea";
+NotExists "d:\\dm\\area\\alterfulltext";
+# エリアや表のdrop
+Command "alter table T drop area fulltext";
+NotExists "d:\\dm\\area\\fulltext\\T\\FTS_T_f2";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f2";
+Command "drop area FullTextArea";
+NotExists "d:\\dm\\area\\fulltext";
+
+Command "drop table T";
+NotExists "d:\\dm\\data\\DefaultDB\\T";
+
+## fulltextを除く全てのエリア区分について同時に指定してみる
+Command "create area TableArea 'd:\\dm\\area\\table'";
+Command "create area HeapArea 'd:\\dm\\area\\heap'";
+Command "create area IndexArea 'd:\\dm\\area\\index'";
+Command "create area FullTextArea 'd:\\dm\\area\\fulltext'";
+Command "create table T (f1 int, f2 ntext array [no limit] hint heap 'compressed') area TableArea heap HeapArea index IndexArea";
+Command "insert into T values (1, ?)" [["hoge"]];
+Command "create index T_f1 on T(f1)";
+Command "create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'";
+Exists "d:\\dm\\area\\table\\T";
+Exists "d:\\dm\\area\\heap\\T\\RHP_f2";
+Exists "d:\\dm\\area\\index\\T\\BTR_T_f1";
+Exists "d:\\dm\\area\\table\\T\\FTS_T_f2";
+NotExists "d:\\dm\\data\\DefaultDB\\T";
+Command "drop table T";
+
+## 全てのエリア区分について同時に指定してみる
+Command "create table T (f1 int, f2 ntext array [no limit] hint heap 'compressed') area TableArea heap HeapArea index IndexArea fulltext FullTextArea";
+Command "insert into T values (1, ?)" [["hoge"]];
+Command "create index T_f1 on T(f1)";
+Command "create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'";
+Exists "d:\\dm\\area\\table\\T";
+Exists "d:\\dm\\area\\heap\\T\\RHP_f2";
+Exists "d:\\dm\\area\\index\\T\\BTR_T_f1";
+Exists "d:\\dm\\area\\fulltext\\T\\FTS_T_f2";
+NotExists "d:\\dm\\data\\DefaultDB\\T";
+Command "drop table T";
+
+TerminateSession;
+
+InitializeSession "DefaultDB";
+
+## areaをcreate→すぐdrop
+NotExists "d:\\dm\\area\\0";
+Command "create area area1 'd:\\dm\\area\\0'";
+NotExists "d:\\dm\\area\\0";
+Command "drop area area1";
+NotExists "d:\\dm\\area\\0";
+
+## 表が乗っている状態でのareaの定義変更
+Command "create area area1 'd:\\dm\\area\\0'";
+NotExists "d:\\dm\\area\\0";
+Command "create table T (f1 int) area area1";
+Command "insert into T values (1)";
+Exists "d:\\dm\\area\\0\\T";
+Command "alter area area1 modify 'd:\\dm\\area\\alter'";
+NotExists "d:\\dm\\area\\0";
+NotExists "d:\\dm\\area\\0\\T";
+Exists "d:\\dm\\area\\alter";
+Exists "d:\\dm\\area\\alter\\T";
+Command "drop table T";
+NotExists "d:\\dm\\area\\alter\\T";
+Command "drop area area1";
+NotExists "d:\\dm\\area\\alter";
+
+## 表と索引が乗っている状態でのareaの定義変更
+Command "create area area1 'd:\\dm\\area\\0'";
+NotExists "d:\\dm\\area\\0";
+Command "create table T (f1 int, f2 ntext array [no limit]) area area1 index area1 fulltext area1";
+Command "insert into T values (1, ?)" [["hoge"]];
+Exists "d:\\dm\\area\\0\\T";
+Command "create index T_f1 on T(f1)";
+Exists "d:\\dm\\area\\0\\T\\BTR_T_f1";
+Command "create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'";
+Exists "d:\\dm\\area\\0\\T\\FTS_T_f2";
+Command "alter area area1 modify 'd:\\dm\\area\\alter'";
+Command "alter area area1 modify 'd:\\dm\\area\\0'";
+NotExists "d:\\dm\\area\\alter\\T";
+NotExists "d:\\dm\\area\\alter\\T\\BTR_T_f1";
+NotExists "d:\\dm\\area\\alter\\T\\FTS_T_f2";
+Exists "d:\\dm\\area\\0\\T";
+Exists "d:\\dm\\area\\0\\T\\BTR_T_f1";
+Exists "d:\\dm\\area\\0\\T\\FTS_T_f2";
+
+#Command "drop table T";
+#NotExists "d:\\dm\\area\\0\\T";
+#Command "drop area area1";
+#NotExists "d:\\dm\\area\\0";
+
+
+TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;

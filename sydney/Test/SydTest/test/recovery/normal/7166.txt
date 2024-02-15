@@ -1,0 +1,218 @@
+# 現象テスト(unrepeatable read, r/w, repeatable read)
+
+# r/w トランザクションを実行中にr/w かつrepeatable readな
+
+# トランザクションを実行させ、2つめのトランザクションが
+
+# commit前のr/wトランザクションの内容を読まないことを確認する。
+
+# session2のトランザクション種別が同じならば、
+
+# session1のトランザクション種別にかかわらず同じ結果が得られるはずである。
+
+
+
+Begin;
+
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+InitializeSession "";
+
+Command "create database TESTDB";
+
+TerminateSession;
+
+
+
+InitializeSession "TESTDB";
+
+Command "create table T(C int)";
+
+Command "insert into T (C) values (3)";
+
+TerminateSession;
+
+
+
+InitializeSession 1 "TESTDB";
+
+InitializeSession 2 "TESTDB";
+
+
+
+Command 2 "set transaction read only, using snapshot, isolation level repeatable read";
+Command 2 "start transaction read only, using snapshot";
+
+Command 1 "update T set C=5";
+
+AsyncCommand "sel" 2 "select * from T"; 
+
+#↓結果は「3」になり、かつデッドロックしない
+
+GetAsyncResult "sel";
+
+#↓「3」になる
+
+Command 2 "select * from T"; 
+
+Command 2 "commit";
+
+
+
+#元に戻す
+
+InitializeSession "TESTDB";
+
+Command "update T set C=3";
+
+TerminateSession;
+
+
+Command 1 "set transaction read write, isolation level read uncommitted";
+Command 1 "start transaction read write";
+
+Command 2 "set transaction read only, using snapshot, isolation level repeatable read";
+Command 2 "start transaction read only, using snapshot";
+
+Command 1 "update T set C=5";
+
+AsyncCommand "sel" 2 "select * from T"; 
+
+Command 1 "commit";
+
+#↓結果は「3」になり、かつデッドロックしない
+
+GetAsyncResult "sel";
+
+#↓「3」になる
+
+Command 2 "select * from T"; 
+
+Command 2 "commit";
+
+
+
+InitializeSession "TESTDB";
+
+Command "update T set C=3";
+
+TerminateSession;
+
+
+
+Command 1 "set transaction read write, isolation level read committed";
+Command 1 "start transaction read write";
+
+Command 2 "set transaction read only, using snapshot, isolation level repeatable read";
+Command 2 "start transaction read only, using snapshot";
+
+Command 1 "update T set C=5";
+
+AsyncCommand "sel" 2 "select * from T"; 
+
+Command 1 "commit";
+
+#↓結果は「3」になり、かつデッドロックしない
+
+GetAsyncResult "sel";
+
+#↓「3」になる
+
+Command 2 "select * from T"; 
+
+Command 2 "commit";
+
+
+
+#元に戻す
+
+InitializeSession "TESTDB";
+
+Command "update T set C=3";
+
+TerminateSession;
+
+
+
+Command 1 "set transaction read write, isolation level repeatable read";
+Command 1 "start transaction read write";
+
+Command 2 "set transaction read only, using snapshot, isolation level repeatable read";
+Command 2 "start transaction read only, using snapshot";
+
+Command 1 "update T set C=5";
+
+AsyncCommand "sel" 2 "select * from T"; 
+
+Command 1 "commit";
+
+#↓結果は「3」になり、かつデッドロックしない
+
+GetAsyncResult "sel";
+
+#↓「3」になる
+
+Command 2 "select * from T"; 
+
+Command 2 "commit";
+
+
+
+#元に戻す
+
+InitializeSession "TESTDB";
+
+Command "update T set C=3";
+
+TerminateSession;
+
+Command 1 "set transaction read write, isolation level serializable";
+Command 1 "start transaction read write";
+
+Command 2 "set transaction read only, using snapshot, isolation level repeatable read";
+Command 2 "start transaction read only, using snapshot";
+
+Command 1 "update T set C=5";
+
+AsyncCommand "sel" 2 "select * from T"; 
+
+Command 1 "commit";
+
+#↓結果は「3」になり、かつデッドロックしない
+
+GetAsyncResult "sel";
+
+#↓「3」になる
+
+Command 2 "select * from T"; 
+
+Command 2 "commit";
+
+
+
+TerminateSession 1;
+
+TerminateSession 2;
+
+
+
+#InitializeSession "TESTDB";
+
+#Command "drop table T";
+
+#TerminateSession;
+
+
+
+#InitializeSession "";
+
+#Command "drop database TESTDB";
+
+#TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+
+End;
+

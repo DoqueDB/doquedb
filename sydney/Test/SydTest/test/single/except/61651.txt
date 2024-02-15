@@ -1,0 +1,28 @@
+# score検索の文字列として無効なものを試す
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 int, C2 ntext)";
+Command  "create fulltext index I1_2 on T1(C2) hint 'inverted=(nolocation=true, notf=true)'";
+Command  "insert into T1 (C1, C2) values (?, ?)" [1, "ほげ"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [2, "ほげほげ"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [3, "げほげほ"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [4, "はらほげ"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [5, "ほえ"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [6, ""];
+Command  "select C1, score(C2) from T1 where C2 like ?" [""];
+Command  "select C1, score(C2) from T1 where C2 like ?" ["_"];
+Command  "select C1, score(C2) from T1 where C2 like ?" ["%"];
+Command  "select C1, score(C2) from T1 where C2 like ?" ["%%"];
+Command  "drop table T1";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

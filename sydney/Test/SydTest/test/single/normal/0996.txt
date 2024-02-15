@@ -1,0 +1,39 @@
+# テスト追加: FileAccess_Merge.cpp
+#             B+索引のついた列 f1 と、全文索引のついた列 f2、f3 のある表に何件か入れて、ヒットする条件で B+木のついた列と全文スコアのうち1つを取得する
+#             select f1, score(f3) from t where f1 > 1 and f3 like '%c%' and f4 like '%C%';
+#2005.07.25 tajima
+Begin;
+
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (f1 int, f2 ntext, f3 ntext,L language)";
+
+# 索引作成
+Command "create fulltext index T2_Index on T(f2) language column L hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+Command "create fulltext index T3_Index on T(f3) language column L hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+
+Command "create index F_Index on T(f1)";
+
+#データセット
+CreatePreparedCommand "ins" "insert into T (f1, f2, f3,L) values (?, ?, ?, ?)";
+PreparedCommand "ins" [1, "あああああああああああああああああああああああああページああああ","いいいいいマシンいいいいいいマシンいいいいマシンいいいいいいいいい", "ja+en"];
+PreparedCommand "ins" [2, "今日は台風が夕方には上陸するらしい。朝から激しい雨が降っている。","この間の地震にも驚いたが、次は台風かとは。", "ja+en"];
+PreparedCommand "ins" [3, "このマシーンの性能は非常に良い。しかし高い。もう少し安くして欲しい。次のページに何か書いてあるかな10ページ目を見てみよう。","このマシーンの性能は非常に良い。しかし高い。もう少し安くして欲しい。", "ja+en"];
+PreparedCommand "ins" [4, "このページに書いてあることは、自分のマシーンはノートパソコンではあるが結構重い。やっぱりマシーンを買い換えようかな。ということだ。","このページに書いてあることは、自分のマシーンはノートパソコンではあるが結構重い。やっぱりマシーンを買い換えようかな。ということだ。", "ja+en"];
+ErasePreparedCommand "ins";
+
+
+Command "select f1, score(f2) from T  where f1 > 1 and f2 like ? and f3 like ?" ["%ペイジ%","%マシン%"]; # 「ページ」の異表記
+
+
+
+# テスト用の表を消去
+Command "drop table T";
+
+
+TerminateSession;
+Terminate;
+End;
+

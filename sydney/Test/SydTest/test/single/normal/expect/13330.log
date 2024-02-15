@@ -1,0 +1,146 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DBMountTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area area1 'area1'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area area2 'area2'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table T set area area1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter index T_f1 set area area2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area area1 modify 'area1'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter area area2 modify 'area2'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] unmount DBMountTest
+SydTest::Executor: [INFO] {d:\dm\data\databasetest}
+SydTest::Executor: [INFO] {d:\dm\data\logtest}
+SydTest::Executor: [INFO] {d:\dm\system\systemtest}
+SydTest::Executor: [INFO] {d:\dm\data\area1}
+SydTest::Executor: [INFO] {d:\dm\data\area2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\area1 d:\dm\data\altermountarea1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\area2 d:\dm\data\altermountarea2
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest' alter area area1 modify 'altermountarea1' alter area area2 modify 'altermountarea1'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) File 'd:\dm\data\altermountarea1' exists.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\altermountarea1 d:\dm\data\area1
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] mv d:\dm\data\altermountarea2 d:\dm\data\area2
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database DBMountTest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DBMountTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f1 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f1 on T(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (0),(1),(2),(3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\DBMountTest\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Insufficient arguments to function.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database DBMountTest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\DBMountTest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\system\DBMountTest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\area1\T\RCD_T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\area2\T\BTR_T_f1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] DBMountTest
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 > 1
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] mount DBMountTest2 path 'logtest' logicallog 'systemtest' system 'logtest'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Invalid schema operation - invalid path is specified for the object 'DBMountTest2'.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter database DBMountTest2 set path 'databasetest2' logicallog 'logtest2' system 'systemtest2'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\databasetest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\logtest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Exists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\system\systemtest
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\databasetest2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\data\logtest2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] NotExists
+SydTest::Executor: [INFO] [SydTest Option] d:\dm\system\systemtest2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] Main End.

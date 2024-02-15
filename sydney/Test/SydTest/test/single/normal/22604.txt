@@ -1,0 +1,22 @@
+# ロールフォワードリカバリのテスト
+
+Begin;
+Initialize;
+InitializeSession "$$systemdb";
+
+# fullで作ってからalterでcheckpoint->fullにする
+
+Command "create database TEST recovery full";
+Command "select flag from system_database where name = 'TEST'";
+
+Command "alter database TEST recovery checkpoint";
+Command "select flag from system_database where name = 'TEST'";
+
+Command "alter database TEST recovery full";
+Command "select flag from system_database where name = 'TEST'";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,56 @@
+#障害票 849 V15.2以降
+# Bitmap索引で、配列のLike演算時に任意要素指定が必須になっている。
+
+Begin;
+Initialize;
+
+SetSystemParameter "Plan_TraceOptimizationOutput" "1";
+SetSystemParameter "Plan_TraceLevel" "2";
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T(f char(8))";
+Command "create bitmap index I on T(f)";
+Command "insert T values 'abc','xyz'";
+Command "select * from T where f like 'ab%'";#<- 索引を使う。
+Command "select * from T where f[] like 'ab%'";#<- syntax error
+Command "select * from T where f[1] like 'ab%'";#<- syntax error
+#[ERROR] Object No=0x30001 (Analysis::valueexpression_arrayreference.cpp 91) SQL
+#syntax error 'Element Reference: operand is not an array type.'.
+
+Command "drop table T";
+
+Command "create table T(f char(8))";
+Command "create bitmap index I on T(f)";
+Command "insert T values 'abc','xyz'";
+Command "select * from T where f = 'abc'";#<- 索引を使う。
+Command "select * from T where f[] = 'abc'";#<- syntax error
+Command "select * from T where f[1] = 'abc'";#<- syntax error
+
+Command "drop table T";
+
+Command "create table T(f char(8) array[no limit])";
+Command "create bitmap index I on T(f)";
+Command "insert T values (array['abc','xyz'])";
+Command "select * from T where f like 'ab%'"; #<- 現状、索引を使わないので、使うようにする！
+Command "select * from T where f[] like 'ab%'"; #<- 索引を使う。
+Command "select * from T where f[1] like 'ab%'";#<- 索引を使わない。
+
+Command "drop table T";
+
+Command "create table T(f char(8))";
+Command "create bitmap index I on T(f)";
+Command "insert T values 'abc','xyz'";
+Command "select * from T where f = 'abc'";#<- 索引を使う。
+Command "select * from T where f[] = 'abc'";#<- syntax error
+Command "select * from T where f[1] = 'abc'";#<- syntax error
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,74 @@
+#名前やパスが一致するデータベースをマウントできないことをテスト
+Begin;
+Initialize;
+#------------------------------------
+
+#同じパスにalter areaしたときにエラーになることの確認
+InitializeSession "DBMountTest";
+Command "create area area1 'area1'";
+Command "create area area2 'area2'";
+Command "alter table T set area area1";
+Command "alter index T_f1 set area area2";
+Command "alter area area1 modify 'area1'";
+Command "alter area area2 modify 'area2'";
+TerminateSession;
+InitializeSession "";
+Command "unmount DBMountTest";
+System "mv \"d:\\dm\\data\\area1\" \"d:\\dm\\data\\altermountarea1\"";
+System "mv \"d:\\dm\\data\\area2\" \"d:\\dm\\data\\altermountarea2\"";
+#エラーになるはず
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest' alter area area1 modify 'altermountarea1' alter area area2 modify 'altermountarea1'";
+
+#後のテストのため移動しておく
+System "mv \"d:\\dm\\data\\altermountarea1\" \"d:\\dm\\data\\area1\"";
+System "mv \"d:\\dm\\data\\altermountarea2\" \"d:\\dm\\data\\area2\"";
+TerminateSession;
+
+#すでに存在するデータベースの名前を使ったmount
+InitializeSession "";
+Command "create database DBMountTest";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "create table T (f1 int)";
+Command "create index T_f1 on T(f1)";
+Command "insert T values (0),(1),(2),(3)";
+Exists "d:\\dm\\data\\DBMountTest\\T\\BTR_T_f1";
+TerminateSession;
+
+InitializeSession "";
+#エラーになるはず
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+Command "drop database DBMountTest";
+NotExists "d:\\dm\\data\\DBMountTest";
+NotExists "d:\\dm\\system\\DBMountTest";
+# mountに失敗しているからファイルが残っているはず
+Exists "d:\\dm\\data\\area1\\T\\RCD_T";
+Exists "d:\\dm\\data\\area2\\T\\BTR_T_f1";
+TerminateSession;
+
+#すでに存在するデータベースのパスを使ったmount
+InitializeSession "";
+Command "mount DBMountTest path 'databasetest' logicallog 'logtest' system 'systemtest'";
+TerminateSession;
+
+InitializeSession "DBMountTest";
+Command "select * from T where f1 > 1";
+TerminateSession;
+
+InitializeSession "";
+#エラーになるはず
+Command "mount DBMountTest2 path 'logtest' logicallog 'systemtest' system 'logtest'";
+Command "alter database DBMountTest2 set path 'databasetest2' logicallog 'logtest2' system 'systemtest2'";
+# mountに失敗しているからファイルは移動していない
+Exists "d:\\dm\\data\\databasetest";
+Exists "d:\\dm\\data\\logtest";
+Exists "d:\\dm\\system\\systemtest";
+NotExists "d:\\dm\\data\\databasetest2";
+NotExists "d:\\dm\\data\\logtest2";
+NotExists "d:\\dm\\system\\systemtest2";
+
+#------------------------------------
+TerminateSession;
+#Terminate;
+End;

@@ -1,0 +1,191 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 int, C2 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I1_2 on T1(C2) hint 'delayed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,ほげ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,ほげほげ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,げほげほ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {4,はらほげ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {5,ほえ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {6,}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, score(C2) from T1 where C2 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ}
+SydTest::Executor: [INFO] {1,5.161290322580E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, score(C2) from T1 where C2 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ほげ}
+SydTest::Executor: [INFO] {1,2.202567933271E-1}
+SydTest::Executor: [INFO] {2,2.008223703865E-1}
+SydTest::Executor: [INFO] {4,2.008223703865E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, score(C2) from T1 where C2 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ%}
+SydTest::Executor: [INFO] {1,3.076672633359E-1}
+SydTest::Executor: [INFO] {2,2.805201518651E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, score(C2) from T1 where C2 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ほげ%}
+SydTest::Executor: [INFO] {1,1.717452594470E-1}
+SydTest::Executor: [INFO] {2,2.129641217143E-1}
+SydTest::Executor: [INFO] {3,1.565912659664E-1}
+SydTest::Executor: [INFO] {4,1.565912659664E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 int, C2 ntext array [no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I1_2 on T1(C2) hint 'delayed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,{ほげ}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,{ほげほげ}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,{げほげほ}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {4,{はらほげ}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {5,{ほえ}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {6,{}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, score(C2) from T1 where C2 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ}
+SydTest::Executor: [INFO] {1,5.161290322580E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, score(C2) from T1 where C2 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ほげ}
+SydTest::Executor: [INFO] {1,2.202567933271E-1}
+SydTest::Executor: [INFO] {2,2.008223703865E-1}
+SydTest::Executor: [INFO] {4,2.008223703865E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, score(C2) from T1 where C2 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ%}
+SydTest::Executor: [INFO] {1,3.076672633359E-1}
+SydTest::Executor: [INFO] {2,2.805201518651E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, score(C2) from T1 where C2 like ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {%ほげ%}
+SydTest::Executor: [INFO] {1,1.717452594470E-1}
+SydTest::Executor: [INFO] {2,2.129641217143E-1}
+SydTest::Executor: [INFO] {3,1.565912659664E-1}
+SydTest::Executor: [INFO] {4,1.565912659664E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {1,{ほげ}}
+SydTest::Executor: [INFO] {2,{ほげほげ}}
+SydTest::Executor: [INFO] {3,{げほげほ}}
+SydTest::Executor: [INFO] {4,{はらほげ}}
+SydTest::Executor: [INFO] {5,{ほえ}}
+SydTest::Executor: [INFO] {6,{}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] Main End.
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify database TESTDB cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {1,{ほげ}}
+SydTest::Executor: [INFO] {2,{ほげほげ}}
+SydTest::Executor: [INFO] {3,{げほげほ}}
+SydTest::Executor: [INFO] {4,{はらほげ}}
+SydTest::Executor: [INFO] {5,{ほえ}}
+SydTest::Executor: [INFO] {6,{}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) xxx not found.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

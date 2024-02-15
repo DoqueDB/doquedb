@@ -1,0 +1,25 @@
+#ROWIDに関するテスト(異常系)
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# ROWIDにindexをつけることはできない
+Command "create table t0 (C int)";
+Command "create index x0 on t0 (ROWID)";
+Command "drop table t0";
+
+#「ROWID」を列名にすることはできない
+Command "create table t1 (ROWID	int)";
+#Command "drop table t1";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

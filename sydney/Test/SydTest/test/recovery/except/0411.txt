@@ -1,0 +1,158 @@
+# pkey[2]/btree(primary key)
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 nvarchar(30), C2 nvarchar(460), primary key(C1, C2))";
+Command  "select C1, C2 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=?, C2=? where C1=? and C2=?" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nchar(30), C2 nvarchar(460), primary key(C1, C2))";
+Command  "select C1, C2 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\hosimegurinouta.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\douyou.txt"];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\douyou.txt"];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=?, C2=? where C1=? and C2=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\hosimegurinouta.txt", textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\douyou.txt"];
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nchar(400), primary key(C1))";
+Command  "select C1 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\hosimegurinouta.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\douyou.txt"];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\douyou.txt"];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=? where C1=?" [textsjisfile "..\\..\\doc\\hosimegurinouta.txt", textsjisfile "..\\..\\doc\\douyou.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(30), primary key(C1))";
+Command  "select C1 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+Command  "insert into T1 (C1) values (?)" ["ホゲ"];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1) values (?)" ["ホゲ"];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=? where C1=?" ["ほげ", "ホゲ"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(30), C2 nvarchar(460), primary key(C1, C2))";
+Command  "select C1, C2 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=?, C2=? where C1=? and C2=?" [null, null, "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nchar(30), C2 nvarchar(460), primary key(C1, C2))";
+Command  "select C1, C2 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\douyou.txt"];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\douyou.txt"];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=?, C2=? where C1=? and C2=?" [null, null, textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\douyou.txt"];
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nchar(400), primary key(C1))";
+Command  "select C1 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\douyou.txt"];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\douyou.txt"];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=? where C1=?" [null, textsjisfile "..\\..\\doc\\douyou.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(30), primary key(C1))";
+Command  "select C1 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" ["ホゲ"];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1) values (?)" ["ホゲ"];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=? where C1=?" [null, "ホゲ"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(30), C2 nvarchar(460), primary key(C1, C2))";
+Command  "select C1, C2 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1, C2) values (?, ?)" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=?, C2=? where C1 is null and C2 is null" ["ほげ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nchar(30), C2 nvarchar(460), primary key(C1, C2))";
+Command  "select C1, C2 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1, C2) values (?, ?)" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\hosimegurinouta.txt"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1, C2) values (?, ?)" [null, null];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=?, C2=? where C1 is null and C2 is null" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\hosimegurinouta.txt"];
+Command  "select C1, C2 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nchar(400), primary key(C1))";
+Command  "select C1 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\hosimegurinouta.txt"];
+Command  "insert into T1 (C1) values (?)" [null];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1) values (?)" [null];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=? where C1 is null" [textsjisfile "..\\..\\doc\\hosimegurinouta.txt"];
+Command  "select C1 from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 nvarchar(30), primary key(C1))";
+Command  "select C1 from T1";
+# primary key指定で得たBtreeファイルをテストする
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+Command  "insert into T1 (C1) values (?)" [null];
+# 重複したタプルはinsertできないはず
+Command  "insert into T1 (C1) values (?)" [null];
+# 既存のタプルとかぶる内容にupdateすることもできないはず
+Command  "update T1 set C1=? where C1 is null" ["ほげ"];
+Command  "select C1 from T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

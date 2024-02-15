@@ -1,0 +1,93 @@
+Begin;
+
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T (ID int, K char(1), F ntext, primary key(ID))";
+Command "create bitmap index T_K on T(K)";
+Command "create fulltext index T_F on T(F) hint 'inverted=(indexing=dual, tokenizer=DUAL:JAP:ALL:2)'";
+
+Command "create table Ta (ID int, F ntext, primary key(ID))";
+Command "create fulltext index Ta_F on Ta(F) hint 'inverted=(indexing=dual, tokenizer=DUAL:JAP:ALL:2)'";
+
+Command "create table Tb (ID int, F ntext, primary key(ID))";
+Command "create fulltext index Tb_F on Tb(F) hint 'inverted=(indexing=dual, tokenizer=DUAL:JAP:ALL:2)'";
+
+Command "insert into T values (1, 'a', 'リコーの環境への取り組み')";
+Command "insert into T values (2, 'b', '複写機大手のリコー')";
+Command "insert into T values (3, 'a', 'リストラと戦うリコーユニオン')";
+Command "insert into T values (4, 'b', 'リコーはかつてリストラしたことがない')";
+Command "insert into T values (5, 'a', '株式会社リコー')";
+Command "insert into T values (6, 'b', 'リコージャパン株式会社')";
+Command "insert into T values (7, 'a', 'オンラインストレージならリコーのquanp')";
+Command "insert into T values (8, 'b', 'リコーテクノシステムズ株式会社')";
+Command "insert into T values (9, 'a', 'リコーがHOYAのカメラ事業を買収')";
+Command "insert into T values (10, 'b', 'リコー【7752】事務機で国内首位級')";
+
+Command "insert into Ta values (1, 'リコーの環境への取り組み')";
+Command "insert into Ta values (3, 'リストラと戦うリコーユニオン')";
+Command "insert into Ta values (5, '株式会社リコー')";
+Command "insert into Ta values (7, 'オンラインストレージならリコーのquanp')";
+Command "insert into Ta values (9, 'リコーがHOYAのカメラ事業を買収')";
+
+Command "insert into Tb values (2, '複写機大手のリコー')";
+Command "insert into Tb values (4, 'リコーはかつてリストラしたことがない')";
+Command "insert into Tb values (6, 'リコージャパン株式会社')";
+Command "insert into Tb values (8, 'リコーテクノシステムズ株式会社')";
+Command "insert into Tb values (10, 'リコー【7752】事務機で国内首位級')";
+
+# スコアが同じかどうか
+Command "select score(f) from ta where f contains 'リコー'";
+Command "select score(f) from t where f contains 'リコー' rank from (select * from t where k = 'a')";
+Command "select score(f) from t where f contains 'リコー' rank from (select * from t where id in (1,3,5,7,9))";
+
+Command "select score(f) from ta where f contains '会社'";
+Command "select score(f) from t where f contains '会社' rank from (select * from t where k = 'a')";
+Command "select score(f) from t where f contains '会社' rank from (select * from t where id in (1,3,5,7,9))";
+
+Command "select score(f) from ta where f contains 'HOYA' | 'quanp'";
+Command "select score(f) from t where f contains 'HOYA' | 'quanp' rank from (select * from t where k = 'a')";
+Command "select score(f) from t where f contains 'HOYA' | 'quanp' rank from (select * from t where id in (1,3,5,7,9))";
+
+Command "select score(f) from tb where f contains 'リコー'";
+Command "select score(f) from t where f contains 'リコー' rank from (select * from t where k = 'b')";
+Command "select score(f) from t where f contains 'リコー' rank from (select * from t where id in (2,4,6,8,10))";
+
+Command "select score(f) from tb where f contains '会社'";
+Command "select score(f) from t where f contains '会社' rank from (select * from t where k = 'b')";
+Command "select score(f) from t where f contains '会社' rank from (select * from t where id in (2,4,6,8,10))";
+
+Command "select score(f) from tb where f contains 'HOYA' | 'quanp'";
+Command "select score(f) from t where f contains 'HOYA' | 'quanp' rank from (select * from t where k = 'b')";
+Command "select score(f) from t where f contains 'HOYA' | 'quanp' rank from (select * from t where id in (2,4,6,8,10))";
+
+# getByBitSet との組み合わせ
+Command "select score(f) from ta where f contains 'リコー'";
+Command "select score(f) from t where f contains 'リコー' rank from (select * from t where k = 'a') and k = 'a'";
+
+Command "select score(f) from ta where f contains '会社'";
+Command "select score(f) from t where f contains '会社' rank from (select * from t where id in (1,3,5,7,9)) and k = 'a'";
+
+Command "select score(f) from ta where f contains 'HOYA' | 'quanp'";
+Command "select score(f) from t where f contains 'HOYA' | 'quanp' rank from (select * from t where k = 'a') and id in (1,3,5,7,9)";
+
+Command "select score(f) from tb where f contains 'リコー'";
+Command "select score(f) from t where f contains 'リコー' rank from (select * from t where id in (2,4,6,8,10)) and id in (2,4,6,8,10)";
+
+Command "select score(f) from tb where f contains '会社'";
+Command "select score(f) from t where f contains '会社' rank from (select * from t where k = 'b') and id in (2,4,6,8,10)";
+
+Command "select score(f) from tb where f contains 'HOYA' | 'quanp'";
+Command "select score(f) from t where f contains 'HOYA' | 'quanp' rank from (select * from t where id in (2,4,6,8,10)) and k = 'b'";
+
+# ヒットしない場合
+Command "select score(f) from t where f contains 'リコー' rank from (select * from t where k = 'z')";
+Command "select score(f) from t where f contains 'キャノン' rank from (select * from t where k = 'z')";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+
+End;

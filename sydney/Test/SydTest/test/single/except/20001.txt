@@ -1,0 +1,59 @@
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#1．varchar(10) -> varchar(5)
+Command "create table T (C varchar(10))";
+Command "insert into T values ('abcdefghij')";
+Command "insert into T values (1234567890)";
+
+Command "select * from T";
+
+Command "alter table T alter column C varchar(5)";
+Command "insert into T values ('abcde')";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+#2．int -> varchar(5)
+Command "create table T (C int)";
+Command "insert into T values (1234567890)";
+
+Command "select * from T";
+
+Command "alter table T alter column C varchar(5)";
+Command "insert into T values ('abc')";
+Command "insert into T values (1)";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+#3．型をfloat にしてindex　作成後に　型をintに変更
+Command "create table T (C float)";
+Command "insert into T values (1)";
+Command "insert into T values (2)";
+Command "insert into T values (3)";
+
+Command "create index I on T(c)";
+Command "alter table T alter column C int";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

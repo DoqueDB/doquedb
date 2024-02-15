@@ -1,0 +1,26 @@
+# Bug report 2633
+# ANDとOR EXISTSが組み合わせたテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB_181102";
+Command "create database TESTDB_181102";
+
+Command "create table T(c1 int, c2 int)";
+Command "create table T2(c1 int, c2 int)";
+
+Command "select count(*) from T t1 where 
+	(t1.c2 = 1 or exists (select * from T2 where t1.c1 = t2.c1))
+	and
+	(t1.c2 = 1 or exists (select * from T2 where t1.c1 = t2.c1))
+	and not
+	(
+		(t1.c2 = 1 or exists (select * from T2 where t1.c1 = t2.c1))
+		and
+		(t1.c2 = 1 or exists (select * from T2 where t1.c1 = t2.c1))
+	)";
+
+#Command "drop database TESTDB_181102";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,130 @@
+# select〈 集約関数2個 〉from テーブル group by〈 列2個 〉having〈 条件 - セレクト句にある関数 〉
+#
+# 同集約関数 group by, having 同集約関数テスト
+# --havingがselect句にある関数のみを使用
+# --集約関数2個でグルーピング列の順番違いによるテスト
+# --boolean条件有り
+# 索引
+# --索引無し
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# メインテーブル
+Command  "create table T(C1 int, C2 varchar(2), C3 nvarchar(4), C4 int, C5 nvarchar(32))";
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 1, "1", "ほげ", 111,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 2, "1", "ホゲ", 222,  null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 3, "2",  null,  222,  null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 4, "3", "ホゲ", 222,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 5, "4", "ホゲ", null, textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 6, "1", "ぴよ", 333,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 7, "2",  null,  333,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 8, "3", "ぴよ", 333,  textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 9, "1", "ピヨ", 444,  textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [10, "2", "ピヨ", null, null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [11, "3", "ピヨ", 444,  textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [12, "5",  null,  null, textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [13, "2",  null,  null, null                                 ];
+
+
+# --同列
+Command  "select C1, count(C1), max(C1) from T group by (C1, C1) having max(C1) > (?)" [3.0];
+Command  "select count(C1), C1, max(C1) from T group by (C1, C1) having max(C1) > (?)" [3.0];
+Command  "select count(C1), max(C1), C1 from T group by (C1, C1) having max(C1) > (?)" [3.0];
+
+Command  "select C2, count(C2), max(C2) from T group by (C2, C2) having max(C2) > (?)" ["2.0"];
+Command  "select count(C2), C2, max(C2) from T group by (C2, C2) having max(C2) > (?)" ["2.0"];
+Command  "select count(C2), max(C2), C2 from T group by (C2, C2) having max(C2) > (?)" ["2.0"];
+
+Command  "select C3, count(C3), max(C3) from T group by (C3, C3) having max(C3) > (?)" ["ほげ"];
+Command  "select count(C3), C3, max(C3) from T group by (C3, C3) having max(C3) > (?)" ["ほげ"];
+Command  "select count(C3), max(C3), C3 from T group by (C3, C3) having max(C3) > (?)" ["ほげ"];
+
+Command  "select C4, count(C4), max(C4) from T group by (C4, C4) having max(C4) > (?)" [222];
+Command  "select count(C4), C4, max(C4) from T group by (C4, C4) having max(C4) > (?)" [222];
+Command  "select count(C4), max(C4), C4 from T group by (C4, C4) having max(C4) > (?)" [222];
+
+Command  "select C5, count(C5), max(C5) from T group by (C5, C5) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C5), C5, max(C5) from T group by (C5, C5) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C5), max(C5), C5 from T group by (C5, C5) having max(C5) like (?)" ["株式会社リコー%"];
+
+# -- --and付き
+Command  "select C1, count(C1), max(C1) from T group by (C1, C1) having count(C1) > (?) and max(C1) > (?)" [0.0, 3.0];
+Command  "select count(C1), C1, max(C1) from T group by (C1, C1) having count(C1) > (?) and max(C1) > (?)" [0.0, 3.0];
+Command  "select count(C1), max(C1), C1 from T group by (C1, C1) having count(C1) > (?) and max(C1) > (?)" [0.0, 3.0];
+
+Command  "select C2, count(C2), max(C2) from T group by (C2, C2) having count(C2) > (?) and max(C2) > (?)" [0.0, "2.0"];
+Command  "select count(C2), C2, max(C2) from T group by (C2, C2) having count(C2) > (?) and max(C2) > (?)" [0.0, "2.0"];
+Command  "select count(C2), max(C2), C2 from T group by (C2, C2) having count(C2) > (?) and max(C2) > (?)" [0.0, "2.0"];
+
+Command  "select C3, count(C3), max(C3) from T group by (C3, C3) having count(C3) > (?) and max(C3) > (?)" [0.0, "ほげ"];
+Command  "select count(C3), C3, max(C3) from T group by (C3, C3) having count(C3) > (?) and max(C3) > (?)" [0.0, "ほげ"];
+Command  "select count(C3), max(C3), C3 from T group by (C3, C3) having count(C3) > (?) and max(C3) > (?)" [0.0, "ほげ"];
+
+Command  "select C4, count(C4), max(C4) from T group by (C4, C4) having count(C4) > (?) and max(C4) > (?)" [0.0, 222];
+Command  "select count(C4), C4, max(C4) from T group by (C4, C4) having count(C4) > (?) and max(C4) > (?)" [0.0, 222];
+Command  "select count(C4), max(C4), C4 from T group by (C4, C4) having count(C4) > (?) and max(C4) > (?)" [0.0, 222];
+
+Command  "select C5, count(C5), max(C5) from T group by (C5, C5) having count(C5) > (?) and max(C5) like (?)" [0.0, "株式会社リコー%"];
+Command  "select count(C5), C5, max(C5) from T group by (C5, C5) having count(C5) > (?) and max(C5) like (?)" [0.0, "株式会社リコー%"];
+Command  "select count(C5), max(C5), C5 from T group by (C5, C5) having count(C5) > (?) and max(C5) like (?)" [0.0, "株式会社リコー%"];
+
+
+# --異列
+Command  "select C1, count(C2), max(C3) from T group by (C1, C5) having max(C4) > (?)" [222];
+Command  "select count(C2), C1, max(C3) from T group by (C1, C5) having max(C4) > (?)" [222];
+Command  "select count(C2), max(C3), C1 from T group by (C1, C5) having max(C4) > (?)" [222];
+
+Command  "select C2, count(C3), max(C4) from T group by (C2, C1) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C3), C2, max(C4) from T group by (C2, C1) having max(C5) like (?)" ["株式会社リコー%"];
+Command  "select count(C3), max(C4), C2 from T group by (C2, C1) having max(C5) like (?)" ["株式会社リコー%"];
+
+Command  "select C3, count(C4), max(C5) from T group by (C3, C2) having max(C1) > (?)" [3.0];
+Command  "select count(C4), C3, max(C5) from T group by (C3, C2) having max(C1) > (?)" [3.0];
+Command  "select count(C4), max(C5), C3 from T group by (C3, C2) having max(C1) > (?)" [3.0];
+
+Command  "select C4, count(C5), max(C1) from T group by (C4, C3) having max(C2) > (?)" ["2.0"];
+Command  "select count(C5), C4, max(C1) from T group by (C4, C3) having max(C2) > (?)" ["2.0"];
+Command  "select count(C5), max(C1), C4 from T group by (C4, C3) having max(C2) > (?)" ["2.0"];
+
+Command  "select C5, count(C1), max(C2) from T group by (C5, C4) having max(C3) > (?)" ["ほげ"];
+Command  "select count(C1), C5, max(C2) from T group by (C5, C4) having max(C3) > (?)" ["ほげ"];
+Command  "select count(C1), max(C2), C5 from T group by (C5, C4) having max(C3) > (?)" ["ほげ"];
+
+# -- --and付き
+Command  "select C1, count(C2), max(C3) from T group by (C1, C5) having max(C4) > (?) and max(C5) like (?)" [222, "株式会社リコー%"];
+Command  "select count(C2), C1, max(C3) from T group by (C1, C5) having max(C4) > (?) and max(C5) like (?)" [222, "株式会社リコー%"];
+Command  "select count(C2), max(C3), C1 from T group by (C1, C5) having max(C4) > (?) and max(C5) like (?)" [222, "株式会社リコー%"];
+
+Command  "select C2, count(C3), max(C4) from T group by (C2, C1) having max(C5) like (?) and max(C1) > (?)" ["株式会社リコー%", 3.0];
+Command  "select count(C3), C2, max(C4) from T group by (C2, C1) having max(C5) like (?) and max(C1) > (?)" ["株式会社リコー%", 3.0];
+Command  "select count(C3), max(C4), C2 from T group by (C2, C1) having max(C5) like (?) and max(C1) > (?)" ["株式会社リコー%", 3.0];
+
+Command  "select C3, count(C4), max(C5) from T group by (C3, C2) having max(C1) > (?) and max(C2) > (?)" [3.0, "2.0"];
+Command  "select count(C4), C3, max(C5) from T group by (C3, C2) having max(C1) > (?) and max(C2) > (?)" [3.0, "2.0"];
+Command  "select count(C4), max(C5), C3 from T group by (C3, C2) having max(C1) > (?) and max(C2) > (?)" [3.0, "2.0"];
+
+Command  "select C4, count(C5), max(C1) from T group by (C4, C3) having max(C2) > (?) and max(C3) > (?)" ["2.0", "ほげ"];
+Command  "select count(C5), C4, max(C1) from T group by (C4, C3) having max(C2) > (?) and max(C3) > (?)" ["2.0", "ほげ"];
+Command  "select count(C5), max(C1), C4 from T group by (C4, C3) having max(C2) > (?) and max(C3) > (?)" ["2.0", "ほげ"];
+
+Command  "select C5, count(C1), max(C2) from T group by (C5, C4) having max(C3) > (?) and max(C4) > (?)" ["ほげ", 222];
+Command  "select count(C1), C5, max(C2) from T group by (C5, C4) having max(C3) > (?) and max(C4) > (?)" ["ほげ", 222];
+Command  "select count(C1), max(C2), C5 from T group by (C5, C4) having max(C3) > (?) and max(C4) > (?)" ["ほげ", 222];
+
+Command  "drop table T";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

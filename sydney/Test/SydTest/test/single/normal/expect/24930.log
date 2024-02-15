@@ -1,0 +1,86 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB if exists
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(f1_index int, g1 int, h1 int, i1 int, j1_array int ARRAY[10])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I_T1_f1 on T1(f1_index)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values (?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 606]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select f1_index from t1
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {(null)}
+SydTest::Executor: [INFO] {2147483647}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when f1_index = null then null when f1_index = -2147483648 then 6543210 when f1_index = -34567890 then 2147483647 else -34567890 end from t1
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {2147483647}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case f1_index when null then null when -2147483648 then 6543210 when -34567890 then 2147483647 else -34567890 end from t1
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {2147483647}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select case when f1_index between 0 and 10 then 1 else -34567890 end from t1
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] {-34567890}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

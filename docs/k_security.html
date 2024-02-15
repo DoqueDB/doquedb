@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<!--
+  Copyright (c) 2023,2024 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the License);
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<html>
+
+<head>
+  <!-- Google Tag Manager -->
+  <script type="text/javascript">(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-KRXS4RS');</script>
+  <!-- End Google Tag Manager -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="css/default.css">
+  <title>セキュリティ対策</title>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRXS4RS" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <h1>セキュリティ対策</h1>
+  <div class="right"><a href="knowledge.html">[ナレッジに戻る]</a></div>
+  <div class="contents">
+    <dl>
+      <dt>
+        <a href="#sec1">1. はじめに</a>
+      </dt>
+      <dt>
+        <a href="#sec2">2. ユーザー認証</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec21">2.1 ユーザー管理</a>
+          </dt>
+          <dt>
+            <a href="#sec22">2.2 パスワードファイル</a>
+          </dt>
+          <dt>
+            <a href="#sec23">2.3 アクセス権</a>
+          </dt>
+          <dt>
+            <a href="#sec24">2.4 ユーザー認証の無効化</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec3">3. ネットワーク</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec31">3.1 バインドするインターフェースの限定</a>
+          </dt>
+        </dl>
+      </dd>
+    </dl>
+  </div>
+
+  <h2><a id="sec1">1. はじめに</a></h2>
+  <p>
+    DoqueDBのセキュリティ対策を行う方法を説明します。
+  </p>
+
+  <h2><a id="sec2">2. ユーザー認証</a></h2>
+
+  <h3><a id="sec21">2.1 ユーザー管理</a></h3>
+  <p>
+    ユーザーの新規追加、パスワード変更などのユーザー管理は専用のコマンドで行います。
+    SQL文で行うことはできません。
+    SQL文で行えるのは、データベースのアクセス権の変更だけです。
+	詳しくはユーザーズマニュアルの<a href="users.html#sec30302">3.3.2 ユーザー管理</a>を参照してください。
+  </p>
+
+  <h3><a id="sec22">2.2 パスワードファイル</a></h3>
+  <p>
+    DoqueDBの各リソースにアクセスを行うためには、ユーザー認証を行う必要があります。
+    ユーザー認証を行うためのパスワードファイルは、パラメータServer_PasswordFilePathに記述されたファイルで、ユーザー名とパスワードとを記述したファイルです。
+    パスワードはMD5を利用して符号化されています。
+  </p>
+  <pre>
+&lt;ユーザー名&gt;:&lt;パスワード&gt;:&lt;UID&gt;:&lt;ユーザー種別※&gt;
+</pre>
+  <p>
+    ※0がスーパーユーザーを表し、パスワードファイル中に1行だけ記述できます。1は一般ユーザーを表します。
+  </p>
+  <p>このパスワードファイルは、UNIXの/etc/passwdファイルのように、パスワードファイルを直接編集してパスワードを空にすることができます。
+    パスワードファイルを編集する前には必ずDoqueDBを停止してください。
+  </p>
+  <pre>
+root:48a365b4ce1e322a55ae9017f3daf0c0:0:0:
+dqpub:7ae51f28f2cf4e27e75f5c6c7d40b415:1:1:
+</pre>
+  <p>
+    というパスワードファイルの場合、dqpub のパスワードを空にするには、
+  </p>
+  <pre>root:48a365b4ce1e322a55ae9017f3daf0c0:0:0:
+dqpub::1:1:
+</pre>
+  <p>
+    とします。その後DoqueDBを起動して、userpasswordコマンドでdqpubのパスワードを設定してください。
+  </p>
+
+  <h3><a id="sec23">2.3 アクセス権</a></h3>
+  <p>
+    各データベースには、UIDとそのアクセス権のみが管理されています。
+    別のDoqueDBで作成したデータベースをマウントする場合、マウントするデータベースへアクセス権のあるUIDを持つユーザーを、パスワードファイルにあらかじめ作成しておく必要があります。
+    また、同じUIDのユーザーがすでに存在する場合には、アクセス権はそのユーザーに付与されることになります。
+    これらの動作はUNIXのファイルシステムと似ています。
+  </p>
+
+  <h3><a id="sec24">2.4 ユーザー認証の無効化</a></h3>
+  <p>
+    パラメータServer_PasswordFilePathに"NoPassword"と記述することにより、ユーザー認証機能を無効化できます。
+    アクセス可能なユーザーが限定できる閉じた環境でのみお使いください。
+  </p>
+  <pre>
+Server_PasswordFilePath   "NoPassword"
+</pre>
+
+  <h2><a id="sec3">3. ネットワーク</a></h2>
+
+  <h3><a id="sec31">3.1 バインドするインターフェースの限定</a></h3>
+  <p>
+    DoqueDB がクライアントからの接続をバインドするインターフェースを限定することができます。
+    たとえばlocalhostに限定した場合、DoqueDBが起動しているホスト外からのすべてのアクセスをブロックすることが可能となります。
+    パラメータCommunication_BindHostNameにインターフェース名を設定してください。
+  </p>
+  <pre>
+Communcation_BindHostName  "localhost"
+</pre>
+
+  <hr>
+  <p class="center">Copyright (c) 2023 Ricoh Company, Ltd. All rights reserved.</p>
+
+</body>
+
+</html>

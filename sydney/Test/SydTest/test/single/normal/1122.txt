@@ -1,0 +1,99 @@
+# blobファイルのテスト
+
+Begin;
+#SetSystemParameter "Checkpoint_EnableFileSynchronizer" "SIZE";
+#SetSystemParameter "Checkpoint_Period" "5000";
+SetSystemParameter "SydTest_ShowBinary" "True";
+#SetSystemParameter "SydTest_MessageDisplayThreshold" "0";
+Initialize;
+
+
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T1(N int, C1 blob, primary key(N))";
+Command "select C1 from T1";
+Command "insert into T1 (N, C1) values (1, ?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "start transaction read write";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "select char_length(C1) from T1";
+Command "rollback";
+Command "select char_length(C1) from T1";
+
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "select char_length(C1) from T1";
+
+Command "update T1 set C1 = null";
+
+Command "insert into T1 (N, C1) values (2, ?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "insert into T1 (N, C1) values (3, ?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "insert into T1 (N, C1) values (4, ?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "insert into T1 (N, C1) values (5, ?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "insert into T1 (N, C1) values (6, ?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "insert into T1 (N, C1) values (7, ?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "insert into T1 (N, C1) values (8, ?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "insert into T1 (N, C1) values (9, ?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "insert into T1 (N, C1) values (10, ?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "update T1 set C1 = null where N = 2";
+Command "delete T1 where N = 3";
+Command "update T1 set C1 = null where N = 5";
+Command "delete T1 where N = 6";
+Command "update T1 set C1 = null where N = 8";
+Command "delete T1 where N = 9";
+Command "verify table T1 cascade";
+
+#Sleep 30000;	# compactが呼ばれるのを待つ
+Command "sync";
+Command "sync";
+
+Command "verify table T1 cascade";
+Command "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+SetSystemParameter "SydTest_MessageDisplayThreshold" "500";
+SetSystemParameter "SydTest_ShowBinary" "False";
+#SetSystemParameter "Checkpoint_Period" "600000";
+#SetSystemParameter "Checkpoint_EnableFileSynchronizer" "SPEED";
+End;
+
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+SetSystemParameter "SydTest_MessageDisplayThreshold" "500";
+SetSystemParameter "SydTest_ShowBinary" "False";
+#SetSystemParameter "Checkpoint_Period" "600000";
+End;
+

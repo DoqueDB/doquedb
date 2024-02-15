@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+  MessageDefinition.xml : メッセージ定義ファイル
+
+  Copyright (c) 2001, 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+   
+      http://www.apache.org/licenses/LICENSE-2.0
+   
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE MessageDefine [
+  <!ELEMENT MessageDefine (Message)*>
+
+  <!ELEMENT Message (Name, Number, Format, Argument*)>
+  <!ELEMENT Name (#PCDATA)>
+  <!ELEMENT Number (#PCDATA)>
+
+  <!ELEMENT Format (English, Japanese)>
+  <!ELEMENT Argument (#PCDATA)>
+
+  <!ELEMENT English (#PCDATA)>
+  <!ELEMENT Japanese (#PCDATA)>
+]>
+
+<!--
+★メッセージ定義に関する注意★
+
+	【メッセージ定義ファイル自体について】
+		・ファイルの文字コードを SJIS から変更してはいけない
+
+	【メッセージ作成の方針について】
+
+	【メッセージ番号について】
+		・Number は16 進8 桁で定義し、
+
+		  上位 2 桁は 0x01
+		  次の 2 桁は モジュールを識別する値
+		  下位 4 桁は モジュール内でのメッセージを一意に識別する値
+		
+		  にすること
+		・決して、Exception/ErrorDefinition.xml の
+		  エラー番号と重なってはならない
+
+	【フォーマットについて】
+		・日本語メッセージは「ですます」調で統一すること
+		・Format に %1 などで挿入されるものが文字列である場合、
+		  できる限り言語に左右されない文字列
+		  (SQL 文、表名、数値など)にすること
+-->
+
+<MessageDefine>
+
+  <Message>
+    <Name>CaughtException</Name>
+    <Number>0x01350001</Number>
+    <Format>
+      <English>Caught an exception during the integrity check.</English>
+      <Japanese>整合性検査中に例外を捕捉しました。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>CorruptTotalObjectCount</Name>
+    <Number>0x01350002</Number>
+    <Format>
+      <English>Total object count conflicts (%1 in the header page, but %2 in the data pages). </English>
+      <Japanese>オブジェクトカウンタに矛盾があります(ヘッダページでは%1個、データページでの合計は%2個)。</Japanese>
+    </Format>
+    <Argument>%d</Argument>
+    <Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorruptPageObjectCount</Name>
+    <Number>0x01350003</Number>
+    <Format>
+      <English>Object count in page %1 conflicts (%2 in the counter, but %3 in the bitmap area). </English>
+      <Japanese>ページID%1のオブジェクト数に矛盾があります(カウンタでは%2個、ビットマップ領域では%3個)。</Japanese>
+    </Format>
+    <Argument>%d</Argument>
+    <Argument>%d</Argument>
+    <Argument>%d</Argument>
+  </Message>
+
+  <Message>
+    <Name>CorruptFirstVectorKey</Name>
+    <Number>0x01350004</Number>
+    <Format>
+      <English>First vector key noted in the header page is wrong. </English>
+      <Japanese>ヘッダページ中の先頭ベクタキーの値に矛盾があります。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>CorruptLastVectorKey</Name>
+    <Number>0x01350005</Number>
+    <Format>
+      <English>Last vector key noted in the header page is wrong. </English>
+      <Japanese>ヘッダページ中の最終ベクタキーの値に矛盾があります。</Japanese>
+    </Format>
+  </Message>
+
+</MessageDefine>
+
+<!--
+  Copyright (c) 2001, 2023 Ricoh Company, Ltd.
+  All rights reserved.
+-->

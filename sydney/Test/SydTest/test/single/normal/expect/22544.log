@@ -1,0 +1,564 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T(f1 nvarchar(200), f2 nvarchar(200), f3 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I_f2 on T(f2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create  index I_f1 on T(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter: length = 4513]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel1
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 like ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel1
+SydTest::Executor: [INFO] [[SQL Parameter]] {%全文検索%}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel1
+SydTest::Executor: [INFO] [[SQL Parameter]] {%全文検索%}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel1
+SydTest::Executor: [INFO] [[SQL Parameter]] {%全文検索%}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel1
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 like 'データベース%'  language 'ja' or f3 > 0 limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel2
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 like '全文検索%'  escape '*') limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel3
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel4
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 like ?  escape '*' language 'ja'
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel4
+SydTest::Executor: [INFO] [[SQL Parameter]] {データベース%}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel4
+SydTest::Executor: [INFO] [[SQL Parameter]] {データベース%}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel4
+SydTest::Executor: [INFO] [[SQL Parameter]] {データベース%}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel4
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 like '%全文検索%'  escape ? language ? or f3 > 0
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Parameter]] {*,ja}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Parameter]] {*,ja}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [[SQL Parameter]] {*,ja}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel5
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel6
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f2 like '%データベース%'  escape ?) limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel6
+SydTest::Executor: [INFO] [[SQL Parameter]] {*}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel6
+SydTest::Executor: [INFO] [[SQL Parameter]] {*}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel6
+SydTest::Executor: [INFO] [[SQL Parameter]] {*}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel6
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel7
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f2 like ?  language ?) limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel7
+SydTest::Executor: [INFO] [[SQL Parameter]] {%データベース%,ja}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel7
+SydTest::Executor: [INFO] [[SQL Parameter]] {%データベース%,ja}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel7
+SydTest::Executor: [INFO] [[SQL Parameter]] {%データベース%,ja}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel7
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel8
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 like '%全文検索%'  escape '*' language 'ja' limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel8
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel8
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel8
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel8
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where not(f1 like '全文検索%'  escape ? language 'ja')
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Parameter]] {*}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Parameter]] {*}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [[SQL Parameter]] {*}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel9
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 like 'データベース%'  escape '*' language ?
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Parameter]] {ja}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Parameter]] {ja}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [[SQL Parameter]] {ja}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel10
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel11
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 like ?  escape ? or f3 > 0 limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel11
+SydTest::Executor: [INFO] [[SQL Parameter]] {%データベース%,*}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel11
+SydTest::Executor: [INFO] [[SQL Parameter]] {%データベース%,*}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel11
+SydTest::Executor: [INFO] [[SQL Parameter]] {%データベース%,*}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel11
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel12
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 like '%全文検索%'  language ? or f3 > 0
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel12
+SydTest::Executor: [INFO] [[SQL Parameter]] {ja}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel12
+SydTest::Executor: [INFO] [[SQL Parameter]] {ja}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel12
+SydTest::Executor: [INFO] [[SQL Parameter]] {ja}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,-2147483648}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel12
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 like '%データベース%'  escape '*' or f3 > 0
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [[SQL Parameter]] {}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,2147483647}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,1}
+SydTest::Executor: [INFO] {索引（インデックス）型 検索対象となる文書数が膨大な場合、grep型では検索を行うたびに1つ1つの文書にアクセスし、該当データを逐次検索するので、検索対象文書の増加に比例して、検索にかかる時間も長くなっていってしまう。そこであらかじめ検索対象となる文書群を走査しておき、高速な検索が可能になるような索引データを準備することで、検索時のパフォーマンスを向上させる手法が取られている。事前に索引ファイルを,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-1}
+SydTest::Executor: [INFO] {索引文字列の抽出手法 形態素解析 英文の場合は単語と単語の間にスペースが入るため、自然、スペースで区切られた文字列を抽出していけば、索引データの作成は容易となる。しかし日本語の場合は、単語をスペースで区切る「わかち書き」の習慣がないため、形態素解析技術を用いて、文脈の解析、単語分解を行い、それをもとにインデックスを作成する必要がある。形態素解析を行うためには解析用の辞書が必須であり、検索結果は辞書,コンピュータ上では、データの再利用を高速かつ安定に実現するため、データを格納するための構造について様々な工夫が払われており、このデータ構造とアルゴリズムは情報工学において重要な研究分野のひとつである。,6543210}
+SydTest::Executor: [INFO] {N-Gram 「N文字インデックス法」「Nグラム法」などともいう。検索対象を単語単位ではなく一定のN文字単位で分解し、それの出現頻度を求める方法。Nの値が1なら「ユニグラム(uni-gram)」、2なら「バイグラム(bi-gram)」、3なら「トライグラム(tri-gram)」と呼ばれる。たとえば「全文検索技術」という文字列の場合、「全文」「文検」「検索」「索技」「技術」と2文字ずつ分割して索引化,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,-34567890}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,データベースをコンピュータ上で管理するためのシステム（Oracle Database、SQL Server、PostgreSQL、MySQL、SQLiteなど）をデータベースマネージメントシステム（DBMS）という。,2147483647}
+SydTest::Executor: [INFO] {全文検索技術 grep型 順次走査検索、逐次検索とも。「grep」とはUnixにおける文字列検索コマンドであり、複数のテキストファイルの内容を順次走査していくことで、検索対象となる文字列を探し出す。一般に「grep型」と呼ばれる検索手法は、事前に索引ファイル（インデックス）を作成せず、ファイルを順次走査していくために、検索対象の増加に伴って検索速度が低下するのが特徴である。ちなみに「grep型」と,データベース 出典: フリー百科事典『ウィキペディア（Wikipedia）』 データベース (Database) は、特定のテーマに沿ったデータを集めて管理し、容易に検索・抽出などの再利用をできるようにしたもの。 狭義には、コンピュータによって実現されたものを言う。OSが提供するファイルシステム上に直接構築されるものや、後述するデータベースマネージメントシステム (DBMS) を用いて構築されるも,-2147483648}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel13
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 like ?  escape ? language ? limit 1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索%,*,ja}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索%,*,ja}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [[SQL Parameter]] {全文検索%,*,ja}
+SydTest::Executor: [INFO] {全文検索 出典: フリー百科事典『ウィキペディア（Wikipedia）』 全文検索（ぜんぶんけんさく、Full text search）とは、コンピュータにおいて、複数の文書(ファイル)から特定の文字列を検索すること。「ファイル名検索」や「ファイル内文字列検索」と異なり、「複数文書にまたがって、文書に含まれる全文を検索する」という意味で使用される。,単純なファイルシステムには、ファイルシステム自体に「データ」を統一的手法で操作する機能はない。ファイルシステムでデータ管理をするためには、データの操作機能を「応用プログラム側」に持つしかない。データベースは、それを自ら持つことにより、応用プログラム側でデータの物理的格納状態を知らずとも操作でき、かつ、データの物理的格納状態に変更があった場合にも応用プログラム側の処理に影響が及ばないことを保障するこ,0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] commit
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel14
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

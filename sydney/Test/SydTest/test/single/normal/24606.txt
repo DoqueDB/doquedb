@@ -1,0 +1,44 @@
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T(C ntext)";
+Command "create fulltext index I on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=10))'";
+
+Command "insert into T (C) values ('Completions of new homes fell 0.2 pct in January to a seasonally adjusted rate of 1.884 mln units from 1.888 mln in December, the Commerce Department said. The January fall came after a strong 6.4 pct rise from November''s rate of 1.774 mln units and brought completions to 6.7 pct above the January, 1986 level of 1.765 mln units. In January, completions of single-family units rose 0.4 pct to a seasonally adjusted 1.183 mln units from 1.178 mln units in December while multi-family units fell 1.3 pct to 701,000 units in January, the department said.')";
+
+Command "insert into T (C) values ('Completions of new homes fell 0.2 pct in January to a seasonally adjusted rate of 1.884 mln units from 1.888 mln in December, the Commerce Department said. The January fall came after a strong 6.4 pct rise from November''s rate of 1.774 mln units and brought completions to 6.7 pct above the January, 1986 level of 1.765 mln units. In January, completions of single-family units rose 0.4 pct to a seasonally adjusted 1.183 mln units from 1.178 mln units in December while multi-family units fell 1.3 pct to 701,000 units in January, the department said.')";
+
+Command "insert into T (C) values ('Completions of new homes fell 0.2 pct in January to a seasonally adjusted rate of 1.884 mln units from 1.888 mln in December, the Commerce Department said. The January fall came after a strong 6.4 pct rise from November''s rate of 1.774 mln units and brought completions to 6.7 pct above the January, 1986 level of 1.765 mln units. In January, completions of single-family units rose 0.4 pct to a seasonally adjusted 1.183 mln units from 1.178 mln units in December while multi-family units fell 1.3 pct to 701,000 units in January.')";
+
+Command "insert into T (C) values ('Completions of new homes fell 0.2 pct in January to a seasonally adjusted rate of 1.884 mln units from 1.888 mln in December, the Commerce Department said. The January fall came after a strong 6.4 pct rise from November''s rate of 1.774 mln units and brought completions to 6.7 pct above the January, 1986 level of 1.765 mln units. In January, completions of single-family units rose 0.4 pct to a seasonally adjusted 1.183 mln units from 1.178 mln units in December while multi-family units fell 1.3 pct to 701,000 units in January.')";
+
+Command "insert into T (C) values ('Completions of new homes fell 0.2 pct in January to a seasonally adjusted rate of 1.884 mln units from 1.888 mln in December, the Commerce Department said. The January fall came after a strong 6.4 pct rise from November''s rate of 1.774 mln units and brought completions to 6.7 pct above the January, 1986 level of 1.765 mln units. In January, completions of single-family units rose 0.4 pct to a seasonally adjusted 1.183 mln units from 1.178 mln units in December while multi-family units fell 1.3 pct to 701,000 units.')";
+
+Command "insert into T (C) values ('Completions of new homes fell 0.2 pct in January to a seasonally adjusted rate of 1.884 mln units from 1.888 mln in December, the Commerce Department said. The January fall came after a strong 6.4 pct rise from November''s rate of 1.774 mln units and brought completions to 6.7 pct above the January, 1986 level of 1.765 mln units. In January, completions of single-family units rose 0.4 pct to a seasonally adjusted 1.183 mln units from 1.178 mln units in December while multi-family units fell 1.3 pct to 701,000 units.')";
+
+Command "insert into T (C) values ('Sales of previously owned homes dropped 14.5 pct in January to a seasonally adjusted annual rate of 3.47 mln units, the National Association of Realtors (NAR) said. But the December rate of 4.06 mln units had been the highest since the record 4.15 mln unit sales rate set in November 1978, the group said. \"The drop in January is not surprising considering that a significant portion of December''s near-record pace was made up of sellers seeking to get favorable capital gains treatment under the old tax laws,\" said the NAR''s John Tuccillo.')";
+
+Command "insert into T (C) values ('Sales of previously owned homes dropped 14.5 pct in January to a seasonally adjusted annual rate of 3.47 mln units, the National Association of Realtors (NAR) said. But the December rate of 4.06 mln units had been the highest since the record 4.15 mln unit sales rate set in November 1978, the group said. \"The drop in January is not surprising considering that a significant portion of December''s near-record pace was made up of sellers seeking to get favorable capital gains treatment under the old tax laws,\" said the NAR''s John Tuccillo.')";
+
+
+Command "select rowid,score(C),cluster(C).id from T where C contains 'December'";
+Command "select rowid,score(C),cluster(C).id from T where C contains 'December' clustered limit 1.01";
+Command "select rowid,score(C),cluster(C).id from T where C contains 'December' clustered limit 0.65";
+Command "select rowid,score(C),cluster(C).id from T where C contains 'December' clustered limit 0.40";
+
+Command "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

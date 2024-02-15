@@ -1,0 +1,30 @@
+# 
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# 障害票 731 char(no limit) のテスト
+Command "create table T (C char(no limit))";
+Command "create table T1 (C nchar(no limit))";
+
+Command "create table T2 (C varchar(no limit))";
+Command "create table T3 (C nvarchar(no limit))";
+
+#Command "select * from T";
+#Command "drop table T";
+
+# 障害票 732 likeの右辺にARRAYと書くとACCESS VIOLATION
+Command "create table abc (num INT,data NVARCHAR(NO LIMIT) ARRAY[NO LIMIT])";
+
+Command "select * from abc where data like ARRAY['A','B','C']";
+Command "drop table abc";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

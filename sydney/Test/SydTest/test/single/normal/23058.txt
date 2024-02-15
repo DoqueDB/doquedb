@@ -1,0 +1,26 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+
+Command "create table users (id int generated always as identity not null, name nvarchar(50) not null, primary key(id))";
+
+Command "insert users(name) values ('foo')";
+
+TerminateSession;
+Terminate;
+
+System "rm -rf d:/dm/data/TESTDB/users/IDENTITY";
+
+Initialize;
+InitializeSession "TESTDB";
+
+# bug no.2236 (case 4) - following should fail
+Command "verify table users continue cascade value";
+
+TerminateSession;
+Terminate;
+End;
+

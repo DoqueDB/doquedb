@@ -1,0 +1,32 @@
+How To Do Batch Test
+[Introduction]
+This document shows how to do batch test about the test scirpts under Perl\DBD\t\*.t.
+It contains test on both Windows and Linux.
+The tested DBMS is Sydney v16.3.
+
+[Windows Batch Test]
+Step 1:
+Modify following arguments used in test.bat according to YOUR test environment.
+(1)hostname (2)port number (3) Database (4)username (5)password
+
+Step 2:
+run test.bat and dump the result to result.txt file.
+Cmd:  test.bat > result.txt
+
+Step 3:
+run check_test_output.pl to filter the failed tests in test output file "result.txt"
+Cmd: perl check_test_output.pl result.txt
+
+[Linux Batch Test]
+Step1: 
+Modify following arguments used in test.bat according to YOUR test environment.
+(1)hostname (2)port number (3) database (4)username (5)password
+
+Step 2:
+run test.bat and dump the result to result.txt file.
+Cmd:  sh test.sh > result.txt
+
+Step 3:
+run check_test_output.pl to filter the failed tests in test output file "result.txt"
+Cmd: perl check_test_output.pl result.txt
+

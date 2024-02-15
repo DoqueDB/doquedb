@@ -1,0 +1,101 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TEST
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (id int, f ntext array[NO LIMIT], primary key(id))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I on T(f) hint 'delayed, sectionized, inverted=(normalized=(stemming=false, deletespace=false), indexing=dual, tokenizer=DUAL:JAP:ALL:2 ALP:3 ASC:3 KAT:3 KAN:HIR @NORMRSCID:2 @UNARSCID:2, extractor=@TERMRSCID:1 @UNARSCID:2 EstimateDF)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (6, array[?])
+SydTest::Executor: [INFO] [[SQL Parameter]] {　　　　　　　　　　　　　　　　　　　　　　　文書A.txt
+
+リコー
+
+環境
+
+保護
+
+環境保護
+
+
+
+ページ(1)
+
+
+
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (5, array[?])
+SydTest::Executor: [INFO] [[SQL Parameter]] {　　　　　　　　　　　　　　　　　　　　　　　文書B.txt
+
+リサイクル
+
+ゴミゼロ
+
+再利用
+
+トナー
+
+
+
+ページ(1)
+
+
+
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t values (4, array[?,?,?,?,?])
+SydTest::Executor: [INFO] [[SQL Parameter: length = 4206]] 
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TEST
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] SELECT id, SCORE(T0.F) FROM T AS T0 WHERE
+	(T0.F CONTAINS freetext('リコーの環境保護への取り組み' LANGUAGE 'ja')  
+	EXPAND (FROM (SELECT T1.F FROM T AS T1 WHERE T1.F CONTAINS  
+	 freetext('リコーの環境保護への取り組み' LANGUAGE 'ja')  ORDER BY SCORE(T1.F) DESC LIMIT 10) 
+	 ORDER BY WORD(T0.F).df DESC LIMIT 20)) ORDER BY SCORE(T0.F) DESC
+SydTest::Executor: [INFO] {6,1.090E0}
+SydTest::Executor: [INFO] {5,3.318E-2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] SELECT sectionized((T0.F)) FROM T AS T0 WHERE (T0.ID = 5) AND 
+	(T0.F CONTAINS  freetext('リコーの環境保護への取り組み' LANGUAGE 'ja')  
+	EXPAND (FROM (SELECT T1.F FROM T AS T1 WHERE T1.F CONTAINS 
+	 freetext('リコーの環境保護への取り組み' LANGUAGE 'ja')  ORDER BY SCORE(T1.F) DESC LIMIT 10) 
+	 ORDER BY WORD(T0.F).df DESC LIMIT 20))
+SydTest::Executor: [INFO] {{1}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

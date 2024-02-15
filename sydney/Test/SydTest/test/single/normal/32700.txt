@@ -1,0 +1,182 @@
+#indexの生成・削除・index areaの移動(正常系) 
+#原案池田さん
+
+Begin;
+Initialize;
+
+#テストに使うデータベースを設定したセッションを作る
+InitializeSession "";
+
+#もとになる表を作る
+Command "create table T (f1 int, f2 nchar(100), f3 ntext array [no limit])";
+Command "insert into T values (1, ?, ?)" ["hoge", ["hoge"]]; #030122追加
+
+#単一の列へのBtree indexをcreate - drop
+Command "create index T_f1 on T(f1)";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Command "create index T_f2 on T(f2)";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f2";
+
+#単一の列へのFTS indexをcreate - drop
+Command "create fulltext index T_FTS_f3 on T(f3) hint 'inverted=(nolocation=true)'";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_FTS_f3";
+Command "create fulltext index T_FTS_f3_delay on T(f3) hint 'delayed ,inverted=(nolocation=true)'";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_FTS_f3_delay";
+Command "create fulltext index T_FTS_f3_section on T(f3) hint 'sectionized ,inverted=(nolocation=true)'";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_FTS_f3_section";
+Command "create fulltext index T_FTS_f3_delay_section on T(f3) hint 'delayed sectionized ,inverted=(nolocation=true)'";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_FTS_f3_delay_section";
+
+Command "drop index T_f1";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Command "drop index T_f2";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f2";
+Command "drop index T_FTS_f3";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_FTS_f3";
+Command "drop index T_FTS_f3_delay";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_FTS_f3_delay";
+Command "drop index T_FTS_f3_section";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_FTS_f3_section";
+Command "drop index T_FTS_f3_delay_section";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_FTS_f3_delay_section";
+
+#複合索引
+Command "create index T_f1_f2 on T(f1,f2)";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1_f2";
+Command "create index T_f2_f1 on T(f2,f1)";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f2_f1";
+Command "drop index T_f1_f2";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1_f2";
+Command "drop index T_f2_f1";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f2_f1";
+
+#エリアの指定
+Command "create area IndexArea 'd:\\dm\\area\\index'";
+NotExists "d:\\dm\\area\\index";
+Command "create index T_f1 on T(f1) area IndexArea";
+Exists "d:\\dm\\area\\index\\T\\BTR_T_f1";
+
+#エリアの指定変更
+Command "create area AlterIndexArea 'd:\\dm\\area\\alterindex'";
+NotExists "d:\\dm\\area\\alterindex";
+Command "alter index T_f1 set area AlterIndexArea";
+NotExists "d:\\dm\\area\\index\\T\\BTR_T_f1";
+Exists "d:\\dm\\area\\alterindex\\T\\BTR_T_f1";
+#載っている索引が移動したので消せるはず
+Command "drop area IndexArea";	
+NotExists "d:\\dm\\area\\index";
+
+#索引用エリアの指定
+Command "create area IndexArea 'd:\\dm\\area\\index'";
+NotExists "d:\\dm\\area\\index";
+Command "alter index T_f1 set area IndexArea";
+NotExists "d:\\dm\\area\\alterindex\\T\\BTR_T_f1";
+Exists "d:\\dm\\area\\index\\T\\BTR_T_f1";
+#載っている索引が移動したので消せるはず
+Command "drop area AlterIndexArea";
+NotExists "d:\\dm\\area\\alterindex";
+
+#索引用エリアの移動
+Command "alter index T_f1 drop area default";
+NotExists "d:\\dm\\area\\index\\T\\BTR_T_f1";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+#載っている索引が移動したので消せるはず
+Command "drop area IndexArea";	
+Command "drop index T_f1";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+
+#表に対するエリア指定の変更で索引が移動するか
+Command "create area IndexArea 'd:\\dm\\area\\index'";
+NotExists "d:\\dm\\area\\index";
+Command "create area FullTextArea 'd:\\dm\\area\\fulltext'";
+NotExists "d:\\dm\\area\\fulltext";
+Command "create index T_f1 on T(f1)";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Command "create fulltext index T_f3 on T(f3) hint 'inverted=(nolocation=true)'";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3";
+Command "create fulltext index T_f3_delay on T(f3) hint 'delayed ,inverted=(nolocation=true)'";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay";
+Command "create fulltext index T_f3_section on T(f3) hint 'sectionized ,inverted=(nolocation=true)'";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_section";
+Command "create fulltext index T_f3_delay_section on T(f3) hint 'delayed sectionized ,inverted=(nolocation=true)'";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay_section";
+Command "alter table T set area index IndexArea";
+# T_f1だけが移動したことの確認
+NotExists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Exists "d:\\dm\\area\\index\\T\\BTR_T_f1";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_section";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay_section";
+
+#元に戻す
+Command "alter table T drop area index";
+# T_f1だけが移動したことの確認
+NotExists "d:\\dm\\area\\index\\T\\BTR_T_f1";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_section";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay_section";
+
+#FTS領域のみ移動
+Command "alter table T set area fulltext FullTextArea";
+# T_f2*が移動したことの確認
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_section";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay_section";
+Exists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3";
+Exists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_delay";
+Exists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_section";
+Exists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_delay_section";
+
+#FTS領域を元に戻す
+Command "alter table T drop area fulltext FullTextArea";
+# T_f3*が移動したことの確認
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+NotExists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3";
+NotExists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_delay";
+NotExists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_section";
+NotExists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_delay_section";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_section";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay_section";
+
+#全ての索引領域を移動
+Command "alter table T set area index IndexArea fulltext FullTextArea";
+# すべての索引が移動したことの確認
+NotExists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_section";
+NotExists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay_section";
+Exists "d:\\dm\\area\\index\\T\\BTR_T_f1";
+Exists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3";
+Exists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_delay";
+Exists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_section";
+Exists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_delay_section";
+
+#全ての索引領域を戻す
+Command "alter table T drop area index";
+Command "alter table T drop area fulltext";
+# すべての索引が移動したことの確認
+NotExists "d:\\dm\\area\\index\\T\\BTR_T_f1";
+NotExists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3";
+NotExists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_delay";
+NotExists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_section";
+NotExists "d:\\dm\\area\\fulltext\\T\\FTS_T_f3_delay_section";
+Exists "d:\\dm\\data\\DefaultDB\\T\\BTR_T_f1";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_section";
+Exists "d:\\dm\\data\\DefaultDB\\T\\FTS_T_f3_delay_section";
+
+#テストに使った表の破棄
+Command "drop table T";
+TerminateSession;
+
+Terminate;
+End;

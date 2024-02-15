@@ -1,0 +1,117 @@
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+Command  "create table T1(C1 int, C2 int, C3 varchar(2), C4 nvarchar(4), C5 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, 111,  "1", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 222,  "2", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 222,  "3", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 222,  "4", "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, null, "1",  null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 333,  "2", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 333,  "3", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 333,  "4", "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, 444,  "1", "ピヨ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, null, "2",  null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 444,  "3", "ピヨ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [4, 111,  "4", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [1, null, "1", "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [2, 111,  "2",  null,  textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [3, 222,  "3", "ほげ", null                                 ];
+
+Command  "create table T2(C1 int)";
+Command  "insert into T2 (C1) values (?)" [111 ];
+Command  "insert into T2 (C1) values (?)" [222 ];
+Command  "insert into T2 (C1) values (?)" [null];
+Command  "insert into T2 (C1) values (?)" [333 ];
+Command  "insert into T2 (C1) values (?)" [555 ];
+Command  "select * from T1 where T1.C2 in (select T2.C1 from T2 where T1.C5 like ?)" ["ソフトウェア研究%"];
+Command  "select * from T2 where T2.C1 in (select T1.C2 from T1 where T1.C5 like ?)" ["ソフトウェア研究%"];
+Command  "drop table T2";
+
+Command  "create table T2(C1 nvarchar(4))";
+Command  "insert into T2 (C1) values (?)" ["ほげ"];
+Command  "insert into T2 (C1) values (?)" ["ホゲ"];
+Command  "insert into T2 (C1) values (?)" [ null ];
+Command  "insert into T2 (C1) values (?)" ["ぴよ"];
+Command  "insert into T2 (C1) values (?)" ["ぷう"];
+Command  "select * from T1 where T1.C4 in (select T2.C1 from T2 where T1.C5 like ?)" ["ソフトウェア研究%"];
+Command  "select * from T2 where T2.C1 in (select T1.C4 from T1 where T1.C5 like ?)" ["ソフトウェア研究%"];
+Command  "drop table T2";
+
+Command  "create table T2(C1 nvarchar(448))";
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C1) values (?)" [null                                 ];
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\dictionary.txt"  ];
+Command  "select * from T1 where T1.C5 in (select T2.C1 from T2 where T2.C1 like ?)" ["ソフトウェア研究%"];
+Command  "select * from T2 where T2.C1 in (select T1.C5 from T1 where T1.C5 like ?)" ["ソフトウェア研究%"];
+Command  "drop table T2";
+
+Command  "create table T2(C1 int)";
+Command  "create index I2_1 on T2(C1)";
+Command  "insert into T2 (C1) values (?)" [111 ];
+Command  "insert into T2 (C1) values (?)" [222 ];
+Command  "insert into T2 (C1) values (?)" [null];
+Command  "insert into T2 (C1) values (?)" [333 ];
+Command  "insert into T2 (C1) values (?)" [555 ];
+Command  "select * from T1 where T1.C2 in (select T2.C1 from T2 where T1.C5 like ?)" ["ソフトウェア研究%"];
+Command  "select * from T2 where T2.C1 in (select T1.C2 from T1 where T1.C5 like ?)" ["ソフトウェア研究%"];
+Command  "drop table T2";
+
+Command  "create table T2(C1 nvarchar(4))";
+Command  "create index I2_1 on T2(C1)";
+Command  "insert into T2 (C1) values (?)" ["ほげ"];
+Command  "insert into T2 (C1) values (?)" ["ホゲ"];
+Command  "insert into T2 (C1) values (?)" [ null ];
+Command  "insert into T2 (C1) values (?)" ["ぴよ"];
+Command  "insert into T2 (C1) values (?)" ["ぷう"];
+Command  "select * from T1 where T1.C4 in (select T2.C1 from T2 where T1.C5 like ?)" ["ソフトウェア研究%"];
+Command  "select * from T2 where T2.C1 in (select T1.C4 from T1 where T1.C5 like ?)" ["ソフトウェア研究%"];
+Command  "drop table T2";
+
+Command  "create table T2(C1 nvarchar(448))";
+Command  "create index I2_1 on T2(C1)";
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C1) values (?)" [null                                 ];
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\dictionary.txt"  ];
+Command  "select * from T1 where T1.C5 in (select T2.C1 from T2 where T2.C1 like ?)" ["ソフトウェア研究%"];
+Command  "select * from T2 where T2.C1 in (select T1.C5 from T1 where T1.C5 like ?)" ["ソフトウェア研究%"];
+Command  "drop table T2";
+
+#boolean検索テスト
+Command  "create table T2(C1 int, C2 nvarchar(4), C3 nvarchar(448))";
+Command  "insert into T2 (C1, C2, C3) values (?, ?, ?)" [222,  "ホゲ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1, C2, C3) values (?, ?, ?)" [222,   null,  null                                 ];
+Command  "insert into T2 (C1, C2, C3) values (?, ?, ?)" [null, "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C1, C2, C3) values (?, ?, ?)" [333,  "ピヨ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C1, C2, C3) values (?, ?, ?)" [333,  "ピヨ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C1, C2, C3) values (?, ?, ?)" [333,  "ぴよ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T2 (C1, C2, C3) values (?, ?, ?)" [null,  null , null                                 ];
+
+Command  "select * from T1 where (T1.C2, T1.C5) in (select T2.C1, T2.C3 from T2 where T2.C1 >= ? and T2.C3 like ?)" [333, "株式会社リコー%"];
+Command  "select * from T1 where (T1.C4, T1.C5) in (select T2.C2, T2.C3 from T2 where T2.C2 >= ? and T2.C3 like ?)" ["ぴよ", "株式会社リコー%"];
+
+Command  "select * from T2 where (T2.C1, T2.C3) in (select T1.C2, T1.C5 from T1 where T1.C2 >= ? and T1.C5 like ?)" [333, "株式会社リコー%"];
+Command  "select * from T2 where (T2.C2, T2.C3) in (select T1.C4, T1.C5 from T1 where T1.C4 >= ? and T1.C5 like ?)" ["ぴよ", "株式会社リコー%"];
+
+Command  "select * from T1 where (T1.C2, T1.C5) in (select T2.C1, T2.C3 from T2 where T1.C2 >= ? and T1.C5 like ?)" [333, "株式会社リコー%"];
+Command  "select * from T1 where (T1.C4, T1.C5) in (select T2.C2, T2.C3 from T2 where T1.C4 >= ? and T1.C5 like ?)" ["ぴよ", "株式会社リコー%"];
+
+Command  "select * from T2 where (T2.C1, T2.C3) in (select T1.C2, T1.C5 from T1 where T2.C1 >= ? and T2.C3 like ?)" [333, "株式会社リコー%"];
+Command  "select * from T2 where (T2.C2, T2.C3) in (select T1.C4, T1.C5 from T1 where T2.C2 >= ? and T2.C3 like ?)" ["ぴよ", "株式会社リコー%"];
+
+Command  "drop table T2";
+Command  "drop table T1";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

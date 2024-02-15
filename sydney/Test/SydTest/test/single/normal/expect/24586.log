@@ -1,0 +1,150 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB if exists
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL(f int, g nvarchar(20), h ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,test,This is a pen.}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,estimate,He likes playing tennis.}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (?, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,altimate,She is a dog.}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index TBL_f on TBL(f)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index TBL_g on TBL(g)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index TBL_h on TBL(h)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where g like '%est%' order by score(g)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select g, score(g) from TBL where g like '%est%'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select g, kwic(g for 5) from TBL where g like '%est%'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select g, cluster(g).id from TBL where g like '%est%'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where g like 'tes%' order by score(g)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select g, score(g) from TBL where g like 'tes%'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select g, kwic(g for 5) from TBL where g like 'tes%'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select g, cluster(g).id from TBL where g like 'tes%'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where g contains 'tes' order by score(g)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select g, score(g) from TBL where g contains 'tes'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select g, kwic(g for 5) from TBL where g contains 'tes'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select g, cluster(g).id from TBL where g contains 'tes'
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Fulltext index is needed.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select avg(fulltext_length(g)) from TBL
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where h like '%en%' order by score(h)
+SydTest::Executor: [INFO] {2,estimate,He likes playing tennis.}
+SydTest::Executor: [INFO] {1,test,This is a pen.}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h, score(h) from TBL where h like '%en%'
+SydTest::Executor: [INFO] {This is a pen.,2.854044508399E-1}
+SydTest::Executor: [INFO] {He likes playing tennis.,2.654460976343E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h, kwic(h for 5) from TBL where h like '%en%'
+Executor: [ERR] (SydTest) Object No=xxx (Plan::Scalar::Impl::KwicImpl) SQL syntax error - Kwic needs contains predicate.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h, cluster(h).id from TBL where h like '%en%'
+SydTest::Executor: [INFO] {This is a pen.,1}
+SydTest::Executor: [INFO] {He likes playing tennis.,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where h like 'He%' order by score(h)
+SydTest::Executor: [INFO] {2,estimate,He likes playing tennis.}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h, score(h) from TBL where h like 'He%'
+SydTest::Executor: [INFO] {He likes playing tennis.,4.755244755244E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h, kwic(h for 5) from TBL where h like 'He%'
+Executor: [ERR] (SydTest) Object No=xxx (Plan::Scalar::Impl::KwicImpl) SQL syntax error - Kwic needs contains predicate.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h, cluster(h).id from TBL where h like 'He%'
+SydTest::Executor: [INFO] {He likes playing tennis.,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where h contains 'is' order by score(h)
+SydTest::Executor: [INFO] {2,estimate,He likes playing tennis.}
+SydTest::Executor: [INFO] {3,altimate,She is a dog.}
+SydTest::Executor: [INFO] {1,test,This is a pen.}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h, score(h) from TBL where h contains 'is'
+SydTest::Executor: [INFO] {This is a pen.,2.624699932019E-1}
+SydTest::Executor: [INFO] {He likes playing tennis.,1.844631770405E-1}
+SydTest::Executor: [INFO] {She is a dog.,1.998351084605E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h, kwic(h for 5) from TBL where h contains 'is'
+SydTest::Executor: [INFO] {This is a pen.,This }
+SydTest::Executor: [INFO] {He likes playing tennis.,tennis.}
+SydTest::Executor: [INFO] {She is a dog.,e is }
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select h, cluster(h).id from TBL where h contains 'is'
+SydTest::Executor: [INFO] {This is a pen.,1}
+SydTest::Executor: [INFO] {She is a dog.,2}
+SydTest::Executor: [INFO] {He likes playing tennis.,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select avg(fulltext_length(h)) from TBL
+SydTest::Executor: [INFO] {17}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

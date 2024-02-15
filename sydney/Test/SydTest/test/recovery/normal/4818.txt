@@ -1,0 +1,47 @@
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T0 (
+  SN     int,
+  I0	 int,
+  I1	 int,
+  S1     ntext hint heap
+)";
+Command "create index T0_I1 on T0(I1)";
+Command "create index T0_I0 on T0(I0)";
+
+Command "insert T0(SN) values (1)";
+Command "select * from T0";
+# update 文を削ると壊れない
+Command "update T0 set I0 = 1 where SN = 1";
+Command "select * from T0";
+
+Command "update T0 set I0 = 2, S1 = null where SN = 1";
+#なぜかI0が1のまま
+Command "select * from T0";
+
+# なぜかB木ファイル T0_I1 の件数が空
+Command "select * from T0 where I1 = 0";
+# 次のverifyでも確かめられる
+Command "start transaction read write";
+Command "verify table T0 cascade continue";
+Command "commit";
+
+Command  "select * from T0";
+
+TerminateSession;
+
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;

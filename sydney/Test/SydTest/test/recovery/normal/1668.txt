@@ -1,0 +1,60 @@
+# score_search /fulltext(normalized)/heap
+# 各種全文ファイルへのスコア検索を試すスクリプトを生成する
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# 列がスカラ型であるtableのテスト
+# Tableを準備する
+Command  "create table T1(C1 int hint heap, C2 ntext hint heap)";
+Command  "create fulltext index I1_2 on T1(C2) hint 'inverted=(normalized=true)'";
+# 検索対象となるタプルを準備する
+Command  "insert into T1 (C1, C2) values (?, ?)" [1, "ほげ"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [2, "ほげほげ"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [3, "げほげほ"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [4, "はらほげ"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [5, "ほえ"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [6, ""];
+# スコア検索を行う
+Command  "select C1, score(C2) from T1 where C2 like ?" ["ほげ"];
+Command  "select C1, score(C2) from T1 where C2 like ?" ["%ほげ"];
+Command  "select C1, score(C2) from T1 where C2 like ?" ["ほげ%"];
+Command  "select C1, score(C2) from T1 where C2 like ?" ["%ほげ%"];
+# tableの後始末
+Command  "drop table T1";
+
+# 列が配列型であるtableのテスト
+# Tableを準備する
+Command  "create table T1(C1 int hint heap, C2 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_2 on T1(C2) hint 'inverted=(normalized=true)'";
+# 検索対象となるタプルを準備する
+Command  "insert into T1 (C1, C2) values (?, ?)" [1, ["ほげ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [2, ["ほげほげ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [3, ["げほげほ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [4, ["はらほげ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [5, ["ほえ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [6, [""]];
+# スコア検索を行う
+Command  "select C1, score(C2) from T1 where C2 like ?" ["ほげ"];
+Command  "select C1, score(C2) from T1 where C2 like ?" ["%ほげ"];
+Command  "select C1, score(C2) from T1 where C2 like ?" ["ほげ%"];
+Command  "select C1, score(C2) from T1 where C2 like ?" ["%ほげ%"];
+# tableの後始末
+#Command  "drop table T1";
+
+Command  "select * from T1";
+
+TerminateSession;
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

@@ -1,0 +1,982 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 int, C2 varchar(2))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_1 on T1(C1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_2 on T1(C2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {111,1}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {222,2}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {333,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),3}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {666,4}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C3 nvarchar(4), C4 nvarchar(448))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C3, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ほげ,産業研究所
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C3, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C3, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ぴよ,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C3, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C3, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C3, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural inner join T2
+SydTest::Executor: [INFO] {111,1,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {111,1,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {111,1,ぴよ,(null)}
+SydTest::Executor: [INFO] {111,1,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {111,1,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {111,1,(null),(null)}
+SydTest::Executor: [INFO] {222,2,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {222,2,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {222,2,ぴよ,(null)}
+SydTest::Executor: [INFO] {222,2,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {222,2,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {222,2,(null),(null)}
+SydTest::Executor: [INFO] {333,(null),ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {333,(null),ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {333,(null),ぴよ,(null)}
+SydTest::Executor: [INFO] {333,(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {333,(null),ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {333,(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),3,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {(null),3,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),3,ぴよ,(null)}
+SydTest::Executor: [INFO] {(null),3,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),3,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),3,(null),(null)}
+SydTest::Executor: [INFO] {666,4,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {666,4,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {666,4,ぴよ,(null)}
+SydTest::Executor: [INFO] {666,4,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {666,4,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {666,4,(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {(null),(null),ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),(null),ぴよ,(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),(null),ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural left outer join T2
+SydTest::Executor: [INFO] {111,1,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {111,1,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {111,1,ぴよ,(null)}
+SydTest::Executor: [INFO] {111,1,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {111,1,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {111,1,(null),(null)}
+SydTest::Executor: [INFO] {222,2,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {222,2,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {222,2,ぴよ,(null)}
+SydTest::Executor: [INFO] {222,2,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {222,2,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {222,2,(null),(null)}
+SydTest::Executor: [INFO] {333,(null),ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {333,(null),ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {333,(null),ぴよ,(null)}
+SydTest::Executor: [INFO] {333,(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {333,(null),ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {333,(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),3,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {(null),3,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),3,ぴよ,(null)}
+SydTest::Executor: [INFO] {(null),3,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),3,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),3,(null),(null)}
+SydTest::Executor: [INFO] {666,4,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {666,4,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {666,4,ぴよ,(null)}
+SydTest::Executor: [INFO] {666,4,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {666,4,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {666,4,(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {(null),(null),ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),(null),ぴよ,(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),(null),ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural right outer join T2
+SydTest::Executor: [INFO] {111,1,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {222,2,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {333,(null),ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {(null),3,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {666,4,ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {(null),(null),ほげ,産業研究所
+}
+SydTest::Executor: [INFO] {111,1,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {222,2,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {333,(null),ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),3,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {666,4,ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),(null),ホゲ,株式会社リコー
+}
+SydTest::Executor: [INFO] {111,1,ぴよ,(null)}
+SydTest::Executor: [INFO] {222,2,ぴよ,(null)}
+SydTest::Executor: [INFO] {333,(null),ぴよ,(null)}
+SydTest::Executor: [INFO] {(null),3,ぴよ,(null)}
+SydTest::Executor: [INFO] {666,4,ぴよ,(null)}
+SydTest::Executor: [INFO] {(null),(null),ぴよ,(null)}
+SydTest::Executor: [INFO] {111,1,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {222,2,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {333,(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),3,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {666,4,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {111,1,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {222,2,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {333,(null),ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),3,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {666,4,ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),(null),ぷう,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {111,1,(null),(null)}
+SydTest::Executor: [INFO] {222,2,(null),(null)}
+SydTest::Executor: [INFO] {333,(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),3,(null),(null)}
+SydTest::Executor: [INFO] {666,4,(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 int, C3 nvarchar(4))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_1 on T1(C1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_2 on T1(C3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {111,ほげ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {222,ホゲ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {333,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),ぴよ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {666,ぷう}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C2 varchar(2), C4 nvarchar(448))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,産業研究所
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,株式会社リコー
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural inner join T2
+SydTest::Executor: [INFO] {111,ほげ,1,産業研究所
+}
+SydTest::Executor: [INFO] {111,ほげ,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {111,ほげ,3,(null)}
+SydTest::Executor: [INFO] {111,ほげ,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {111,ほげ,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {111,ほげ,(null),(null)}
+SydTest::Executor: [INFO] {222,ホゲ,1,産業研究所
+}
+SydTest::Executor: [INFO] {222,ホゲ,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {222,ホゲ,3,(null)}
+SydTest::Executor: [INFO] {222,ホゲ,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {222,ホゲ,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {222,ホゲ,(null),(null)}
+SydTest::Executor: [INFO] {333,(null),1,産業研究所
+}
+SydTest::Executor: [INFO] {333,(null),2,株式会社リコー
+}
+SydTest::Executor: [INFO] {333,(null),3,(null)}
+SydTest::Executor: [INFO] {333,(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {333,(null),6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {333,(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),ぴよ,1,産業研究所
+}
+SydTest::Executor: [INFO] {(null),ぴよ,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),ぴよ,3,(null)}
+SydTest::Executor: [INFO] {(null),ぴよ,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),ぴよ,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),ぴよ,(null),(null)}
+SydTest::Executor: [INFO] {666,ぷう,1,産業研究所
+}
+SydTest::Executor: [INFO] {666,ぷう,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {666,ぷう,3,(null)}
+SydTest::Executor: [INFO] {666,ぷう,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {666,ぷう,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {666,ぷう,(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),1,産業研究所
+}
+SydTest::Executor: [INFO] {(null),(null),2,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),(null),3,(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),(null),6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural left outer join T2
+SydTest::Executor: [INFO] {111,ほげ,1,産業研究所
+}
+SydTest::Executor: [INFO] {111,ほげ,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {111,ほげ,3,(null)}
+SydTest::Executor: [INFO] {111,ほげ,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {111,ほげ,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {111,ほげ,(null),(null)}
+SydTest::Executor: [INFO] {222,ホゲ,1,産業研究所
+}
+SydTest::Executor: [INFO] {222,ホゲ,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {222,ホゲ,3,(null)}
+SydTest::Executor: [INFO] {222,ホゲ,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {222,ホゲ,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {222,ホゲ,(null),(null)}
+SydTest::Executor: [INFO] {333,(null),1,産業研究所
+}
+SydTest::Executor: [INFO] {333,(null),2,株式会社リコー
+}
+SydTest::Executor: [INFO] {333,(null),3,(null)}
+SydTest::Executor: [INFO] {333,(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {333,(null),6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {333,(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),ぴよ,1,産業研究所
+}
+SydTest::Executor: [INFO] {(null),ぴよ,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),ぴよ,3,(null)}
+SydTest::Executor: [INFO] {(null),ぴよ,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),ぴよ,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),ぴよ,(null),(null)}
+SydTest::Executor: [INFO] {666,ぷう,1,産業研究所
+}
+SydTest::Executor: [INFO] {666,ぷう,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {666,ぷう,3,(null)}
+SydTest::Executor: [INFO] {666,ぷう,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {666,ぷう,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {666,ぷう,(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),1,産業研究所
+}
+SydTest::Executor: [INFO] {(null),(null),2,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),(null),3,(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),(null),6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural right outer join T2
+SydTest::Executor: [INFO] {111,ほげ,1,産業研究所
+}
+SydTest::Executor: [INFO] {222,ホゲ,1,産業研究所
+}
+SydTest::Executor: [INFO] {333,(null),1,産業研究所
+}
+SydTest::Executor: [INFO] {(null),ぴよ,1,産業研究所
+}
+SydTest::Executor: [INFO] {666,ぷう,1,産業研究所
+}
+SydTest::Executor: [INFO] {(null),(null),1,産業研究所
+}
+SydTest::Executor: [INFO] {111,ほげ,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {222,ホゲ,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {333,(null),2,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),ぴよ,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {666,ぷう,2,株式会社リコー
+}
+SydTest::Executor: [INFO] {(null),(null),2,株式会社リコー
+}
+SydTest::Executor: [INFO] {111,ほげ,3,(null)}
+SydTest::Executor: [INFO] {222,ホゲ,3,(null)}
+SydTest::Executor: [INFO] {333,(null),3,(null)}
+SydTest::Executor: [INFO] {(null),ぴよ,3,(null)}
+SydTest::Executor: [INFO] {666,ぷう,3,(null)}
+SydTest::Executor: [INFO] {(null),(null),3,(null)}
+SydTest::Executor: [INFO] {111,ほげ,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {222,ホゲ,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {333,(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),ぴよ,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {666,ぷう,(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {(null),(null),(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] {111,ほげ,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {222,ホゲ,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {333,(null),6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),ぴよ,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {666,ぷう,6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {(null),(null),6,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] {111,ほげ,(null),(null)}
+SydTest::Executor: [INFO] {222,ホゲ,(null),(null)}
+SydTest::Executor: [INFO] {333,(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),ぴよ,(null),(null)}
+SydTest::Executor: [INFO] {666,ぷう,(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 int, C4 nvarchar(448))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_1 on T1(C1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_2 on T1(C4)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {111,産業研究所
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {222,株式会社リコー
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {333,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),hello world
+konnnitiha.
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {666,情報研究開発
+情報産業研究所
+技術研究センター
+}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C4) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C2 varchar(2), C3 nvarchar(4))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,ほげ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,ホゲ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {3,(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),ぴよ}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {6,ぷう}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C2, C3) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {(null),(null)}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural inner join T2
+SydTest::Executor: [INFO] {111,産業研究所
+,1,ほげ}
+SydTest::Executor: [INFO] {111,産業研究所
+,2,ホゲ}
+SydTest::Executor: [INFO] {111,産業研究所
+,3,(null)}
+SydTest::Executor: [INFO] {111,産業研究所
+,(null),ぴよ}
+SydTest::Executor: [INFO] {111,産業研究所
+,6,ぷう}
+SydTest::Executor: [INFO] {111,産業研究所
+,(null),(null)}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,1,ほげ}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,2,ホゲ}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,3,(null)}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,(null),ぴよ}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,6,ぷう}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,(null),(null)}
+SydTest::Executor: [INFO] {333,(null),1,ほげ}
+SydTest::Executor: [INFO] {333,(null),2,ホゲ}
+SydTest::Executor: [INFO] {333,(null),3,(null)}
+SydTest::Executor: [INFO] {333,(null),(null),ぴよ}
+SydTest::Executor: [INFO] {333,(null),6,ぷう}
+SydTest::Executor: [INFO] {333,(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,1,ほげ}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,2,ホゲ}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,3,(null)}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,(null),ぴよ}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,6,ぷう}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,(null),(null)}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,1,ほげ}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,2,ホゲ}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,3,(null)}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,(null),ぴよ}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,6,ぷう}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),1,ほげ}
+SydTest::Executor: [INFO] {(null),(null),2,ホゲ}
+SydTest::Executor: [INFO] {(null),(null),3,(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),ぴよ}
+SydTest::Executor: [INFO] {(null),(null),6,ぷう}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural left outer join T2
+SydTest::Executor: [INFO] {111,産業研究所
+,1,ほげ}
+SydTest::Executor: [INFO] {111,産業研究所
+,2,ホゲ}
+SydTest::Executor: [INFO] {111,産業研究所
+,3,(null)}
+SydTest::Executor: [INFO] {111,産業研究所
+,(null),ぴよ}
+SydTest::Executor: [INFO] {111,産業研究所
+,6,ぷう}
+SydTest::Executor: [INFO] {111,産業研究所
+,(null),(null)}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,1,ほげ}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,2,ホゲ}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,3,(null)}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,(null),ぴよ}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,6,ぷう}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,(null),(null)}
+SydTest::Executor: [INFO] {333,(null),1,ほげ}
+SydTest::Executor: [INFO] {333,(null),2,ホゲ}
+SydTest::Executor: [INFO] {333,(null),3,(null)}
+SydTest::Executor: [INFO] {333,(null),(null),ぴよ}
+SydTest::Executor: [INFO] {333,(null),6,ぷう}
+SydTest::Executor: [INFO] {333,(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,1,ほげ}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,2,ホゲ}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,3,(null)}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,(null),ぴよ}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,6,ぷう}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,(null),(null)}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,1,ほげ}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,2,ホゲ}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,3,(null)}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,(null),ぴよ}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,6,ぷう}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),1,ほげ}
+SydTest::Executor: [INFO] {(null),(null),2,ホゲ}
+SydTest::Executor: [INFO] {(null),(null),3,(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),ぴよ}
+SydTest::Executor: [INFO] {(null),(null),6,ぷう}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 natural right outer join T2
+SydTest::Executor: [INFO] {111,産業研究所
+,1,ほげ}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,1,ほげ}
+SydTest::Executor: [INFO] {333,(null),1,ほげ}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,1,ほげ}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,1,ほげ}
+SydTest::Executor: [INFO] {(null),(null),1,ほげ}
+SydTest::Executor: [INFO] {111,産業研究所
+,2,ホゲ}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,2,ホゲ}
+SydTest::Executor: [INFO] {333,(null),2,ホゲ}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,2,ホゲ}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,2,ホゲ}
+SydTest::Executor: [INFO] {(null),(null),2,ホゲ}
+SydTest::Executor: [INFO] {111,産業研究所
+,3,(null)}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,3,(null)}
+SydTest::Executor: [INFO] {333,(null),3,(null)}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,3,(null)}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,3,(null)}
+SydTest::Executor: [INFO] {(null),(null),3,(null)}
+SydTest::Executor: [INFO] {111,産業研究所
+,(null),ぴよ}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,(null),ぴよ}
+SydTest::Executor: [INFO] {333,(null),(null),ぴよ}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,(null),ぴよ}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,(null),ぴよ}
+SydTest::Executor: [INFO] {(null),(null),(null),ぴよ}
+SydTest::Executor: [INFO] {111,産業研究所
+,6,ぷう}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,6,ぷう}
+SydTest::Executor: [INFO] {333,(null),6,ぷう}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,6,ぷう}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,6,ぷう}
+SydTest::Executor: [INFO] {(null),(null),6,ぷう}
+SydTest::Executor: [INFO] {111,産業研究所
+,(null),(null)}
+SydTest::Executor: [INFO] {222,株式会社リコー
+,(null),(null)}
+SydTest::Executor: [INFO] {333,(null),(null),(null)}
+SydTest::Executor: [INFO] {(null),hello world
+konnnitiha.
+,(null),(null)}
+SydTest::Executor: [INFO] {666,情報研究開発
+情報産業研究所
+技術研究センター
+,(null),(null)}
+SydTest::Executor: [INFO] {(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

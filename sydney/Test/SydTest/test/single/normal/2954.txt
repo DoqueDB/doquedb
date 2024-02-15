@@ -1,0 +1,39 @@
+# 機能追加 トランザクション状態を取得
+# Bug report 1669
+
+Begin;
+Initialize;
+InitializeSession 1 "TESTDB";
+InitializeSession 2 "TESTDB";
+InitializeSession 3 "TESTDB";
+Command 1 "create database TESTDB";
+
+# 二番目のセッションの状態を確認する。
+# [NOTE] テストスクリプトのセッション引数はSydTest内部で管理される値。
+#  サーバのSessionIDとは関連がない。
+
+# NotInProgress
+Command 1 "select ClientID, SessionID, TransactionState from system_session where SessionID = 2";
+# ReadWrite
+Command 2 "start transaction read write";
+Command 1 "select ClientID, SessionID, TransactionState from system_session where SessionID = 2";
+Command 2 "commit";
+# ReadOnly
+Command 2 "start transaction read write";
+Command 3 "start transaction read write";
+Command 2 "commit";
+Command 2 "start transaction read only";
+Command 3 "commit";
+Command 1 "select ClientID, SessionID, TransactionState from system_session where SessionID = 2";
+Command 2 "commit";
+# ReadOnly(VersionUse)
+Command 2 "start transaction read only";
+Command 1 "select ClientID, SessionID, TransactionState from system_session where SessionID = 2";
+Command 2 "commit";
+
+Command 1 "drop database TESTDB";
+TerminateSession 1;
+TerminateSession 2;
+TerminateSession 3;
+Terminate;
+End;

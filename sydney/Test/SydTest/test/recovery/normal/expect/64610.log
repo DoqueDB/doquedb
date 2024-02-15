@@ -1,0 +1,101 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TypeTest(
+	A nvarchar(32),
+	AB nvarchar(32) array [4],
+	AC nvarchar(32) array [no limit],
+	AD nvarchar(32) hint heap 'compressed',
+	B varchar(32),
+	BB varchar(32) array [3],
+	BC varchar(32) array [no limit],
+	BD varchar(32) hint heap 'compressed',
+	C ntext,
+	CB ntext array [4],
+	CC ntext array [no limit],
+	CD ntext hint heap 'compressed',
+	CE ntext array [4] hint heap 'compressed',
+	CF ntext array [no limit] hint heap 'compressed',
+	D fulltext,
+	DB fulltext array [4],
+	DC fulltext array [no limit],
+	DD fulltext hint heap 'compressed',
+	E int,
+	EB int array [3],
+	EC int array [no limit],
+	F float,
+	FB float array [3],
+	FC float array [no limit],
+	G datetime,
+	GB datetime array [3],
+	GC datetime array [no limit],
+	H uniqueidentifier,
+	HB uniqueidentifier array [3],
+	HC uniqueidentifier array [no limit],
+	I image,
+	IB image array [4],
+	IC image array [no limit],
+	ID image hint heap 'compressed',
+	J nchar(32),
+	JB nchar(32) array [4],
+	JC nchar(32)  array [no limit],
+	JD nchar(32)  hint heap 'compressed',
+	K nvarchar(32),
+	KB  nvarchar(32) array [4],
+	KC  nvarchar(32) array [no limit],
+	KD  nvarchar(32) hint heap 'compressed',
+	L binary(32),
+	LB binary(32) array [4],
+	LC binary(32) array [no limit],
+	LD binary(32) hint heap 'compressed',
+--	primary key (A)
+	)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IndexAA on TypeTest(A)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create clustered index IndexAB on TypeTest(A)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index IndexC1 on TypeTest(C) hint 'inverted=(nolocation=true, notf=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index IndexC2 on TypeTest(CC) hint 'sectionized ,inverted=(nolocation=true, notf=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index IndexC3 on TypeTest(C) hint 'delayed ,inverted=(nolocation=true, notf=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index IndexC4 on TypeTest(CC) hint 'sectionized delayed ,inverted=(nolocation=true, notf=true)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Pause
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into TypeTest (C) values ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {""}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TypeTest
+SydTest::Executor: [INFO] {(null),(null),(null),(null),(null),(null),(null),(null),"",(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] Main End.
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

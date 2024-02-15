@@ -1,0 +1,31 @@
+# 障害票 1418
+# 一括登録で外部ファイルの先頭にあるダブルクオートをいれたテスト
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+
+Command "create table T (nvarchar1 nvarchar(1000) DEFAULT NULL, nvarchar2 nvarchar(1000), nvarchar3 nvarchar(1000))";
+
+Command "insert T input from  path '../../doc/doublequote1.txt' HINT 'Code=\"utf-8\"'";
+Command "select * from T";
+#期待結果
+#{(null),"先頭にダブルクオートが入った文書",ダブルクオート(")を含んだ文字列です。}
+#{(null),ダブルクオート(")を含んだ文字列です。,"先頭にダブルクオートが入った文書"}
+#({"先頭にダブルクオートが入った文書",ダブルクオート(")を含んだ文字列です。,ダブルクオート(")を含んだ文字列です。}
+
+Command "insert T input from  path '../../doc/doublequote2.txt' hint 'nodoublequote Code=\"utf-8\"'";
+Command "select * from T";
+#期待結果
+#{(null),"先頭にダブルクオートが入った文書",ダブルクオート(")を含んだ文字列です。}
+#{(null),ダブルクオート(")を含んだ文字列です。,"先頭にダブルクオートが入った文書"}
+#({"先頭にダブルクオートが入った文書",ダブルクオート(")を含んだ文字列です。,ダブルクオート(")を含んだ文字列です。}
+#{(null),"先頭にダブルクオートが入った文書","ダブルクオート("")を含んだ文字列です。"}
+#{(null),"ダブルクオート("")を含んだ文字列です。","先頭にダブルクオートが入った文書"}
+#{"先頭にダブルクオートが入った文書","ダブルクオート("")を含んだ文字列です。","ダブルクオート("")を含んだ文字列です。"}
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

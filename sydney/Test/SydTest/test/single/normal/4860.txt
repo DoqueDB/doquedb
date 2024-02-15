@@ -1,0 +1,125 @@
+# PreparedStatementを用いてLOB列の更新操作をする
+# 障害票 1310
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+Command "create table TBL(f int not null, g ntext hint heap, h nclob)";
+Command "create index IDX_f on TBL(f)";
+Command "create fulltext index IDX_g on TBL(g) hint 'delayed'";
+TerminateSession;
+
+InitializeSession "TESTDB";
+CreatePreparedCommand "ins" "insert TBL values (?, ?, ?)";
+CreatePreparedCommand "upd" "update TBL set g = ?, h = overlay(h placing ? from ?) where f = ?";
+CreatePreparedCommand "del" "delete TBL where g contains ?";
+CreatePreparedCommand "func" "select f+1, array[g, h], char_length(g), array[g, h][1], -f, normalize(g using 'BuiltIn'), overlay(g placing ? from ?), g||h, substring(g from ?) from TBL where f = ?";
+CreatePreparedCommand "dbl" "select distinct f from TBL";
+CreatePreparedCommand "grp" "select count(*) from TBL group by f";
+CreatePreparedCommand "exist" "select * from TBL where f in (select f from TBL where g contains ?)";
+
+PreparedCommand "ins" [1, "abc", "ABC"];
+PreparedCommand "ins" [2, "def", "DEF"];
+PreparedCommand "ins" [2, "DEF", "def"];
+PreparedCommand "ins" [3, "ghi", "GHI"];
+PreparedCommand "ins" [3, "ghi", "GHI"];
+PreparedCommand "ins" [3, "GHI", "ghi"];
+
+PreparedCommand "func" ["X", 1, 2, 1];
+PreparedCommand "func" ["Y", 2, 1, 2];
+Command "start transaction read write";
+PreparedCommand "func" ["Z", 3, 3, 3];
+Command "commit";
+
+PreparedCommand "dbl";
+PreparedCommand "dbl";
+Command "start transaction read write";
+PreparedCommand "dbl";
+Command "commit";
+
+PreparedCommand "grp";
+PreparedCommand "grp";
+Command "start transaction read write";
+PreparedCommand "grp";
+Command "commit";
+
+PreparedCommand "exist" ["a"];
+PreparedCommand "exist" ["e"];
+Command "start transaction read write";
+PreparedCommand "exist" ["i"];
+Command "commit";
+
+PreparedCommand "upd" ["123", "PQ", 2, 1];
+Command "select * from TBL";
+PreparedCommand "upd" ["456", "RS", 1, 2];
+Command "select * from TBL";
+PreparedCommand "upd" ["789", "V", 3, 3];
+Command "select * from TBL";
+
+Command "select * from TBL";
+
+PreparedCommand "del" ["1"];
+Command "select * from TBL";
+PreparedCommand "del" ["4"];
+Command "select * from TBL";
+PreparedCommand "del" ["7"];
+Command "select * from TBL";
+
+PreparedCommand "ins" [1, "abc", "ABC"];
+PreparedCommand "ins" [2, "def", "DEF"];
+PreparedCommand "ins" [3, "ghi", "GHI"];
+
+PreparedCommand "func" ["X", 1, 2, 1];
+PreparedCommand "func" ["Y", 2, 1, 2];
+Command "start transaction read write";
+PreparedCommand "func" ["Z", 3, 3, 3];
+Command "commit";
+
+PreparedCommand "dbl";
+PreparedCommand "dbl";
+Command "start transaction read write";
+PreparedCommand "dbl";
+Command "commit";
+
+PreparedCommand "grp";
+PreparedCommand "grp";
+Command "start transaction read write";
+PreparedCommand "grp";
+Command "commit";
+
+PreparedCommand "exist" ["a"];
+PreparedCommand "exist" ["e"];
+Command "start transaction read write";
+PreparedCommand "exist" ["i"];
+Command "commit";
+
+PreparedCommand "upd" ["123", "PQ", 2, 1];
+Command "select * from TBL";
+PreparedCommand "upd" ["456", "RS", 1, 2];
+Command "select * from TBL";
+PreparedCommand "upd" ["789", "V", 3, 3];
+Command "select * from TBL";
+
+PreparedCommand "del" ["1"];
+Command "select * from TBL";
+PreparedCommand "del" ["4"];
+Command "select * from TBL";
+PreparedCommand "del" ["7"];
+Command "select * from TBL";
+
+ErasePreparedCommand "ins";
+ErasePreparedCommand "upd";
+ErasePreparedCommand "del";
+ErasePreparedCommand "func";
+ErasePreparedCommand "dbl";
+ErasePreparedCommand "grp";
+ErasePreparedCommand "exist";
+
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

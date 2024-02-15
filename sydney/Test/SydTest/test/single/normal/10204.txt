@@ -1,0 +1,106 @@
+# select * from T where〈 列1個 〉(not) between〈 ほかの列 - 文字列(varchar) 〉
+# 
+# between 列 and 列によるテスト
+# --char型文字列とchar型文字列との検索
+# 索引
+# --索引き無し
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+
+# メインテーブル
+Command  "create table T(C1 varchar(4), C2 varchar(4), C3 varchar(8))";
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" ["bbb", "h",   "aabb"];
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" ["ddd", "g",   "ccaa"];
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" ["aaa", "cc",  "aabb"];
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" ["ccc", "h",   "ccaa"];
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" ["bbb", "g",   "aabb"];
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" [ null, "cc",  "ccbb"];
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" ["ddd",  null, "aabb"];
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" ["aaa", "a",    null ];
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" [ null,  null, "ccbb"];
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" [ null, "a",    null ];
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" ["ccc",  null,  null ];
+Command  "insert into T (C1, C2, C3) values (?, ?, ?)" [ null,  null,  null ];
+
+
+# --between
+Command  "select * from T where C1 between C1 and C1";
+Command  "select * from T where C1 between C1 and C2";
+Command  "select * from T where C1 between C1 and C3";
+Command  "select * from T where C1 between C2 and C1";
+Command  "select * from T where C1 between C2 and C2";
+Command  "select * from T where C1 between C2 and C3";
+Command  "select * from T where C1 between C3 and C1";
+Command  "select * from T where C1 between C3 and C2";
+Command  "select * from T where C1 between C3 and C3";
+
+Command  "select * from T where C2 between C1 and C1";
+Command  "select * from T where C2 between C1 and C2";
+Command  "select * from T where C2 between C1 and C3";
+Command  "select * from T where C2 between C2 and C1";
+Command  "select * from T where C2 between C2 and C2";
+Command  "select * from T where C2 between C2 and C3";
+Command  "select * from T where C2 between C3 and C1";
+Command  "select * from T where C2 between C3 and C2";
+Command  "select * from T where C2 between C3 and C3";
+
+Command  "select * from T where C3 between C1 and C1";
+Command  "select * from T where C3 between C1 and C2";
+Command  "select * from T where C3 between C1 and C3";
+Command  "select * from T where C3 between C2 and C1";
+Command  "select * from T where C3 between C2 and C2";
+Command  "select * from T where C3 between C2 and C3";
+Command  "select * from T where C3 between C3 and C1";
+Command  "select * from T where C3 between C3 and C2";
+Command  "select * from T where C3 between C3 and C3";
+
+
+# --not between
+Command  "select * from T where C1 not between C1 and C1";
+Command  "select * from T where C1 not between C1 and C2";
+Command  "select * from T where C1 not between C1 and C3";
+Command  "select * from T where C1 not between C2 and C1";
+Command  "select * from T where C1 not between C2 and C2";
+Command  "select * from T where C1 not between C2 and C3";
+Command  "select * from T where C1 not between C3 and C1";
+Command  "select * from T where C1 not between C3 and C2";
+Command  "select * from T where C1 not between C3 and C3";
+
+Command  "select * from T where C2 not between C1 and C1";
+Command  "select * from T where C2 not between C1 and C2";
+Command  "select * from T where C2 not between C1 and C3";
+Command  "select * from T where C2 not between C2 and C1";
+Command  "select * from T where C2 not between C2 and C2";
+Command  "select * from T where C2 not between C2 and C3";
+Command  "select * from T where C2 not between C3 and C1";
+Command  "select * from T where C2 not between C3 and C2";
+Command  "select * from T where C2 not between C3 and C3";
+
+Command  "select * from T where C3 not between C1 and C1";
+Command  "select * from T where C3 not between C1 and C2";
+Command  "select * from T where C3 not between C1 and C3";
+Command  "select * from T where C3 not between C2 and C1";
+Command  "select * from T where C3 not between C2 and C2";
+Command  "select * from T where C3 not between C2 and C3";
+Command  "select * from T where C3 not between C3 and C1";
+Command  "select * from T where C3 not between C3 and C2";
+Command  "select * from T where C3 not between C3 and C3";
+
+Command  "drop table T";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

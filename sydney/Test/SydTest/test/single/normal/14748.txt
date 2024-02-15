@@ -1,0 +1,40 @@
+# Btree2
+# BigIntと使用したテスト
+# 2005/05/30 Tajima
+# BIGINT の範囲　-9223372036854775808 〜　9223372036854775807
+# 1232 ALL ROWS版
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command  "create table T1(C1 BIGINT)";
+Command  "create all rows index I1 on T1(C1)";
+Command  "create table T2(C1 BIGINT)";
+Command  "create all rows index I2 on T2(C1)";
+Command  "select C1 from T1";
+# SQLコマンドinsertをテストする
+Command  "insert into T1 (C1) values (?)" [integer64 9223372036854775807];
+Command  "insert into T1 (C1) values (?)" [555];
+# 複数タプルをまとめてinsert
+Command  "insert into T2 (C1) values (?), (?)" [333, integer64 -9223372036854775808];
+# 他のtableからinsert...select
+Command  "insert into T1 (C1) select (C1) from T2 where C1=?" [integer64 -9223372036854775808];
+# 自分自身にinsert...select
+Command  "insert into T1 (C1) select (C1) from T1 where C1=?" [integer64 9223372036854775807];
+Command  "select C1 from T1";
+Command  "drop table T1";
+Command  "drop table T2";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

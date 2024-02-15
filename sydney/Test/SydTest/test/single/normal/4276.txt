@@ -1,0 +1,24 @@
+# within と synonym の組み合わせ
+# 障害票 1350
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T (F nvarchar(256))";
+Command "create fulltext index T_F on T(F) hint 'inverted=(tokenizer=NGR:2:2)'";
+
+Command "insert into T values 'リコーの環境への取り組み'";
+Command "insert into T values 'リコーデジタルカメラ特集'";
+
+Command "select count(*) from T where F contains within('リコー' synonym('環境' 'エコ') upper 10)";
+Command "select count(*) from T where F contains 'リコー' & synonym('環境' 'エコ')";
+Command "select count(*) from T where F contains 'リコー' | synonym('環境' 'エコ')";
+
+Command "drop table T";
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,62 @@
+# テスト追加: RelationNode_ThetaJoin.cpp
+#           : 複数の表を使った副問合せと別の表との間で明示的Join
+# 2005.07.25 tajima
+
+Begin;
+
+Initialize;
+InitializeSession "DefaultDB";
+
+# 表を作成
+Command "create table T (ID int, C NVARCHAR(10),N ntext,Amt BIGINT)";
+Command "create table T1 (ID1 int, C1 NVARCHAR(10),N1 ntext,Amt1 BIGINT)";
+Command "create table T2 (ID2 int, C2 NVARCHAR(10),N2 ntext,kz int)";
+
+#データセット
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [1,"C000000001",textsjisfile "..\\..\\doc\\hello.txt",integer64 1100000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [2,"C000000002",textsjisfile "..\\..\\doc\\hello.txt",integer64 1200000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [3,"C000000003",textsjisfile "..\\..\\doc\\hello.txt",integer64 1300000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [4,"C000000004",textsjisfile "..\\..\\doc\\hello.txt",integer64 1400000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [5,"C000000005",textsjisfile "..\\..\\doc\\hello.txt",integer64 1500000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [6,"C000000006",textsjisfile "..\\..\\doc\\hello.txt",integer64 1600000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [7,"C000000007",textsjisfile "..\\..\\doc\\hello.txt",integer64 1700000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [8,"C000000008",textsjisfile "..\\..\\doc\\hello.txt",integer64 1800000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [9,"C000000009",textsjisfile "..\\..\\doc\\hello.txt",integer64 1900000];
+Command  "insert into T (ID,C,N,Amt) values (?, ?, ?, ?)" [10,"C00000010",textsjisfile "..\\..\\doc\\hello.txt",integer64 2000000];
+
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [1,"C000000001","今日は月曜日",integer64 2100000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [2,"C000000002","今日は火曜日",integer64 2200000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [3,"C000000003","今日は水曜日",integer64 2300000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [4,"C000000004","今日は木曜日",integer64 2400000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [5,"C000000005","今日は金曜日",integer64 2500000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [6,"C000000006","今日は土曜日",integer64 2600000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [7,"C000000007","今日は日曜日",integer64 2700000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [8,"C000000008","今日は月曜日",integer64 2800000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [9,"C000000009","今日は火曜日",integer64 2900000];
+Command  "insert into T1 (ID1,C1,N1,Amt1) values (?, ?, ?, ?)" [10,"C00000010","今日は水曜日",integer64 3000000];
+
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [11,"C000000001",textsjisfile "..\\..\\doc\\ricoh.txt",9600000];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [21,"C000000002",textsjisfile "..\\..\\doc\\ricoh.txt",9600000];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [31,"C000000003",textsjisfile "..\\..\\doc\\ricoh.txt",9600000];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [41,"C000000004",textsjisfile "..\\..\\doc\\ricoh.txt",9600000];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [51,"C000000005",textsjisfile "..\\..\\doc\\ricoh.txt",9600000];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [6,"C000000006",textsjisfile "..\\..\\doc\\ricoh.txt",4600000];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [7,"C000000007",textsjisfile "..\\..\\doc\\ricoh.txt",4600000];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [8,"C000000008",textsjisfile "..\\..\\doc\\ricoh.txt",4600000];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [9,"C000000009",textsjisfile "..\\..\\doc\\ricoh.txt",4600000];
+Command  "insert into T2 (ID2,C2,N2,kz) values (?, ?, ?, ?)" [10,"C00000010",textsjisfile "..\\..\\doc\\ricoh.txt",4600000];
+
+
+
+#複数の表を使った副問合せと別の表との間で明示的Join
+Command "Select * from (T2 INNER JOIN (select ID,ID1,Amt + Amt1 from T,T1 where T.ID=T1.ID1) as X on (ID = ID2)) INNER JOIN (select ID,ID2,Amt + kz from T,T2 where T.ID=T2.ID2) as Y on (X.ID = Y.ID) ";
+Command "Select * from (T2 INNER JOIN (select Amt + Amt1 from T,T1 where T.ID=T1.ID1) as X(x) on (x > T2.kz )) INNER JOIN (select Amt + kz from T,T2 where T.ID=T2.ID2) as Y(y) on (x * 2 >= y) order by X.x";
+# テスト用の表を消去
+Command "drop table T";
+Command "drop table T1";
+Command "drop table T2";
+
+TerminateSession;
+Terminate;
+End;
+

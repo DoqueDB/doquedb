@@ -1,0 +1,27 @@
+# B木でUNIQUE制約をチェック
+# Bug report 2453
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T (ID int, F1 int, F2 int, primary key(ID), unique(F1,F2))";
+Command "insert into T values (1,1,null),(2,1,null),(3,2,1),(4,1,0),(5,2,0)";
+
+Command "select * from T";
+
+# 障害票 No.2453 に対応していないと、
+# ここはエラーになるが、
+Command "insert into T values (6,1,0)";
+
+# これはエラーにならない
+Command "update T set F1=1,F2=0 where ID = 3";	
+
+Command "select * from T";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

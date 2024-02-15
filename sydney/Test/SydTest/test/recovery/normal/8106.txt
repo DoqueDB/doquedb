@@ -1,0 +1,102 @@
+## -*-Mode: text; tab-width: 4; c-basic-offset: 4;-*-
+## vi:set ts=4 sw=4:
+##
+## 8106.txt -- index 作成のテスト
+##
+##	TEST CONTENTS
+##		index の作成と削除を同時に行う
+##
+##	START CONDITIONS
+##		特に無し
+##		
+##	END CONDITIONS
+##		start 前と同じ
+##
+##	CHECK
+##		
+##
+##	NOTE
+##		マルチスレッド
+##		正常系
+##		Schema の単体テストも兼ねる
+##
+## Copyright (c) 2001-2003 Ricoh Company, Ltd.
+## All rights reserved.
+##
+##		$Author$
+##		$Date$
+##		$Revision$
+##
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+# 準備
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T(A int, B ntext)";
+Command "insert into T(A, B) values(1, 'abcdefg')";
+Command "insert into T(A, B) values(2, 'hijklmn')";
+Command "insert into T(A, B) values(3, 'opqrstu')";
+Command "insert into T(A, B) values(4, 'vwxyz  ')";
+Command "insert into T(A, B) values(5, 'ABCDEFG')";
+Command "insert into T(A, B) values(6, 'HIJKLMN')";
+Command "insert into T(A, B) values(7, 'OPQRSTU')";
+Command "insert into T(A, B) values(8, 'VWXYZ  ')";
+Command "insert into T(A, B) values(9, '       ')";
+TerminateSession;
+
+InitializeSession 0 "TESTDB";
+InitializeSession 1 "TESTDB";
+InitializeSession 2 "TESTDB";
+
+CreateThread "Select";
+JoinThread "Select";
+
+# 作成と削除を同時に行う。
+# drop が先だったり、crete が先だったりするので結果は違う場合が多い。
+# デッドロックにならなければ良い。
+
+CreateThread "Create";
+CreateThread "Drop";
+JoinThread "Create";
+JoinThread "Drop";
+
+CreateThread "Select";
+JoinThread "Select";
+
+Command  "select * from T";
+
+TerminateSession 0;
+TerminateSession 1;
+TerminateSession 2;
+
+# 後片付け
+#InitializeSession "TESTDB";
+#Command "drop database TESTDB";
+#TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;
+
+#-----------------------------------------------------------------------------------------------
+
+Create
+{
+Command 1 "create index IDX1 on T(A)";
+}
+
+Drop
+{
+Command 2 "drop index IDX1";
+}
+
+Select
+{
+Command 0 "select * from T";
+}

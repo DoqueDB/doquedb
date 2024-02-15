@@ -1,0 +1,355 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f1 int, f2 int, f3 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (?,?,?), (?,?,?), (?,?,?), (?,?,?), (?,?,?), (?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,10,match value,2,20,match value,3,30,match value,4,40,match value,5,50,match value,6,60,match value}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (?,?,?), (?,?,?), (?,?,?), (?,?,?), (?,?,?), (?,?,?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {-1,-10,no macchi,-2,-20,no macchi,-3,-30,no macchi,-4,-40,no macchi,-5,-50,no macchi,-6,-60,no macchi}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1 on T(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I3 on T(f3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T  limit -1 
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T  limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {0,-1}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T  limit ? offset 0
+SydTest::Executor: [INFO] [[SQL Parameter]] {1}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T  limit 11 offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {1}
+SydTest::Executor: [INFO] {1,10,match value}
+SydTest::Executor: [INFO] {2,20,match value}
+SydTest::Executor: [INFO] {3,30,match value}
+SydTest::Executor: [INFO] {4,40,match value}
+SydTest::Executor: [INFO] {5,50,match value}
+SydTest::Executor: [INFO] {6,60,match value}
+SydTest::Executor: [INFO] {-1,-10,no macchi}
+SydTest::Executor: [INFO] {-2,-20,no macchi}
+SydTest::Executor: [INFO] {-3,-30,no macchi}
+SydTest::Executor: [INFO] {-4,-40,no macchi}
+SydTest::Executor: [INFO] {-5,-50,no macchi}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 limit ? 
+SydTest::Executor: [INFO] [[SQL Parameter]] {0}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 limit -1 offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {-1}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 limit 0 offset 0
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,1}
+SydTest::Executor: [INFO] {1,10,match value}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between -1 and 5 limit ? offset -1
+SydTest::Executor: [INFO] [[SQL Parameter]] {0}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between -1 and 5 limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {-1,0}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between -1 and 5 limit 0 offset 1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f3 like '%match%' limit 1 offset -1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f3 like '%match%' limit 0 offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {0}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f3 like '%match%' limit ? offset 1
+SydTest::Executor: [INFO] [[SQL Parameter]] {-1}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f1 between 1 and 5 limit 3 offset 2
+SydTest::Executor: [INFO] {2,20,match value}
+SydTest::Executor: [INFO] {3,30,match value}
+SydTest::Executor: [INFO] {4,40,match value}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f1 between 1 and 5 limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {2,4}
+SydTest::Executor: [INFO] {4,40,match value}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f1 between 1 and 5 limit ? offset 5
+SydTest::Executor: [INFO] [[SQL Parameter]] {-1}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f3 like '%match%' limit ? offset 2
+SydTest::Executor: [INFO] [[SQL Parameter]] {6}
+SydTest::Executor: [INFO] {2,20,match value}
+SydTest::Executor: [INFO] {3,30,match value}
+SydTest::Executor: [INFO] {4,40,match value}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f3 like '%match%' limit 1 offset 4
+SydTest::Executor: [INFO] {4,40,match value}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f3 like '%match%' limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {0,5}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between 2 and 5 and f3 like '%match%' limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {-1,2}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between 2 and 5 and f3 like '%match%' limit ? offset 4
+SydTest::Executor: [INFO] [[SQL Parameter]] {0}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between 2 and 5 and f3 like '%match%' limit 0 offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {5}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between 2 and 5 and f3 like '%match%' limit 0 offset -1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T  limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {7,6}
+SydTest::Executor: [INFO] {6,60,match value}
+SydTest::Executor: [INFO] {-1,-10,no macchi}
+SydTest::Executor: [INFO] {-2,-20,no macchi}
+SydTest::Executor: [INFO] {-3,-30,no macchi}
+SydTest::Executor: [INFO] {-4,-40,no macchi}
+SydTest::Executor: [INFO] {-5,-50,no macchi}
+SydTest::Executor: [INFO] {-6,-60,no macchi}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T  limit -1 offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {12}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T  limit 0 offset 13
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 limit ? offset 4
+SydTest::Executor: [INFO] [[SQL Parameter]] {5}
+SydTest::Executor: [INFO] {4,40,match value}
+SydTest::Executor: [INFO] {-1,-10,no macchi}
+SydTest::Executor: [INFO] {-2,-20,no macchi}
+SydTest::Executor: [INFO] {-3,-30,no macchi}
+SydTest::Executor: [INFO] {-4,-40,no macchi}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 limit 0 offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {4}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 limit 1 offset 8
+SydTest::Executor: [INFO] {-4,-40,no macchi}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {0,9}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between -1 and 5 limit 1 offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {3}
+SydTest::Executor: [INFO] {2,20,match value}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between -1 and 5 limit ? offset 6
+SydTest::Executor: [INFO] [[SQL Parameter]] {1}
+SydTest::Executor: [INFO] {5,50,match value}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between -1 and 5 limit 0 offset 7
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f3 like '%match%' limit 3 offset 3
+SydTest::Executor: [INFO] {3,30,match value}
+SydTest::Executor: [INFO] {4,40,match value}
+SydTest::Executor: [INFO] {5,50,match value}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f3 like '%match%' limit ? offset 7
+SydTest::Executor: [INFO] [[SQL Parameter]] {1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f3 like '%match%' limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {0,-1}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f3 like '%match%' limit 0 offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {0}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f1 between 1 and 5 limit 0 offset 0
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f1 between 1 and 5 limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,1}
+SydTest::Executor: [INFO] {1,10,match value}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f1 between 1 and 5 limit 0 offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {-1}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f3 like '%match%' limit -1 offset 0
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f3 like '%match%' limit ? offset 1
+SydTest::Executor: [INFO] [[SQL Parameter]] {4}
+SydTest::Executor: [INFO] {1,10,match value}
+SydTest::Executor: [INFO] {2,20,match value}
+SydTest::Executor: [INFO] {3,30,match value}
+SydTest::Executor: [INFO] {4,40,match value}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f3 like '%match%' limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {1,-1}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between 2 and 5 and f3 like '%match%' limit ? offset 0
+SydTest::Executor: [INFO] [[SQL Parameter]] {1}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between 2 and 5 and f3 like '%match%' limit 8 offset 1
+SydTest::Executor: [INFO] {2,20,match value}
+SydTest::Executor: [INFO] {3,30,match value}
+SydTest::Executor: [INFO] {4,40,match value}
+SydTest::Executor: [INFO] {5,50,match value}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f1 between -1 and 5 limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {0,0}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 and f3 like '%match%' limit 0 offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {0}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {0,0}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f2 between -40 and 40 limit ? 
+SydTest::Executor: [INFO] [[SQL Parameter]] {16}
+SydTest::Executor: [INFO] {1,10,match value}
+SydTest::Executor: [INFO] {2,20,match value}
+SydTest::Executor: [INFO] {3,30,match value}
+SydTest::Executor: [INFO] {4,40,match value}
+SydTest::Executor: [INFO] {-1,-10,no macchi}
+SydTest::Executor: [INFO] {-2,-20,no macchi}
+SydTest::Executor: [INFO] {-3,-30,no macchi}
+SydTest::Executor: [INFO] {-4,-40,no macchi}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f3 like '%match%' limit ? offset ?
+SydTest::Executor: [INFO] [[SQL Parameter]] {-1,6}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Not supported.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

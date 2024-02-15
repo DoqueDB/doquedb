@@ -1,0 +1,260 @@
+# select * from T where〈 列1個 〉(not) between〈 定数 〉
+# 
+# between 定数 and 定数によるテスト
+# 索引
+# --索引き有り
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+
+# int型
+# メインテーブル
+Command  "create table T(C1 int, C2 int)";
+Command  "create index I_1 on T(C1)";
+Command  "create index I_2 on T(C2)";
+Command  "insert into T (C1, C2) values (?, ?)" [ 1, 111 ];
+Command  "insert into T (C1, C2) values (?, ?)" [ 2, 222 ];
+Command  "insert into T (C1, C2) values (?, ?)" [ 3, 222 ];
+Command  "insert into T (C1, C2) values (?, ?)" [ 4, 222 ];
+Command  "insert into T (C1, C2) values (?, ?)" [ 5, null];
+Command  "insert into T (C1, C2) values (?, ?)" [ 6, 333 ];
+Command  "insert into T (C1, C2) values (?, ?)" [ 7, 333 ];
+Command  "insert into T (C1, C2) values (?, ?)" [ 8, 333 ];
+Command  "insert into T (C1, C2) values (?, ?)" [ 9, 444 ];
+Command  "insert into T (C1, C2) values (?, ?)" [10, null];
+Command  "insert into T (C1, C2) values (?, ?)" [11, null];
+
+
+# 境界が領域を全部含む、又は含まない
+# --between
+Command  "select * from T where C1 between (?) and (?)" [0, null];
+Command  "select * from T where C1 between (?) and (?)" [null, 0];
+Command  "select * from T where C1 between (?) and (?)" [0, 0];
+Command  "select * from T where C1 between (?) and (?)" [0, 99];
+Command  "select * from T where C1 between (?) and (?)" [99, 0];
+
+Command  "select * from T where C2 between (?) and (?)" [0, null];
+Command  "select * from T where C2 between (?) and (?)" [null, 0];
+Command  "select * from T where C2 between (?) and (?)" [0, 0];
+Command  "select * from T where C2 between (?) and (?)" [0, 999];
+Command  "select * from T where C2 between (?) and (?)" [999, 0];
+
+# --not between
+Command  "select * from T where C1 not between (?) and (?)" [0, null];
+Command  "select * from T where C1 not between (?) and (?)" [null, 0];
+Command  "select * from T where C1 not between (?) and (?)" [0, 0];
+Command  "select * from T where C1 not between (?) and (?)" [0, 99];
+Command  "select * from T where C1 not between (?) and (?)" [99, 0];
+
+Command  "select * from T where C2 not between (?) and (?)" [0, null];
+Command  "select * from T where C2 not between (?) and (?)" [null, 0];
+Command  "select * from T where C2 not between (?) and (?)" [0, 0];
+Command  "select * from T where C2 not between (?) and (?)" [0, 999];
+Command  "select * from T where C2 not between (?) and (?)" [999, 0];
+
+# 境界が領域を一部含む
+# --between
+Command  "select * from T where C1 between (?) and (?)" [3, 6.9];
+Command  "select * from T where C1 between (?) and (?)" [3, 7];
+Command  "select * from T where C1 between (?) and (?)" [3.1, 7];
+
+Command  "select * from T where C2 between (?) and (?)" [222, 332];
+Command  "select * from T where C2 between (?) and (?)" [222, 333];
+Command  "select * from T where C2 between (?) and (?)" [223, 333];
+
+# --not between
+Command  "select * from T where C1 not between (?) and (?)" [3, 6.9];
+Command  "select * from T where C1 not between (?) and (?)" [3, 7];
+Command  "select * from T where C1 not between (?) and (?)" [3.1, 7];
+
+Command  "select * from T where C2 not between (?) and (?)" [222, 332];
+Command  "select * from T where C2 not between (?) and (?)" [222, 333];
+Command  "select * from T where C2 not between (?) and (?)" [223, 333];
+
+Command  "drop table T";
+
+
+# varchar型
+# メインテーブル
+Command  "create table T(C1 varchar(4), C2 varchar(8))";
+Command  "create index I_1 on T(C1)";
+Command  "create index I_2 on T(C2)";
+Command  "insert into T (C1, C2) values (?, ?)" [ "10", "1111"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "20", "2222"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "30", "3333"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "40",  null ];
+Command  "insert into T (C1, C2) values (?, ?)" [ "50", "4444"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "60", "2222"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "70", "4444"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "80", "3333"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "90",  null ];
+Command  "insert into T (C1, C2) values (?, ?)" ["100", "5555"];
+Command  "insert into T (C1, C2) values (?, ?)" ["110",  null ];
+
+
+# 境界が領域を全部含む、又は含まない
+# --between
+Command  "select * from T where C1 between (?) and (?)" ["000", null];
+Command  "select * from T where C1 between (?) and (?)" [null, "000"];
+Command  "select * from T where C1 between (?) and (?)" ["000", "000"];
+Command  "select * from T where C1 between (?) and (?)" ["000", "999"];
+Command  "select * from T where C1 between (?) and (?)" ["999", "000"];
+
+Command  "select * from T where C2 between (?) and (?)" ["0000", null];
+Command  "select * from T where C2 between (?) and (?)" [null, "0000"];
+Command  "select * from T where C2 between (?) and (?)" ["0000", "0000"];
+Command  "select * from T where C2 between (?) and (?)" ["0000", "9999"];
+Command  "select * from T where C2 between (?) and (?)" ["9999", "0000"];
+
+# --not between
+Command  "select * from T where C1 not between (?) and (?)" ["000", null];
+Command  "select * from T where C1 not between (?) and (?)" [null, "000"];
+Command  "select * from T where C1 not between (?) and (?)" ["000", "000"];
+Command  "select * from T where C1 not between (?) and (?)" ["000", "999"];
+Command  "select * from T where C1 not between (?) and (?)" ["999", "000"];
+
+Command  "select * from T where C2 not between (?) and (?)" ["0000", null];
+Command  "select * from T where C2 not between (?) and (?)" [null, "0000"];
+Command  "select * from T where C2 not between (?) and (?)" ["0000", "0000"];
+Command  "select * from T where C2 not between (?) and (?)" ["0000", "9999"];
+Command  "select * from T where C2 not between (?) and (?)" ["9999", "0000"];
+
+# 境界が領域を一部含む
+# --between
+Command  "select * from T where C1 between (?) and (?)" ["2", "9"];
+Command  "select * from T where C1 between (?) and (?)" ["9", "2"];
+Command  "select * from T where C1 between (?) and (?)" ["2", "50"];
+Command  "select * from T where C1 between (?) and (?)" ["50", "2"];
+Command  "select * from T where C1 between (?) and (?)" ["9", "50"];
+Command  "select * from T where C1 between (?) and (?)" ["50", "9"];
+Command  "select * from T where C1 between (?) and (?)" ["50", "69"];
+Command  "select * from T where C1 between (?) and (?)" ["50", "70"];
+Command  "select * from T where C1 between (?) and (?)" ["51", "70"];
+
+Command  "select * from T where C2 between (?) and (?)" ["22", "32"];
+Command  "select * from T where C2 between (?) and (?)" ["22", "332"];
+Command  "select * from T where C2 between (?) and (?)" ["22", "334"];
+Command  "select * from T where C2 between (?) and (?)" ["333", "443"];
+Command  "select * from T where C2 between (?) and (?)" ["333", "444"];
+Command  "select * from T where C2 between (?) and (?)" ["333", "445"];
+
+# --not between
+Command  "select * from T where C1 not between (?) and (?)" ["2", "9"];
+Command  "select * from T where C1 not between (?) and (?)" ["9", "2"];
+Command  "select * from T where C1 not between (?) and (?)" ["2", "50"];
+Command  "select * from T where C1 not between (?) and (?)" ["50", "2"];
+Command  "select * from T where C1 not between (?) and (?)" ["9", "50"];
+Command  "select * from T where C1 not between (?) and (?)" ["50", "9"];
+Command  "select * from T where C1 not between (?) and (?)" ["50", "69"];
+Command  "select * from T where C1 not between (?) and (?)" ["50", "70"];
+Command  "select * from T where C1 not between (?) and (?)" ["51", "70"];
+
+Command  "select * from T where C2 not between (?) and (?)" ["22", "32"];
+Command  "select * from T where C2 not between (?) and (?)" ["22", "332"];
+Command  "select * from T where C2 not between (?) and (?)" ["22", "334"];
+Command  "select * from T where C2 not between (?) and (?)" ["333", "443"];
+Command  "select * from T where C2 not between (?) and (?)" ["333", "444"];
+Command  "select * from T where C2 not between (?) and (?)" ["333", "445"];
+
+Command  "drop table T";
+
+
+# nvarchar型
+# メインテーブル
+Command  "create table T(C1 nvarchar(4), C2 nvarchar(8))";
+Command  "create index I_1 on T(C1)";
+Command  "create index I_2 on T(C2)";
+Command  "insert into T (C1, C2) values (?, ?)" [ "10", "1111"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "20", "2222"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "30", "3333"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "40",  null ];
+Command  "insert into T (C1, C2) values (?, ?)" [ "50", "4444"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "60", "2222"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "70", "4444"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "80", "3333"];
+Command  "insert into T (C1, C2) values (?, ?)" [ "90",  null ];
+Command  "insert into T (C1, C2) values (?, ?)" ["100", "5555"];
+Command  "insert into T (C1, C2) values (?, ?)" ["110",  null ];
+
+
+# 境界が領域を全部含む、又は含まない
+# --between
+Command  "select * from T where C1 between (?) and (?)" ["000", null];
+Command  "select * from T where C1 between (?) and (?)" [null, "000"];
+Command  "select * from T where C1 between (?) and (?)" ["000", "000"];
+Command  "select * from T where C1 between (?) and (?)" ["000", "999"];
+Command  "select * from T where C1 between (?) and (?)" ["999", "000"];
+
+Command  "select * from T where C2 between (?) and (?)" ["0000", null];
+Command  "select * from T where C2 between (?) and (?)" [null, "0000"];
+Command  "select * from T where C2 between (?) and (?)" ["0000", "0000"];
+Command  "select * from T where C2 between (?) and (?)" ["0000", "9999"];
+Command  "select * from T where C2 between (?) and (?)" ["9999", "0000"];
+
+# --not between
+Command  "select * from T where C1 not between (?) and (?)" ["000", null];
+Command  "select * from T where C1 not between (?) and (?)" [null, "000"];
+Command  "select * from T where C1 not between (?) and (?)" ["000", "000"];
+Command  "select * from T where C1 not between (?) and (?)" ["000", "999"];
+Command  "select * from T where C1 not between (?) and (?)" ["999", "000"];
+
+Command  "select * from T where C2 not between (?) and (?)" ["0000", null];
+Command  "select * from T where C2 not between (?) and (?)" [null, "0000"];
+Command  "select * from T where C2 not between (?) and (?)" ["0000", "0000"];
+Command  "select * from T where C2 not between (?) and (?)" ["0000", "9999"];
+Command  "select * from T where C2 not between (?) and (?)" ["9999", "0000"];
+
+# 境界が領域を一部含む
+# --between
+Command  "select * from T where C1 between (?) and (?)" ["2", "9"];
+Command  "select * from T where C1 between (?) and (?)" ["9", "2"];
+Command  "select * from T where C1 between (?) and (?)" ["2", "50"];
+Command  "select * from T where C1 between (?) and (?)" ["50", "2"];
+Command  "select * from T where C1 between (?) and (?)" ["9", "50"];
+Command  "select * from T where C1 between (?) and (?)" ["50", "9"];
+Command  "select * from T where C1 between (?) and (?)" ["50", "69"];
+Command  "select * from T where C1 between (?) and (?)" ["50", "70"];
+Command  "select * from T where C1 between (?) and (?)" ["51", "70"];
+
+Command  "select * from T where C2 between (?) and (?)" ["22", "32"];
+Command  "select * from T where C2 between (?) and (?)" ["22", "332"];
+Command  "select * from T where C2 between (?) and (?)" ["22", "334"];
+Command  "select * from T where C2 between (?) and (?)" ["333", "443"];
+Command  "select * from T where C2 between (?) and (?)" ["333", "444"];
+Command  "select * from T where C2 between (?) and (?)" ["333", "445"];
+
+# --not between
+Command  "select * from T where C1 not between (?) and (?)" ["2", "9"];
+Command  "select * from T where C1 not between (?) and (?)" ["9", "2"];
+Command  "select * from T where C1 not between (?) and (?)" ["2", "50"];
+Command  "select * from T where C1 not between (?) and (?)" ["50", "2"];
+Command  "select * from T where C1 not between (?) and (?)" ["9", "50"];
+Command  "select * from T where C1 not between (?) and (?)" ["50", "9"];
+Command  "select * from T where C1 not between (?) and (?)" ["50", "69"];
+Command  "select * from T where C1 not between (?) and (?)" ["50", "70"];
+Command  "select * from T where C1 not between (?) and (?)" ["51", "70"];
+
+Command  "select * from T where C2 not between (?) and (?)" ["22", "32"];
+Command  "select * from T where C2 not between (?) and (?)" ["22", "332"];
+Command  "select * from T where C2 not between (?) and (?)" ["22", "334"];
+Command  "select * from T where C2 not between (?) and (?)" ["333", "443"];
+Command  "select * from T where C2 not between (?) and (?)" ["333", "444"];
+Command  "select * from T where C2 not between (?) and (?)" ["333", "445"];
+
+Command  "drop table T";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

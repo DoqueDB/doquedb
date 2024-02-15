@@ -1,0 +1,48 @@
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+
+Command  "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command  "create table Child (name varchar(255) not null, parentName varchar(255) not null, loc int, primary key (name))";
+Command  "create table ChildChild (childName1 varchar(255) not null, childName2 varchar(255) not null)";
+Command  "create table Parent (name varchar(255) not null, primary key (name))";
+Command  "create table ParentChild (parentName varchar(255) not null, childName varchar(255) not null, loc int not null, primary key (parentName, loc))";
+Command  "alter table Child add foreign key (parentName) references Parent (name)";
+Command  "alter table ChildChild add foreign key (childName1) references Child (name)";
+Command  "alter table ChildChild add foreign key (childName2) references Child (name)";
+Command  "alter table ParentChild add foreign key (parentName) references Parent (name)";
+Command  "alter table ParentChild add foreign key (childName) references Child (name)";
+Command  "insert into Parent (name) values (?)" ["foo"];
+Command  "start transaction read write, isolation level read committed";
+Command  "insert into Child (parentName, loc, name) values (?, ?, ?)" ["foo", 0, "foo1"];
+Command  "insert into Child (parentName, loc, name) values (?, ?, ?)" ["foo", 1, "foo2"];
+
+Command  "insert into Parent (name) values (?)" ["bar"];
+
+Command  "insert into Child (parentName, loc, name) values (?, ?, ?)" ["bar", 0, "bar1"];
+Command  "insert into Child (parentName, loc, name) values (?, ?, ?)" ["bar", 1, "bar2"];
+
+Command  "update Child set parentName=?, loc=? where name=?" ["foo", 0, "foo1"];
+Command  "update Child set parentName=?, loc=? where name=?" ["foo", 1, "foo2"];
+Command  "update Child set parentName=?, loc=? where name=?" ["bar", 0, "bar1"];
+Command  "update Child set parentName=?, loc=? where name=?" ["bar", 1, "bar2"];
+
+Command  "insert into ParentChild (parentName, loc, childName) values (?, ?, ?)" ["bar", 0, "bar1"];
+Command  "insert into ParentChild (parentName, loc, childName) values (?, ?, ?)" ["bar", 1, "bar2"];
+
+Command  "commit";
+
+Command  "select parent0_.name as name8_ from Parent parent0_ where parent0_.name between (?) and (?) order by parent0_.name desc" ["bar", "foo"];
+Command  "start transaction read write, isolation level read committed";
+Command  "select children0_.parentName as parentName1_, children0_.name as name1_, children0_.loc as loc1_, children0_.name as name6_0_ from Child children0_ where children0_.parentName in (select parent0_.name from Parent parent0_ where parent0_.name between (?) and (?) )" ["bar", "foo"];
+Command  "select morechildr0_.parentName as parentName1_, morechildr0_.childName as childName1_, morechildr0_.loc as loc1_, child1_.name as name6_0_ from ParentChild morechildr0_ left outer join Child child1_ on morechildr0_.childName=child1_.name where morechildr0_.parentName in (select parent0_.name from Parent parent0_ where parent0_.name between (?) and (?) )" ["bar", "foo"];
+Command  "select friends0_.childName1 as childName1_1_, friends0_.childName2 as childName2_1_, child1_.name as name6_0_ from ChildChild friends0_ left outer join Child child1_ on friends0_.childName2=child1_.name where friends0_.childName1 in (select child1_.name from ParentChild morechildr0_ left outer join Child child1_ on morechildr0_.childName=child1_.name where morechildr0_.parentName in (select parent0_.name from Parent parent0_ where parent0_.name between (?) and (?) ))" ["bar", "foo"];	
+
+TerminateSession;
+Terminate;
+End;

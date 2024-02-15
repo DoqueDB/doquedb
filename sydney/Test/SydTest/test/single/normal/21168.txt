@@ -1,0 +1,24 @@
+# áŠQ•[ 1114
+
+Begin;
+Initialize;
+InitializeSession "";
+
+Command "create table T(c varchar(4) array[1])";
+Command "create array index I on T(c)";
+Command "insert T values array[''], array[''], array['a']";
+Command "select * from T where c[] like '%'";
+Command "select * from T where c[] > ''";
+Command "select * from T where c[] >= ''";
+Command "drop table T";
+Command "create table T(c varchar(4) array[1])";
+Command "create array index I on T(c)";
+Command "insert T values array['ab'], array['ab'], array['aba']";
+Command "select * from T where c[] like 'ab%'";
+Command "select * from T where c[] > 'ab'";
+Command "select * from T where c[] >= 'ab'";
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;

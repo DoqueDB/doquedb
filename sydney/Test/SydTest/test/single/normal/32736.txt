@@ -1,0 +1,78 @@
+# mount ... alter area(array) 
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+InitializeSession "";
+Command "create area A1 array [ 'd:\\dm\\area\\1a', 'd:\\dm\\area\\1b' ]";
+Command "create area A2 array [ 'd:\\dm\\area\\2a', 'd:\\dm\\area\\2b' ]";
+
+Command  "create table T1(C1 int, C2 ntext) area A1";
+Command  "create fulltext index I1_2 on T1(C2) hint 'inverted=(nolocation=true)' area A2";
+Command  "insert into T1 (C1, C2) values (?, ?)" [1, "1"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [2, "2"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [3, "3"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [4, "4"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [5, "5"];
+Command  "insert into T1 (C1, C2) values (?, ?)" [6, "6"];
+
+TerminateSession;
+System "mkdir d:\\dm\\alterarea";
+System "mkdir d:\\dm\\alterarea\\2";
+InitializeSession "";
+
+Command "unmount DefaultDB";
+System "move /Y d:\\dm\\area\\1a d:\\dm\\alterarea\\1 > /dev/null 2>&1";
+Command "mount DefaultDB path 'd:\\dm\\data\\DefaultDB' alter area A1 modify [0] 'd:\\dm\\alterarea\\1' using snapshot";
+Command "start transaction read write";
+Command "verify database DefaultDB cascade continue";
+Command "commit";
+TerminateSession;
+
+InitializeSession "";
+Command "unmount DefaultDB";
+System "move /Y d:\\dm\\alterarea\\1\\T1 d:\\dm\\data\\DefaultDB > /dev/null 2>&1";
+System "rm -rf d:\\dm\\area\\1b > /dev/null 2>&1";
+Command "mount DefaultDB path 'd:\\dm\\data\\DefaultDB' drop area A1 using snapshot";
+Command "start transaction read write";
+Command "verify database DefaultDB cascade continue";
+Command "commit";
+TerminateSession;
+
+InitializeSession "";
+Command "unmount DefaultDB";
+System "move /Y d:\\dm\\area\\2b d:\\dm\\alterarea\\2 > /dev/null 2>&1";
+Command "mount DefaultDB path 'd:\\dm\\data\\DefaultDB' alter area A2 modify [1] 'd:\\dm\\alterarea\\2' using snapshot";
+Command "start transaction read write";
+Command "verify database DefaultDB cascade continue";
+Command "commit";
+
+Command "unmount DefaultDB";
+System "move /Y d:\\dm\\area\\2a\\T1\\FTS_I1_2 d:\\dm\\data\\DefaultDB\\T1 > /dev/null 2>&1";
+Command "mount DefaultDB path 'd:\\dm\\data\\DefaultDB' drop all area using snapshot";
+Command "start transaction read write";
+Command "verify database DefaultDB cascade continue";
+Command "commit";
+
+Command "unmount DefaultDB";
+Command "mount DefaultDB path 'd:\\dm\\data\\DefaultDB' using snapshot";
+Command "start transaction read write";
+Command "verify database DefaultDB cascade continue";
+Command "commit";
+TerminateSession;
+
+InitializeSession "";
+Command "create area A1 array [ 'd:\\dm\\area\\1a', 'd:\\dm\\area\\1b' ]";
+Command "alter table T1 set area A1";
+Command "select * from T1";
+TerminateSession;
+
+System "rmdir d:\\dm\\alterarea\\2 > /dev/null 2>&1";
+
+Terminate;
+End;
+
+
+

@@ -1,0 +1,35 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# XA START -- 開始しようと試みたトランザクションブランチの状態ごとのテスト
+#
+# 注意 : Sydneyをクライアントだけでなくサーバ側もTerminateする必要があるため、SydServer で実行してはならない。
+#
+
+# 『存在しない』
+## 『データ操作中』のトランザクションブランチ(データ操作無)と連携していない実行中のセッションで開始
+Command "xa start X'00'";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+## 『データ操作中』のトランザクションブランチ(データ操作有)と連携していない実行中のセッションで開始
+Command "create table T(I int)";
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [1];
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+Command "select * from T";
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,113 @@
+#like検索とエスケープ文字 (Record)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T (N int, C ntext)";
+
+#検索対象になる文字列を入れる
+Command "insert into T (N, C) values ( 1, '_____')";
+Command "insert into T (N, C) values ( 2, '%%%%%')";
+Command "insert into T (N, C) values ( 3, '%__%_')";
+Command "insert into T (N, C) values ( 4, '_%__%')";
+Command "insert into T (N, C) values ( 5, '__%__')";
+Command "insert into T (N, C) values ( 6, '%___%')";
+Command "insert into T (N, C) values ( 7, '_%_%_')";
+Command "insert into T (N, C) values ( 8, '%_%__')";
+Command "insert into T (N, C) values ( 9, '__%_%')";
+Command "insert into T (N, C) values (10, '%_%_%')";
+Command "insert into T (N, C) values (11, '%%___')";
+Command "insert into T (N, C) values (12, '_%%__')";
+Command "insert into T (N, C) values (13, '__%%_')";
+Command "insert into T (N, C) values (14, '___%%')";
+
+#Command "insert into T (N, C) values (, '\0\0<<')";
+#Command "insert into T (N, C) values (, '>\0\0<')";
+#Command "insert into T (N, C) values (, '>>\0\0')";
+
+#エスケープ文字='+'
+Command "select * from T where C like '+%%' escape '+'";
+Command "select * from T where C like '%+%' escape '+'";
+Command "select * from T where C like '%+%%' escape '+'";
+Command "select * from T where C like '%+%+%%' escape '+'";
+Command "select * from T where C like '%+__+_%' escape '+'";
+Command "select * from T where C like '%+___+_%' escape '+'";
+Command "select * from T where C like '+____+_' escape '+'";
+Command "select * from T where C like '+__+__+_' escape '+'";
+Pause;
+
+#エスケープ文字='\\'
+Command "select * from T where C like '\\%%' escape '\\'";
+Command "select * from T where C like '%\\%' escape '\\'";
+Command "select * from T where C like '%\\%%' escape '\\'";
+Command "select * from T where C like '%\\%\\%%' escape '\\'";
+Command "select * from T where C like '%\\__\\_%' escape '\\'";
+Command "select * from T where C like '%\\___\\_%' escape '\\'";
+Command "select * from T where C like '\\____\\_' escape '\\'";
+Command "select * from T where C like '\\__\\__\\_' escape '\\'";
+Pause;
+
+#エスケープ文字='_'
+Command "select * from T where C like '_%%' escape '_'";
+Command "select * from T where C like '%_%' escape '_'";
+Command "select * from T where C like '%_%%' escape '_'";
+Command "select * from T where C like '%_%_%%' escape '_'";
+Command "select * from T where C like '%__%' escape '_'";
+Command "select * from T where C like '%____%' escape '_'";
+Command "select * from T where C like '%______%' escape '_'";
+Pause;
+
+#エスケープ文字='%'
+Command "select * from T where C like '%%____' escape '%'";
+Command "select * from T where C like '____%%' escape '%'";
+Command "select * from T where C like '__%%__' escape '%'";
+Command "select * from T where C like '_%_%%%__' escape '%'";
+Command "select * from T where C like '%%%%___' escape '%'";
+Command "select * from T where C like '___%%%%' escape '%'";
+Pause;
+
+comment_out
+{
+#デフォルトのエスケープ文字(\0)
+Command "select * from T where C like '\0%%'";
+Command "select * from T where C like '%\0%%'";
+Command "select * from T where C like '%\0%'";
+Command "select * from T where C like '%\0%\0%%'";
+Command "select * from T where C like '%\0__\0_%'";
+Command "select * from T where C like '%\0___\0_%'";
+Command "select * from T where C like '\0____\0_'";
+Command "select * from T where C like '\0__\0__\0_'";
+Pause;
+
+#\0関連
+Command "select * from T where C like '%\0%' escape '+'";
+Command "select * from T where C like '\0%' escape '+'";
+Command "select * from T where C like '%\0' escape '+'";
+Command "select * from T where C like '%\0%' escape '\\'";
+Command "select * from T where C like '\0%' escape '\\'";
+Command "select * from T where C like '%\0' escape '\\'";
+Command "select * from T where C like '%\0%' escape '_'";
+Command "select * from T where C like '\0%' escape '_'";
+Command "select * from T where C like '%\0' escape '_'";
+Command "select * from T where C like '_\0_' escape '%'";
+Command "select * from T where C like '\0__' escape '%'";
+Command "select * from T where C like '__\0' escape '%'";
+}
+
+#Command "drop table T";
+
+Command  "select * from T";
+
+TerminateSession;
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+

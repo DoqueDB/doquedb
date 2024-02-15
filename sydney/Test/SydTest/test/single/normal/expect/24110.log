@@ -1,0 +1,139 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL
+(
+	f int,
+	g int,
+	h int,
+	x nvarchar(20),
+	y nvarchar(20),
+	primary key(f)
+)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values
+	(1,10,100,'ABC','DEF'),
+	(2,20,100,'abc','def'),
+	(3,30,200,'xyz','uvw'),
+	(4,40,200,'XYZ','UVW'),
+	(5,50,300,'aBc','dEf')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX_g on TBL(g) hint unique
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX_h on TBL(h)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX_x on TBL(x) hint 'normalized'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX_y on TBL(y)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start explain execute hint 'file'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 0 order by f desc
+SydTest::Executor: [INFO] {index scan on BTR_TBL_$$PrimaryKey}
+    execute:
+           xx:file fetch on VCT_TBL_$$Conversion
+           xx:file fetch on RCD_TBL
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {5,50,300,aBc,dEf}
+SydTest::Executor: [INFO] {4,40,200,XYZ,UVW}
+SydTest::Executor: [INFO] {3,30,200,xyz,uvw}
+SydTest::Executor: [INFO] {2,20,100,abc,def}
+SydTest::Executor: [INFO] {1,10,100,ABC,DEF}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where g > 0 order by g desc
+SydTest::Executor: [INFO] {index scan on BTR_IDX_g}
+    execute:
+           xx:file fetch on VCT_TBL_$$Conversion
+           xx:file fetch on RCD_TBL
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {5,50,300,aBc,dEf}
+SydTest::Executor: [INFO] {4,40,200,XYZ,UVW}
+SydTest::Executor: [INFO] {3,30,200,xyz,uvw}
+SydTest::Executor: [INFO] {2,20,100,abc,def}
+SydTest::Executor: [INFO] {1,10,100,ABC,DEF}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where h > 0 order by h desc
+SydTest::Executor: [INFO] {index scan on BTR_IDX_h}
+    execute:
+           xx:file fetch on VCT_TBL_$$Conversion
+           xx:file fetch on RCD_TBL
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {5,50,300,aBc,dEf}
+SydTest::Executor: [INFO] {4,40,200,XYZ,UVW}
+SydTest::Executor: [INFO] {3,30,200,xyz,uvw}
+SydTest::Executor: [INFO] {2,20,100,abc,def}
+SydTest::Executor: [INFO] {1,10,100,ABC,DEF}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where x > '' order by x desc
+SydTest::Executor: [INFO] {filter by sort(0 desc)
+    <-- index scan on BTR_IDX_x
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                   xx:file fetch on RCD_TBL
+    execute:
+           xx:file fetch on VCT_TBL_$$Conversion
+           xx:file fetch on RCD_TBL
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {3,30,200,xyz,uvw}
+SydTest::Executor: [INFO] {2,20,100,abc,def}
+SydTest::Executor: [INFO] {5,50,300,aBc,dEf}
+SydTest::Executor: [INFO] {4,40,200,XYZ,UVW}
+SydTest::Executor: [INFO] {1,10,100,ABC,DEF}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where y > '' order by y desc
+SydTest::Executor: [INFO] {index scan on BTR_IDX_y}
+    execute:
+           xx:file fetch on VCT_TBL_$$Conversion
+           xx:file fetch on RCD_TBL
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {3,30,200,xyz,uvw}
+SydTest::Executor: [INFO] {2,20,100,abc,def}
+SydTest::Executor: [INFO] {5,50,300,aBc,dEf}
+SydTest::Executor: [INFO] {4,40,200,XYZ,UVW}
+SydTest::Executor: [INFO] {1,10,100,ABC,DEF}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] end explain
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

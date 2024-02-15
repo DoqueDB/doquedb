@@ -1,0 +1,30 @@
+Begin;
+
+SetSystemParameter "Exception_FakeError" "Trans::Transaction::rollback count=1";
+
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession "";
+
+InitializeSession "TESTDB";
+Command "create table T(SN int, NAME nvarchar(32))";
+Command "create index T_SN on T(SN)";
+Command "create index T_NAME on T(NAME)";
+Command "insert into T(SN, NAME) values (1, 'fuel')";
+
+Command "sync sync sync";
+
+Command "start transaction read write";
+Command "insert into T(SN, NAME) values (2, 'hypotenuse')";
+
+InitializeSession 2 "TESTDB";
+Command 2 "insert into T(SN, NAME) values (3, 'faucet')";
+TerminateSession 2;
+
+Command "sync sync sync";
+
+Command "rollback";
+
+# 強制終了
+End;

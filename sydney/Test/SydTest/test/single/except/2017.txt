@@ -1,0 +1,54 @@
+## -*-Mode: text; tab-width: 4; c-basic-offset: 4;-*-
+## vi:set ts=4 sw=4:
+##
+## xxxx.txt -- table 作成のテスト
+##
+##	TEST CONTENTS
+##		・同名のテーブルを作成する
+##
+##	START CONDITIONS
+##		特に無し
+##		
+##	END CONDITIONS
+##		satart 前と同じ状態である
+##
+##	CHECK
+##		Exists、NotExists が正しいか
+##
+##	NOTE
+##		シングルスレッド
+##		異常系
+##		Schema の単体テストも兼ねる
+##
+## Copyright (c) 2001 Ricoh Company, Ltd.
+## All rights reserved.
+##
+##		$Author$
+##		$Date$
+##		$Revision$
+##
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database DB_xxxx";
+TerminateSession;
+
+InitializeSession "DB_xxxx";
+
+Command "create area TBL_AREA 'd:\\dm\\test_area'";
+
+# 同じ名前のテーブルを作成
+Command "create table TBL_1 ( A int )";
+Command "create table TBL_1 ( B int )";
+
+#Command "drop database DB_xxxx";
+
+TerminateSession;
+
+#下三行は伊戸川が追加
+InitializeSession "";
+Command "drop database DB_xxxx";
+TerminateSession;
+Terminate;
+End;

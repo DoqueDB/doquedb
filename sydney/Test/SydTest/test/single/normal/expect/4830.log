@@ -1,0 +1,350 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] SydTest_ShowBinary
+SydTest::Executor: [INFO] [SydTest Parameter and Value] SydTest_ShowBinary, True
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1 (C1 int, C2 int, C3 int,  C4 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1 on T1(C2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2 on T1(C4)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T1 values
+		(10, 10, 10, 10),
+		(20, 20, 20, 20),
+		(null, null, 10, 10),
+		(10, 10, null, null),
+		(null, null, 20, 20),
+		(20, 20, null, null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2 (C5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index J1 on T2(C5)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T2 values ('何でも'), ('いいので'), ('何か'), ('文字列'), (null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C1 = 10)
+SydTest::Executor: [INFO] {20,20,20,20}
+SydTest::Executor: [INFO] {20,20,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C2 = 10)
+SydTest::Executor: [INFO] {20,20,20,20}
+SydTest::Executor: [INFO] {20,20,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where NOT (C5 contains '何')
+SydTest::Executor: [INFO] {いいので}
+SydTest::Executor: [INFO] {文字列}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C1 in (10, 20))
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C2 in (10, 20))
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where NOT (C5 like '%何%')
+SydTest::Executor: [INFO] {いいので}
+SydTest::Executor: [INFO] {文字列}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C1 = null)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C2 = null)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C1 = 10 and C3 = 10)
+SydTest::Executor: [INFO] {20,20,20,20}
+SydTest::Executor: [INFO] {(null),(null),20,20}
+SydTest::Executor: [INFO] {20,20,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C2 = 10 and C4 = 10)
+SydTest::Executor: [INFO] {20,20,20,20}
+SydTest::Executor: [INFO] {(null),(null),20,20}
+SydTest::Executor: [INFO] {20,20,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C5 contains '何' and NOT (C5 contains 'か')
+SydTest::Executor: [INFO] {何でも}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C5 in ('何でも', 'いいので') and NOT (C5 contains 'の')
+SydTest::Executor: [INFO] {何でも}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C5 like ('%何%') and NOT (C5 contains 'か')
+SydTest::Executor: [INFO] {何でも}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C5 between '何か' and '文字列' and NOT (C5 contains 'か')
+SydTest::Executor: [INFO] {何でも}
+SydTest::Executor: [INFO] {文字列}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C5 > '何か' and NOT (C5 contains '列')
+SydTest::Executor: [INFO] {何でも}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C2 = 10 or C3 = 10)
+SydTest::Executor: [INFO] {20,20,20,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C2 = 10 or C4 = 10)
+SydTest::Executor: [INFO] {20,20,20,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C5 contains '何' or NOT (C5 contains 'いい')
+SydTest::Executor: [INFO] {何でも}
+SydTest::Executor: [INFO] {何か}
+SydTest::Executor: [INFO] {文字列}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C5 in ('何でも', 'いいから') or NOT (C5 contains 'か')
+SydTest::Executor: [INFO] {何でも}
+SydTest::Executor: [INFO] {いいので}
+SydTest::Executor: [INFO] {文字列}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C5 like ('%何%') or NOT (C5 contains 'か')
+SydTest::Executor: [INFO] {何でも}
+SydTest::Executor: [INFO] {いいので}
+SydTest::Executor: [INFO] {何か}
+SydTest::Executor: [INFO] {文字列}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C5 between '何か' and '文字列' or NOT (C5 contains 'か')
+SydTest::Executor: [INFO] {何でも}
+SydTest::Executor: [INFO] {いいので}
+SydTest::Executor: [INFO] {何か}
+SydTest::Executor: [INFO] {文字列}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T2 where C5 > '何か' or NOT (C5 contains '列')
+SydTest::Executor: [INFO] {何でも}
+SydTest::Executor: [INFO] {いいので}
+SydTest::Executor: [INFO] {何か}
+SydTest::Executor: [INFO] {文字列}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C2 = 10 and (C3 = 10 or C3 = 20))
+SydTest::Executor: [INFO] {20,20,20,20}
+SydTest::Executor: [INFO] {20,20,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C2 = 10 and (C4 = 10 or C4 = 20))
+SydTest::Executor: [INFO] {20,20,20,20}
+SydTest::Executor: [INFO] {20,20,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C2 = 10 or (C3 >= 10 and C3 <= 20))
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1 where NOT (C2 = 10 or (C4 >= 10 and C4 <= 20))
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] AssureCount
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T3(C1 ntext,C2 float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index J1 on T3(C1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('カモミールはティーや入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('キャットミントのお茶は胃腸障害などにも効果があり',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('ラベンダーはティーや入浴剤、ポプリやブーケなど幅広く活用できます。頭痛や神経不安、虫除けなどにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('レモンは入浴剤、芳香剤や殺菌など幅広く活用できます。風邪や不眠症などにも効果があり',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('ネロリは香水などに活用できます。ストレスや不眠症などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('スイートマジョラムは料理や、ポプリなどに活用できます。不眠症などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('ローズマリーは入浴剤、お茶や料理、ポプリや化粧品など幅広く活用できます。疲労や無気力などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('レモングラスは料理、殺菌、虫除けに活用できます。心の疲れなどにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('ミントはお茶や入浴剤など幅広く活用できます。鼻づまりなどにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('ポリジは観賞用、料理などに活用できます。体の調子を整える',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('タイムはお茶や料理などに活用できます。',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('オレンジはお茶や入浴剤、芳香剤、化粧品などで活用できます。不眠症などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('ジャスミンはお茶や入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果があり',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('バジルは、料理に活用できます。胃腸障害などにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T3 values('ユーカリはお茶や入浴剤に活用できます。鼻づまりやストレスなどにも効果がある',1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T3 where C1 contains '料理などに活用できます'
+SydTest::Executor: [INFO] {ポリジは観賞用、料理などに活用できます。体の調子を整える,1E0}
+SydTest::Executor: [INFO] {タイムはお茶や料理などに活用できます。,1E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T3 where C1 contains 'null'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T3 where C1 contains freetext ('料理などに活用できます')
+SydTest::Executor: [INFO] {カモミールはティーや入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ラベンダーはティーや入浴剤、ポプリやブーケなど幅広く活用できます。頭痛や神経不安、虫除けなどにも効果がある,1E0}
+SydTest::Executor: [INFO] {レモンは入浴剤、芳香剤や殺菌など幅広く活用できます。風邪や不眠症などにも効果があり,1E0}
+SydTest::Executor: [INFO] {ネロリは香水などに活用できます。ストレスや不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {スイートマジョラムは料理や、ポプリなどに活用できます。不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ローズマリーは入浴剤、お茶や料理、ポプリや化粧品など幅広く活用できます。疲労や無気力などにも効果がある,1E0}
+SydTest::Executor: [INFO] {レモングラスは料理、殺菌、虫除けに活用できます。心の疲れなどにも効果がある,1E0}
+SydTest::Executor: [INFO] {ミントはお茶や入浴剤など幅広く活用できます。鼻づまりなどにも効果がある,1E0}
+SydTest::Executor: [INFO] {ポリジは観賞用、料理などに活用できます。体の調子を整える,1E0}
+SydTest::Executor: [INFO] {タイムはお茶や料理などに活用できます。,1E0}
+SydTest::Executor: [INFO] {オレンジはお茶や入浴剤、芳香剤、化粧品などで活用できます。不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ジャスミンはお茶や入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果があり,1E0}
+SydTest::Executor: [INFO] {バジルは、料理に活用できます。胃腸障害などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ユーカリはお茶や入浴剤に活用できます。鼻づまりやストレスなどにも効果がある,1E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T3 where C1 contains freetext ('null')
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T3 where C1 contains freetext ('料理などに活用できます') expand (from (select * from T3 where C1 = '不眠症'))
+SydTest::Executor: [INFO] {カモミールはティーや入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ラベンダーはティーや入浴剤、ポプリやブーケなど幅広く活用できます。頭痛や神経不安、虫除けなどにも効果がある,1E0}
+SydTest::Executor: [INFO] {レモンは入浴剤、芳香剤や殺菌など幅広く活用できます。風邪や不眠症などにも効果があり,1E0}
+SydTest::Executor: [INFO] {ネロリは香水などに活用できます。ストレスや不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {スイートマジョラムは料理や、ポプリなどに活用できます。不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ローズマリーは入浴剤、お茶や料理、ポプリや化粧品など幅広く活用できます。疲労や無気力などにも効果がある,1E0}
+SydTest::Executor: [INFO] {レモングラスは料理、殺菌、虫除けに活用できます。心の疲れなどにも効果がある,1E0}
+SydTest::Executor: [INFO] {ミントはお茶や入浴剤など幅広く活用できます。鼻づまりなどにも効果がある,1E0}
+SydTest::Executor: [INFO] {ポリジは観賞用、料理などに活用できます。体の調子を整える,1E0}
+SydTest::Executor: [INFO] {タイムはお茶や料理などに活用できます。,1E0}
+SydTest::Executor: [INFO] {オレンジはお茶や入浴剤、芳香剤、化粧品などで活用できます。不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ジャスミンはお茶や入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果があり,1E0}
+SydTest::Executor: [INFO] {バジルは、料理に活用できます。胃腸障害などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ユーカリはお茶や入浴剤に活用できます。鼻づまりやストレスなどにも効果がある,1E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T3 where C1 contains freetext ('料理などに活用できます') expand (from (select * from T3 where C1 = 'null'))
+SydTest::Executor: [INFO] {カモミールはティーや入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ラベンダーはティーや入浴剤、ポプリやブーケなど幅広く活用できます。頭痛や神経不安、虫除けなどにも効果がある,1E0}
+SydTest::Executor: [INFO] {レモンは入浴剤、芳香剤や殺菌など幅広く活用できます。風邪や不眠症などにも効果があり,1E0}
+SydTest::Executor: [INFO] {ネロリは香水などに活用できます。ストレスや不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {スイートマジョラムは料理や、ポプリなどに活用できます。不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ローズマリーは入浴剤、お茶や料理、ポプリや化粧品など幅広く活用できます。疲労や無気力などにも効果がある,1E0}
+SydTest::Executor: [INFO] {レモングラスは料理、殺菌、虫除けに活用できます。心の疲れなどにも効果がある,1E0}
+SydTest::Executor: [INFO] {ミントはお茶や入浴剤など幅広く活用できます。鼻づまりなどにも効果がある,1E0}
+SydTest::Executor: [INFO] {ポリジは観賞用、料理などに活用できます。体の調子を整える,1E0}
+SydTest::Executor: [INFO] {タイムはお茶や料理などに活用できます。,1E0}
+SydTest::Executor: [INFO] {オレンジはお茶や入浴剤、芳香剤、化粧品などで活用できます。不眠症などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ジャスミンはお茶や入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果があり,1E0}
+SydTest::Executor: [INFO] {バジルは、料理に活用できます。胃腸障害などにも効果がある,1E0}
+SydTest::Executor: [INFO] {ユーカリはお茶や入浴剤に活用できます。鼻づまりやストレスなどにも効果がある,1E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T3 where C1 contains freetext ('null') expand (from (select * from T3 where C1 = '不眠症'))
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

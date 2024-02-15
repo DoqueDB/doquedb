@@ -1,0 +1,235 @@
+# 障害票 No.1106に対応
+# verifyで索引エラー検知後に終了するとASSERTにひっかかる。
+# B+木, ビットマップ, Compressed版ビットマップ, 配列 のテスト
+#
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# 索引を壊す上書きコピー用索引
+## B+木
+Command "create table T1(c1 char(4))";
+Command "create index I1 on T1(c1)";
+Command "insert into T1 values ('abcd')";
+## ビットマップ
+Command "create table T2(c1 char(4))";
+Command "create bitmap index I2 on T2(c1)";
+Command "insert into T2 values ('abcd')";
+## Compressed版ビットマップ
+Command "create table T3(c1 int)";
+Command "create bitmap index I3 on T3(c1) hint 'compressed'";
+Command "insert into T3 values (1)";
+
+# B+木
+Command "create table Tbtr(c1 int, c2 int)";
+Command "create index Ibtr on Tbtr(c1)";
+Command "insert into Tbtr values (1, 2)";
+## 1. MASTER.SYDを上書き
+TerminateSession;
+Terminate;
+System "cp -f \"d:\\dm\\data\\TESTDB\\T2\\BMP_I2\\MASTER.SYD\" \"d:\\dm\\data\\TESTDB\\Tbtr\\BTR_Ibtr\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Ibtr cascade continue";
+Command "drop index Ibtr";
+Command "create index Ibtr on Tbtr(c1)";
+Command "verify index Ibtr cascade continue";
+## 2. VERSION.SYDを上書き
+TerminateSession;
+Terminate;
+System "cp -f \"d:\\dm\\data\\TESTDB\\T2\\BMP_I2\\VERSION.SYD\" \"d:\\dm\\data\\TESTDB\\Tbtr\\BTR_Ibtr\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Ibtr cascade continue";
+Command "drop index Ibtr";
+Command "create index Ibtr on Tbtr(c1)";
+Command "verify index Ibtr cascade continue";
+## 3. 両方を上書き
+TerminateSession;
+Terminate;
+System "cp -f \"d:\\dm\\data\\TESTDB\\T2\\BMP_I2\\MASTER.SYD\" \"d:\\dm\\data\\TESTDB\\Tbtr\\BTR_Ibtr\" > /dev/null 2>&1";
+System "cp -f \"d:\\dm\\data\\TESTDB\\T2\\BMP_I2\\VERSION.SYD\" \"d:\\dm\\data\\TESTDB\\Tbtr\\BTR_Ibtr\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Ibtr cascade continue";
+Command "drop index Ibtr";
+Command "create index Ibtr on Tbtr(c1)";
+Command "verify index Ibtr cascade continue";
+## テーブル削除
+Command "drop table Tbtr";
+
+# ビットマップ
+Command "create table Tbmp(c1 int, c2 int)";
+Command "create bitmap index Ibmp on Tbmp(c1)";
+Command "insert into Tbmp values (1, 2)";
+## 1. MASTER.SYDを上書き
+TerminateSession;
+Terminate;
+System "cp -f \"d:\\dm\\data\\TESTDB\\T1\\BTR_I1\\MASTER.SYD\" \"d:\\dm\\data\\TESTDB\\Tbmp\\BMP_Ibmp\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Ibmp cascade continue";
+Command "drop index Ibmp";
+Command "create bitmap index Ibmp on Tbmp(c1)";
+Command "verify index Ibmp cascade continue";
+## 2. VERSION.SYDを上書き
+TerminateSession;
+Terminate;
+System "cp -f \"d:\\dm\\data\\TESTDB\\T1\\BTR_I1\\VERSION.SYD\" \"d:\\dm\\data\\TESTDB\\Tbmp\\BMP_Ibmp\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Ibmp cascade continue";
+Command "drop index Ibmp";
+Command "create bitmap index Ibmp on Tbmp(c1)";
+Command "verify index Ibmp cascade continue";
+## 3. 両方を上書き
+TerminateSession;
+Terminate;
+System "cp -f \"d:\\dm\\data\\TESTDB\\T1\\BTR_I1\\MASTER.SYD\" \"d:\\dm\\data\\TESTDB\\Tbmp\\BMP_Ibmp\" > /dev/null 2>&1";
+System "cp -f \"d:\\dm\\data\\TESTDB\\T1\\BTR_I1\\VERSION.SYD\" \"d:\\dm\\data\\TESTDB\\Tbmp\\BMP_Ibmp\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Ibmp cascade continue";
+Command "drop index Ibmp";
+Command "create bitmap index Ibmp on Tbmp(c1)";
+Command "verify index Ibmp cascade continue";
+## テーブル削除
+Command "drop table Tbmp";
+
+# Compressed版ビットマップ
+Command "create table Tcbmp(c1 int, c2 int)";
+Command "create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'";
+Command "insert into Tcbmp values (1, 2)";
+## 1. MASTER.SYDを上書き
+TerminateSession;
+Terminate;
+System "dd if=/dev/zero of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\MASTER_temp.SYD\" bs=100 count=1 > /dev/null 2>&1";
+System "dd if=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\MASTER.SYD\" of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\MASTER_temp.SYD\" bs=100 skip=1 seek=1 > /dev/null 2>&1";
+System "rm -rf \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Area\\MASTER.SYD\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\MASTER_temp.SYD\" \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Area\\MASTER.SYD\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Icbmp cascade continue";
+Command "drop index Icbmp";
+Command "create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'";
+Command "verify index Icbmp cascade continue";
+TerminateSession;
+Terminate;
+System "dd if=/dev/zero of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\MASTER_temp.SYD\" bs=100 count=1 > /dev/null 2>&1";
+System "dd if=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\MASTER.SYD\" of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\MASTER_temp.SYD\" bs=100 skip=1 seek=1 > /dev/null 2>&1";
+System "rm -rf \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Btree\\MASTER.SYD\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\MASTER_temp.SYD\" \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Btree\\MASTER.SYD\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Icbmp cascade continue";
+Command "drop index Icbmp";
+Command "create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'";
+Command "verify index Icbmp cascade continue";
+## 2. VERSION.SYDを上書き
+TerminateSession;
+Terminate;
+System "dd if=/dev/zero of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\VERSION_temp.SYD\" bs=100 count=1 > /dev/null 2>&1";
+System "dd if=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\VERSION.SYD\" of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\VERSION_temp.SYD\" bs=100 skip=1 seek=1 > /dev/null 2>&1";
+System "rm -rf \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Area\\VERSION.SYD\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\VERSION_temp.SYD\" \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Area\\VERSION.SYD\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Icbmp cascade continue";
+Command "drop index Icbmp";
+Command "create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'";
+Command "verify index Icbmp cascade continue";
+TerminateSession;
+Terminate;
+System "dd if=/dev/zero of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\VERSION_temp.SYD\" bs=100 count=1 > /dev/null 2>&1";
+System "dd if=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\VERSION.SYD\" of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\VERSION_temp.SYD\" bs=100 skip=1 seek=1 > /dev/null 2>&1";
+System "rm -rf \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Btree\\VERSION.SYD\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\VERSION_temp.SYD\" \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Btree\\VERSION.SYD\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Icbmp cascade continue";
+Command "drop index Icbmp";
+Command "create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'";
+Command "verify index Icbmp cascade continue";
+## 3. 両方を上書き
+TerminateSession;
+Terminate;
+System "dd if=/dev/zero of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\MASTER_temp.SYD\" bs=100 count=1 > /dev/null 2>&1";
+System "dd if=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\MASTER.SYD\" of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\MASTER_temp.SYD\" bs=100 skip=1 seek=1 > /dev/null 2>&1";
+System "rm -rf \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Area\\MASTER.SYD\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\MASTER_temp.SYD\" \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Area\\MASTER.SYD\" > /dev/null 2>&1";
+System "dd if=/dev/zero of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\VERSION_temp.SYD\" bs=100 count=1 > /dev/null 2>&1";
+System "dd if=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\VERSION.SYD\" of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\VERSION_temp.SYD\" bs=100 skip=1 seek=1 > /dev/null 2>&1";
+System "rm -rf \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Area\\VERSION.SYD\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Area\\VERSION_temp.SYD\" \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Area\\VERSION.SYD\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Icbmp cascade continue";
+Command "drop index Icbmp";
+Command "create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'";
+Command "verify index Icbmp cascade continue";
+TerminateSession;
+Terminate;
+System "dd if=/dev/zero of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\MASTER_temp.SYD\" bs=100 count=1 > /dev/null 2>&1";
+System "dd if=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\MASTER.SYD\" of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\MASTER_temp.SYD\" bs=100 skip=1 seek=1 > /dev/null 2>&1";
+System "rm -rf \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Btree\\MASTER.SYD\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\MASTER_temp.SYD\" \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Btree\\MASTER.SYD\" > /dev/null 2>&1";
+System "dd if=/dev/zero of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\VERSION_temp.SYD\" bs=100 count=1 > /dev/null 2>&1";
+System "dd if=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\VERSION.SYD\" of=\"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\VERSION_temp.SYD\" bs=100 skip=1 seek=1 > /dev/null 2>&1";
+System "rm -rf \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Btree\\VERSION.SYD\" > /dev/null 2>&1";
+System "mv \"d:\\dm\\data\\TESTDB\\T3\\BMP_I3\\Btree\\VERSION_temp.SYD\" \"d:\\dm\\data\\TESTDB\\Tcbmp\\BMP_Icbmp\\Btree\\VERSION.SYD\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Icbmp cascade continue";
+Command "drop index Icbmp";
+Command "create bitmap index Icbmp on Tcbmp(c1) hint 'compressed'";
+Command "verify index Icbmp cascade continue";
+## テーブル削除
+Command "drop table Tcbmp";
+
+# 配列
+Command "create table Tary(c1 int array[no limit], c2 int)";
+Command "create array index Iary on Tary(c1)";
+Command "insert into Tary values (array[1, 2, 3, 4, 5], 2)";
+## 1. MASTER.SYDを上書き
+TerminateSession;
+Terminate;
+System "cp -f \"d:\\dm\\data\\TESTDB\\T2\\BMP_I2\\MASTER.SYD\" \"d:\\dm\\data\\TESTDB\\Tary\\ARY_Iary\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Iary cascade continue";
+Command "drop index Iary";
+Command "create array index Iary on Tary(c1)";
+Command "verify index Iary cascade continue";
+## 2. VERSION.SYDを上書き
+TerminateSession;
+Terminate;
+System "cp -f \"d:\\dm\\data\\TESTDB\\T2\\BMP_I2\\VERSION.SYD\" \"d:\\dm\\data\\TESTDB\\Tary\\ARY_Iary\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Iary cascade continue";
+Command "drop index Iary";
+Command "create array index Iary on Tary(c1)";
+Command "verify index Iary cascade continue";
+## 3. 両方を上書き
+TerminateSession;
+Terminate;
+System "cp -f \"d:\\dm\\data\\TESTDB\\T2\\BMP_I2\\MASTER.SYD\" \"d:\\dm\\data\\TESTDB\\Tary\\ARY_Iary\" > /dev/null 2>&1";
+System "cp -f \"d:\\dm\\data\\TESTDB\\T2\\BMP_I2\\VERSION.SYD\" \"d:\\dm\\data\\TESTDB\\Tary\\ARY_Iary\" > /dev/null 2>&1";
+Initialize;
+InitializeSession "TESTDB";
+Command "verify index Iary cascade continue";
+Command "drop index Iary";
+Command "create array index Iary on Tary(c1)";
+Command "verify index Iary cascade continue";
+## テーブル削除
+Command "drop table Tary";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,35 @@
+# Bug report 1787
+# idとcontentに索引をつけてorder by scoreを取得する
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+Command "create table T(C1 int, C2 int, C3 ntext)";
+Command "insert T values (1, 2, 'A B C')";
+Command "insert T values (2, 4, 'B C D')";
+Command "insert T values (3, 6, 'C D E')";
+Command "insert T select C1+1, C2+1, C3 || ' F' from T";
+Command "create index I2 on T(C2)";
+Command "create fulltext index I3 on T(C3)";
+
+# AND + ORDER BY
+
+#期待結果: {3,ABCF} {4,BCD} {5,BCDF}
+Command "select C2,C3 from T where C2 > 2 and C3 contains 'B' order by C2";
+
+#期待結果: {3,ABCF} {5,BCDF}, {4,BCD}
+Command "select C2,C3 from T where C2 > 2 and C3 contains 'B' order by score(C3)";
+
+#期待結果: {3,ABCF} {2,ABC}
+Command "select C2,C3 from T where C3 contains 'A' and C3 contains 'B' order by score(C3)";
+
+#期待結果: {6,CDE} {7,CDEF} {3,ABCF} {2,ABC}
+Command "select C2,C3 from T where C3 contains 'A' or C3 contains 'E' order by score(C3)";
+
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

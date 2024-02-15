@@ -1,0 +1,108 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table document (
+	sn int,
+	ownersn int,
+	searchrightallow int array[no limit],
+	searchrightdeny int array[no limit],
+	pathlist int array[no limit],
+	primary key(sn))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table folder (
+	sn int,
+	ownersn int,
+	searchrightallow int array[no limit],
+	searchrightdeny int array[no limit],
+	pathlist int array[no limit],
+	primary key(sn))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index document_ownersn on document(ownersn)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index document_searchrightallow on document(searchrightallow)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index document_searchrightdeny on document(searchrightdeny)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index document_pathlist on document(pathlist)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index folder_ownersn on folder(ownersn)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index folder_searchrightallow on folder(searchrightallow)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index folder_searchrightdeny on folder(searchrightdeny)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create array index folder_pathlist on folder(pathlist)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert folder values		    
+	(1, 4, array[1,2,3], array[4,5], array[]),
+	(2, 4, array[1,2,3], array[4,5], array[1]),
+	(3, 4, array[1,2,3], array[4,5], array[1]),
+	(4, 4, array[2,3], array[4,5], array[1,2]),
+	(5, 4, array[2,3], array[4,5], array[1,2,4])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert document values		    
+	(1, 4, array[1,2,3], array[4,5], array[1]),
+	(2, 4, array[1,2,3], array[4,5], array[1]),
+	(3, 4, array[1,2,3], array[4,5], array[1,3]),
+	(4, 4, array[1,2,3], array[4,5], array[1,2]),
+	(5, 4, array[1,2,3], array[4,5], null),
+	(6, 4, array[1,2,3], array[4,5], array[1,2,4]),
+	(7, 4, array[1,2,3], array[4,5], null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select SN from Document where SN > 0
+				and (SearchRightAllow[] in (1,6,8)
+				     or OwnerSN = 1)
+				and not SearchRightDeny[] in (1,6,8)
+				and not exists (select * from Folder
+						where SN in (select * from unnest(Document.PathList) as x)
+						and ((not SearchRightAllow[] in (1,6,8) and OwnerSN != 1)
+							or SearchRightDeny[] in (1,6,8)))
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] {7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from unnest(array[1,3,5]) as x
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from Document where exists (select * from Folder where sn in (select * from unnest(Document.pathList) as x))
+SydTest::Executor: [INFO] {1,4,{1,2,3},{4,5},{1}}
+SydTest::Executor: [INFO] {2,4,{1,2,3},{4,5},{1}}
+SydTest::Executor: [INFO] {3,4,{1,2,3},{4,5},{1,3}}
+SydTest::Executor: [INFO] {4,4,{1,2,3},{4,5},{1,2}}
+SydTest::Executor: [INFO] {6,4,{1,2,3},{4,5},{1,2,4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

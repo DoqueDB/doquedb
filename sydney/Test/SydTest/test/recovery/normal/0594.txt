@@ -1,0 +1,40 @@
+# update[2]/fulltext(normalized, sectionized, delayed)/heap
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 ntext array [no limit] hint heap, C2 fulltext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'sectionized, delayed, inverted=(normalized=true)'";
+Command  "create fulltext index I1_2 on T1(C2) hint 'sectionized, delayed, inverted=(normalized=true)'";
+Command  "select C1, C2 from T1";
+# SQLコマンドupdateをテストする
+# update対象のタプルをまずinsert
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+# 自分自身にupdate
+Command  "update T1 set C1=?, C2=?" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+# 別の内容にupdate
+Command  "update T1 set C1=?, C2=?" [[textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"]];
+# updateされない(はずの)タプルをinsert
+Command  "insert into T1 (C1, C2) values (?, ?)" [[textsjisfile "..\\..\\doc\\Teihon.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt", textsjisfile "..\\..\\doc\\kenpou.txt"]];
+# 存在しないタプルをwhere句で指定
+Command  "update T1 set C1=?, C2=? where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"], [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\rasyoumon.txt"]];
+# 存在するタプルをwhere句で指定。片方のみ更新される
+Command  "update T1 set C1=?, C2=? where C1=? and C2=?" [[textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\Teihon.txt"], [textsjisfile "..\\..\\doc\\kenpou.txt", textsjisfile "..\\..\\doc\\KINGARTHURS_ROUNDTABLE.txt"], [textsjisfile "..\\..\\doc\\ricoh.txt", textsjisfile "..\\..\\doc\\hello.txt"], [textsjisfile "..\\..\\doc\\rasyoumon.txt", textsjisfile "..\\..\\doc\\kenpou.txt"]];
+#Command  "select C1, C2 from T1";
+#Command  "drop table T1";
+
+Command  "select * from T1";
+
+TerminateSession;
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

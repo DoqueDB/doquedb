@@ -1,0 +1,86 @@
+# Bug report 1685
+# 配列に||、SUBSTRING、OVERLAY 
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+CreateThread "Prepare";
+JoinThread "Prepare";
+
+CreateThread "Test";
+JoinThread "Test";
+
+CreateThread "Finish";
+JoinThread "Finish";
+
+TerminateSession;
+Terminate;
+End;
+
+Prepare
+{
+Command "create database TESTDB";
+
+Command "create table T1(C1 int array[no limit])";
+Command "create array index IDX1 on T1(C1)";
+
+Command "insert T1 values (array[1,2])";
+}
+
+Test
+{
+#concatenate
+Command "insert T1 select C1 || array[3] from T1";
+Command "select * from T1";
+#期待結果: {{1,2}}, {{1,2,3}}
+Command "update T1 set C1 = C1 || array[4]";
+Command "select * from T1";
+#期待結果: {{1,2,4}}, {{1,2,3,4}}
+
+Command "select substring(C1 from 2) from T1";
+#期待結果: {{2,4}}, {{2,3,4}}
+Command "select substring(C1 from 2 for 2) from T1";
+#期待結果: {{2,4}}, {{2,3}}
+Command "select overlay(C1 placing array[5] from 2) from T1";
+#期待結果: {{1,5,4}}, {{1,5,3,4}}
+Command "select overlay(C1 placing array[5] from 2 for 2) from T1";
+#期待結果: {{1,5}}, {{1,5,4}}
+
+Command "update T1 set C1 = C1 || array[5,6]";
+Command "select * from T1";
+#期待結果: {{1,2,4,5,6}}, {{1,2,3,4,5,6}}
+
+Command "update T1 set C1 = substring(C1 from 3)";
+Command "select * from T1";
+#期待結果: {{4,5,6}}, {{3,4,5,6}}
+
+Command "update T1 set C1 = overlay(C1 placing array[99] from 3)";
+Command "select * from T1";
+#期待結果: {{4,5,99}}, {{3,4,99,6}}
+
+Command "update T1 set C1 = C1 || substring(C1 from 2 for 1)";
+Command "select * from T1";
+#期待結果: {{4,5,99,5}}, {{3,4,99,6,4}}
+
+Command "update T1 set C1 = C1 || overlay(C1 placing array[99] from 2 for 3)";
+Command "select * from T1";
+#期待結果: {{4,5,99,5,4,99}}, {{3,4,99,6,4,3,99,4}}
+
+Command "update T1 set C1 = substring(overlay(C1 placing array[99] from 2 for 3) from 3)";
+Command "select * from T1";
+#期待結果: {{4,99}}, {{4,3,99,4}}
+
+Command "update T1 set C1 = overlay(substring(C1 from 2) placing array[99] from 1)";
+Command "select * from T1";
+#期待結果: {{99}}, {{99,99,4}}
+
+Command "update T1 set C1 = overlay(C1 || substring(C1 from 2) placing substring(C1 from 3) from 1)";
+Command "select * from T1";
+#期待結果: {{99}}, {{4,99,4,99,4}}
+}
+
+Finish
+{
+Command  "drop database TESTDB";
+}

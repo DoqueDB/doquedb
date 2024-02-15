@@ -1,0 +1,249 @@
+#
+# 索引を使用したNOTのテスト
+#
+
+Begin;
+SetSystemParameter "SydTest_ShowBinary" "True";
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T1 (C1 int, C2 int, C3 int,  C4 int)";
+
+Command "create index I1 on T1(C2)";
+Command "create index I2 on T1(C4)";
+
+Command "insert T1 values
+		(10, 10, 10, 10),
+		(20, 20, 20, 20),
+		(null, null, 10, 10),
+		(10, 10, null, null),
+		(null, null, 20, 20),
+		(20, 20, null, null)";
+
+Command "create table T2 (C5 ntext)";
+Command "create fulltext index J1 on T2(C5) hint 'inverted=(nolocation=true, notf=true)'";
+
+Command "insert T2 values ('何でも'), ('いいので'), ('何か'), ('文字列'), (null)";
+
+
+#
+# NOT単体
+#
+
+#期待結果:
+#(20, 20, 20, 20),
+#(20, 20, null, null)
+
+# C1やC2の値が10でもNULLでもないものだけがヒット
+# C2 のほうはNULLもヒットするバグがあったが修正済み(2006/04/27)
+
+Command "select * from T1 where NOT (C1 = 10)";
+AssureCount 2;
+Command "select * from T1 where NOT (C2 = 10)";
+AssureCount 2;
+
+#期待結果:
+#('いいので')
+#('文字列')
+
+#期待結果:
+#NotSupportedの例外, 現在Feature not supported,修正済み(2006/05/11)
+
+Command "select * from T2 where NOT (C5 contains '何')";
+
+
+#期待結果:
+#1件も出ない
+Command "select * from T1 where NOT (C1 in (10, 20))";
+AssureCount 0;
+Command "select * from T1 where NOT (C2 in (10, 20))";
+AssureCount 0;
+
+#期待結果:
+#('いいので')
+#('文字列')
+
+#期待結果:
+#NotSupportedの例外,修正済み(2006/05/11)
+
+Command "select * from T2 where NOT (C5 like '%何%')";
+AssureCount 2;
+
+
+#期待結果:
+#1件も出ない
+Command "select * from T1 where NOT (C1 = null)";
+AssureCount 0;
+Command "select * from T1 where NOT (C2 = null)";
+AssureCount 0;
+
+#
+# NOT & AND
+#
+
+#期待結果:
+#(20, 20, 20, 20)
+#(null, null, 20, 20)
+#(20, 20, null, null)
+
+#C2 と C2,C4 のどちらかが10でもNULLでもなければヒット
+#片方が10でもう片方がNULLのときもヒットするバグがあったが修正済み(2006/04/27)
+Command "select * from T1 where NOT (C1 = 10 and C3 = 10)";
+AssureCount 3;
+Command "select * from T1 where NOT (C2 = 10 and C4 = 10)";
+AssureCount 3;
+
+
+#期待結果:
+#('何でも')
+#'何'を含んで'か'を含まないものがでる。
+Command "select * from T2 where C5 contains '何' and NOT (C5 contains 'か')";
+AssureCount 1;
+
+
+#期待結果:
+#('何でも')
+Command "select * from T2 where C5 in ('何でも', 'いいので') and NOT (C5 contains 'の')";
+AssureCount 1;
+
+
+#期待結果:
+#('何でも')
+#現在Feature not supported
+#
+Command "select * from T2 where C5 like ('%何%') and NOT (C5 contains 'か')";
+AssureCount 1;
+
+
+#期待結果:
+#('何でも'),('文字列')
+Command "select * from T2 where C5 between '何か' and '文字列' and NOT (C5 contains 'か')";
+AssureCount 2;
+
+
+#期待結果:
+#('何でも')
+Command "select * from T2 where C5 > '何か' and NOT (C5 contains '列')";
+AssureCount 1;
+
+#
+# NOT & OR
+#
+#期待結果:
+#(20, 20, 20, 20)
+
+#C2 と C3,C4の値がともに10でもNULLでもないものだけがヒット
+#C4のほうはNULLもヒットするバグがあったが修正済み(2006/04/27)
+#
+Command "select * from T1 where NOT (C2 = 10 or C3 = 10)";
+AssureCount 1;
+Command "select * from T1 where NOT (C2 = 10 or C4 = 10)";
+AssureCount 1;
+
+
+#期待結果:
+#('何でも'),('何か'),('文字列')
+#NotSupportedの例外は2006/05/11修正
+#2件返るというバグがあったが修正後の動作になる(2006/05/11)
+Command "select * from T2 where C5 contains '何' or NOT (C5 contains 'いい')";
+
+#期待結果:
+#('何でも'),('いいので'),('文字列')
+#NotSupportedの例外は2006/05/11修正
+Command "select * from T2 where C5 in ('何でも', 'いいから') or NOT (C5 contains 'か')";
+
+#期待結果:
+#('何でも'),('いいので'),('何か'),('文字列')
+#NotSupportedの例外は2006/05/11修正
+Command "select * from T2 where C5 like ('%何%') or NOT (C5 contains 'か')";
+
+#期待結果:
+#('何でも'),('いいので'),('何か'),('文字列')
+#NotSupportedの例外は2006/05/11修正
+Command "select * from T2 where C5 between '何か' and '文字列' or NOT (C5 contains 'か')";
+
+#期待結果:
+#('何でも'),('いいので'),('何か'),('文字列')
+#NotSupportedの例外は2006/05/11修正
+Command "select * from T2 where C5 > '何か' or NOT (C5 contains '列')";
+
+
+#期待結果:
+#{20,20,20,20}
+#{20,20,(null),(null)}
+
+#C2 が10でもNULLでもないか、C3,C4 が10、20、NULLのいずれでもない場合ヒット
+#C4 のほうはNULLもヒットするバグがあったが修正済み(2006/04/27)
+Command "select * from T1 where NOT (C2 = 10 and (C3 = 10 or C3 = 20))";
+AssureCount 2;
+Command "select * from T1 where NOT (C2 = 10 and (C4 = 10 or C4 = 20))";
+AssureCount 2;
+
+
+#期待結果:
+#0件
+
+#C2 が10でもNULLでもなく、C3,C4 が10、20、NULLのいずれでもない場合ヒット
+#NULLがヒットするバグがあったが修正済み(2006/04/27)
+Command "select * from T1 where NOT (C2 = 10 or (C3 >= 10 and C3 <= 20))";
+AssureCount 0;
+Command "select * from T1 where NOT (C2 = 10 or (C4 >= 10 and C4 <= 20))";
+AssureCount 0;
+
+
+Command "drop table T1";
+Command "drop table T2";
+
+
+#
+# contains
+#
+
+Command "create table T3(C1 ntext,C2 float)";
+Command "create fulltext index J1 on T3(C1) hint 'inverted=(nolocation=true, notf=true)'";
+
+Command "insert into T3 values('カモミールはティーや入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果がある',1)";
+Command "insert into T3 values('キャットミントのお茶は胃腸障害などにも効果があり',1)";
+Command "insert into T3 values('ラベンダーはティーや入浴剤、ポプリやブーケなど幅広く活用できます。頭痛や神経不安、虫除けなどにも効果がある',1)";
+Command "insert into T3 values('レモンは入浴剤、芳香剤や殺菌など幅広く活用できます。風邪や不眠症などにも効果があり',1)";
+Command "insert into T3 values('ネロリは香水などに活用できます。ストレスや不眠症などにも効果がある',1)";
+Command "insert into T3 values('スイートマジョラムは料理や、ポプリなどに活用できます。不眠症などにも効果がある',1)";
+Command "insert into T3 values('ローズマリーは入浴剤、お茶や料理、ポプリや化粧品など幅広く活用できます。疲労や無気力などにも効果がある',1)";
+Command "insert into T3 values('レモングラスは料理、殺菌、虫除けに活用できます。心の疲れなどにも効果がある',1)";
+Command "insert into T3 values('ミントはお茶や入浴剤など幅広く活用できます。鼻づまりなどにも効果がある',1)";
+#　料理などに活用できます
+Command "insert into T3 values('ポリジは観賞用、料理などに活用できます。体の調子を整える',1)";
+Command "insert into T3 values('タイムはお茶や料理などに活用できます。',1)";
+
+Command "insert into T3 values('オレンジはお茶や入浴剤、芳香剤、化粧品などで活用できます。不眠症などにも効果がある',1)";
+Command "insert into T3 values('ジャスミンはお茶や入浴剤、ポプリやブーケなど幅広く活用できます。風邪や不眠症などにも効果があり',1)";
+Command "insert into T3 values('バジルは、料理に活用できます。胃腸障害などにも効果がある',1)";
+Command "insert into T3 values('ユーカリはお茶や入浴剤に活用できます。鼻づまりやストレスなどにも効果がある',1)";
+
+
+#期待結果
+#containsにnullがあったら何も出力されない
+#
+Command "select * from T3 where C1 contains '料理などに活用できます'";
+Command "select * from T3 where C1 contains 'null'";
+
+Command "select * from T3 where C1 contains freetext ('料理などに活用できます')";
+Command "select * from T3 where C1 contains freetext ('null')";
+
+Command "select * from T3 where C1 contains freetext ('料理などに活用できます') expand (from (select * from T3 where C1 = '不眠症'))";
+Command "select * from T3 where C1 contains freetext ('料理などに活用できます') expand (from (select * from T3 where C1 = 'null'))";
+Command "select * from T3 where C1 contains freetext ('null') expand (from (select * from T3 where C1 = '不眠症'))";
+
+
+Command "drop table T3";
+Command "drop database TESTDB";
+
+TerminateSession;
+
+Terminate;
+End;

@@ -1,0 +1,209 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TEST
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (F1 nvarchar(256), F2 ntext array[no limit], L language)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_F on T(F1, F2) hint 'delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(F1, F2, L) values ('リコーの環境への取り組み', array['地球環境を保全し、持続可能な社会を実現するために、私たちは、環境負荷を地球の再生能力の範囲内に抑える必要があります。','そのためには、地球環境と人間社会の将来における「目指す姿」を描き、長期的なビジョンを設定したうえで、活動を推進していかなければなりません。','なぜなら、地球環境保全はやり直しのきかない課題であり、短期的な視点で行動しては成果が得られないからです。','そこで、リコーグループは、2050年の社会状況をIPCC報告書などのさまざまな情報の収集・分析により想定しました。','2050年には、世界の人口は90億人を超え、化石・鉱物資源の枯渇や土地利用の制限が起きる一方、石油からのエネルギー転換が進み、社会モデルやビジネスモデルは大きく変化せざるを得なくなっているでしょう。','もし、今後もこれまでの事業のやり方に固執し、環境負荷を増やし続ければ、地球はある時点を境に急激にその能力を失い、人類社会が破滅に至る不幸なシナリオを歩むに違いありません。','これらを踏まえ、リコーグループは2005年に、先進国は2050年に環境負荷を現在の1/8にする必要があるという「2050年長期環境ビジョン」を策定しました。','そして、このビジョンのもと、具体的な活動計画を立てていく必要があると考えました。'], 'ja')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(F1, F2, L) values ('キヤノンの環境への取り組み', array['キヤノンが目指す環境経営とは、経済活動と環境活動を一体化することです。','キヤノンは、「つくる、つかう、いかす」の製品ライフサイクル全体を見据えて、お客様やビジネスパートナーの皆様とともに、環境負荷低減への取り組みを拡大し、キヤノン環境ビジョンを追求しています。'], 'ja')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(F1, F2, L) values ('富士ゼロックスの環境への取り組み', array['富士ゼロックスは環境との調和を最大限に尊重し、部材購入・製造・販売・物流の各プロセスで、また、お客様のオフィスにおいて環境負荷の低減を推進しています。','富士ゼロックスは部材購入からお客様ご使用後まで商品のライフサイクル全体を責任範囲として捉え、環境負荷の低減に取り組んでいます。'], 'ja')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, score(F1) from T where F1 contains '環境'
+SydTest::Executor: [INFO] {リコーの環境への取り組み,1.969600449806E-1}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,1.951475292292E-1}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,1.899047597872E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, score(F2) from T where F2 contains '環境' & '負荷' order by score(F2) desc
+SydTest::Executor: [INFO] {リコーの環境への取り組み,6.027997218085E-1}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,5.694267990796E-1}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,5.262228756139E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1 from T where (F1, F2) contains '環境'
+SydTest::Executor: [INFO] {リコーの環境への取り組み}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1 from T where (F1, F2) contains '環境' & '負荷' order by score(F1, F2) desc
+SydTest::Executor: [INFO] {リコーの環境への取り組み}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, score(F1, F2) from T where (F1, F2) contains within ('環境' '負荷' upper 5) score combiner 'concatinate' order by score(F1, F2) desc
+SydTest::Executor: [INFO] {リコーの環境への取り組み,2.746100101558E-1}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,2.687010744899E-1}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,2.069045137562E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, score(F1, F2) from T where (F1, F2) contains within ('環境' '負荷' asymmetric upper 5) score combiner 'concatinate:1.0,5.0' order by score(F1, F2) desc
+SydTest::Executor: [INFO] {リコーの環境への取り組み,3.583443454142E-1}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,3.562994589106E-1}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,3.301489572080E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, score(F1, F2) from T where (F1, F2) contains simpleword('環境') | exactword('負荷') score combiner 'sum:2.0#1.0,1.0' order by score(F1, F2) desc
+SydTest::Executor: [INFO] {リコーの環境への取り組み,1.996719811769E0}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,1.949236318654E0}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,1.916517934072E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, score(F1, F2) from T where (F1, F2) contains simpleword('環境') | exactword('負荷') score combiner 'max:2.0,1.0' order by score(F1, F2) desc
+SydTest::Executor: [INFO] {リコーの環境への取り組み,6.676419584798E-1}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,6.492535555484E-1}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,5.978403976546E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, score(F1, F2) from T where (F1, F2) contains weight('環境' scale 2.0) & '負荷' average length 200 order by score(F1, F2) desc
+SydTest::Executor: [INFO] {リコーの環境への取り組み,9.203933462656E-1}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,8.915487090383E-1}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,8.562236111894E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, score(F1, F2) from T where (F1, F2) contains weight('環境' scale 2.0) & '負荷' score combiner 'sum' average length '100,200' order by score(F1, F2) desc
+SydTest::Executor: [INFO] {リコーの環境への取り組み,1.344310563229E0}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,1.292262228538E0}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,1.270680479654E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select word(F1, F2) from T where (F1, F2) contains freetext('リコーの環境への取り組み')
+SydTest::Executor: [INFO] {'リコウ' language '' category 'Helpful' scale 1.00 df 1}
+SydTest::Executor: [INFO] {'環境' language '' category 'Helpful' scale 1.00 df 3}
+SydTest::Executor: [INFO] {'取り組み' language '' category 'Helpful' scale 1.00 df 3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select word(F1, F2) from T where (F1, F2) contains freetext('リコーの環境への取り組み') expand (from (select F2 from T where (F1, F2) contains freetext('リコーの環境への取り組み') order by score(F1, F2) desc limit 2)) order by word(F1, F2).df
+SydTest::Executor: [INFO] {'リコウ' language '' category 'Helpful' scale 0.71 df 1}
+SydTest::Executor: [INFO] {'社会' language '' category 'HelpfulRelated' scale 0.13 df 1}
+SydTest::Executor: [INFO] {'環境' language '' category 'Helpful' scale 0.77 df 3}
+SydTest::Executor: [INFO] {'取り組み' language '' category 'Helpful' scale 0.75 df 3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select word(F1, F2) from T where (F1, F2) contains freetext('リコーの環境への取り組み') expand (from (select char_join(' / ', F1, F2) from T where (F1, F2) contains freetext('リコーの環境への取り組み') score combiner 'concatinate:2.0,1.0' order by score(F1, F2) desc limit 2)) order by word(F1, F2).df
+SydTest::Executor: [INFO] {'リコウ' language '' category 'Helpful' scale 0.88 df 1}
+SydTest::Executor: [INFO] {'ビジネス' language '' category 'HelpfulRelated' scale 0.13 df 2}
+SydTest::Executor: [INFO] {'活動' language '' category 'HelpfulRelated' scale 0.16 df 2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, tf(F1) from T where F1 contains wordlist('環境', '負荷')
+SydTest::Executor: [INFO] {リコーの環境への取り組み,{1,0}}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,{1,0}}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,{1,0}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, tf(F2) from T where F2 contains wordlist('環境', '負荷')
+SydTest::Executor: [INFO] {リコーの環境への取り組み,{7,3}}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,{4,1}}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,{3,2}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, tf(F1, F2) from T where (F1, F2) contains wordlist('環境', '負荷') order by score(F1, F2) desc
+SydTest::Executor: [INFO] {リコーの環境への取り組み,{8,3}}
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,{4,2}}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,{5,1}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(F1) from T
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(F2) from T
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select avg(char_length(F1)) from T
+SydTest::Executor: [INFO] {13}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select avg(char_length(F2)) from T
+SydTest::Executor: [INFO] {266}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_F
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_F on T(F1, F2) hint 'kwic, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select kwic(F2 for 10 enclose with '<b>' and '</b>') from T where F2 contains '負荷' & '低減'
+SydTest::Executor: [INFO] {ともに、環境<b>負荷</b><b>低減</b>へ}
+SydTest::Executor: [INFO] {環境<b>負荷</b>の<b>低減</b>を推進}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select kwic(F1 for 10 enclose with '<b>' and '</b>'), kwic(F2 for 10 enclose with '<b>' and '</b>') from T where (F1, F2) contains '環境'
+SydTest::Executor: [INFO] {リコーの<b>環境</b>への取り組み,地球<b>環境</b>を保全し、持続}
+SydTest::Executor: [INFO] {キヤノンの<b>環境</b>への取り組み,キヤノンが目指す<b>環境</b>経営と}
+SydTest::Executor: [INFO] {ゼロックスの<b>環境</b>への取り組み,ゼロックスは<b>環境</b>との調和}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_F
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_F on T(F1, F2) hint 'delayed, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1, clustered=(feature=10))'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1 from T where F2 contains '負荷' & '低減' order by score(F2) desc
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, cluster(F2).id from T where F2 contains '負荷' & '低減' clustered limit 0.8 order by score(F2) desc partition by cluster(F2).id
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,1}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select F1, cluster(F1, F2).id from T where (F1, F2) contains '負荷' & '低減' clustered limit 0.8 clustered combiner 'avg' order by score(F1, F2) desc partition by cluster(F1, F2).id
+SydTest::Executor: [INFO] {富士ゼロックスの環境への取り組み,1}
+SydTest::Executor: [INFO] {キヤノンの環境への取り組み,2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index T_F
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

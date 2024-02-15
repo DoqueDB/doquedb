@@ -1,0 +1,89 @@
+# distinctつきのselect文の結果をinsertするとROWIDが正しく割り当てられない
+# 障害番号:0485に対応
+# distinct付きのselect文をinsertするとBud argument
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table t (f varchar(no limit))";
+Command "create table t1 (f char(4))";
+Command "create table t2 (f2 nvarchar(no limit))";
+
+#確認のため カラム２つ
+Command "create table t3 (id3 int,f3 nvarchar(no limit))";
+Command "create index IDX3 on t3(id3)";
+Command "create table t4 (id4 int,f4 varchar(no limit))";
+Command "create index IDX4 on t4(id4)";
+#
+
+Command "insert t(f) values ('abcde')";
+Command "insert t(f) values ('fghij')";
+Command "insert t(f) values ('xyzuvw')";
+Command "insert t(f) values ('ccccccccc')";
+Command "insert t(f) values ('ccccccccc')";
+
+Command "insert t2(f2) values ('あああああ')";
+Command "insert t2(f2) values ('いいいいい')";
+Command "insert t2(f2) values ('ううううう')";
+Command "insert t2(f2) values ('かかかかか')";
+
+
+Command "insert t3(id3,f3) values (1,'あああああ')";
+Command "insert t3(id3,f3) values (2,'いいいいい')";
+
+Command "insert t4(id4,f4) values (1,'aaaaaaaaaa')";
+Command "insert t4(id4,f4) values (2,'bbbbbbbbbb')";
+
+
+#報告のあったSQL文
+Command "insert t1 (select distinct substring(f from 1 for 4) from t)";
+Command "Select * from t1";
+
+#order byを付けてinsert
+Command "insert t1 (select distinct substring(f from 1 for 4) from t order by f)";
+Command "Select * from t1";
+
+#selectにdistinctもなにもつけないでinsert
+Command "insert t2 (select f from t)";
+Command "Select * from t2";
+
+#selectにdistinctのみ付けてinsert
+Command "insert t2 (select distinct f from t)";
+Command "insert t2 (select distinct * from t)";
+Command "Select * from t2";
+
+#select *でinsert
+Command "insert t2 (select * from t)";
+Command "Select * from t2";
+
+#カラム２つのinsertテスト
+Command "insert t3 (select id4,f4 from t4)";
+Command "Select * from t3";
+Command "insert t3 (select distinct id4,substring(f4 from 1 for 2) from t4)";
+Command "Select * from t3";
+
+
+Command "insert t3 (select id4,f4 from t4 where id4 =1)";
+Command "Select * from t3";
+
+#select *でinsert
+Command "insert t3 (select * from t4)";
+Command "Select * from t3";
+
+#2005/12/22 *にdistinctを付けると落ちる。
+Command "insert t3 (select distinct * from t4)";
+
+TerminateSession;
+
+
+
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+  MessageDefinition.xml : メッセージ定義ファイル
+
+  Copyright (c) 2001, 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+   
+      http://www.apache.org/licenses/LICENSE-2.0
+   
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<?xml-stylesheet type="text/xsl" href="..\..\Tools\MessageTemplate\MessageList.xsl"?>
+
+<!DOCTYPE MessageDefine [
+  <!ELEMENT MessageDefine (Message)*>
+
+  <!ELEMENT Message (Name, Number, Format, Argument*)>
+  <!ELEMENT Name (#PCDATA)>
+  <!ELEMENT Number (#PCDATA)>
+
+  <!ELEMENT Format (English, Japanese)>
+  <!ELEMENT Argument (#PCDATA)>
+
+  <!ELEMENT English (#PCDATA)>
+  <!ELEMENT Japanese (#PCDATA)>
+]>
+
+<!--
+★メッセージ定義に関する注意★
+
+	【メッセージ定義ファイル自体について】
+		・ファイルの文字コードを SJIS から変更してはいけない
+
+	【メッセージ作成の方針について】
+
+	【メッセージ番号について】
+		・Number は16 進8 桁で定義し、
+
+		  上位 2 桁は 0x01
+		  次の 2 桁は モジュールを識別する値
+		  下位 4 桁は モジュール内でのメッセージを一意に識別する値
+		
+		  にすること
+		・決して、Exception/ErrorDefinition.xml の
+		  エラー番号と重なってはならない
+
+	【フォーマットについて】
+		・日本語メッセージは「ですます」調で統一すること
+		・Format に %1 などで挿入されるものが文字列である場合、
+		  できる限り言語に左右されない文字列
+		  (SQL 文、表名、数値など)にすること
+-->
+
+<MessageDefine>
+
+  <Message>
+    <Name>VerifyAbort</Name>
+	<Number>0x01320001</Number>
+	<Format>
+	  <English>It failed in verify inspection.</English>
+	  <Japanese>整合性検査に失敗しました</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>NotEqualEntryCount</Name>
+	<Number>0x01320002</Number>
+	<Format>
+	  <English>The number of entries of the index file and the section file does not equal.</English>
+	  <Japanese>索引ファイルとセクション情報ファイルのエントリ数があっていません</Japanese>
+	</Format>
+  </Message>
+
+  <Message>
+    <Name>InaccurateRowid</Name>
+	<Number>0x01320003</Number>
+	<Format>
+	  <English>The adjustment of ROWID between the large inverted file and the small inverted file is inaccurate.</English>
+	  <Japanese>大転置ファイルと小転置ファイル間のROWIDの整合性が不正です</Japanese>
+	</Format>
+  </Message>
+
+</MessageDefine>
+
+<!--
+  Copyright (c) 2001, 2023 Ricoh Company, Ltd.
+  All rights reserved.
+-->

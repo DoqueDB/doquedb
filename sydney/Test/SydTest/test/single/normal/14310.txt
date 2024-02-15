@@ -1,0 +1,254 @@
+# 障害票 0991
+
+Begin;
+Initialize;
+InitializeSession "";
+
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#
+Command "create table T(C char(4))";
+Command "insert T values 'abc'";
+Command "insert T values (null)";
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C = 'abc'";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4))";
+Command "insert T values 'abc'";
+Command "insert T values (null)";
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C = 'abc'";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4))";
+Command "insert T values 'abc'";
+Command "insert T values (null)";
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4))";
+Command "insert T values 'abc'";
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C = 'abc'";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4))";
+Command "insert T values (null)";
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+
+# 配列型
+#非NULL要素とNULL要素とNULL列のそれぞれが、入っている場合と入っていない場合、2 x 2 x 2 の 8パターン
+#空、NULL要素のみ、NULL列のみ、NULL要素とNULL列のみ、4パターン
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] = 'abc'";
+Command "delete from T where C[] is null";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] = 'abc'";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] = 'abc'";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] is null";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] = 'abc'";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+#
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] = 'abc'";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] = 'abc'";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] = 'abc'";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] = 'abc'";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] is null";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+#
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] = 'abc'";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [[null]];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [null];
+Command "create bitmap index I on T(C) hint 'compressed'";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

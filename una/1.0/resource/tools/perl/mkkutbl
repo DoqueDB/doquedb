@@ -1,0 +1,191 @@
+#!/usr/bin/perl
+# 
+# Copyright (c) 2000,2002, 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+#
+# mkkutbl - make kakariuke source
+
+=head1 NAME
+
+ mkkutbl - かかりうけテーブルソース作成ツール
+
+=head1 SYNOPSIS
+
+ mkkutbl [オプション]
+
+=head1 DESCRIPTION
+
+ 主に、日本語形態素解析UNA V3(unamk)のかかりうけ解析用テーブルソースを
+ 作成するためのツールである。
+ mkkutblは、UNA::MkKuTblのフロントエンドとして動作する。
+ 詳しくは、UNA::MkKuTblのマニュアルを参照のこと。
+ 
+ オプションは以下の通り。(一部のみ。詳しくは、-hオプションを実行のこと。)
+
+=item -r I<出力ディレクトリ>
+
+ UNA用ソースデータ(UCS2形式)の出力ディレクトリを指定する。
+ デフォルトは、./ である。
+ 指定したディレクトリに以下のサブディレクトリ eucdata/ が作成され、
+ UNA用ソースデータ(UCS2形式)が出力される。
+ 既にサブディレクトリが存在する場合は、ファイルを上書きする。
+
+=item -i I<入力コード>
+ 入力コードを指定する。
+ デフォルトは、euc である。
+
+=item -o I<出力コード>
+
+ 出力コードを指定する。
+ デフォルトは、euc である。
+
+=item -l I<UNA品詞リスト>
+
+ UNA品詞リストを指定する。
+
+=item -g I<品詞グループ定義:品詞グループ定義:...>
+
+ 品詞グループ定義を指定する。:を区切りとして複数の品詞グループ定義を指定できる
+。
+ デフォルトは、./cmn/hinsi.grp である。
+
+=item -t I<語尾テーブル:語尾テーブル:...>
+
+ 語尾テーブルを指定する。:を区切りとして複数の語尾テーブルを指定できる。
+ デフォルトは、./cmn/gobi.tbl である。
+
+=item -k I<かかりうけルール:かかりうけルール:...>
+
+ かかりうけルールを指定する。:を区切りとして複数のかかりうけルールを指定できる
+。
+ デフォルトは、./cmn/kurule.src である。
+
+=item -A
+
+ かかりうけ属性テーブルを作成する。
+ デフォルトは、./eucdata/kuattr.euc である。
+
+=item -T
+
+ かかりうけ表を作成する。
+ デフォルトは、./eucdata/kutbl.euc である。
+
+=item -v
+
+ 不必要に詳細な情報を出力する(Verbose)。
+
+=item -D
+
+ デバッグ用の情報を出力する(Debug)。ただし、現バージョンでは未使用。
+
+=item -h
+
+ 簡単なヘルプを出力する(Help)。
+
+=head1 HISTORY
+
+ Ver.5.00 2002/04/30 UNA-CmnToolsとしてRCS管理に
+ Ver.5.01 2002/08/20 ツールの実行環境を/proj/nlp/tools/UNA-CmnTools/v1.2.dist
+                     に変更
+ Ver.5.02 2002/09/11 perldocを補足
+                     -rオプションの動作を変更
+
+=head1 BUG
+
+=cut
+
+use lib "../tools/perl/lib";
+use utf8;
+
+# デフォールトの設定
+my $out_dir = "./";
+my $hinlst_file = "./uwork/unahin.utf8";
+my $hingrp_files = "../src-data/una/hinsi.grp";
+my $gobitbl_files = "../src-data/una/gobi.tbl";
+my $kurule_files = "../src-data/una/kurule.src";
+my $kuattr_file = "./uwork/kuattr.utf8";
+my $kutbl_file = "./uwork/kutbl.utf8";
+
+# 引数の評価
+use Getopt::Std;
+getopts('r:l:g:t:k:A:T:vDh');
+if ($opt_h || $#ARGV >= 0) {
+	die <<EOU;
+mkkutbl
+Usage: mkkutbl [OPTIONS]
+   -r OUTDIR           output directory ($out_dir)
+   -l FILE             hinshi list ($hinlst_file)
+   -g FILE1:FILE2:...  hinshi group ($hingrp_files)
+   -t FILE1:FILE2:...  gobi table ($gobitbl_files)
+   -k FILE1:FILE2:...  kakariuke rule ($kurule_files)
+   -A FILE             produced kakariuke attributes ($kuattr_file)
+   -T FILE             produced kakariuke table ($kutbl_file)
+   -v                  verbose (show max/min cost)
+   -D                  Debug
+   -h                  Help
+EOU
+}
+$out_dir = $opt_r if defined $opt_r;
+$hinlst_file = $opt_l if $opt_l;
+$hingrp_files = $opt_g if $opt_g;
+$gobitbl_files = $opt_t if $opt_t;
+$kurule_files = $opt_k if $opt_k;
+$kuattr_file = $opt_A if $opt_A;
+$kutbl_file = $opt_T if $opt_T;
+
+use UNA::MkKuTbl;
+$mkku = new UNA::MkKuTbl;
+
+# ファイルの読みこみ
+$mkku->load('hinlst', &mkfile($out_dir, $hinlst_file)); # 必ず1つだけ
+for (split(/:/, $hingrp_files)) {
+    $mkku->load('hingrp', $_);
+}
+for (split(/:/, $gobitbl_files)) {
+    $mkku->load('gobitbl', $_);
+}
+for (split(/:/, $kurule_files)) {
+    $mkku->load('kurule', $_);
+}
+
+# かかりうけテーブルの作成
+$mkku->make_ku_tables(&mkfile($out_dir, $kuattr_file),
+    &mkfile($out_dir, $kutbl_file));
+
+# コストの最大値と最小値の表示
+if ($opt_v) {
+    printf "maximum cost=%f\n", $mkku->{max_cost};
+    printf "minimum cost=%f\n", $mkku->{min_cost};
+}
+
+# ディレクトリと相対パスからファイル名を作る
+sub mkfile {
+    my($dir, $path) = @_;
+    return '' if $path eq '';	# 空ならそのまま
+    $dir =~ s/\/$//g if $dir ne '/'; # 最後の/を取る
+    my $file = "$dir/$path";
+    $file =~ s/.*\/\//\//; # // があったらそこまでを / に変える
+    $file;
+}
+
+=head1 SEE ALSO
+
+L<NLP::MkKuTbl>, L<mkunadata>, L<unamk>, L<mkmodic>, L<mkmoconn>, L<paco>
+
+=head1 COPYRIGHT
+
+ Copyright 2000,2002, 2023 RICOH Co, Ltd. All rights reserved.
+
+=cut

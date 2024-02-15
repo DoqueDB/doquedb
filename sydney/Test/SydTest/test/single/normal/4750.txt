@@ -1,0 +1,40 @@
+Begin;
+SetSystemParameter "Execution_LikeNormalizedString" 1;
+
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T (F nvarchar(100))";
+
+Command "insert into T values 'Ａ０　＃％あが'";
+Command "insert into T values 'ａ０　＃＠アガ'";
+Command "insert into T values 'A0 #%アガ'";
+Command "insert into T values 'a0 #@アガ'";
+
+Command "select * from T where F like '%Ａ%'";
+Command "select * from T where F like '%０%'";
+Command "select * from T where F like '%　%'";
+Command "select * from T where F like '%＃%'";
+Command "select * from T where F like '%％%'";
+Command "select * from T where F like '%*％%' escape '*'";
+Command "select * from T where F like '%あ%'";
+Command "select * from T where F like '%が%'";
+
+Command "select * from T where F like '%A%'";
+Command "select * from T where F like '%0%'";
+Command "select * from T where F like '% %'";
+Command "select * from T where F like '%#%'";
+Command "select * from T where F like '%%%'";
+Command "select * from T where F like '%*%%' escape '*'";
+Command "select * from T where F like '%ア%'";
+Command "select * from T where F like '%ガ%'";
+Command "select * from T where F like '%ア%'";
+Command "select * from T where F like '%ガ%'";
+Command "select * from T where F like '%a%'";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

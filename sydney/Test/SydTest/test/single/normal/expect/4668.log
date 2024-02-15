@@ -1,0 +1,47 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB_150706
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB_150706
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select sessionid from system_session
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from system_session
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select max(sessionid), clientid from system_session group by clientid
+SydTest::Executor: [INFO] {1,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from system_session where clientid = (select clientid from system_session group by clientid order by count(*) desc limit 1)
+SydTest::Executor: [INFO] {1,$hostname,20YY-MM-DD hh:mm:ss.xxx,xx,(null),1,TESTDB_150706,root,20YY-MM-DD hh:mm:ss.xxx,QueryExpression,VersionUse,20YY-MM-DD hh:mm:ss.xxx,select * from system_session where clientid = (select clientid from system_session group by clientid order by count(*) desc limit 1)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select userid from system_user
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) from system_user
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from system_session s, system_user u where s.username = u.name and clientid = (select clientid from system_session group by clientid order by count(*) desc limit 1)
+SydTest::Executor: [INFO] {1,$hostname,20YY-MM-DD hh:mm:ss.xxx,xx,(null),1,TESTDB_150706,root,20YY-MM-DD hh:mm:ss.xxx,QueryExpression,VersionUse,20YY-MM-DD hh:mm:ss.xxx,select * from system_session s, system_user u where s.username = u.name and clientid = (select clientid from system_session group by clientid order by count(*) desc limit 1),0,root,0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

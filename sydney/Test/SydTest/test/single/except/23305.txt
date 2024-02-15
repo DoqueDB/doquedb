@@ -1,0 +1,42 @@
+# Linux 環境のみ対象
+# パラメータ Os_PrintCriticalSection で指定されたパスの親フォルダーが存在しない
+
+Begin;
+
+SetSystemParameter "Os_PrintCriticalSection" "/dummy/result/non-existent-directory/$(TestNum)_cs.log";
+
+Initialize;
+
+PrintCriticalSection;
+
+NotExists "/dummy/result/non-existent-directory/$(TestNum)_cs.log";
+
+InitializeSession "TestDB";
+
+# 一通り基本操作して問題ないことを確認
+
+Command "create database TestDB";
+Command "create table T(C1 int, C2 ntext)";
+Command "insert into T values (1, 'test text')";
+Command "create fulltext index T_C2 on T(C2)";
+Command "select * from T";
+Command "update T set C2 = 'test text 2' where C1 = 1";
+
+# もう一度
+
+PrintCriticalSection;
+
+NotExists "/dummy/result/non-existent-directory/$(TestNum)_cs.log";
+
+Command "create table T2(C1 int, C2 ntext)";
+Command "insert into T2 values (1, 'test text')";
+Command "create fulltext index T2_C2 on T(C2)";
+Command "select * from T2";
+Command "update T2 set C2 = 'test text 2' where C1 = 1";
+
+TerminateSession;
+
+Terminate;
+
+End;
+

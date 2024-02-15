@@ -1,0 +1,71 @@
+# Bug report 1324
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# char
+Command "create table T(C char(4))";
+Command "create index I on T(C) hint 'normalized'";
+Command "insert T values '@', '[', '\\', ']', '^', '_', '`'";
+Command "insert T values '@a', '[a', '\\a', ']a', '^a', '_a', '`a'";
+Command "insert T values 'a@', 'a[', 'a\\', 'a]', 'a^', 'a_', 'a`'";
+Command "insert T values 'a@a', 'a[a', 'a\\a', 'a]a', 'a^a', 'a_a', 'a`a'";
+Command "select * from T where c like '@%'";
+Command "select * from T where c like 'a@%'";
+Command "drop table T";
+
+# varchar
+Command "create table T(C varchar(4))";
+Command "create index I on T(C) hint 'normalized'";
+Command "insert T values '@', '[', '\\', ']', '^', '_', '`'";
+Command "insert T values '@a', '[a', '\\a', ']a', '^a', '_a', '`a'";
+Command "insert T values 'a@', 'a[', 'a\\', 'a]', 'a^', 'a_', 'a`'";
+Command "insert T values 'a@a', 'a[a', 'a\\a', 'a]a', 'a^a', 'a_a', 'a`a'";
+Command "select * from T where c like '@%'";
+Command "select * from T where c like 'a@%'";
+Command "drop table T";
+
+# nchar
+Command "create table T(C nchar(4))";
+Command "create index I on T(C) hint 'normalized'";
+Command "insert T values '@', '[', '\\', ']', '^', '_', '`'";
+Command "insert T values '@a', '[a', '\\a', ']a', '^a', '_a', '`a'";
+Command "insert T values 'a@', 'a[', 'a\\', 'a]', 'a^', 'a_', 'a`'";
+Command "insert T values 'a@a', 'a[a', 'a\\a', 'a]a', 'a^a', 'a_a', 'a`a'";
+Command "insert T values '＠', '［', '＼', '］', '＾', '＿', '｀'";
+Command "insert T values '＠ａ', '［ａ', '＼ａ', '］ａ', '＾ａ', '＿ａ', '｀ａ'";
+Command "insert T values 'ａ＠', 'ａ［', 'ａ＼', 'ａ］', 'ａ＾', 'ａ＿', 'ａ｀'";
+Command "insert T values 'ａ＠ａ', 'ａ［ａ', 'ａ＼ａ', 'ａ］ａ', 'ａ＾ａ', 'ａ＿ａ', 'ａ｀ａ'";
+Command "select * from T where c like '@%'";
+Command "select * from T where c like 'a@%'";
+Command "select * from T where c like '＠%'";
+Command "select * from T where c like 'ａ＠%'";
+Command "drop table T";
+
+# nvarchar
+Command "create table T(C nvarchar(4))";
+Command "create index I on T(C) hint 'normalized'";
+Command "insert T values '@', '[', '\\', ']', '^', '_', '`'";
+Command "insert T values '@a', '[a', '\\a', ']a', '^a', '_a', '`a'";
+Command "insert T values 'a@', 'a[', 'a\\', 'a]', 'a^', 'a_', 'a`'";
+Command "insert T values 'a@a', 'a[a', 'a\\a', 'a]a', 'a^a', 'a_a', 'a`a'";
+Command "insert T values '＠', '［', '＼', '］', '＾', '＿', '｀'";
+Command "insert T values '＠ａ', '［ａ', '＼ａ', '］ａ', '＾ａ', '＿ａ', '｀ａ'";
+Command "insert T values 'ａ＠', 'ａ［', 'ａ＼', 'ａ］', 'ａ＾', 'ａ＿', 'ａ｀'";
+Command "insert T values 'ａ＠ａ', 'ａ［ａ', 'ａ＼ａ', 'ａ］ａ', 'ａ＾ａ', 'ａ＿ａ', 'ａ｀ａ'";
+Command "select * from T where c like '@%'";
+Command "select * from T where c like 'a@%'";
+Command "select * from T where c like '＠%'";
+Command "select * from T where c like 'ａ＠%'";
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

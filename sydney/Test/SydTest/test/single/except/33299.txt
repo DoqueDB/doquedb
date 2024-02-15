@@ -1,0 +1,268 @@
+# transaction read only, using snapshot serializableset transaction commit update
+# commitあるいはrollbackの動作確認をする。
+# 各々のスクリプトごとに各種の論理ファイルを試す。
+Begin;
+Initialize;
+InitializeSession "DefaultDB";
+
+Command  "create table T1(C1 ntext array [no limit])";
+# 1つのtransactionで1つだけのタプルを操作する
+# タプルの準備
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# update->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# delete->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+# 1つのtransactionで1つだけのタプルを操作する
+# タプルの準備
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# update->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# delete->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true)'";
+# 1つのtransactionで1つだけのタプルを操作する
+# タプルの準備
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# update->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# delete->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true)'";
+# 1つのtransactionで1つだけのタプルを操作する
+# タプルの準備
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# update->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# delete->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'sectionized ,inverted=(nolocation=true)'";
+# 1つのtransactionで1つだけのタプルを操作する
+# タプルの準備
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# update->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# delete->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'sectionized ,inverted=(nolocation=true)'";
+# 1つのtransactionで1つだけのタプルを操作する
+# タプルの準備
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# update->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# delete->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'delayed ,inverted=(nolocation=true)'";
+# 1つのtransactionで1つだけのタプルを操作する
+# タプルの準備
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# update->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# delete->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'delayed ,inverted=(nolocation=true)'";
+# 1つのtransactionで1つだけのタプルを操作する
+# タプルの準備
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# update->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# delete->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true, normalized=true)'";
+# 1つのtransactionで1つだけのタプルを操作する
+# タプルの準備
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# update->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# delete->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+Command  "drop table T1";
+
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true, normalized=true)'";
+# 1つのtransactionで1つだけのタプルを操作する
+# タプルの準備
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# update->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "update T1 set C1=? where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"], [textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+# delete->commitの動作確認
+Command  "set transaction read only, using snapshot, isolation level serializable";
+Command  "start transaction read only, using snapshot";
+Command  "delete from T1 where C1=?" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "select * from T1";
+Command  "commit";
+Command  "select * from T1";
+Command  "drop table T1";
+
+TerminateSession "DefaultDB";
+Terminate;
+End;

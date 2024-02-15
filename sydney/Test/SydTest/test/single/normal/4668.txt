@@ -1,0 +1,24 @@
+# system_session、system_userに対して集約関数を実行したテスト
+# 障害票 2510
+
+Begin;
+Initialize;
+InitializeSession "TESTDB_150706";
+
+Command "create database TESTDB_150706";
+
+Command "select sessionid from system_session";
+Command "select count(*) from system_session";
+Command "select max(sessionid), clientid from system_session group by clientid";
+
+Command "select * from system_session where clientid = (select clientid from system_session group by clientid order by count(*) desc limit 1)";
+
+Command "select userid from system_user";
+Command "select count(*) from system_user";
+
+Command "select * from system_session s, system_user u where s.username = u.name and clientid = (select clientid from system_session group by clientid order by count(*) desc limit 1)";
+
+TerminateSession;
+
+Terminate;
+End;

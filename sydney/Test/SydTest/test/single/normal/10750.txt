@@ -1,0 +1,178 @@
+# select〈 集約関数1個 〉from テーブル group by〈 列2個 〉
+# 
+# 集約関数 .. group byテスト
+# --集約関数1個でのgroup byテスト
+# 索引
+# --複索引
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# メインテーブル
+Command  "create table T(C1 int, C2 varchar(2), C3 nvarchar(4), C4 int, C5 nvarchar(32))";
+Command  "create index I_1  on T(C1, C2)";
+Command  "create index I_2  on T(C1, C3)";
+Command  "create index I_3  on T(C1, C4)";
+Command  "create index I_4  on T(C1, C5)";
+Command  "create index I_5  on T(C2, C3)";
+Command  "create index I_6  on T(C2, C4)";
+Command  "create index I_7  on T(C2, C5)";
+Command  "create index I_8  on T(C3, C4)";
+Command  "create index I_9  on T(C3, C5)";
+Command  "create index I_10 on T(C4, C5)";
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 1, "1", "ほげ", 111,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 2, "1", "ホゲ", 222,  null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 3, "2",  null,  222,  null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 4, "3", "ホゲ", 222,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 5, "4", "ホゲ", null, textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 6, "1", "ぴよ", 333,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 7, "2",  null,  333,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 8, "3", "ぴよ", 333,  textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [ 9, "1", "ピヨ", 444,  textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [10, "2", "ピヨ", null, null                                 ];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [11, "3", "ピヨ", 444,  textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [12, "5",  null,  null, textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T (C1, C2, C3, C4, C5) values (?, ?, ?, ?, ?)" [13, "2",  null,  null, null                                 ];
+
+
+# --count
+Command  "select count(*) from T group by (C1, C1)";
+Command  "select count(*) from T group by (C2, C2)";
+Command  "select count(*) from T group by (C3, C3)";
+Command  "select count(*) from T group by (C4, C4)";
+Command  "select count(*) from T group by (C5, C5)";
+
+Command  "select count(C1) from T group by (C1, C1)";
+Command  "select count(C1) from T group by (C1, C2)";
+Command  "select count(C1) from T group by (C1, C3)";
+Command  "select count(C1) from T group by (C1, C4)";
+Command  "select count(C1) from T group by (C1, C5)";
+
+Command  "select count(C2) from T group by (C2, C1)";
+Command  "select count(C2) from T group by (C2, C2)";
+Command  "select count(C2) from T group by (C2, C3)";
+Command  "select count(C2) from T group by (C2, C4)";
+Command  "select count(C2) from T group by (C2, C5)";
+
+Command  "select count(C3) from T group by (C3, C1)";
+Command  "select count(C3) from T group by (C3, C2)";
+Command  "select count(C3) from T group by (C3, C3)";
+Command  "select count(C3) from T group by (C3, C4)";
+Command  "select count(C3) from T group by (C3, C5)";
+
+Command  "select count(C4) from T group by (C4, C1)";
+Command  "select count(C4) from T group by (C4, C2)";
+Command  "select count(C4) from T group by (C4, C3)";
+Command  "select count(C4) from T group by (C4, C4)";
+Command  "select count(C4) from T group by (C4, C5)";
+
+Command  "select count(C5) from T group by (C5, C1)";
+Command  "select count(C5) from T group by (C5, C2)";
+Command  "select count(C5) from T group by (C5, C3)";
+Command  "select count(C5) from T group by (C5, C4)";
+Command  "select count(C5) from T group by (C5, C5)";
+
+# --avg
+Command  "select avg(C1) from T group by (C1, C1)";
+Command  "select avg(C1) from T group by (C1, C2)";
+Command  "select avg(C1) from T group by (C1, C3)";
+Command  "select avg(C1) from T group by (C1, C4)";
+Command  "select avg(C1) from T group by (C1, C5)";
+
+Command  "select avg(C4) from T group by (C4, C1)";
+Command  "select avg(C4) from T group by (C4, C2)";
+Command  "select avg(C4) from T group by (C4, C3)";
+Command  "select avg(C4) from T group by (C4, C4)";
+Command  "select avg(C4) from T group by (C4, C5)";
+
+# --sum
+Command  "select sum(C1) from T group by (C1, C1)";
+Command  "select sum(C1) from T group by (C1, C2)";
+Command  "select sum(C1) from T group by (C1, C3)";
+Command  "select sum(C1) from T group by (C1, C4)";
+Command  "select sum(C1) from T group by (C1, C5)";
+
+Command  "select sum(C4) from T group by (C4, C1)";
+Command  "select sum(C4) from T group by (C4, C2)";
+Command  "select sum(C4) from T group by (C4, C3)";
+Command  "select sum(C4) from T group by (C4, C4)";
+Command  "select sum(C4) from T group by (C4, C5)";
+
+# --max
+Command  "select max(C1) from T group by (C1, C1)";
+Command  "select max(C1) from T group by (C1, C2)";
+Command  "select max(C1) from T group by (C1, C3)";
+Command  "select max(C1) from T group by (C1, C4)";
+Command  "select max(C1) from T group by (C1, C5)";
+
+Command  "select max(C2) from T group by (C2, C1)";
+Command  "select max(C2) from T group by (C2, C2)";
+Command  "select max(C2) from T group by (C2, C3)";
+Command  "select max(C2) from T group by (C2, C4)";
+Command  "select max(C2) from T group by (C2, C5)";
+
+Command  "select max(C3) from T group by (C3, C1)";
+Command  "select max(C3) from T group by (C3, C2)";
+Command  "select max(C3) from T group by (C3, C3)";
+Command  "select max(C3) from T group by (C3, C4)";
+Command  "select max(C3) from T group by (C3, C5)";
+
+Command  "select max(C4) from T group by (C4, C1)";
+Command  "select max(C4) from T group by (C4, C2)";
+Command  "select max(C4) from T group by (C4, C3)";
+Command  "select max(C4) from T group by (C4, C4)";
+Command  "select max(C4) from T group by (C4, C5)";
+
+Command  "select max(C5) from T group by (C5, C1)";
+Command  "select max(C5) from T group by (C5, C2)";
+Command  "select max(C5) from T group by (C5, C3)";
+Command  "select max(C5) from T group by (C5, C4)";
+Command  "select max(C5) from T group by (C5, C5)";
+
+# --min
+Command  "select min(C1) from T group by (C1, C1)";
+Command  "select min(C1) from T group by (C1, C2)";
+Command  "select min(C1) from T group by (C1, C3)";
+Command  "select min(C1) from T group by (C1, C4)";
+Command  "select min(C1) from T group by (C1, C5)";
+
+Command  "select min(C2) from T group by (C2, C1)";
+Command  "select min(C2) from T group by (C2, C2)";
+Command  "select min(C2) from T group by (C2, C3)";
+Command  "select min(C2) from T group by (C2, C4)";
+Command  "select min(C2) from T group by (C2, C5)";
+
+Command  "select min(C3) from T group by (C3, C1)";
+Command  "select min(C3) from T group by (C3, C2)";
+Command  "select min(C3) from T group by (C3, C3)";
+Command  "select min(C3) from T group by (C3, C4)";
+Command  "select min(C3) from T group by (C3, C5)";
+
+Command  "select min(C4) from T group by (C4, C1)";
+Command  "select min(C4) from T group by (C4, C2)";
+Command  "select min(C4) from T group by (C4, C3)";
+Command  "select min(C4) from T group by (C4, C4)";
+Command  "select min(C4) from T group by (C4, C5)";
+
+Command  "select min(C5) from T group by (C5, C1)";
+Command  "select min(C5) from T group by (C5, C2)";
+Command  "select min(C5) from T group by (C5, C3)";
+Command  "select min(C5) from T group by (C5, C4)";
+Command  "select min(C5) from T group by (C5, C5)";
+
+Command  "drop table T";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

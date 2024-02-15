@@ -1,0 +1,6500 @@
+// -*-Mode: C++; tab-width: 4; c-basic-offset: 4;-*-
+// vi:set ts=4 sw=4:
+//
+// SQLParserL.lemon -- SQL 文法を表現する lemon ルール
+// 
+// Copyright (c) 1998, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2023 Ricoh Company, Ltd.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+%include {
+// -*-Mode: C++; tab-width: 4; c-basic-offset: 4;-*-
+// vi:set ts=4 sw=4:
+//
+// SQLParserL.cpp -- Lemonにより生成されたパーザ
+//
+
+
+namespace {
+const char moduleName[] = "Statement";
+const char srcFile[] = __FILE__;
+}
+
+#include <stdlib.h>
+#include <malloc.h>
+
+#include "SyDefault.h"
+#include "SyReinterpretCast.h"
+#include "SyDynamicCast.h"
+
+#include "Statement/AllType.h"
+#include "Statement/Object.h"
+#include "Statement/SQLParser.h"
+#include "Statement/SQLParserL.h"
+#include "Statement/SQLScanner.h"
+#include "Statement/Token.h"
+
+#include "Common/Data.h"
+#include "Common/DateData.h"
+#include "Common/DateTimeData.h"
+#include "Common/IntegerData.h"
+#include "Common/Message.h"
+#include "Common/SQLData.h"
+
+#include "Os/Limits.h"
+
+#include "ModAutoPointer.h"
+#include "ModPair.h"
+#include "ModUnicodeCharTrait.h"
+#include "ModUnicodeOstrStream.h"
+
+_SYDNEY_USING
+_SYDNEY_STATEMENT_USING
+
+struct yyStackEntry;
+namespace
+{
+// overloaded realloc is required
+inline yyStackEntry* realloc(yyStackEntry* ptr, size_t size) {
+	return static_cast<yyStackEntry*>(::realloc(ptr, size));
+}
+}
+
+}
+
+// Parser Engine
+%name SQLParserEngine
+%extra_argument { Statement::SQLParser* pParser }
+%parse_accept { pParser->setState(Statement::SQLParser::PARSE_ACCEPT); }
+%parse_failure {
+	if (pParser->getState() != Statement::SQLParser::PARSE_NO_TEXT) {
+		pParser->setState(Statement::SQLParser::PARSE_SYNTAX_ERROR);
+	}
+}
+%syntax_error {
+	if (pParser->getState() != Statement::SQLParser::PARSE_NO_TEXT) {
+		pParser->setState(Statement::SQLParser::PARSE_SYNTAX_ERROR);
+		ModUnicodeOstrStream& cMessage = pParser->getMessage();
+		cMessage << " near token ";
+#ifndef NDEBUG
+		cMessage << yyTokenName[yymajor];
+#else
+		cMessage << yymajor;
+#endif
+
+		if (TOKEN && TOKEN->getToken() != 0)
+		{
+			if (TOKEN->getTail() > TOKEN->getHead())
+			{
+				ModUnicodeString strToken(
+					TOKEN->getHead(),
+					static_cast<ModSize>(TOKEN->getTail() - TOKEN->getHead()));
+				cMessage << " \"" << strToken << "\"";
+				SydMessage << "SQL syntax error:" << strToken << ModEndl;
+			} else {
+				SydMessage << "SQL syntax error" << ModEndl;
+			}
+		}
+		else
+		{
+			SydMessage << "SQL syntax error: unknown token" << ModEndl;
+		}
+	}
+}
+
+%stack_size 0
+
+// Token types
+%token_prefix TOKEN__
+%token_type { Token* }
+%token_destructor { delete $$; }
+
+// Precedences
+%left SEMICOLON.
+%left UNION EXCEPT.
+%left INTERSECT.
+%left JOIN.
+%nonassoc INNER LEFT RIGHT FULL NATURAL CROSS.
+%nonassoc ON.
+%left COMMA.
+%left OR.
+%left AND.
+%right NOT.
+%nonassoc BETWEEN IN.
+%nonassoc EQUALS NOT_EQUALS LESS_THAN GREATER_THAN LESS_THAN_OR_EQUALS GREATER_THAN_OR_EQUALS.
+// 00/11/10 IS を追加
+%nonassoc IS.
+%nonassoc LIKE CONTAINS ESCAPE LANGUAGE CALCULATOR SIMILAR.
+%left COMBINER.
+%left USING.
+%left VERTICALLINE.
+%left CONTAINS_MINUS AMPERSAND.
+%left PLUS MINUS.
+%left STRING_CONCAT.
+%left ASTERISK SOLIDUS.
+%right UNARY_MINUS.
+
+// The Grammer
+%start_symbol start
+
+%destructor start { }
+start ::=	sqlStatementList .
+
+//---------------------
+// SQL statement list
+//---------------------
+%destructor sqlStatementList { }
+sqlStatementList ::= sqlStatement(stmt) .
+	{
+		pParser->setResult(stmt);
+		pParser->setState(Statement::SQLParser::PARSE_ACCEPT);
+	}
+
+sqlStatementList ::= sqlStatementList sqlStatement(stmt) .
+	{
+		pParser->setResult(stmt);
+		pParser->setState(Statement::SQLParser::PARSE_ACCEPT);
+	}
+
+//-------------------
+// SQL statement
+//-------------------
+%type sqlStatement { Object* }
+%destructor sqlStatement { delete $$; }
+
+//
+// semicolon
+//
+sqlStatement(result) ::= SEMICOLON .
+	{result = 0;}
+
+//
+// data retrieval
+//
+sqlStatement(result) ::= queryExpression(statement) .
+	{ result = statement; }
+
+//
+// data manipulation
+//
+sqlStatement(result) ::= deleteStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= insertStatement(statement) .
+	{ result = statement; }
+
+sqlStatement(result) ::= updateStatement(statement) .
+	{ result = statement; }
+
+//
+// schema operation
+//
+sqlStatement(result) ::= tableDefinition(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= indexDefinition(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= dropIndexStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= dropTableStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= areaDefinition(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= dropAreaStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= databaseDefinition(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= dropDatabaseStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= alterTableStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= alterIndexStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= alterDatabaseStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= alterAreaStatement(statement) .
+	{ result = statement; }
+
+//
+// schema operation(distribution)
+//
+sqlStatement(result) ::= cascadeDefinition(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= partitionDefinition(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= functionDefinition(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= alterCascadeStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= alterPartitionStatement(statement) .
+	{ result = statement; }
+/*sqlStatement(result) ::= alterFunctionStatement(statement) .
+	{ result = statement; } */
+sqlStatement(result) ::= dropCascadeStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= dropPartitionStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= dropFunctionStatement(statement) .
+	{ result = statement; }
+
+//
+// transaction
+//
+sqlStatement(result) ::= startTransactionStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= setTransactionStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= commitStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= rollbackStatement(statement) .
+	{ result = statement; }
+
+//
+// administrative functions
+//
+sqlStatement(result) ::= unmountDatabaseStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= mountDatabaseStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= startBackupStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= endBackupStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= verifyStatement(statement) .
+	{ result = statement; }
+
+//
+// sync
+//
+sqlStatement(result) ::= syncStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= checkpointStatement(statement) .
+	{ result = statement; }
+
+//
+// disconnect
+//
+sqlStatement(result) ::= disconnectStatement(statement) .
+	{ result = statement; }
+
+//
+// declare
+//
+sqlStatement(result) ::= declareStatement(statement) .
+	{ result = statement; }
+
+//
+// two phase commit
+//
+sqlStatement(result) ::= xa_StartStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= xa_EndStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= xa_PrepareStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= xa_CommitStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= xa_RollbackStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= xa_RecoverStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= xa_ForgetStatement(statement) .
+	{ result = statement; }
+
+//
+// privilege management
+//
+sqlStatement(result) ::= grantStatement(statement) .
+	{ result = statement; }
+sqlStatement(result) ::= revokeStatement(statement) .
+	{ result = statement; }
+
+//
+// explaining
+//
+sqlStatement(result) ::= explainStatement(statement) .
+	{ result = statement; }
+
+sqlStatement(result) ::= startExplainStatement(statement) .
+	{ result = statement; }
+
+sqlStatement(result) ::= endExplainStatement(statement) .
+	{ result = statement; }
+
+////////////////////////////////////////////////////////
+//--------------
+// <literal>
+//--------------
+
+%type literal { Literal* }
+%destructor literal { delete $$; }
+literal(result) ::= numericLiteral(numeric) . {result = numeric;}
+literal(result) ::= stringLiteral(string) . {result = string;}
+literal(result) ::= datetimeLiteral(datetime) . {result = datetime;}
+
+//-----------------
+// string literal
+//-----------------
+%type stringLiteral { Literal* }
+%destructor stringLiteral { delete $$; }
+stringLiteral(result) ::= characterStringLiteral(literal) .
+	{ result = literal; }
+stringLiteral(result) ::= binaryStringLiteral(literal) .
+	{ result = literal; }
+
+//
+// character string literal
+// [NOTES]
+// string concatenation of the style 'this' ' andmore' is
+// processed by the scanner
+//
+
+%type characterStringLiteral { Literal* }
+%destructor characterStringLiteral { delete $$; }
+characterStringLiteral(result) ::= STRING(str) .
+	{
+		result = new Literal(*str);
+		delete str;
+	}
+characterStringLiteral(result) ::= STRING_WITH_QUOTE(str) .
+	{
+		result = new Literal(*str);
+		delete str;
+	}
+
+//
+// binary string literal
+// 
+//	<binary string literal> ::=
+//		X <quote> [ { <hexit> <hexit> }... ] <quote>
+//		[ { <separator> <quote> [ { <hexit> <hexit> }... ] <quote> }... ]
+//	<hexit> ::=
+//		<digit> | A | B | C | D | E | F | a | b | c | d | e | f
+//
+
+%type binaryStringLiteral { Literal* }
+%destructor binaryStringLiteral { delete $$; }
+binaryStringLiteral(result) ::= BINARY_STRING(str) .
+	{
+		result = new Literal(*str);
+		delete str;
+	}
+
+//-----------------
+// numeric literal
+//-----------------
+%type numericLiteral { Literal* }
+%destructor numericLiteral { delete $$; }
+numericLiteral(result) ::= exactNumericLiteral(literal) .
+	{
+		result = literal;
+	}
+numericLiteral(result) ::= approximateNumericLiteral(literal) .
+	{
+		result = literal;
+	}
+
+//-----------------------
+// exact numeric literal
+//-----------------------
+%type exactNumericLiteral { Literal* }
+%destructor exactNumericLiteral { delete $$; }
+exactNumericLiteral(result) ::= unsignedIntegerLiteral(num) .
+	{
+		result = num;
+	}
+
+//
+// unsigned integer literal
+//
+%type unsignedIntegerLiteral { Literal* }
+%destructor unsignedIntegerLiteral { delete $$; }
+unsignedIntegerLiteral(result) ::= INTEGER_LITERAL(num) .
+	{
+		result = new Literal(*num);
+		delete num;
+	}
+
+//-----------------------------
+// approximate numeric literal
+//-----------------------------
+%type approximateNumericLiteral { Literal* }
+%destructor approximateNumericLiteral { delete $$; }
+approximateNumericLiteral(result) ::= floatLiteral(num) .
+	{
+		result = num;
+	}
+
+//
+// float literal
+//
+%type floatLiteral { Literal* }
+%destructor floatLiteral { delete $$; }
+floatLiteral(result) ::= FLOAT_LITERAL(num) .
+	{
+		result = new Literal(*num);
+		delete num;
+	}
+
+//----------------------
+// datetime literal
+//----------------------
+%type datetimeLiteral { Literal* }
+%destructor datetimeLiteral { delete $$; }
+datetimeLiteral(result) ::=	dateLiteral(d)		. { result = d; }
+datetimeLiteral(result) ::= timestampLiteral(d)	. { result = d; }
+
+//
+// date literal
+//
+%type dateLiteral { Literal* }
+%destructor dateLiteral { delete $$; }
+dateLiteral(result) ::= DATE STRING(str) .
+	{
+		result = new Literal(Token(TOKEN__DATE, str->getHead(), str->getTail()));
+		delete str;
+	}
+//
+// timestamp literal
+//
+%type timestampLiteral { Literal* }
+%destructor timestampLiteral { delete $$; }
+timestampLiteral(result) ::= TIMESTAMP STRING(str) .
+	{
+		result = new Literal(Token(TOKEN__TIMESTAMP, str->getHead(), str->getTail()));
+		delete str;
+	}
+
+////////////////////////////////////////////////////////
+//-------------------------
+// Names and identifiers
+//-------------------------
+
+//--------------
+// table name
+//--------------
+%type tableName { Identifier* }
+%destructor tableName { delete $$; }
+tableName(result) ::= identifier(id) .
+	{
+		result = id;
+	}
+
+//--------------
+// column name
+//--------------
+%type columnName { ColumnName* }
+%destructor columnName { delete $$; }
+columnName(result) ::= identifier(id) .
+	{
+		result = new ColumnName(id);
+	}
+
+//--------------
+// column name
+//--------------
+%type variableName { VariableName* }
+%destructor variableName { delete $$; }
+variableName(result) ::= identifier(id) .
+	{
+		result = new VariableName(id);
+	}
+
+//------------
+// identifier
+//------------
+%type identifier { Identifier* }
+%destructor identifier { delete $$; }
+identifier(result) ::= IDENTIFIER(id) .
+	{
+		result = new Identifier(*id);
+		delete id;
+	}
+identifier(result) ::= IDENTIFIER_WITH_QUOTE(id) .
+	{
+		result = new Identifier(*id);
+		delete id;
+	}
+
+///////////////////////////////////
+//-----------------------
+// <value specification>
+//-----------------------
+%type valueSpecification { ValueExpression* }
+%destructor valueSpecification { delete $$; }
+valueSpecification(result) ::= numericValueSpecification(value) .
+	{ result = value; }
+
+valueSpecification(result) ::= stringValueSpecification(value) .
+	{ result = value; }
+
+valueSpecification(result) ::= datetimeValueSpecification(value) .
+	{ result = value; }
+
+valueSpecification(result) ::= noTypeValueSpecification(value) .
+	{ result = value; }
+
+//----------------------------
+// numeric value specification
+//----------------------------
+%type numericValueSpecification { ValueExpression* }
+%destructor numericValueSpecification { delete $$; }
+numericValueSpecification(result) ::= numericLiteral(value) .
+	{ result = new ValueExpression(value); }
+
+//----------------------------
+// string value specification
+//----------------------------
+%type stringValueSpecification { ValueExpression* }
+%destructor stringValueSpecification { delete $$; }
+stringValueSpecification(result) ::= stringLiteral(value) .
+	{ result = new ValueExpression(value); }
+
+//----------------------------
+// datetime value specification
+//----------------------------
+%type datetimeValueSpecification { ValueExpression* }
+%destructor datetimeValueSpecification { delete $$; }
+datetimeValueSpecification(result) ::= datetimeLiteral(value) .
+	{ result = new ValueExpression(value); }
+
+//----------------------------
+// no type value specification
+//----------------------------
+%type noTypeValueSpecification { ValueExpression* }
+%destructor noTypeValueSpecification { delete $$; }
+noTypeValueSpecification(result) ::= placeHolder(place) .
+	{ result = place; }
+noTypeValueSpecification(result) ::= NULL .
+	{ result = ValueExpression::nullExpression(); }
+noTypeValueSpecification(result) ::= DEFAULT .
+	{ result = ValueExpression::defaultExpression(); }
+noTypeValueSpecification(result) ::= generalValueSpecification(value) .
+	{ result = value; }
+noTypeValueSpecification(result) ::= elementReference(elmref) .
+	{ result = elmref; }
+
+//
+// place holder
+//
+%type placeHolder { ValueExpression* }
+%destructor placeHolder { delete $$; }
+placeHolder(result) ::= QUESTION_MARK(que) .
+	{
+		result = new ValueExpression(ValueExpression::op_Placeholder,
+									 new IntegerValue(que->getInteger()),
+									 ValueExpression::Unknown,
+									 ValueExpression::type_Value);
+		delete que;
+	}
+//------------------------------
+// general value specification
+//------------------------------
+%type generalValueSpecification { ValueExpression* }
+%destructor generalValueSpecification { delete $$; }
+generalValueSpecification(result) ::=	itemReference(item) .
+	{
+		result = new ValueExpression(ValueExpression::op_Itemref, item,
+									 ValueExpression::Unknown,
+									 ValueExpression::type_SingleColumn);
+	}
+generalValueSpecification(result) ::=	USER .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_User,
+									 ValueExpression::CharString, 0, 0,
+									 ValueExpression::type_Value);
+	}
+
+generalValueSpecification(result) ::=	CURRENT_USER .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_Current_User,
+									 ValueExpression::CharString, 0, 0,
+									 ValueExpression::type_Value);
+	}
+
+generalValueSpecification(result) ::=	SESSION_USER .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_Session_User,
+									 ValueExpression::CharString, 0, 0,
+									 ValueExpression::type_Value);
+	}
+
+generalValueSpecification(result) ::=	CURRENT_PATH .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_Current_Path,
+									 ValueExpression::CharString, 0, 0,
+									 ValueExpression::type_Value);
+	}
+
+//----------------
+// item reference
+//----------------
+%type itemReference { ItemReference* }
+%destructor itemReference { delete $$; }
+itemReference(result) ::=		itemQualifier(qualifier) PERIOD identifier(item) .
+	{
+		result = new ItemReference(qualifier, item);
+	}
+
+itemReference(result) ::=	identifier(item) .
+	{
+		result = new ItemReference(0, item);
+	}
+//
+// item qualifier
+//
+%type itemQualifier { Identifier* }
+%destructor itemQualifier { delete $$; }
+itemQualifier(result) ::=		tableName(tn) .
+	{ result = tn; }
+
+//------------------------------
+// element reference
+//------------------------------
+%type elementReference { ValueExpression* }
+%destructor elementReference { delete $$; }
+elementReference(result) ::= arrayValueOperand(arrayval)
+							 LEFT_BRACKET
+							 exactNumericLiteral(numeric)
+							 RIGHT_BRACKET .
+	{
+		ValueExpression * right = new ValueExpression(numeric);
+
+		result = new ValueExpression(ValueExpression::op_Arrayref,
+									 arrayval, right);
+	}
+elementReference(result) ::= anyElementReference(arrayval)	.
+   {
+	   result = arrayval; 
+   }
+
+//------------------------------
+// any element reference
+//------------------------------
+%type anyElementReference { ValueExpression* }
+%destructor anyElementReference { delete $$; }
+anyElementReference(result) ::= arrayValueOperand(arrayval)
+							 LEFT_BRACKET
+							 RIGHT_BRACKET .
+	{
+		result = new ValueExpression(ValueExpression::op_Arrayref,
+									 arrayval);
+	}
+
+//////////////////////////////////////////
+//--------------------
+// <query expression>
+//--------------------
+%type queryExpression { QueryExpression* }
+%destructor queryExpression { delete $$; }
+queryExpression(result) ::= queryExpressionBody(body)
+								optionalSortSpecificationList(order)
+								optionalLimitSpecification(limit)
+								hint(hint) .
+	{
+		if (order) {
+			body->setSortSpecification(order);
+		}
+		if (limit) {
+			body->setLimitSpecification(limit);
+		}
+		if (hint) {
+			body->setHint(hint);
+		}
+		result = body;
+	}
+
+//------------------------
+// query expression body
+//------------------------
+%type queryExpressionBody { QueryExpression* }
+%destructor queryExpressionBody { delete $$; }
+queryExpressionBody(result) ::=		queryTerm(term) .
+	{
+		result = new QueryExpression(term);
+	}
+
+queryExpressionBody(result) ::=		queryExpressionBody(exp) queryOperator(op) queryTerm(term) .
+	{
+		result = new QueryExpression(op, exp, term);
+	}
+
+//----------------
+// query operator
+//----------------
+%type queryOperator { QueryOperator* }
+%destructor queryOperator { delete $$; }
+queryOperator(result) ::= UNION optionalAll(all) optionalCorrespondingSpec(spec) .
+	{
+		result = new QueryOperator(QueryOperator::Union, all, spec);
+	}
+
+queryOperator(result) ::= EXCEPT optionalAll(all) optionalCorrespondingSpec(spec) .
+	{
+		result = new QueryOperator(QueryOperator::Except, all, spec);
+	}
+
+queryOperator(result) ::= INTERSECT optionalAll(all) optionalCorrespondingSpec(spec) .
+	{
+		result = new QueryOperator(QueryOperator::Intersect, all, spec);
+	}
+
+//
+// optional all
+//
+%type optionalAll { int }
+optionalAll(result) ::=		/* empty */ .
+	{
+		result = ValueExpression::quant_None;
+	}
+
+optionalAll(result) ::=		ALL .
+	{
+		result = ValueExpression::quant_All;
+	}
+
+optionalAll(result) ::=		DISTINCT .
+	{
+		result = ValueExpression::quant_Distinct;
+	}
+
+//---------------------
+// corresponding spec
+//---------------------
+%type optionalCorrespondingSpec { ColumnNameList* }
+%destructor optionalCorrespondingSpec { delete $$; }
+optionalCorrespondingSpec(result) ::=		/* empty */ .
+	{ result = 0; }
+
+optionalCorrespondingSpec(result) ::=	correspondingSpec(spec) .
+	{ result = spec; }
+
+%type correspondingSpec { ColumnNameList* }
+%destructor correspondingSpec { delete $$; }
+correspondingSpec(result) ::=		CORRESPONDING optionalByCorrespondingColumnList(list) .
+	{
+		if (!list) {
+			result = new ColumnNameList;
+		} else {
+			result = list;
+		}
+	}
+
+//
+// corresponding column list
+//
+%type optionalByCorrespondingColumnList { ColumnNameList* }
+%destructor optionalByCorrespondingColumnList { delete $$; }
+optionalByCorrespondingColumnList(result) ::=		/* empty */ .
+	{ result = 0; }
+
+optionalByCorrespondingColumnList(result) ::=	BY LEFT_PARENTHESIS correspondingColumnList(list) RIGHT_PARENTHESIS .
+	{ result = list; }
+
+%type correspondingColumnList { ColumnNameList* }
+%destructor correspondingColumnList { delete $$; }
+correspondingColumnList(result) ::=	 columnNameList(cols) .
+	{ result = cols; }
+
+//
+// column name list
+//
+%type columnNameList { ColumnNameList* }
+%destructor columnNameList { delete $$; }
+columnNameList(result) ::=		columnName(name) .
+	{
+		result = new ColumnNameList(name);
+	}
+
+columnNameList(result) ::=	columnNameList(list) COMMA columnName(name) .
+	{
+		list->append(name);
+		result = list;
+	}
+/* Sydney extension */
+columnNameList(result) ::=	columnNameList(list) COMMA .
+	{ result = list; }
+
+//------------
+// query term
+//------------
+%type queryTerm { Object* }
+%destructor queryTerm { delete $$; }
+queryTerm(result) ::=		queryPrimary(primary) .
+	{ result = primary; }
+
+//---------------
+// query primary
+//---------------
+%type queryPrimary { Object* }
+%destructor queryPrimary { delete $$; }
+queryPrimary(result) ::=  nonJoinQueryPrimary(primary) .
+	{ result = primary; }
+
+//------------------------
+// non join query primary
+//------------------------
+%type nonJoinQueryPrimary { Object* }
+%destructor nonJoinQueryPrimary { delete $$; }
+nonJoinQueryPrimary(result) ::=		simpleTable(table) .
+	{
+		result = table;
+	}
+
+nonJoinQueryPrimary(result) ::=		LEFT_PARENTHESIS queryExpression(query) RIGHT_PARENTHESIS .
+	{
+		//	check the queryExpression is NOT joined table
+		result = query;
+	}
+
+//--------------
+// simple table
+//--------------
+%type simpleTable { Object* }
+%destructor simpleTable { delete $$; }
+simpleTable(result) ::=	 querySpecification(simple) .
+	{ result = simple; }
+
+simpleTable(result) ::=	 tableValueConstructor(simple) .
+	{ result = simple; }
+
+simpleTable(result) ::=	 explicitTable(simple) .
+	{ result = simple; }
+
+//----------------------
+// query specification
+//----------------------
+%type querySpecification { QuerySpecification* }
+%destructor querySpecification { delete $$; }
+querySpecification(result) ::=		SELECT optionalSetQuantifier(quantifier)
+			selectList(list)
+			optionalBulkOutput(output)
+			tableExpression(table) .
+	{
+		result = new QuerySpecification(quantifier, list, table, output);
+	}
+
+querySpecification(result) ::=		SELECT optionalSetQuantifier(quantifier)
+			selectList(list)
+			INTO selectTargetList(targetlist)
+			tableExpression(table) .
+	{
+		result = new QuerySpecification(quantifier, list, table, 0, targetlist);	   
+	}
+
+
+//
+// set quantifier
+//
+%type optionalSetQuantifier { int }
+optionalSetQuantifier(result) ::=		/* empty */ .
+	{
+		result = ValueExpression::quant_None;
+	}
+
+optionalSetQuantifier(result) ::=	ALL .
+	{
+		result = ValueExpression::quant_All;
+	}
+
+optionalSetQuantifier(result) ::=	DISTINCT .
+	{
+		result = ValueExpression::quant_Distinct;
+	}
+
+//-------------
+// select list
+//-------------
+%type selectList { SelectList* }
+%destructor selectList { delete $$; }
+selectList(result) ::= ASTERISK .
+	{
+		result = SelectList::asterisk();
+	}
+
+selectList(result) ::= selectSubListList(list) .
+	{
+		result = new SelectList(list);
+	}
+
+//-----------------------
+// select sub list, ...
+//-----------------------
+%type selectSubListList { SelectSubListList* }
+%destructor selectSubListList { delete $$; }
+selectSubListList(result) ::=		selectSubList(subList) .
+	{
+		result = new SelectSubListList(subList);
+	}
+
+selectSubListList(result) ::=	selectSubListList(list) COMMA selectSubList(subList) .
+	{
+		list->append(subList);
+		list->mergeExpressionType(subList->getExpressionType());
+		result = list;
+	}
+/* Sydney extension */
+selectSubListList(result) ::=	selectSubListList(list) COMMA .
+	{ result = list; }
+
+//------------------
+// select sub list
+//------------------
+%type selectSubList { SelectSubList* }
+%destructor selectSubList { delete $$; }
+selectSubList(result) ::=		derivedColumn(column) .
+	{
+		result = new SelectSubList(column);
+	}
+
+selectSubList(result) ::=	itemQualifier(id) PERIOD ASTERISK .
+	{
+		result = new SelectSubList(id);
+	}
+
+
+//------------------
+// select sub list
+//------------------
+%type selectTargetList { SelectTargetList* }
+%destructor selectTargetList { delete $$; }
+selectTargetList(result) ::= 	variableName(valname) .
+	{
+		result = new SelectTargetList(valname);
+	}
+selectTargetList(result) ::=	selectTargetList(vallist) COMMA variableName(valname) .
+	{
+		vallist->append(valname);
+		result = vallist;
+	}
+
+
+//
+// derived column
+//
+%type derivedColumn { DerivedColumn* }
+%destructor derivedColumn { delete $$; }
+derivedColumn(result) ::=		nonPredicateValueExpression(value) .
+	{
+		result = new DerivedColumn(value, 0);
+	}
+
+derivedColumn(result) ::=	nonPredicateValueExpression(value) columnName(column) .
+	{
+		result = new DerivedColumn(value, column);
+	}
+
+derivedColumn(result) ::=	nonPredicateValueExpression(value) AS columnName(column) .
+	{
+		result = new DerivedColumn(value, column);
+	}
+
+//--------------
+// bulk output
+//--------------
+%type optionalBulkOutput { BulkSpecification* }
+%destructor optionalBulkOutput { delete $$; }
+
+optionalBulkOutput(result) ::= .
+	{
+		result = 0;
+	}
+optionalBulkOutput(result) ::= OUTPUT TO bulkSpecification(spec) .
+	{
+		spec->setInput(false);
+		result = spec;
+	}
+
+//--------------------
+// bulk specification
+//--------------------
+%type bulkSpecification { BulkSpecification* }
+%destructor bulkSpecification { delete $$; }
+
+bulkSpecification(result) ::= inputData(data) optionalWithClause(with) optionalBulkHint(hint) .
+	{
+		result = new BulkSpecification(data, with, hint);
+	}
+
+//
+// input data
+//
+%type inputData { ValueExpression* }
+%destructor inputData { delete $$; }
+
+inputData(result) ::= PATH pathName(path) .
+	{
+		result = new ValueExpression(path);
+		result->setOperator(ValueExpression::op_PathName);
+	}
+
+//
+// with clause
+//
+%type optionalWithClause { ValueExpression* }
+%destructor optionalWithClause { delete $$; }
+
+optionalWithClause(result) ::= .
+	{
+		result = 0;
+	}
+optionalWithClause(result) ::= WITH withClause(with) .
+	{
+		result = with;
+	}
+
+%type withClause { ValueExpression* }
+%destructor withClause { delete $$; }
+
+withClause(result) ::= PATH pathName(path) .
+	{
+		result = new ValueExpression(path);
+		result->setOperator(ValueExpression::op_PathName);
+	}
+
+//
+// bulk hint
+//
+%type optionalBulkHint { ValueExpression* }
+%destructor optionalBulkHint { delete $$; }
+
+optionalBulkHint(result) ::= .
+	{
+		result = 0;
+	}
+optionalBulkHint(result) ::= bulkHint(hint) .
+	{
+		result = hint;
+	}
+
+%type bulkHint { ValueExpression* }
+%destructor bulkHint { delete $$; }
+
+bulkHint(result) ::= HINT valueSpecification(value) .
+	{
+		result = value;
+	}
+
+//------------------
+// table expression
+//------------------
+%type tableExpression { TableExpression* }
+%destructor tableExpression { delete $$; }
+tableExpression(result) ::=		fromClause(from) optionalWhereClause(where)
+				optionalGroupByClause(groupBy) optionalHavingClause(having) .
+	{
+		result = new TableExpression(from, where, groupBy, having);
+	}
+
+//-------------
+// from clause
+//-------------
+%type fromClause { TableReferenceList* }
+%destructor fromClause { delete $$; }
+fromClause(result) ::=		FROM tableReferenceList(list) .
+	{
+		result = list;
+	}
+
+//-----------------------
+// table reference list
+//-----------------------
+%type tableReferenceList { TableReferenceList* }
+%destructor tableReferenceList { delete $$; }
+tableReferenceList(result) ::=		tableReference(table) .
+	{
+		result = new TableReferenceList(table);
+	}
+
+tableReferenceList(result) ::=	tableReferenceList(list) COMMA tableReference(table) .
+	{
+		list->append(table);
+		result = list;
+	}
+/* Sydney extension */
+tableReferenceList(result) ::=	tableReferenceList(list) COMMA .
+	{ result = list; }
+
+//-----------------
+// table reference
+//-----------------
+%type tableReference { Object* }
+%destructor tableReference { delete $$; }
+tableReference(result) ::= tablePrimary(primary) .
+	{
+		result = primary;
+	}
+tableReference(result) ::= joinedTable(joined) .
+	{
+		result = joined;
+	}
+
+//----------------
+// table primary
+//----------------
+%type tablePrimary { TablePrimary* }
+%destructor tablePrimary { delete $$; }
+tablePrimary(result) ::=
+		tableName(id) tableCorrelationSpec(cor) .
+	{
+		result = new TablePrimary(id, cor->getCorrelation(), cor->getDerived());
+		// 下位オブジェクトは使う。corだけを解放
+		cor->clearBody();
+		delete cor;
+	}
+tablePrimary(result) ::=
+		tableName(id) .
+	{
+		result = new TablePrimary(id, 0, 0);
+	}
+tablePrimary(result) ::=	derivedTable(derived) tableCorrelationSpec(cor) .
+	{
+		result = new TablePrimary(derived, cor->getCorrelation(), cor->getDerived());
+		// 下位オブジェクトは使う。corだけを解放
+		cor->clearBody();
+		delete cor;
+	}
+tablePrimary(result) ::=	LEFT_PARENTHESIS joinedTable(joined) RIGHT_PARENTHESIS .
+	{
+		result = new TablePrimary(TablePrimary::Type::JoinedTable, joined);
+	}
+tablePrimary(result) ::= collectionDerivedTable(derived) tableCorrelationSpec(cor) .
+	{
+		result = new TablePrimary(derived, cor->getCorrelation(), cor->getDerived());
+		// 下位オブジェクトは使う。corだけを解放
+		cor->clearBody();
+		delete cor;
+	}
+// for checking of bulk insert action (non public function)
+tablePrimary(result) ::= INPUT FOR tableName(name) FROM bulkSpecification(spec) .
+	{
+		spec->setInput(true);
+		result = new TablePrimary(TablePrimary::Type::Bulk, spec);
+		result->setCorrelationName(name);
+	}
+
+//------------------------
+// table correlation spec
+//------------------------
+%type tableCorrelationSpec { TableCorrelationSpec* }
+%destructor tableCorrelationSpec { delete $$; }
+tableCorrelationSpec(result) ::=		asCorrelationName(name) optionalDerivedColumnList(derived) .
+	{
+		result = new TableCorrelationSpec(name, derived);
+	}
+
+//
+// correlation name
+//
+%type asCorrelationName { Identifier* }
+%destructor asCorrelationName { delete $$; }
+asCorrelationName(result) ::=	AS identifier(correlation) .
+	{
+		result = correlation;
+	}
+asCorrelationName(result) ::=	identifier(correlation) .
+	{
+		result = correlation;
+	}
+
+//
+// derived column list
+//
+%type optionalDerivedColumnList { ColumnNameList* }
+%destructor optionalDerivedColumnList { delete $$; }
+optionalDerivedColumnList(result) ::= .
+	{
+		result = 0;
+	}
+optionalDerivedColumnList(result) ::= LEFT_PARENTHESIS derivedColumnList(derived) RIGHT_PARENTHESIS .
+	{
+		result = derived;
+	}
+
+%type derivedColumnList { ColumnNameList* }
+%destructor derivedColumnList { delete $$; }
+derivedColumnList(result) ::=		columnNameList(cols) .
+	{
+		result = cols;
+	}
+
+//-------------------
+// derived table
+//-------------------
+%type derivedTable { QueryExpression* }
+%destructor derivedTable { delete $$; }
+derivedTable(result) ::=		tableSubquery(sq) .
+	{
+		result = sq;
+	}
+
+//
+// table subquery
+//
+%type tableSubquery { QueryExpression* }
+%destructor tableSubquery { delete $$; }
+tableSubquery(result) ::=  subquery(query) .
+	{ result = query; }
+
+//
+// row subquery
+//
+%type rowSubquery { ValueExpression* }
+%destructor rowSubquery { delete $$; }
+rowSubquery(result) ::=  subquery(query) .
+	{
+		result = new ValueExpression(ValueExpression::op_RowSubquery,
+									 query,
+									 ValueExpression::Unknown,
+									 ValueExpression::type_Unknown);
+	}
+
+%type subquery { QueryExpression* }
+%destructor subquery { delete $$; }
+subquery(result) ::=		LEFT_PARENTHESIS queryExpression(query) RIGHT_PARENTHESIS .
+	{ result = query; }
+
+//---------------
+// joined table
+//---------------
+%type joinedTable { Object* }
+%destructor joinedTable { delete $$; }
+joinedTable(result) ::=		crossJoin(j)		 .
+	{ result = j; }
+joinedTable(result) ::=		qualifiedJoin(j)	 .
+	{ result = j; }
+joinedTable(result) ::=		naturalJoin(j)	 .
+	{ result = j; }
+/* Sydney extension */
+joinedTable(result) ::=		existsJoin(j)	 .
+	{ result = j; }
+
+//---------------
+// cross join
+//---------------
+%type crossJoin { Object* }
+%destructor crossJoin { delete $$; }
+crossJoin(result) ::=		tableReference(reference) CROSS JOIN tablePrimary(primary) .
+	{
+		result = new CrossJoin(reference, primary);
+	}
+
+//-----------------
+// qualified join
+//-----------------
+%type qualifiedJoin { QualifiedJoin* }
+%destructor qualifiedJoin { delete $$; }
+qualifiedJoin(result) ::=
+	tableReference(reference0) optionalJoinType(type)
+		JOIN tableReference(reference1) joinSpecification(spec) .
+	{
+		result = new QualifiedJoin(type, reference0, reference1, spec);
+	}
+
+//
+// join type
+//
+%type optionalJoinType { JoinType::Value }
+optionalJoinType(result) ::= .
+	{ result = JoinType::Inner; }
+optionalJoinType(result) ::= INNER .
+	{ result = JoinType::Inner; }
+optionalJoinType(result) ::= LEFT .
+	{ result = JoinType::Left; }
+optionalJoinType(result) ::= LEFT OUTER .
+	{ result = JoinType::Left; }
+optionalJoinType(result) ::= RIGHT .
+	{ result = JoinType::Right; }
+optionalJoinType(result) ::= RIGHT OUTER .
+	{ result = JoinType::Right; }
+optionalJoinType(result) ::= FULL .
+	{ result = JoinType::Full; }
+optionalJoinType(result) ::= FULL OUTER .
+	{ result = JoinType::Full; }
+
+//
+// join specification
+//
+%type joinSpecification { Object* }
+%destructor joinSpecification { delete $$; }
+joinSpecification(result) ::= ON searchCondition(condition) .
+	{
+		result = condition;
+	}
+joinSpecification(result) ::= USING LEFT_PARENTHESIS columnNameList(joinColumnList) RIGHT_PARENTHESIS .
+	{
+		result = joinColumnList;
+	}
+
+//----------------
+// natural join
+//----------------
+%type naturalJoin { QualifiedJoin* }
+%destructor naturalJoin { delete $$; }
+naturalJoin(result) ::=
+	tableReference(reference) NATURAL optionalJoinType(type)
+		JOIN tablePrimary(primary) .
+	{
+		result = new QualifiedJoin(type, reference, primary, 0);
+	}
+
+//---------------
+// exists join
+//
+// Sydney extension for checking action of exists <subquery>
+//---------------
+%type existsJoin { ExistsJoin* }
+%destructor existsJoin { delete $$; }
+existsJoin(result) ::=
+	tableReference(reference) EXISTS JOIN tablePrimary(primary) ON searchCondition(condition) .
+	{
+		result = new ExistsJoin(reference, primary, condition, true);
+	}
+existsJoin(result) ::=
+	tableReference(reference) NOT EXISTS JOIN tablePrimary(primary) ON searchCondition(condition) .
+	{
+		result = new ExistsJoin(reference, primary, condition, false);
+	}
+
+//-------------------------------
+// collection derived table
+//-------------------------------
+%type collectionDerivedTable { ValueExpression* }
+%destructor collectionDerivedTable { delete $$; }
+collectionDerivedTable(result) ::=		UNNEST LEFT_PARENTHESIS arrayValueOperand(exp) RIGHT_PARENTHESIS .
+	{
+		result = exp;
+	}
+
+//--------------------
+// where clause
+//--------------------
+%type optionalWhereClause { ValueExpression* }
+%destructor optionalWhereClause { delete $$; }
+optionalWhereClause(result) ::=		/* empty */ .
+	{
+		result = 0;
+	}
+
+optionalWhereClause(result) ::=		whereClause(where) .
+	{
+		result = where;
+	}
+
+%type whereClause { ValueExpression* }
+%destructor whereClause { delete $$; }
+whereClause(result) ::=		WHERE searchCondition(condition) .
+	{
+		result = condition;
+	}
+
+//
+// search condition
+//
+%type searchCondition { ValueExpression* }
+%destructor searchCondition { delete $$; }
+searchCondition(result) ::=	 booleanValueExpression(value) .
+	{ result = value; }
+
+//---------------------
+// group by clause
+//---------------------
+%type optionalGroupByClause { GroupByClause* }
+%destructor optionalGroupByClause { delete $$; }
+optionalGroupByClause(result) ::=		/* empty */ .
+	{
+		result = 0;
+	}
+
+optionalGroupByClause(result) ::=	groupByClause(groupBy) .
+	{
+		result = groupBy;
+	}
+
+%type groupByClause { GroupByClause* }
+%destructor groupByClause { delete $$; }
+groupByClause(result) ::=		GROUP BY groupingElementList(list) .
+	{
+		result = new GroupByClause(list);
+	}
+
+//-------------------------
+// grouping element list
+//-------------------------
+%type groupingElementList { GroupingElementList* }
+%destructor groupingElementList { delete $$; }
+groupingElementList(result) ::=		groupingElement(element) .
+	{
+		result = new GroupingElementList(element);
+	}
+
+groupingElementList(result) ::=		groupingElementList(list)
+			COMMA groupingElement(element) .
+	{
+		list->addElement(element); // element might be deleted
+		result = list;
+	}
+
+//------------------
+// grouping element
+//------------------
+%type groupingElement { Object* }
+%destructor groupingElement { delete $$; }
+groupingElement(result) ::=		groupingColumnReference(reference) .
+	{
+		result = new GroupingColumnReferenceList(reference);
+	}
+
+groupingElement(result) ::=		LEFT_PARENTHESIS groupingColumnReferenceList(list) RIGHT_PARENTHESIS .
+	{
+		result = list;
+	}
+groupingElement(result) ::= LEFT_PARENTHESIS RIGHT_PARENTHESIS .
+	{
+		result = new GroupingColumnReferenceList();
+	}
+
+//-----------------------------------
+// grouping column reference list
+//-----------------------------------
+%type groupingColumnReferenceList { GroupingColumnReferenceList* }
+%destructor groupingColumnReferenceList { delete $$; }
+groupingColumnReferenceList(result) ::=		groupingColumnReference(reference) .
+	{
+		result = new GroupingColumnReferenceList(reference);
+	}
+
+groupingColumnReferenceList(result) ::=		groupingColumnReferenceList(list)
+			COMMA groupingColumnReference(reference) .
+	{
+		list->append(reference);
+		result = list;
+	}
+
+//
+// grouping column reference
+//
+%type groupingColumnReference { GroupingColumnReference* }
+%destructor groupingColumnReference { delete $$; }
+groupingColumnReference(result) ::=		itemReference(item) .
+	{
+		result = new GroupingColumnReference(item);
+	}
+
+groupingColumnReference(result) ::=	itemReference(item)
+									 LEFT_BRACKET
+									 RIGHT_BRACKET .	//anyElementReference(item) .
+	{
+		ModAutoPointer<ValueExpression> pItemReference =
+			new ValueExpression(ValueExpression::op_Itemref, item,
+								ValueExpression::Unknown,
+								ValueExpression::type_SingleColumn);
+		ModAutoPointer<ValueExpression> pArrayRef =
+			new ValueExpression(ValueExpression::op_Arrayref,
+								pItemReference.release());
+		result = new GroupingColumnReference(pArrayRef.release());
+	}
+
+//-----------------
+// having clause
+//-----------------
+%type optionalHavingClause { HavingClause* }
+%destructor optionalHavingClause { delete $$; }
+optionalHavingClause(result) ::=		/* empty */ .
+	{
+		result = 0;
+	}
+
+optionalHavingClause(result) ::=	havingClause(having) .
+	{
+		result = having;
+	}
+
+%type havingClause { HavingClause* }
+%destructor havingClause { delete $$; }
+havingClause(result) ::=		HAVING searchCondition(condition) .
+	{
+		result = new HavingClause(condition);
+	}
+
+//-------------------------
+// sort specification list
+//-------------------------
+%type optionalSortSpecificationList { SortSpecificationList* }
+%destructor optionalSortSpecificationList { delete $$; }
+optionalSortSpecificationList(result) ::= .
+	{ result = 0; }
+optionalSortSpecificationList(result) ::= ORDER BY sortSpecificationList(order) optionalPartitionBy(partitionBy) .
+	{
+		order->setPartitionBy(partitionBy);
+		result = order;
+	}
+
+%type sortSpecificationList { SortSpecificationList* }
+%destructor sortSpecificationList { delete $$; }
+sortSpecificationList(result) ::=		sortSpecification(spec) .
+	{
+		result = new SortSpecificationList(spec);
+	}
+
+sortSpecificationList(result) ::=	sortSpecificationList(list) COMMA sortSpecification(spec) .
+	{
+		list->append(spec);
+		result = list;
+	}
+
+//
+// sort specification
+//
+%type sortSpecification { SortSpecification* }
+%destructor sortSpecification { delete $$; }
+sortSpecification(result) ::=	nonPredicateValueExpression(value) orderingSpecification(order) .
+	{
+		result =  new SortSpecification(value, order);
+	}
+
+//
+// ordering specification
+//
+%type orderingSpecification { int }
+orderingSpecification(result) ::=		ASC .
+	{ result = SortSpecification::Ascending; }
+
+orderingSpecification(result) ::=		DESC .
+	{ result = SortSpecification::Descending; }
+
+orderingSpecification(result) ::=			 .
+	{ result = SortSpecification::Ascending; }
+
+//
+// Partition By
+//
+%type optionalPartitionBy { ValueExpression* }
+%destructor optionalPartitionBy { delete $$; }
+optionalPartitionBy(result) ::= .
+{result = 0;}
+optionalPartitionBy(result) ::= PARTITION BY nonPredicateValueExpression(key).
+{result = key;}
+
+//----------------------
+// limit specification
+//----------------------
+%type optionalLimitSpecification { LimitSpecification* }
+%destructor optionalLimitSpecification { delete $$; }
+optionalLimitSpecification(result) ::= .
+	{ result = 0; }
+optionalLimitSpecification(result) ::= limitSpecification(limit) .
+	{
+		result = new LimitSpecification(limit);
+	}
+optionalLimitSpecification(result) ::= limitSpecification(limit) OFFSET numericValueOperand(offset) .
+	{
+		result = new LimitSpecification(limit, offset);
+	}
+
+%type limitSpecification { ValueExpression* }
+%destructor limitSpecification { delete $$; }
+limitSpecification(result) ::= LIMIT numericValueOperand(limit) .
+	{ result = limit; }
+
+/////////////////////////////////
+//---------------------
+// <value expression>
+//---------------------
+
+//--------------------------------
+// boolean value expression
+//--------------------------------
+%type booleanValueExpression { ValueExpression* }
+%destructor booleanValueExpression { delete $$; }
+booleanValueExpression(result) ::=	predicateValueExpression(e) .
+	{ result = e; }
+
+//-------------------------------
+// predicate value expression
+//-------------------------------
+%type predicateValueExpression { ValueExpression* }
+%destructor predicateValueExpression { delete $$; }
+
+predicateValueExpression(result) ::=
+		LEFT_PARENTHESIS predicateValueExpression(expr1) RIGHT_PARENTHESIS .
+	{ result = expr1; }
+predicateValueExpression(result) ::= predicateValueExpression(expr1) OR predicateValueExpression(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Or, expr1, expr2);
+	}
+predicateValueExpression(result) ::= predicateValueExpression(expr1) AND predicateValueExpression(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_And, expr1, expr2);
+	}
+predicateValueExpression(result) ::= NOT predicateValueExpression(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Not, expr2);
+	}
+predicateValueExpression(result) ::= comparisonPredicate(exp) .
+	{ result = exp; }
+predicateValueExpression(result) ::= betweenPredicate(exp) .
+	{ result = exp; }
+predicateValueExpression(result) ::= inPredicate(exp) .
+	{ result = exp; }
+predicateValueExpression(result) ::= likePredicate(exp) .
+	{ result = exp; }
+predicateValueExpression(result) ::= containsPredicate(exp) .
+	{ result = exp; }
+predicateValueExpression(result) ::= isNullPredicate(exp) .
+	{ result = exp; }
+predicateValueExpression(result) ::= existsPredicate(exp) .
+	{ result = exp; }
+predicateValueExpression(result) ::= similarPredicate(exp) .
+	{ result = exp; }
+predicateValueExpression(result) ::= isSubstringOfPredicate(exp) .
+	{ result = exp; }
+
+//---------------------
+// comparison predicate
+//---------------------
+%type comparisonPredicate { ValueExpression* }
+%destructor comparisonPredicate { delete $$; }
+comparisonPredicate(result) ::= nonPredicateValueExpression(expr1)
+							 EQUALS nonPredicateValueExpression(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Eq, expr1, expr2, ValueExpression::Boolean);
+	}
+comparisonPredicate(result) ::= nonPredicateValueExpression(expr1)
+							 NOT_EQUALS nonPredicateValueExpression(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Ne, expr1, expr2, ValueExpression::Boolean);
+	}
+comparisonPredicate(result) ::= nonPredicateValueExpression(expr1)
+							 LESS_THAN nonPredicateValueExpression(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Lt, expr1, expr2, ValueExpression::Boolean);
+	}
+comparisonPredicate(result) ::= nonPredicateValueExpression(expr1)
+							 LESS_THAN_OR_EQUALS nonPredicateValueExpression(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Le, expr1, expr2, ValueExpression::Boolean);
+	}
+comparisonPredicate(result) ::= nonPredicateValueExpression(expr1)
+							 GREATER_THAN nonPredicateValueExpression(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Gt, expr1, expr2, ValueExpression::Boolean);
+	}
+comparisonPredicate(result) ::= nonPredicateValueExpression(expr1)
+							 GREATER_THAN_OR_EQUALS nonPredicateValueExpression(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Ge, expr1, expr2, ValueExpression::Boolean);
+	}
+
+//----------------------
+// between predicate
+//----------------------
+%type betweenPredicate { ValueExpression* }
+%destructor betweenPredicate { delete $$; }
+
+betweenPredicate(result) ::= nonPredicateValueExpression(value) BETWEEN
+						  nonPredicateValueExpression(expr1) AND nonPredicateValueExpression(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Between, value, expr1, expr2,
+									 ValueExpression::Boolean);
+	}
+betweenPredicate(result) ::= nonPredicateValueExpression(value) NOT BETWEEN
+						  nonPredicateValueExpression(expr1) AND nonPredicateValueExpression(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_NotBetween, value, expr1, expr2,
+									 ValueExpression::Boolean);
+	}
+
+//----------------
+// in predicate
+//----------------
+%type inPredicate { ValueExpression* }
+%destructor inPredicate { delete $$; }
+inPredicate(result) ::=		nonPredicateValueExpression(value) IN inPredicateSubquery(in) .
+	{
+		ModAutoPointer<InPredicate> p = new InPredicate(value, in);
+		result = new ValueExpression(ValueExpression::op_In,
+									 p, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(value->getExpressionType(),
+																		  ValueExpression::type_SingleColumn));
+		p.release();
+	}
+inPredicate(result) ::=		nonPredicateValueExpression(value) IN inPredicateValue(in) .
+	{
+		ModAutoPointer<InPredicate> p = new InPredicate(value, in);
+		result = new ValueExpression(ValueExpression::op_In,
+									 p, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(value, in));
+		p.release();
+	}
+inPredicate(result) ::=		nonPredicateValueExpression(value) NOT IN inPredicateSubquery(in) .
+	{
+		ModAutoPointer<InPredicate> p = new InPredicate(value, in);
+		result = new ValueExpression(ValueExpression::op_NotIn,
+									 p, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(value->getExpressionType(),
+																		  ValueExpression::type_SingleColumn));
+		p.release();
+	}
+inPredicate(result) ::=		nonPredicateValueExpression(value) NOT IN inPredicateValue(in) .
+	{
+		ModAutoPointer<InPredicate> p = new InPredicate(value, in);
+		result = new ValueExpression(ValueExpression::op_NotIn,
+									 p, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(value, in));
+		p.release();
+	}
+
+//
+// in predicate value
+//
+%type inPredicateSubquery { QueryExpression* }
+%destructor inPredicateSubquery { delete $$; }
+inPredicateSubquery(result) ::= tableSubquery(sq) .
+	{
+		result = sq;
+	}
+%type inPredicateValue { ValueExpression* }
+%destructor inPredicateValue { delete $$; }
+inPredicateValue(result) ::= LEFT_PARENTHESIS tableValueConstructorList(list) RIGHT_PARENTHESIS .
+	{
+		result = new ValueExpression(ValueExpression::op_Tblconst,
+									 list,
+									 ValueExpression::Table,
+									 list->getExpressionType());
+	}
+inPredicateValue(result) ::= variableName(var) .
+	{
+		result = new ValueExpression(var);
+	}
+
+//------------------
+// like predicate
+//------------------
+%type likePredicate { ValueExpression* }
+%destructor likePredicate { delete $$; }
+likePredicate(result) ::= stringValueOperand(str) LIKE stringValueOperand(pat)
+	optionalLanguage(lang) .
+	{
+		ModAutoPointer<LikePredicate> p = new LikePredicate(str, pat, 0, lang);
+
+		result = new ValueExpression(ValueExpression::op_Like,
+									 p, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, lang));
+		p.release();
+	}
+
+likePredicate(result) ::= stringValueOperand(str) LIKE stringValueOperand(pat)
+	escape(esc)	optionalLanguage(lang) . [LIKE]
+	{
+		ModAutoPointer<LikePredicate> p = new LikePredicate(str, pat, esc, lang);
+
+		result = new ValueExpression(ValueExpression::op_Like,
+									 p, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, esc, lang));
+		p.release();
+	}
+likePredicate(result) ::=  stringValueOperand(str) LIKE stringValueOperand(pat)
+	language(lang) escape(esc) .
+	{
+		ModAutoPointer<LikePredicate> p = new LikePredicate(str, pat, esc, lang);
+
+		result = new ValueExpression(ValueExpression::op_Like,
+									 p, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, esc, lang));
+		p.release();
+	}
+
+likePredicate(result) ::= nonPredicateValueExpression(str) NOT LIKE stringValueOperand(pat)
+								  optionalLanguage(lang) .		// to avoid reduce-reduce conflict for NOT
+	[LIKE]
+	{
+		ModAutoPointer<LikePredicate> p0 = new LikePredicate(str, pat, 0, lang);
+
+		result = new ValueExpression(ValueExpression::op_NotLike,
+									 p0, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, lang));
+		p0.release();
+	}
+
+likePredicate(result) ::= nonPredicateValueExpression(str) NOT LIKE stringValueOperand(pat)
+								  escape(esc)	optionalLanguage(lang) . // to avoid reduce-reduce conflict for NOT
+	[LIKE]
+	{
+		ModAutoPointer<LikePredicate> p0 = new LikePredicate(str, pat, esc, lang);
+
+		result = new ValueExpression(ValueExpression::op_NotLike,
+									 p0, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, esc, lang));
+		p0.release();
+	}
+likePredicate(result) ::=  nonPredicateValueExpression(str) NOT LIKE stringValueOperand(pat)
+	 language(lang) escape(esc) .		// to avoid reduce-reduce conflict for NOT
+	[LIKE]
+	{
+		ModAutoPointer<LikePredicate> p0 = new LikePredicate(str, pat, esc, lang);
+
+		result = new ValueExpression(ValueExpression::op_NotLike,
+									 p0,	ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, esc, lang));
+		p0.release();
+	}
+
+//
+// escape
+//
+%type escape { ValueExpression* }
+%destructor escape { delete $$; }
+escape(result) ::= ESCAPE stringValueOperand(esc) .
+	{ result = esc; }
+
+//
+// language
+//
+%type optionalLanguage { ValueExpression* }
+%destructor optionalLanguage { delete $$; }
+optionalLanguage(result) ::= .
+	{ result = 0; }
+optionalLanguage(result) ::= language(lang) .
+	{ result = lang; }
+
+%type language { ValueExpression* }
+%destructor language { delete $$; }
+language(result) ::= LANGUAGE stringValueOperand(lang) .
+	{ result = lang; }
+
+//
+// scale parameter
+//
+%type scaleParameter { ValueExpression* }
+%destructor scaleParameter { delete $$; }
+scaleParameter(result) ::= SCALE PARAMETER numericValueOperand(value) .
+	{ result = value; }
+
+//
+//	word limit
+//
+%type wordLimit { ValueExpression* }
+%destructor wordLimit { delete $$; }
+wordLimit(result) ::= WORD LIMIT numericValueOperand(value) .
+	{ result = value; }
+
+//----------------------
+// contains predicate
+//----------------------
+%type containsPredicate { ValueExpression* }
+%destructor containsPredicate { delete $$; }
+containsPredicate(result) ::= nonPredicateValueExpression(str) CONTAINS containsOperand(pat)
+						   containsOption(option) .
+	{
+		ModAutoPointer<ContainsPredicate> p = new ContainsPredicate(str, pat, option);
+		result = new ValueExpression(ValueExpression::op_Contains,
+									 p, ValueExpression::Boolean,
+									 str->getExpressionType());
+		p.release();
+	}
+
+//
+// contains option
+//
+%type containsOption { ContainsOption* }
+%destructor containsOption { delete $$; }
+containsOption(result) ::= .
+	{ result = 0; }
+containsOption(result) ::= containsOption(option) calculator(calc) .
+{
+	result = option ? option : new ContainsOption;
+	result->setCalculator(calc);
+}
+containsOption(result) ::= containsOption(option) combiner(comb) .
+{
+	result = option ? option : new ContainsOption;
+	result->setCombiner(comb);
+}
+containsOption(result) ::= containsOption(option) averageLength(length) .
+{
+	result = option ? option : new ContainsOption;
+	result->setAverageLength(length);
+}
+containsOption(result) ::= containsOption(option) df(df) .
+{
+	result = option ? option : new ContainsOption;
+	result->setDf(df);
+}
+containsOption(result) ::= containsOption(option) scoreFunction(scoreFunc) .
+{
+	result = option ? option : new ContainsOption;
+	result->setScoreFunction(scoreFunc);
+}
+containsOption(result) ::= containsOption(option) expand(expand) .
+{
+	result = option ? option : new ContainsOption;
+	result->setExpand(expand);
+}
+containsOption(result) ::= containsOption(option) extractor(extractor) .
+{
+	result = option ? option : new ContainsOption;
+	result->setExtractor(extractor);
+}
+containsOption(result) ::= containsOption(option) clusteredLimit(climit) .
+{
+	result = option ? option : new ContainsOption;
+	result->setClusteredLimit(climit);
+}
+containsOption(result) ::= containsOption(option) scoreCombiner(comb) .
+{
+	result = option ? option : new ContainsOption;
+	result->setScoreCombiner(comb);
+}
+containsOption(result) ::= containsOption(option) clusteredCombiner(comb) .
+{
+	result = option ? option : new ContainsOption;
+	result->setClusteredCombiner(comb);
+}
+containsOption(result) ::= containsOption(option) rankFrom(rank) .
+{
+	result = option ? option : new ContainsOption;
+	result->setRankFrom(rank);
+}
+
+//------------------
+// contains operand
+//------------------
+%type containsOperand { ContainsOperand* }
+%destructor containsOperand { delete $$; }
+containsOperand(result) ::= containsOperandList(ope) .
+	{ result = ope; }
+containsOperand(result) ::= WORDLIST LEFT_PARENTHESIS wordList(list) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::WordList(list);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	optionalLanguage(lang) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, lang, 0, 0);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	scaleParameter(scale) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, 0, scale, 0);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	wordLimit(limit) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, 0, 0, limit);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	language(lang) scaleParameter(scale) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, lang, scale, 0);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	scaleParameter(scale) language(lang) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, lang, scale, 0);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	language(lang) wordLimit(limit) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, lang, 0, limit);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	wordLimit(limit) language(lang) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, lang, 0, limit);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	scaleParameter(scale) wordLimit(limit) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, 0, scale, limit);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	wordLimit(limit) scaleParameter(scale) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, 0, scale, limit);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	language(lang) scaleParameter(scale) wordLimit(limit) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, lang, scale, limit);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	language(lang) wordLimit(limit) scaleParameter(scale) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, lang, scale, limit);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	scaleParameter(scale) wordLimit(limit) language(lang) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, lang, scale, limit);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	scaleParameter(scale) language(lang) wordLimit(limit) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, lang, scale, limit);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	wordLimit(limit) language(lang) scaleParameter(scale) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, lang, scale, limit);
+	}
+containsOperand(result) ::= FREETEXT LEFT_PARENTHESIS stringValueOperand(pat)
+	wordLimit(limit) scaleParameter(scale) language(lang) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::FreeText(pat, lang, scale, limit);
+	}
+
+//-----------------------
+// contains operand list
+//-----------------------
+%type containsOperandList { ContainsOperand* }
+%destructor containsOperandList { delete $$; }
+containsOperandList(result) ::= containsOperandPrimary(primary) .
+	{
+		result = primary;
+	}
+containsOperandList(result) ::= LEFT_PARENTHESIS containsOperandList(ope) combiner(comb) RIGHT_PARENTHESIS .
+	{
+		switch (ope->getType())
+		{
+		case ContainsOperand::Type::And:
+		case ContainsOperand::Type::Or:
+		case ContainsOperand::Type::AndNot:
+		{
+			Contains::LogicalOperation* p
+				= _SYDNEY_DYNAMIC_CAST(Contains::LogicalOperation*, ope);
+			p->setCombiner(comb);
+			break;
+		}
+		default:
+		{
+			result = 0;
+			pParser->throwSyntaxErrorException(srcFile ,__LINE__);
+			break;
+		}
+		}
+		result = ope;
+	}
+containsOperandList(result) ::= containsOperandList(ope0) VERTICALLINE containsOperandList(ope1) .
+	{
+		result = new Contains::Or(ope0, ope1, 0);
+	}
+containsOperandList(result) ::= containsOperandList(ope0) MINUS containsOperandList(ope1) .
+	[CONTAINS_MINUS]
+	{
+		result = new Contains::AndNot(ope0, ope1, 0);
+	}
+containsOperandList(result) ::= containsOperandList(ope0) AMPERSAND containsOperandList(ope1) .
+	{
+		result = new Contains::And(ope0, ope1, 0);
+	}
+
+//
+// combiner
+//
+%type combiner { ValueExpression* }
+%destructor combiner { delete $$; }
+combiner(result) ::= COMBINER stringValueOperand(combiner) .
+	{ result = combiner; }
+
+//---------------
+// word list
+//---------------
+%type wordList { ContainsOperandList* }
+%destructor wordList { delete $$; }
+wordList(result) ::= word(w) .
+	{
+		ModAutoPointer<ContainsOperandList> p = new ContainsOperandList;
+		p->append(w);
+		result = p.release();
+	}
+wordList(result) ::= wordList(list) COMMA word(w) .
+	{
+		list->append(w);
+		result = list;
+	}
+
+//------
+// word
+//------
+%type word { ContainsOperand* }
+%destructor word { delete $$; }
+word(result) ::=  containsOperandWord(pat)
+	optionalCategory(cat) .
+	{
+		result = new Contains::Word(pat, cat, 0, 0, 0);
+	}
+word(result) ::= containsOperandWord(pat)
+	scale(sc) optionalCategory(cat) .
+	{
+		result = new Contains::Word(pat, cat, sc, 0, 0);
+	}
+word(result) ::= containsOperandWord(pat)
+	category(cat) scale(sc)  .
+	{
+		result = new Contains::Word(pat, cat, sc, 0, 0);
+	}
+word(result) ::= containsOperandWord(pat)
+	language(lang) optionalCategory(cat)  .
+	{
+		result = new Contains::Word(pat, cat, 0, lang, 0);
+	}
+word(result) ::= containsOperandWord(pat)
+	language(lang) scale(sc) optionalCategory(cat) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, 0);
+	}
+word(result) ::= containsOperandWord(pat)
+	language(lang) category(cat) scale(sc) optionalDf(df) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	category(cat) language(lang) optionalScale(sc) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, 0);
+	}
+word(result) ::= containsOperandWord(pat)
+	scale(sc) language(lang) optionalCategory(cat) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, 0);
+	}
+word(result) ::= containsOperandWord(pat)
+	category(cat) scale(sc) language(lang) optionalDf(df) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	scale(sc) category(cat) language(lang) optionalDf(df) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	df(df) optionalCategory(cat)  .
+	{
+		result = new Contains::Word(pat, cat, 0, 0, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	df(df) scale(sc) optionalCategory(cat) .
+	{
+		result = new Contains::Word(pat, cat, sc, 0, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	df(df) category(cat) scale(sc) optionalLanguage(lang) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	df(df) category(cat) language(lang) optionalScale(sc) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	df(df) scale(sc) language(lang) optionalCategory(cat) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	df(df) language(lang) optionalCategory(cat)  .
+	{
+		result = new Contains::Word(pat, cat, 0, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	df(df) language(lang) category(cat) scale(sc) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	df(df) language(lang) scale(sc) optionalCategory(cat)  .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	category(cat) df(df) optionalScale(sc) .
+	{
+		result = new Contains::Word(pat, cat, sc, 0, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	scale(sc) df(df) optionalCategory(cat) .
+	{
+		result = new Contains::Word(pat, cat, sc, 0, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	category(cat) scale(sc) df(df) optionalLanguage(lang) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	scale(sc) category(cat) df(df) optionalLanguage(lang)  .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	category(cat) language(lang) scale(sc) df(df) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	category(cat) df(df) scale(sc) language(lang) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	scale(sc) language(lang) category(cat) df(df) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	scale(sc) df(df) category(cat) language(lang) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	language(lang) scale(sc) category(cat) df(df) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	language(lang) scale(sc) df(df) optionalCategory(cat) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+word(result) ::= containsOperandWord(pat)
+	df(df) scale(sc) category(cat) language(lang) .
+	{
+		result = new Contains::Word(pat, cat, sc, lang, df);
+	}
+
+//
+// category
+//
+%type optionalCategory { ValueExpression* }
+%destructor optionalCategory { delete $$; }
+optionalCategory(result) ::= .
+	{ result = 0; }
+optionalCategory(result) ::= category(value) .
+	{ result = value; }
+
+%type category { ValueExpression* }
+%destructor category { delete $$; }
+category(result) ::= CATEGORY stringValueOperand(value) .
+	{ result = value; }
+
+//
+// scale
+//
+%type optionalScale { ValueExpression* }
+%destructor optionalScale { delete $$; }
+optionalScale(result) ::= .
+	{ result = 0; }
+optionalScale(result) ::= scale(value) .
+	{ result = value; }
+
+%type scale { ValueExpression* }
+%destructor scale { delete $$; }
+scale(result) ::= SCALE numericValueOperand(value) .
+	{ result = value; }
+
+//--------------------------
+// contains operand primary
+//--------------------------
+%type containsOperandPrimary { ContainsOperand* }
+%destructor containsOperandPrimary { delete $$; }
+containsOperandPrimary(result) ::= containsOperandParticle(word) .
+	{ result = word; }
+containsOperandPrimary(result) ::= LEFT_PARENTHESIS containsOperandList(ope) RIGHT_PARENTHESIS .
+	{ result = ope; }
+containsOperandPrimary(result) ::= WEIGHT LEFT_PARENTHESIS containsOperandList(ope) scale(value) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::Weight(ope, value);
+	}
+
+//--------------------------------
+// contains operand particle list
+//--------------------------------
+%type containsOperandParticleList { ContainsOperandList* }
+%destructor containsOperandParticleList { delete $$; }
+containsOperandParticleList(result) ::= containsOperandParticle(pat0) containsOperandParticle(pat1) .
+	{
+		ModAutoPointer<ContainsOperandList> p = new ContainsOperandList;
+		p->append(pat0);
+		p->append(pat1);
+		result = p.release();
+	}
+containsOperandParticleList(result) ::= containsOperandParticleList(list) containsOperandParticle(pat) .
+	{
+		list->append(pat);
+		result = list;
+	}
+
+//---------------------------
+// contains operand particle
+//---------------------------
+%type containsOperandParticle { ContainsOperand* }
+%destructor containsOperandParticle { delete $$; }
+containsOperandParticle(result) ::= containsOperandWord(pat) .
+	{ result = pat; }
+containsOperandParticle(result) ::= SYNONYM LEFT_PARENTHESIS containsOperandWordList(list) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::Synonym(list);
+	}
+containsOperandParticle(result) ::= EXPAND_SYNONYM LEFT_PARENTHESIS containsOperandWord(source) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::ExpandSynonym(source);
+	}
+containsOperandParticle(result) ::= HEAD LEFT_PARENTHESIS containsOperandParticle(pat) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::Head(pat);
+	}
+containsOperandParticle(result) ::= TAIL LEFT_PARENTHESIS containsOperandParticle(pat) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::Tail(pat);
+	}
+containsOperandParticle(result) ::= WITHIN LEFT_PARENTHESIS
+								    containsOperandParticleList(list)
+								    optionalLowerDist(l) upperDist(u)
+								    RIGHT_PARENTHESIS .
+	{
+		result = new Contains::Within(list,
+									  Contains::Within::Symmetric,
+									  l, u, 0);
+	}
+containsOperandParticle(result) ::= WITHIN LEFT_PARENTHESIS
+								    containsOperandParticleList(list)
+								    SYMMETRIC
+								    optionalLowerDist(l) upperDist(u)
+								    RIGHT_PARENTHESIS .
+	{
+		result = new Contains::Within(list,
+									  Contains::Within::Symmetric,
+									  l, u, 0);
+	}
+containsOperandParticle(result) ::= WITHIN LEFT_PARENTHESIS
+								    containsOperandParticleList(list)
+								    ASYMMETRIC
+								    optionalLowerDist(l) upperDist(u)
+								    RIGHT_PARENTHESIS .
+	{
+		result = new Contains::Within(list,
+									  Contains::Within::Asymmetric,
+									  l, u, 0);
+	}
+
+//--------------------------------
+// contains operand word list
+//--------------------------------
+%type containsOperandWordList { ContainsOperandList* }
+%destructor containsOperandWordList { delete $$; }
+containsOperandWordList(result) ::= containsOperandWord(pat0) containsOperandWord(pat1) .
+	{
+		ModAutoPointer<ContainsOperandList> p = new ContainsOperandList;
+		p->append(pat0);
+		p->append(pat1);
+		result = p.release();
+	}
+containsOperandWordList(result) ::= containsOperandWordList(list) containsOperandWord(pat) .
+	{
+		list->append(pat);
+		result = list;
+	}
+
+//---------------------------
+// contains operand word
+//---------------------------
+%type containsOperandWord { ContainsOperand* }
+%destructor containsOperandWord { delete $$; }
+containsOperandWord(result) ::= containsOperandPattern(pat) .
+	{ result = pat; }
+containsOperandWord(result) ::= EXACTWORD LEFT_PARENTHESIS containsOperandPattern(pat) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::ExactWord(pat);
+	}
+containsOperandWord(result) ::= SIMPLEWORD LEFT_PARENTHESIS containsOperandPattern(pat) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::SimpleWord(pat);
+	}
+containsOperandWord(result) ::= CONTAINS_STRING LEFT_PARENTHESIS containsOperandPattern(pat) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::String(pat);
+	}
+containsOperandWord(result) ::= WORDHEAD LEFT_PARENTHESIS containsOperandPattern(pat) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::WordHead(pat);
+	}
+containsOperandWord(result) ::= WORDTAIL LEFT_PARENTHESIS containsOperandPattern(pat) RIGHT_PARENTHESIS .
+	{
+		result = new Contains::WordTail(pat);
+	}
+
+//---------------------------
+// contains operand pattern
+//---------------------------
+%type containsOperandPattern { ContainsOperand* }
+%destructor containsOperandPattern { delete $$; }
+containsOperandPattern(result) ::= stringValueOperand(pat) .
+	{
+		result = new Contains::Pattern(pat, 0);
+	}
+containsOperandPattern(result) ::= stringValueOperand(pat) language(lang) .
+	{
+		result = new Contains::Pattern(pat, lang);
+	}
+
+//
+// upper
+//
+%type upperDist { ValueExpression* }
+%destructor upperDist { delete $$; }
+upperDist(result) ::= UPPER numericValueOperand(value) .
+	{ result = value; }
+
+//
+// lower
+//
+%type optionalLowerDist { ValueExpression* }
+%destructor optionalLowerDist { delete $$; }
+optionalLowerDist(result) ::= .
+	{ result = 0; }
+optionalLowerDist(result) ::= lowerDist(value) .
+	{ result = value; }
+
+%type lowerDist { ValueExpression* }
+%destructor lowerDist { delete $$; }
+lowerDist(result) ::= LOWER numericValueOperand(value) .
+	{ result = value; }
+
+//
+// calculator
+//
+%type calculator { ValueExpression* }
+%destructor calculator { delete $$; }
+calculator(result) ::= CALCULATOR stringValueOperand(calc) .
+	{ result = calc; }
+
+//
+// average length
+//
+%type averageLength { ValueExpression* }
+%destructor averageLength { delete $$; }
+averageLength(result) ::= AVERAGE LENGTH nonPredicateValueExpression(value) .
+	{ result = value; }
+averageLength(result) ::= AVERAGE FULLTEXT LENGTH nonPredicateValueExpression(value) .
+	{ result = value; }
+
+//
+// df
+//
+%type optionalDf { ValueExpression* }
+%destructor optionalDf { delete $$; }
+optionalDf(result) ::= .
+	{ result = 0; }
+optionalDf(result) ::= df(value) .
+	{ result = value; }
+
+%type df { ValueExpression* }
+%destructor df { delete $$; }
+df(result) ::= DF numericValueOperand(value) .
+	{ result = value; }
+
+//
+// score function
+//
+%type scoreFunction { ValueExpression* }
+%destructor scoreFunction { delete $$; }
+scoreFunction(result) ::= SCORE FUNCTION stringValueOperand(value) .
+	{ result = value; }
+
+//--------------
+// expand
+//--------------
+%type expand { Expand* }
+%destructor expand { delete $$; }
+expand(result) ::= EXPAND LEFT_PARENTHESIS FROM tableSubquery(subquery)
+								optionalSortSpecificationList(order)
+								optionalLimitSpecification(limit)
+								RIGHT_PARENTHESIS .
+	{
+		result = new Expand(subquery, order, limit);
+	}
+
+//--------------
+// rank from
+//--------------
+%type rankFrom { QueryExpression* }
+%destructor rankFrom { delete $$; }
+rankFrom(result) ::= RANK FROM tableSubquery(subquery) .
+	{
+		result = subquery;
+	}
+
+//-------------
+// extractor
+//-------------
+%type extractor { ValueExpression* }
+%destructor extractor { delete $$; }
+extractor(result) ::= EXTRACTOR stringValueOperand(value) .
+	{ result = value; }
+
+//-----------------
+// clustered limit
+//-----------------
+%type clusteredLimit { ValueExpression* }
+%destructor clusteredLimit { delete $$; }
+clusteredLimit(result) ::= CLUSTERED LIMIT numericValueOperand(value) .
+	{ result = value; }
+
+//-----------------
+// score combiner
+//-----------------
+%type scoreCombiner { ValueExpression* }
+%destructor scoreCombiner { delete $$; }
+scoreCombiner(result) ::= SCORE COMBINER stringValueOperand(value) .
+	{ result = value; }
+
+//-----------------
+// clustered combiner
+//-----------------
+%type clusteredCombiner { ValueExpression* }
+%destructor clusteredCombiner { delete $$; }
+clusteredCombiner(result) ::= CLUSTERED COMBINER stringValueOperand(value) .
+	{ result = value; }
+
+//-------------------
+// is null predicate
+//-------------------
+%type isNullPredicate { ValueExpression* }
+%destructor isNullPredicate { delete $$; }
+isNullPredicate(result) ::=		nonPredicateValueExpression(value) IS NULL .
+	{
+		result = new ValueExpression(ValueExpression::op_IsNull,
+									 value,
+									 ValueExpression::Boolean,
+									 value->getExpressionType());
+	}
+isNullPredicate(result) ::=		nonPredicateValueExpression(value) IS NOT NULL .
+	{
+		result = new ValueExpression(ValueExpression::op_IsNotNull,
+									 value,
+									 ValueExpression::Boolean,
+									 value->getExpressionType());
+	}
+
+//-------------------
+// exists predicate
+//-------------------
+%type existsPredicate { ValueExpression* }
+%destructor existsPredicate { delete $$; }
+existsPredicate(result) ::=		EXISTS tableSubquery(subquery) .
+	{
+		result = new ValueExpression(ValueExpression::op_Exists,
+									 subquery,
+									 ValueExpression::Boolean,
+									 ValueExpression::type_Unknown);
+	}
+
+//---------------------------
+// similar predicate
+//---------------------------
+%type similarPredicate { ValueExpression* }
+%destructor similarPredicate { delete $$; }
+similarPredicate(result) ::=	stringValueOperand(str) SIMILAR TO stringValueOperand(pat)
+	optionalLanguage(lang) . [SIMILAR]
+	{
+		ModAutoPointer<SimilarPredicate> p = new SimilarPredicate(str, pat, 0, lang);
+
+		result = new ValueExpression(ValueExpression::op_Similar,
+									 p, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, lang));
+		p.release();
+	}
+
+similarPredicate(result) ::= stringValueOperand(str) SIMILAR TO stringValueOperand(pat)
+	escape(esc)	optionalLanguage(lang) . [SIMILAR]
+	{
+		ModAutoPointer<SimilarPredicate> p = new SimilarPredicate(str, pat, esc, lang);
+
+		result = new ValueExpression(ValueExpression::op_Similar,
+									 p, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, esc, lang));
+		p.release();
+	}
+similarPredicate(result) ::=  stringValueOperand(str) SIMILAR TO stringValueOperand(pat)
+	language(lang) escape(esc) . [SIMILAR]
+	{
+		ModAutoPointer<SimilarPredicate> p = new SimilarPredicate(str, pat, esc, lang);
+
+		result = new ValueExpression(ValueExpression::op_Similar,
+									 p, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, esc, lang));
+		p.release();
+	}
+
+similarPredicate(result) ::= nonPredicateValueExpression(str) NOT SIMILAR TO stringValueOperand(pat)
+								  optionalLanguage(lang) . // to avoid reduce-reduce conflict for NOT
+	[SIMILAR]
+	{
+		ModAutoPointer<SimilarPredicate> p0 = new SimilarPredicate(str, pat, 0, lang);
+
+		result = new ValueExpression(ValueExpression::op_NotSimilar,
+									 p0, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, lang));
+		p0.release();
+	}
+
+similarPredicate(result) ::= nonPredicateValueExpression(str) NOT SIMILAR TO stringValueOperand(pat)
+								  escape(esc)	optionalLanguage(lang) . // to avoid reduce-reduce conflict for NOT
+	[SIMILAR]
+	{
+		ModAutoPointer<SimilarPredicate> p0 = new SimilarPredicate(str, pat, esc, lang);
+
+		result = new ValueExpression(ValueExpression::op_NotSimilar,
+									 p0, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, esc, lang));
+		p0.release();
+	}
+similarPredicate(result) ::=  nonPredicateValueExpression(str) NOT SIMILAR TO stringValueOperand(pat)
+								  language(lang) escape(esc) . // to avoid reduce-reduce conflict for NOT
+	[SIMILAR]
+	{
+		ModAutoPointer<SimilarPredicate> p0 = new SimilarPredicate(str, pat, esc, lang);
+
+		result = new ValueExpression(ValueExpression::op_NotSimilar,
+									 p0, ValueExpression::Boolean,
+									 ValueExpression::mergeExpressionType(str, pat, esc, lang));
+		p0.release();
+	}
+
+//-------------------
+// is substring of predicate
+//-------------------
+%type isSubstringOfPredicate { ValueExpression* }
+%destructor isSubstringOfPredicate { delete $$; }
+isSubstringOfPredicate(result) ::=	nonPredicateValueExpression(value1) IS SUBSTRING OF nonPredicateValueExpression(value2) .
+	{
+		result = new ValueExpression(ValueExpression::op_IsSubstringOf,
+									 value1, value2,
+									 ValueExpression::Boolean);
+	}
+
+///////////////////////////////
+//----------------------------------
+// non predicate value expression
+//----------------------------------
+%type nonPredicateValueExpression { ValueExpression* }
+%destructor nonPredicateValueExpression { delete $$; }
+nonPredicateValueExpression(result) ::= rowValueExpression(exp) .
+	{
+		result = exp;
+	}
+
+//----------------------------------
+// string value expression
+//
+// [NOTES]
+//	Type specific value expression should be placed before general value expression
+//	to avoid problems caused by reduce-reduce conflict.
+//----------------------------------
+%type stringValueExpression { ValueExpression* }
+%destructor stringValueExpression { delete $$; }
+stringValueExpression(result) ::= stringRowValueExpression(exp) .
+	{ result = exp; }
+stringValueExpression(result) ::= stringValueExpressionPrimary(exp) .
+	{ result = exp; }
+
+//------------------------------
+// string row value expression
+//------------------------------
+%type stringRowValueExpression { ValueExpression* }
+%destructor stringRowValueExpression { delete $$; }
+stringRowValueExpression(result) ::= LEFT_PARENTHESIS stringValueExpression(exp) RIGHT_PARENTHESIS .
+	{
+		exp->setSeparated();
+		result = exp;
+	}
+
+//---------------------------------
+// string value expression primary
+//---------------------------------
+%type stringValueExpressionPrimary { ValueExpression* }
+%destructor stringValueExpressionPrimary { delete $$; }
+stringValueExpressionPrimary(result) ::= stringValueSpecification(value) .
+	{ result = value; }
+stringValueExpressionPrimary(result) ::= stringValueFunction(func) .
+	{ result = func; }
+stringValueExpressionPrimary(result) ::= stringConcatenation(exp) .
+	{ result = exp; }
+
+//-------------------------
+// string value function
+//-------------------------
+%type stringValueFunction { ValueExpression* }
+%destructor stringValueFunction { delete $$; }
+
+stringValueFunction(result) ::= SUBSTRING LEFT_PARENTHESIS stringOrArrayValueOperand(source)
+	FROM numericValueOperand(start) RIGHT_PARENTHESIS .
+	{
+		result = new Function::SubString(source, start);
+	}
+
+stringValueFunction(result) ::= SUBSTRING LEFT_PARENTHESIS stringOrArrayValueOperand(source)
+	FROM numericValueOperand(start) FOR numericValueOperand(length) RIGHT_PARENTHESIS .
+	{
+		result = new Function::SubString(source, start, length);
+	}
+
+stringValueFunction(result) ::= OVERLAY LEFT_PARENTHESIS stringOrArrayValueOperand(dest)
+	PLACING stringOrArrayValueOperand(placing) FROM numericValueOperand(start) RIGHT_PARENTHESIS .
+	{
+		result = new Function::Overlay(dest, placing, start);
+	}
+
+stringValueFunction(result) ::= OVERLAY LEFT_PARENTHESIS stringOrArrayValueOperand(dest)
+	PLACING stringOrArrayValueOperand(placing) FROM numericValueOperand(start)
+	FOR numericValueOperand(length) RIGHT_PARENTHESIS .
+	{
+		result = new Function::Overlay(dest, placing, start, length);
+	}
+
+// trmeister extension
+stringValueFunction(result) ::= NORMALIZE LEFT_PARENTHESIS stringValueOperand(source)
+	USING stringValueOperand(parameter) RIGHT_PARENTHESIS .
+	{
+		result = new Function::Normalize(source, parameter);
+	}
+
+stringValueFunction(result) ::= KWIC LEFT_PARENTHESIS singleElementFulltextOperand(source)
+	FOR kwicNumericOption(size) optionalKwicStartTag(start) optionalKwicEndTag(end)
+	optionalKwicEscape(escape) optionalKwicEllipsis(ellipsis) RIGHT_PARENTHESIS .
+	{
+		if (start == 0 && end != 0)
+		{
+			// end needs start.
+			pParser->throwSyntaxErrorException(srcFile ,__LINE__);
+		}
+		result = new Function::Kwic(source, size, start, end, escape, ellipsis);
+	}
+
+//
+// kwic start tag
+//
+%type optionalKwicStartTag { ValueExpression* }
+%destructor optionalKwicStartTag { delete $$; }
+optionalKwicStartTag(result) ::= .
+	{ result = 0; }
+optionalKwicStartTag(result) ::= ENCLOSE WITH kwicStringOption(value) .
+	{ result = value; }
+
+//
+// kwic end tag
+//
+%type optionalKwicEndTag { ValueExpression* }
+%destructor optionalKwicEndTag { delete $$; }
+optionalKwicEndTag(result) ::= .
+	{ result = 0; }
+optionalKwicEndTag(result) ::= AND kwicStringOption(value) .
+	{ result = value; }
+
+//
+// kwic escape
+//
+%type optionalKwicEscape { ValueExpression* }
+%destructor optionalKwicEscape { delete $$; }
+optionalKwicEscape(result) ::= .
+	{ result = 0; }
+optionalKwicEscape(result) ::= ESCAPE kwicStringOption(value) .
+	{ result = value; }
+
+//
+// kwic ellipsis
+//
+%type optionalKwicEllipsis { ValueExpression* }
+%destructor optionalKwicEllipsis { delete $$; }
+optionalKwicEllipsis(result) ::= .
+	{ result = 0; }
+optionalKwicEllipsis(result) ::= ELLIPSIS kwicStringOption(value) .
+	{ result = value; }
+
+//
+// string type value specification for kwic
+//
+%type kwicStringOption { ValueExpression* }
+%destructor kwicStringOption { delete $$; }
+kwicStringOption(result) ::= stringValueSpecification(value) .
+	{ result = value; }
+kwicStringOption(result) ::= placeHolder(place) .
+	{ result = place; }
+
+//
+// integer type value specification for kwic
+//
+%type kwicNumericOption { ValueExpression* }
+%destructor kwicNumericOption { delete $$; }
+kwicNumericOption(result) ::= numericValueSpecification(value) .
+	{ result = value; }
+kwicNumericOption(result) ::= placeHolder(place) .
+	{ result = place; }
+
+//----------------------
+// string concatenation
+//----------------------
+%type stringConcatenation { ValueExpression* }
+%destructor stringConcatenation { delete $$; }
+stringConcatenation(result) ::= stringOrArrayValueOperand(expr1)
+							 STRING_CONCAT stringOrArrayValueOperand(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_String_concat, expr1, expr2);
+	}
+
+// ----------------------
+// string value operand
+// ----------------------
+%type stringValueOperand { ValueExpression* }
+%destructor stringValueOperand { delete $$; }
+stringValueOperand(result) ::= stringRowValueExpression(exp) .
+	{ result = exp; }
+stringValueOperand(result) ::= stringValueExpressionPrimary(exp) .
+	{ result = exp; }
+stringValueOperand(result) ::= generalValueExpression(exp) .
+	{ result = exp; }
+
+// ----------------------
+// string or array value operand
+// ----------------------
+%type stringOrArrayValueOperand { ValueExpression* }
+%destructor stringOrArrayValueOperand { delete $$; }
+stringOrArrayValueOperand(result) ::= stringRowValueExpression(exp) .
+	{ result = exp; }
+stringOrArrayValueOperand(result) ::= stringValueExpressionPrimary(exp) .
+	{ result = exp; }
+stringOrArrayValueOperand(result) ::= arrayRowValueExpression(exp) .
+	{ result = exp; }
+stringOrArrayValueOperand(result) ::= arrayValueExpressionPrimary(exp) .
+	{ result = exp; }
+stringOrArrayValueOperand(result) ::= generalValueExpression(exp) .
+	{ result = exp; }
+
+// -------------------------
+// numeric value expression
+//
+// [NOTES]
+//	Type specific value expression should be placed before general value expression
+//	to avoid problems caused by reduce-reduce conflict.
+// -------------------------
+%type numericValueExpression { ValueExpression* }
+%destructor numericValueExpression { delete $$; }
+numericValueExpression(result) ::= numericRowValueExpression(exp) .
+	{ result = exp; }
+numericValueExpression(result) ::= numericValueExpressionPrimary(exp) .
+	{ result = exp; }
+
+//--------------------------------
+// numeric row value expression
+//--------------------------------
+%type numericRowValueExpression { ValueExpression* }
+%destructor numericRowValueExpression { delete $$; }
+numericRowValueExpression(result) ::=
+		LEFT_PARENTHESIS numericValueExpression(exp) RIGHT_PARENTHESIS .
+	{
+		exp->setSeparated();
+		result = exp;
+	}
+
+//-----------------------------------
+// numeric value expression primary
+//-----------------------------------
+%type numericValueExpressionPrimary { ValueExpression* }
+%destructor numericValueExpressionPrimary { delete $$; }
+numericValueExpressionPrimary(result) ::= numericValueSpecification(value) .
+	{ result = value; }
+numericValueExpressionPrimary(result) ::= numericValueFunction(func) .
+	{ result = func; }
+numericValueExpressionPrimary(result) ::= arithmeticOperation(exp) .
+	{ result = exp; }
+
+//-------------------------
+// numeric value function
+//-------------------------
+%type numericValueFunction { ValueExpression* }
+%destructor numericValueFunction { delete $$; }
+numericValueFunction(result) ::= numericValueSetFunction(func) .
+	{ result = func; }
+numericValueFunction(result) ::= ABS LEFT_PARENTHESIS numericValueOperand(expr2) RIGHT_PARENTHESIS .
+	{
+		result = new ValueExpression(ValueExpression::op_Abs, expr2);
+	}
+numericValueFunction(result) ::= MOD LEFT_PARENTHESIS numericValueOperand(expr1) COMMA
+							  numericValueOperand(expr2) RIGHT_PARENTHESIS .
+	{
+		result = new ValueExpression(ValueExpression::op_Mod, expr1, expr2);
+	}
+// for Ranking Function
+numericValueFunction(result) ::= score(exp) .
+	{
+		result = exp;
+	}
+numericValueFunction(result) ::= GET MAX LEFT_PARENTHESIS scoreList(list) RIGHT_PARENTHESIS .
+	{
+		if (list->getCount() == 1) {
+			result = list->getValueExpressionAt(0);
+		} else {
+			result = ValueExpression::create(ValueExpression::func_GetMax,
+											 list);
+			delete list;
+		}
+	}
+
+//
+// numeric value set function
+//
+%type numericValueSetFunction { ValueExpression* }
+%destructor numericValueSetFunction { delete $$; }
+numericValueSetFunction(result) ::=		COUNT LEFT_PARENTHESIS ASTERISK RIGHT_PARENTHESIS .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_Count,
+									 ValueExpression::Numeric,
+									 0,
+									 0,
+									 ValueExpression::type_Aggregation);
+	}
+numericValueSetFunction(result) ::=	COUNT LEFT_PARENTHESIS optionalSetQuantifier(quantifier)
+								 nonPredicateValueExpression(value) RIGHT_PARENTHESIS .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_Count,
+									 ValueExpression::Numeric,
+									 quantifier,
+									 value,
+									 ValueExpression::type_Aggregation);
+	}
+numericValueSetFunction(result) ::=	AVG	 LEFT_PARENTHESIS optionalSetQuantifier(quantifier)
+								 numericValueOperand(value) RIGHT_PARENTHESIS .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_Avg,
+									 ValueExpression::Numeric,
+									 quantifier,
+									 value,
+									 ValueExpression::type_Aggregation);
+	}
+
+numericValueSetFunction(result) ::=	SUM LEFT_PARENTHESIS optionalSetQuantifier(quantifier)
+								 numericValueOperand(value) RIGHT_PARENTHESIS .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_Sum,
+									 ValueExpression::Numeric,
+									 quantifier,
+									 value,
+									 ValueExpression::type_Aggregation);
+	}
+
+//------------------------
+// arithmetic operations
+//------------------------
+%type arithmeticOperation { ValueExpression* }
+%destructor arithmeticOperation { delete $$; }
+arithmeticOperation(result) ::= numericValueOperand(expr1) PLUS numericValueOperand(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Add, expr1, expr2);
+	}
+
+arithmeticOperation(result) ::= numericValueOperand(expr1) MINUS numericValueOperand(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Sub, expr1, expr2);
+	}
+
+arithmeticOperation(result) ::= numericValueOperand(expr1) ASTERISK numericValueOperand(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Mul, expr1, expr2);
+	}
+
+arithmeticOperation(result) ::= numericValueOperand(expr1) SOLIDUS numericValueOperand(expr2) .
+	{
+		result = new ValueExpression(ValueExpression::op_Div, expr1, expr2);
+	}
+
+arithmeticOperation(result) ::= PLUS numericValueOperand(expr2) .
+	[UNARY_MINUS]
+	{
+		result = expr2;
+	}
+
+arithmeticOperation(result) ::= MINUS(sign) numericValueOperand(expr2) .
+	[UNARY_MINUS]
+	{
+		if (expr2->isNumberLiteral() && !expr2->isSeparated()) {
+			expr2->setSignNegative(sign);
+			result = expr2;
+		} else {
+			result = new ValueExpression(ValueExpression::op_Neg, expr2);
+		}
+		delete sign;
+	}
+
+//-------------------------
+// numeric value operand
+//-------------------------
+%type numericValueOperand { ValueExpression* }
+%destructor numericValueOperand { delete $$; }
+numericValueOperand(result) ::= numericRowValueExpression(exp) .
+	{ result = exp; }
+numericValueOperand(result) ::= numericValueExpressionPrimary(exp) .
+	{ result = exp; }
+numericValueOperand(result) ::= generalValueExpression(exp) .
+	{ result = exp; }
+
+//----------------------------
+// datetime value expression
+//
+// [NOTES]
+//	Type specific value expression should be placed before general value expression
+//	to avoid problems caused by reduce-reduce conflict.
+//----------------------------
+%type datetimeValueExpression { ValueExpression* }
+%destructor datetimeValueExpression { delete $$; }
+datetimeValueExpression(result) ::= datetimeRowValueExpression(exp) .
+	{ result = exp; }
+datetimeValueExpression(result) ::= datetimeValueExpressionPrimary(exp) .
+	{ result = exp; }
+
+//--------------------------------
+// datetime row value expression
+//--------------------------------
+%type datetimeRowValueExpression { ValueExpression* }
+%destructor datetimeRowValueExpression { delete $$; }
+datetimeRowValueExpression(result) ::=
+		LEFT_PARENTHESIS datetimeValueExpression(exp) RIGHT_PARENTHESIS .
+	{
+		exp->setSeparated();
+		result = exp;
+	}
+
+//------------------------------------
+// datetime value expression primary
+//------------------------------------
+%type datetimeValueExpressionPrimary { ValueExpression* }
+%destructor datetimeValueExpressionPrimary { delete $$; }
+datetimeValueExpressionPrimary(result) ::= datetimeValueSpecification(value) .
+	{ result = value; }
+datetimeValueExpressionPrimary(result) ::= datetimeValueFunction(func) .
+	{ result = func; }
+
+//------------------------
+// datetime value function
+//------------------------
+%type datetimeValueFunction { ValueExpression* }
+%destructor datetimeValueFunction { delete $$; }
+datetimeValueFunction(result) ::= CURRENT_DATE .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_Current_Date,
+									 ValueExpression::Datetime, 0, 0,
+									 ValueExpression::type_Value);
+	}
+datetimeValueFunction(result) ::= CURRENT_TIMESTAMP .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_Current_Timestamp,
+									 ValueExpression::Datetime, 0, 0,
+									 ValueExpression::type_Value);
+	}
+
+//----------------------------
+// general value expression
+//----------------------------
+%type generalValueExpression { ValueExpression* }
+%destructor generalValueExpression { delete $$; }
+generalValueExpression(result) ::= generalRowValueExpression(exp) .
+	{ result = exp; }
+generalValueExpression(result) ::= generalValueExpressionPrimary(exp) .
+	{ result = exp; }
+
+//-------------------------------
+// general row value expression
+//-------------------------------
+%type generalRowValueExpression { ValueExpression* }
+%destructor generalRowValueExpression { delete $$; }
+generalRowValueExpression(result) ::=
+		LEFT_PARENTHESIS generalValueExpression(exp) RIGHT_PARENTHESIS .
+	{
+		exp->setSeparated();
+		result = exp;
+	}
+generalRowValueExpression(result) ::= rowSubquery(exp) .
+	{ result = exp; }
+
+//----------------------------------
+// general value expression primary
+//----------------------------------
+%type generalValueExpressionPrimary { ValueExpression* }
+%destructor generalValueExpressionPrimary { delete $$; }
+generalValueExpressionPrimary(result) ::= noTypeValueSpecification(value) .
+	{ result = value; }
+generalValueExpressionPrimary(result) ::= generalFunction0Arg(func) .
+	{ result = func; }
+generalValueExpressionPrimary(result) ::= generalFunctionNArgs(func) .
+	{ result = func; }
+generalValueExpressionPrimary(result) ::= caseExpression(exp) .
+	{ result = exp; }
+generalValueExpressionPrimary(result) ::= generalSetFunction(func) .
+	{ result = func; }
+
+//--------------------
+// general functions
+//--------------------
+%type generalFunction0Arg { ValueExpression* }
+%destructor generalFunction0Arg { delete $$; }
+generalFunction0Arg(result) ::=	identifier(funcName) LEFT_PARENTHESIS RIGHT_PARENTHESIS .
+	{
+		result = ValueExpression::create(funcName);
+		delete funcName;
+	}
+generalFunction0Arg(result) ::=	identifier(funcName) LEFT_PARENTHESIS RIGHT_PARENTHESIS
+							 PERIOD identifier(memberName) .
+	{
+		result = ValueExpression::create(funcName, memberName);
+		delete funcName;
+		delete memberName;
+	}
+
+%type generalFunctionNArgs { ValueExpression* }
+%destructor generalFunctionNArgs { delete $$; }
+generalFunctionNArgs(result) ::=	identifier(funcName) LEFT_PARENTHESIS rowValueConstructorList(exp) hint(hint) RIGHT_PARENTHESIS .
+	{
+		Hint* pHint = hint;
+		hint = 0;
+		result = ValueExpression::create(funcName, exp, pHint);
+		delete funcName;
+		delete exp;
+	}
+generalFunctionNArgs(result) ::=	identifier(funcName) LEFT_PARENTHESIS rowValueConstructorList(exp) hint(hint) RIGHT_PARENTHESIS
+							  PERIOD identifier(memberName) .
+	{
+		Hint* pHint = hint;
+		hint = 0;
+		result = ValueExpression::create(funcName, memberName, exp, pHint);
+		delete funcName;
+		delete memberName;
+		delete exp;
+	}
+
+//
+// case expression -- case when
+//
+%type caseExpression { ValueExpression* }
+%destructor caseExpression { delete $$; }
+
+caseExpression(result) ::=	caseSimpleCase(exp) .
+{
+	result = exp;
+}
+caseExpression(result) ::=	caseSearchedCase(exp) .
+{
+	result = exp;
+}
+
+// simple case
+%type caseSimpleCase { ValueExpression* }
+%destructor caseSimpleCase { delete $$; }
+
+caseSimpleCase(result) ::= CASE caseOperand(operand)
+						simpleWhenClauseList(list)
+						optionalElseClause(elseClause) END .
+{
+	result = new Expression::SimpleCase(operand, list, elseClause);
+}
+
+// searched case
+%type caseSearchedCase { ValueExpression* }
+%destructor caseSearchedCase { delete $$; }
+
+caseSearchedCase(result) ::= CASE 
+						searchedWhenClauseList(list)
+						optionalElseClause(elseClause) END .
+{
+	result = new Expression::SearchedCase(list, elseClause);
+}
+
+// simple when clause list
+%type caseOperand { ValueExpression* }
+%destructor caseOperand { delete $$; }
+
+caseOperand(result) ::= nonPredicateValueExpression(exp) .
+{
+	result = exp;
+}
+
+// simple when clause list
+%type simpleWhenClauseList { ValueExpressionList* }
+%destructor simpleWhenClauseList { delete $$; }
+
+simpleWhenClauseList(result) ::= simpleWhenClause(clause) .
+{
+	result = new ValueExpressionList(clause);
+}
+
+simpleWhenClauseList(result) ::= simpleWhenClauseList(list) simpleWhenClause(clause) .
+{
+	list->appendValueExpression(clause);
+	result = list;
+}
+
+// simple when clause
+%type simpleWhenClause { ValueExpression* }
+%destructor simpleWhenClause { delete $$; }
+
+simpleWhenClause(result) ::= WHEN simpleWhenOperandList(list) THEN nonPredicateValueExpression(exp) .
+{
+	result = new Expression::SimpleWhen(list, exp);
+}
+
+// simple when operand list
+%type simpleWhenOperandList { ValueExpressionList* }
+%destructor simpleWhenOperandList { delete $$; }
+
+simpleWhenOperandList(result) ::= nonPredicateValueExpression(exp) .
+{
+	result = new ValueExpressionList(exp);
+}
+
+simpleWhenOperandList(result) ::= simpleWhenOperandList(list) COMMA nonPredicateValueExpression(exp) .
+{
+	list->appendValueExpression(exp);
+	result = list;
+}
+
+// searched when clause list
+%type searchedWhenClauseList { ValueExpressionList* }
+%destructor searchedWhenClauseList { delete $$; }
+
+searchedWhenClauseList(result) ::= searchedWhenClause(clause) .
+{
+	result = new ValueExpressionList(clause);
+}
+
+searchedWhenClauseList(result) ::= searchedWhenClauseList(list) searchedWhenClause(clause) .
+{
+	list->appendValueExpression(clause);
+	result = list;
+}
+
+// searched when clause
+%type searchedWhenClause { ValueExpression* }
+%destructor searchedWhenClause { delete $$; }
+
+searchedWhenClause(result) ::= WHEN searchCondition(condition) THEN nonPredicateValueExpression(exp) .
+{
+	result = new Expression::SearchedWhen(condition, exp);
+}
+
+// optional else clause
+%type optionalElseClause { ValueExpression* }
+%destructor optionalElseClause { delete $$; }
+
+optionalElseClause(result) ::=  .
+{
+	result = 0;
+}
+
+optionalElseClause(result) ::=  ELSE nonPredicateValueExpression(exp) .
+{
+	result = exp;
+}
+
+//
+// general set function -- set function with no definite type
+//
+%type generalSetFunction { ValueExpression* }
+%destructor generalSetFunction { delete $$; }
+
+generalSetFunction(result) ::=	MAX	 LEFT_PARENTHESIS optionalSetQuantifier(quantifier)
+								 nonPredicateValueExpression(value) RIGHT_PARENTHESIS .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_Max,
+									 ValueExpression::Numeric,
+									 quantifier,
+									 value,
+									 ValueExpression::type_Aggregation);
+	}
+
+generalSetFunction(result) ::=	MIN	 LEFT_PARENTHESIS optionalSetQuantifier(quantifier)
+								 nonPredicateValueExpression(value) RIGHT_PARENTHESIS .
+	{
+		result = new ValueExpression(ValueExpression::op_Func,
+									 ValueExpression::func_Min,
+									 ValueExpression::Numeric,
+									 quantifier,
+									 value,
+									 ValueExpression::type_Aggregation);
+	}
+
+// for Sectionized Search
+generalSetFunction(result) ::= SECTIONIZED LEFT_PARENTHESIS fulltextOperand(value) RIGHT_PARENTHESIS .
+	{
+		result = ValueExpression::create(ValueExpression::func_Sectionized,
+										 value);
+		delete value;
+	}
+
+// for Word
+generalSetFunction(result) ::= WORD LEFT_PARENTHESIS fulltextOperand(value) RIGHT_PARENTHESIS .
+	{
+		result = ValueExpression::create(ValueExpression::func_Word,
+										 value);
+		delete value;
+	}
+
+// for Word.DF
+generalSetFunction(result) ::= WORD LEFT_PARENTHESIS fulltextOperand(value) RIGHT_PARENTHESIS
+									 PERIOD DF .
+	{
+		result = ValueExpression::create(ValueExpression::func_WordDf,
+										 value);
+		delete value;
+	}
+
+// for Word.Scale
+generalSetFunction(result) ::= WORD LEFT_PARENTHESIS fulltextOperand(value) RIGHT_PARENTHESIS
+									 PERIOD SCALE .
+	{
+		result = ValueExpression::create(ValueExpression::func_WordScale,
+										 value);
+		delete value;
+	}
+
+//
+// fulltext operand
+//
+%type fulltextOperand { ValueExpressionList* }
+%destructor fulltextOperand { delete $$; }
+fulltextOperand(result) ::= singleElementFulltextOperand(op) .
+	{
+		result = new ValueExpressionList(op);
+	}
+fulltextOperand(result) ::= multiElementFulltextOperand(op) .
+	{
+		result = op;
+	}
+fulltextOperand(result) ::= LEFT_PARENTHESIS fulltextOperand(op) RIGHT_PARENTHESIS .
+	{
+		result = op;
+	}
+
+// single element fulltext operand
+%type singleElementFulltextOperand { ValueExpression* }
+%destructor singleElementFulltextOperand { delete $$; }
+singleElementFulltextOperand(result) ::= itemReference(item) .
+	{
+		result = new ValueExpression(ValueExpression::op_Itemref, item,
+									 ValueExpression::Unknown,
+									 ValueExpression::type_SingleColumn);
+	}
+
+// multi element fulltext operand
+%type multiElementFulltextOperand { ValueExpressionList* }
+%destructor multiElementFulltextOperand { delete $$; }
+multiElementFulltextOperand(result) ::= singleElementFulltextOperand(exp)
+										 COMMA fulltextOperandList(list) .
+	{
+		list->insertValueExpression(exp);
+		result = list;
+	}
+
+%type fulltextOperandList { ValueExpressionList* }
+%destructor fulltextOperandList { delete $$; }
+fulltextOperandList(result) ::= singleElementFulltextOperand(op) .
+	{
+		result = new ValueExpressionList(op);
+	}
+fulltextOperandList(result) ::= fulltextOperandList(list) COMMA singleElementFulltextOperand(op) .
+	{
+		list->appendValueExpression(op);
+		result = list;
+	}
+
+// score, scoreList
+%type score { ValueExpression* }
+%destructor score { delete $$; }
+score(result) ::= SCORE LEFT_PARENTHESIS fulltextOperand(value) RIGHT_PARENTHESIS .
+	{
+		result = ValueExpression::create(ValueExpression::func_Score,
+										 value);
+		delete value;
+	}
+%type scoreList { ValueExpressionList* }
+%destructor scoreList { delete $$; }
+scoreList(result) ::= score(exp) .
+	{
+		result = new ValueExpressionList(exp);
+	}
+scoreList(result) ::= scoreList(list) COMMA score(exp) .
+	{
+		list->appendValueExpression(exp);
+		result = list;
+	}
+
+//-----------------------
+// array value expression
+//-----------------------
+%type arrayValueExpression { ValueExpression * }
+%destructor arrayValueExpression { delete $$; }
+arrayValueExpression(result) ::= arrayRowValueExpression(exp) .
+	{ result = exp; }
+arrayValueExpression(result) ::= arrayValueExpressionPrimary(exp) .
+	{ result = exp; }
+
+//----------------------------
+// array row value expression
+//----------------------------
+%type arrayRowValueExpression { ValueExpression * }
+%destructor arrayRowValueExpression { delete $$; }
+arrayRowValueExpression(result) ::=
+		LEFT_PARENTHESIS arrayValueExpression(exp) RIGHT_PARENTHESIS .
+	{
+		exp->setSeparated();
+		result = exp;
+	}
+
+//--------------------------------
+// array value expression primary
+//--------------------------------
+%type arrayValueExpressionPrimary { ValueExpression * }
+%destructor arrayValueExpressionPrimary { delete $$; }
+arrayValueExpressionPrimary(result) ::= arrayValueConstructor(arrayvalue) .
+	{ result = arrayvalue; }
+arrayValueExpressionPrimary(result) ::= arrayStringFunction(func) .
+	{ result = func; }
+
+//--------------------------
+// array value constructor
+//--------------------------
+%type arrayValueConstructor { ValueExpression * }
+%destructor arrayValueConstructor { delete $$; }
+arrayValueConstructor(result) ::= ARRAY LEFT_BRACKET arrayElementList(list)
+								  RIGHT_BRACKET .
+	{
+		result = new ValueExpression(ValueExpression::op_Arrayconst,
+									 list,
+									 ValueExpression::Array,
+									 list->getExpressionType());
+	}
+arrayValueConstructor(result) ::= ARRAY LEFT_BRACKET RIGHT_BRACKET .
+	{
+		result = new ValueExpression(ValueExpression::op_Arrayconst,
+									 0,
+									 ValueExpression::Array,
+									 ValueExpression::type_Value);
+	}
+
+//
+// arrayStringFunction
+//
+%type arrayStringFunction { ValueExpression* }
+%destructor arrayStringFunction { delete $$; }
+arrayStringFunction(result) ::= expandStringFunction(func) .
+	{ result = func; }
+
+// expand synonym
+%type expandStringFunction { ValueExpression* }
+%destructor expandStringFunction { delete $$; }
+expandStringFunction(result) ::= EXPAND_SYNONYM LEFT_PARENTHESIS stringValueOperand(source) USING stringValueOperand(parameter) RIGHT_PARENTHESIS .
+	{
+		result = new Function::ExpandSynonym(source, parameter);
+	}
+
+//-----------------------
+// array element list
+//-----------------------
+%type arrayElementList { ValueExpressionList * }
+%destructor arrayElementList { delete $$; }
+arrayElementList(result) ::= arrayElement(elm) .
+	{
+		result = new ValueExpressionList(elm);
+	}
+arrayElementList(result) ::= arrayElementList(list) COMMA arrayElement(elm) .
+	{
+		list->appendValueExpression(elm);
+		result = list;
+	}
+
+//
+// array element
+//
+%type arrayElement { ValueExpression * }
+%destructor arrayElement { delete $$; }
+arrayElement(result) ::= nonPredicateValueExpression(elm) .
+	{ result = elm; }
+
+//----------------------
+// array value operand
+//----------------------
+%type arrayValueOperand { ValueExpression * }
+%destructor arrayValueOperand { delete $$; }
+arrayValueOperand(result) ::= arrayRowValueExpression(exp) .
+	{ result = exp; }
+arrayValueOperand(result) ::= arrayValueExpressionPrimary(exp) .
+	{ result = exp; }
+arrayValueOperand(result) ::= generalValueExpression(exp) .
+	{ result = exp; }
+
+//-----------------------
+// row value expression
+//-----------------------
+%type rowValueExpression { ValueExpression* }
+%destructor rowValueExpression { delete $$; }
+rowValueExpression(result) ::=	nonPredicateValueExpressionPrimary(value) .
+	{ result = value; }
+rowValueExpression(result) ::=	rowValueConstructor(value) .
+	{ result = value; }
+// general value expression must be refered here
+// to avoid reduce-reduce conflict for RIGHT_PARENTHESIS
+rowValueExpression(result) ::= generalValueExpression(exp) .
+	{ result = exp; }
+
+//-------------------------------
+// row row value expression
+//-------------------------------
+%type rowRowValueExpression { ValueExpression* }
+%destructor rowRowValueExpression { delete $$; }
+rowRowValueExpression(result) ::=
+					LEFT_PARENTHESIS rowValueExpressionPrimary(exp) RIGHT_PARENTHESIS .
+	{ result = exp; }
+
+//-------------------------------
+// row value expression primary
+//-------------------------------
+%type rowValueExpressionPrimary { ValueExpression* }
+%destructor rowValueExpressionPrimary { delete $$; }
+rowValueExpressionPrimary(result) ::=
+					LEFT_PARENTHESIS multiElementRowValueConstructor(exp) RIGHT_PARENTHESIS .
+	{ result = exp; }
+
+//------------------------------------------
+// non predicate value expression primary
+//------------------------------------------
+%type nonPredicateValueExpressionPrimary { ValueExpression* }
+%destructor nonPredicateValueExpressionPrimary { delete $$; }
+nonPredicateValueExpressionPrimary(result) ::= numericValueExpressionPrimary(exp) .
+	{ result = exp; }
+nonPredicateValueExpressionPrimary(result) ::= stringValueExpressionPrimary(exp) .
+	{ result = exp; }
+nonPredicateValueExpressionPrimary(result) ::= datetimeValueExpressionPrimary(exp) .
+	{ result = exp; }
+nonPredicateValueExpressionPrimary(result) ::= arrayValueExpressionPrimary(exp) .
+	{ result = exp; }
+nonPredicateValueExpressionPrimary(result) ::= rowValueExpressionPrimary(exp) .
+	{ result = exp; }
+
+//---------------------------
+// row value constructor
+// ---------------------------
+%type rowValueConstructor { ValueExpression* }
+%destructor rowValueConstructor { delete $$; }
+rowValueConstructor(result) ::= multiElementRowValueConstructor(exp) .
+	{ result = exp; }
+// following definitions are single parenthesized row values
+rowValueConstructor(result) ::= numericRowValueExpression(exp) .
+	{ result = exp; }
+rowValueConstructor(result) ::= stringRowValueExpression(exp) .
+	{ result = exp; }
+rowValueConstructor(result) ::= datetimeRowValueExpression(exp) .
+	{ result = exp; }
+rowValueConstructor(result) ::= arrayRowValueExpression(exp) .
+	{ result = exp; }
+rowValueConstructor(result) ::= rowRowValueExpression(exp) .
+	{ result = exp; }
+
+//
+// multi element row value consntructor
+//
+%type multiElementRowValueConstructor { ValueExpression* }
+%destructor multiElementRowValueConstructor { delete $$; }
+multiElementRowValueConstructor(result) ::= LEFT_PARENTHESIS rowValueConstructorElement(exp)
+										 COMMA rowValueConstructorList(list) RIGHT_PARENTHESIS .
+	{
+		list->insertValueExpression(exp);
+		result = new ValueExpression(ValueExpression::op_Rowconst,
+									 list,
+									 ValueExpression::Row,
+									 list->getExpressionType());
+	}
+
+multiElementRowValueConstructor(result) ::= ROW LEFT_PARENTHESIS rowValueConstructorList(list) RIGHT_PARENTHESIS .
+	{
+		result = new ValueExpression(ValueExpression::op_Rowconst,
+									   list,
+									   ValueExpression::Row,
+									   list->getExpressionType());
+	}
+
+//------------------------------
+// row value constructor list
+//------------------------------
+%type rowValueConstructorList { ValueExpressionList* }
+%destructor rowValueConstructorList { delete $$; }
+rowValueConstructorList(result) ::=		rowValueConstructorElement(e) .
+	{
+		result = new ValueExpressionList(e);
+	}
+
+rowValueConstructorList(result) ::=		rowValueConstructorList(list) COMMA rowValueConstructorElement(e) .
+	{
+		list->appendValueExpression(e);
+		result = list;
+	}
+
+//
+// row value constructor element
+//
+%type rowValueConstructorElement { ValueExpression* }
+%destructor rowValueConstructorElement { delete $$; }
+rowValueConstructorElement(result) ::=		nonPredicateValueExpression(value) .
+	{ result = value; }
+
+//-----------------------------
+// table value constructor
+//-----------------------------
+%type tableValueConstructor { ValueExpression* }
+%destructor tableValueConstructor { delete $$; }
+tableValueConstructor(result) ::=	VALUES tableValueConstructorList(list) .
+	{
+		result = new ValueExpression(ValueExpression::op_Tblconst,
+									 list,
+									 ValueExpression::Table,
+									 list->getExpressionType());
+	}
+
+//-------------------------------
+// table value constructor list
+//-------------------------------
+%type tableValueConstructorList { ValueExpressionList* }
+%destructor tableValueConstructorList { delete $$; }
+tableValueConstructorList(result) ::=		rowValueExpression(e) .
+	{
+		result = new ValueExpressionList(e);
+	}
+
+tableValueConstructorList(result) ::=	tableValueConstructorList(list) COMMA rowValueExpression(e) .
+	{
+		list->appendValueExpression(e);
+		result = list;
+	}
+/* Sydney extension */
+tableValueConstructorList(result) ::=	tableValueConstructorList(list) COMMA .
+	{ result = list; }
+
+//-------------------------
+// explicit table
+//-------------------------
+%type explicitTable { Object* }
+%destructor explicitTable { delete $$; }
+explicitTable(result) ::=		TABLE tableName(tn) .
+	{
+		result = tn;
+	}
+
+////////////////////////////////////////
+//------------------------------
+// <delete statement:searched>
+//------------------------------
+%type deleteStatement { DeleteStatement* }
+%destructor deleteStatement { delete $$; }
+deleteStatement(result) ::=		delete targetTable(tbl) optionalWhereClause(where) .
+	{
+		result = new DeleteStatement(tbl, where);
+	}
+
+deleteStatement(result) ::=		delete targetTable(tbl) asCorrelationName(correlation) optionalWhereClause(where) .
+	{
+		result = new DeleteStatement(tbl, where, correlation);
+	}
+
+// you can omit FROM
+%destructor delete { }
+delete ::=	DELETE FROM .
+delete ::=	DELETE .
+
+//
+// target table
+//
+%type targetTable { Identifier* }
+%destructor targetTable { delete $$; }
+targetTable(result) ::= tableName(tbl) .
+	{
+		result = tbl;
+	}
+
+/////////////////////////////
+//------------------------
+// <insert statement>
+//------------------------
+%type insertStatement { InsertStatement* }
+%destructor insertStatement { delete $$; }
+insertStatement(result) ::=		insert tableName(tblname) insertColumnsAndSource(src) .
+	{
+		result = new InsertStatement(tblname,
+									 src->getQuery(),
+									 src->getColumnList());
+		// 下位オブジェクトは使う。destruct()してはいけない。
+		src->clearBody();
+		delete src;
+	}
+
+// you can omit INTO
+%destructor insert { }
+insert ::= INSERT INTO .
+insert ::= INSERT .
+
+//------------------------------
+// insert columns and source
+//------------------------------
+%type insertColumnsAndSource { InsertColumnsAndSource* }
+%destructor insertColumnsAndSource { delete $$; }
+insertColumnsAndSource(result) ::=		LEFT_PARENTHESIS columnNameList(cols) RIGHT_PARENTHESIS
+			queryExpression(query) .
+	{
+		result = new InsertColumnsAndSource(query, cols);
+	}
+
+insertColumnsAndSource(result) ::=	queryExpression(query) .
+	{
+		result = new InsertColumnsAndSource(query, 0);
+	}
+
+insertColumnsAndSource(result) ::=	DEFAULT VALUES .
+	{
+		result = new InsertColumnsAndSource();
+	}
+
+insertColumnsAndSource(result) ::=		LEFT_PARENTHESIS columnNameList(cols) RIGHT_PARENTHESIS
+			bulkInput(input) .
+	{
+		result = new InsertColumnsAndSource(input, cols);
+	}
+
+insertColumnsAndSource(result) ::=	bulkInput(input) .
+	{
+		result = new InsertColumnsAndSource(input, 0);
+	}
+
+//
+// bulk input
+//
+%type bulkInput { QueryExpression* }
+%destructor bulkInput { delete $$; }
+bulkInput(result) ::= INPUT FROM bulkSpecification(spec) .
+	{
+		spec->setInput(true);
+		result = new QueryExpression(spec);
+	}
+
+//////////////////////////////////
+//----------------------------------
+// <update statement:searched>
+//----------------------------------
+%type updateStatement { UpdateStatement* }
+%destructor updateStatement { delete $$; }
+updateStatement(result) ::=		UPDATE targetTable(tbl)
+			SET setClauseList(scl) optionalWhereClause(where) .
+	{
+		result = new UpdateStatement(tbl, scl, where);
+	}
+
+updateStatement(result) ::=		UPDATE targetTable(tbl) asCorrelationName(correlation)
+			SET setClauseList(scl) optionalWhereClause(where) .
+	{
+		result = new UpdateStatement(tbl, scl, where, correlation);
+	}
+
+//-------------------
+// set clause list
+//-------------------
+%type setClauseList { UpdateSetClauseList* }
+%destructor setClauseList { delete $$; }
+setClauseList(result) ::=		setClause(sc) .
+	{
+		result = new UpdateSetClauseList(sc);
+	}
+
+setClauseList(result) ::=	setClauseList(scl) COMMA setClause(sc) .
+	{
+		scl->append(sc);
+		result = scl;
+	}
+/* Sydney extension */
+setClauseList(result) ::=	setClauseList(list) COMMA .
+	{ result = list; }
+
+//------------
+// set clause
+//------------
+%type setClause { UpdateSetClause* }
+%destructor setClause { delete $$; }
+setClause(result) ::=		updateTarget(t) EQUALS nonPredicateValueExpression(v) .
+	{
+		result = new UpdateSetClause(t, v);
+	}
+setClause(result) ::=		updateTargetList(l) EQUALS rowValueExpression(r) .
+	{
+		// updateTarget null means ROW
+		result = new UpdateSetClause(l, r);
+	}
+
+//
+// update target
+//
+%type updateTarget { ColumnName* }
+%destructor updateTarget { delete $$; }
+updateTarget(result) ::=		columnName(name) .
+	{
+		result = name;
+	}
+%type updateTargetList { ColumnNameList* }
+%destructor updateTargetList { delete $$; }
+updateTargetList(result) ::=	LEFT_PARENTHESIS columnNameList(list) RIGHT_PARENTHESIS .
+	{
+		result = list;
+	}
+
+/////////////////////////////////
+//-----------------------------------
+// <start transaction statement>
+//-----------------------------------
+%type startTransactionStatement { StartTransactionStatement* }
+%destructor startTransactionStatement { delete $$; }
+startTransactionStatement(result) ::= START TRANSACTION transactModeList(list) .
+	{
+		result = new StartTransactionStatement(list);
+		delete list;
+	}
+
+//-----------------------
+// transaction mode list
+//-----------------------
+%type transactModeList { TransactionModeList* }
+%destructor transactModeList { delete $$; }
+transactModeList(result) ::= transactMode(transmode) .
+	{
+		result = new TransactionModeList(transmode);
+	}
+transactModeList(result) ::= transactModeList(list) COMMA transactMode(transmode) .
+	{
+		list->append(transmode);
+		result = list;
+	}
+
+//------------------
+// transaction mode
+//------------------
+%type transactMode { Object* }
+%destructor transactMode { delete $$; }
+transactMode(result) ::= transactAccMode(mode) .
+	{ result = mode; }
+transactMode(result) ::= isolationLevel(mode) .
+	{ result = mode; }
+transactMode(result) ::= usingSnapshotMode(mode) .
+	{ result = mode; }
+
+//
+// transaction access mode
+//
+%type transactAccMode { TransactAccMode* }
+%destructor transactAccMode { delete $$; }
+transactAccMode(result) ::= READ ONLY .
+	{
+		result = new TransactAccMode(
+					new IntegerValue(TransactionMode::ReadOnly));
+	}
+transactAccMode(result) ::= READ WRITE .
+	{
+		result = new TransactAccMode(
+					new IntegerValue(TransactionMode::ReadWrite));
+	}
+
+//
+// isolation level
+//
+%type isolationLevel { IsolationLevel* }
+%destructor isolationLevel { delete $$; }
+isolationLevel(result) ::= ISOLATION LEVEL levelOfIsolation(level) .
+	{ result = level; }
+
+%type levelOfIsolation { IsolationLevel* }
+%destructor levelOfIsolation { delete $$; }
+levelOfIsolation(result) ::= READ UNCOMMITTED .
+	{
+		result = new IsolationLevel(
+					new IntegerValue(TransactionMode::ReadUncommitted));
+	}
+levelOfIsolation(result) ::= READ COMMITTED .
+	{
+		result = new IsolationLevel(
+					new IntegerValue(TransactionMode::ReadCommitted));
+	}
+levelOfIsolation(result) ::= REPEATABLE READ .
+	{
+		result = new IsolationLevel(
+					new IntegerValue(TransactionMode::RepeatableRead));
+	}
+levelOfIsolation(result) ::= SERIALIZABLE .
+	{
+		result = new IsolationLevel(
+					new IntegerValue(TransactionMode::Serializable));
+	}
+
+//
+// using snapshot
+//
+%type usingSnapshotMode { IntegerValue* }
+%destructor usingSnapshotMode { delete $$; }
+usingSnapshotMode(result) ::= USING SNAPSHOT .
+	{
+		result = new IntegerValue(1);
+	}
+
+////////////////////////////
+//-----------------------------------
+// <set transaction statement>
+//-----------------------------------
+%type setTransactionStatement { SetTransactionStatement* }
+%destructor setTransactionStatement { delete $$; }
+setTransactionStatement(result) ::= SET TRANSACTION transactModeList(list) .
+	{
+		result = new SetTransactionStatement(list);
+		delete list;
+	}
+
+////////////////////////////
+//------------------------
+// <commit statement>
+//------------------------
+%type commitStatement { CommitStatement* }
+%destructor commitStatement { delete $$; }
+commitStatement(result) ::=	COMMIT .
+	{
+		result = new CommitStatement();
+	}
+commitStatement(result) ::= COMMIT WORK .
+	{
+		result = new CommitStatement();
+	}
+
+////////////////////////////
+//--------------------------
+// <rollback statement>
+//--------------------------
+%type rollbackStatement { RollbackStatement* }
+%destructor rollbackStatement { delete $$; }
+rollbackStatement(result) ::= ROLLBACK .
+	{
+		result = new RollbackStatement();
+	}
+rollbackStatement(result) ::= ROLLBACK WORK.
+	{
+		result = new RollbackStatement();
+	}
+
+////////////////////////////////////
+// Statements for XA Transaction
+//-------------------
+// xa identifier
+//-------------------
+%type xa_Identifier { XA_Identifier* }
+%destructor xa_Identifier { delete $$; }
+xa_Identifier(result) ::= binaryStringLiteral(gtrid) .
+	{
+		ModAutoPointer<XA_Identifier> p = new XA_Identifier;
+		p->setGlobalTransactionIdentifier(*gtrid);
+		delete gtrid;
+
+		result = p.release();
+	}
+xa_Identifier(result) ::= binaryStringLiteral(gtrid) COMMA binaryStringLiteral(bqual) .
+	{
+		ModAutoPointer<XA_Identifier> p = new XA_Identifier;
+		p->setGlobalTransactionIdentifier(*gtrid);
+		p->setBranchQualifier(*bqual);
+		delete gtrid;
+		delete bqual;
+
+		result = p.release();
+	}
+xa_Identifier(result) ::= binaryStringLiteral(gtrid) COMMA binaryStringLiteral(bqual) COMMA signedIntegerLiteral(formatid) .
+	{
+		ModAutoPointer<XA_Identifier> p = new XA_Identifier;
+		p->setGlobalTransactionIdentifier(*gtrid);
+		p->setBranchQualifier(*bqual);
+		p->setFormatIdentifier(*formatid);
+		delete gtrid;
+		delete bqual;
+		delete formatid;
+
+		result = p.release();
+	}
+
+//
+// signed integer literal
+//
+%type signedIntegerLiteral { Literal* }
+%destructor signedIntegerLiteral { delete $$; }
+signedIntegerLiteral(result) ::= unsignedIntegerLiteral(u) .
+	{
+		result = u;
+	}
+signedIntegerLiteral(result) ::= PLUS unsignedIntegerLiteral(u) .
+	{
+		result = u;
+	}
+signedIntegerLiteral(result) ::= MINUS(minus) unsignedIntegerLiteral(u) .
+	{
+		result = new Literal(Token(u->getToken().getToken(),
+								   minus->getHead(),
+								   u->getToken().getTail()));
+		delete u;
+		delete minus;
+	}
+
+//----------------------
+// xa start statement
+//----------------------
+%type xa_StartStatement { XA_StartStatement* }
+%destructor xa_StartStatement { delete $$; }
+xa_StartStatement(result) ::= XA START xa_Identifier(xaid) .
+	{
+		ModAutoPointer<XA_StartStatement> p = new XA_StartStatement;
+		p->setIdentifier(xaid);
+		// can't delete xaid
+		result = p.release();
+	}
+xa_StartStatement(result) ::= XA START xa_Identifier(xaid) transactModeList(list) .
+	{
+		ModAutoPointer<XA_StartStatement> p = new XA_StartStatement;
+		p->setTransactionMode(*list);
+		delete list;
+
+		// setIdentifier should be placed here
+		p->setIdentifier(xaid);
+		// can't delete xaid
+
+		result = p.release();
+	}
+xa_StartStatement(result) ::= XA START xa_Identifier(xaid) JOIN .
+	{
+		ModAutoPointer<XA_StartStatement> p = new XA_StartStatement;
+		p->setIdentifier(xaid);
+		// can't delete xaid
+		p->setJoin(true);
+
+		result = p.release();
+	}
+xa_StartStatement(result) ::= XA START xa_Identifier(xaid) RESUME .
+	{
+		ModAutoPointer<XA_StartStatement> p = new XA_StartStatement;
+		p->setIdentifier(xaid);
+		// can't delete xaid
+		p->setResume(true);
+
+		result = p.release();
+	}
+
+//-----------------------
+// xa end statement
+//-----------------------
+%type xa_EndStatement { XA_EndStatement* }
+%destructor xa_EndStatement { delete $$; }
+xa_EndStatement(result) ::= XA END xa_Identifier(xaid) xa_EndStatement_SuspensionMode(mode) .
+	{
+		ModAutoPointer<XA_EndStatement> p = new XA_EndStatement;
+		p->setIdentifier(xaid);
+		// can't delete xaid
+		p->setSuspensionMode(mode);
+
+		result = p.release();
+	}
+
+%type xa_EndStatement_SuspensionMode { int }
+xa_EndStatement_SuspensionMode(result) ::= /* empty */ .
+	{
+		result = XA_EndStatement::SuspensionMode::Unknown;
+	}
+xa_EndStatement_SuspensionMode(result) ::= SUSPEND .
+	{
+		result = XA_EndStatement::SuspensionMode::Normal;
+	}
+xa_EndStatement_SuspensionMode(result) ::= SUSPEND FOR MIGRATE .
+	{
+		result = XA_EndStatement::SuspensionMode::ForMigrate;
+	}
+
+//-----------------------
+// xa prepare statement
+//-----------------------
+%type xa_PrepareStatement { XA_PrepareStatement* }
+%destructor xa_PrepareStatement { delete $$; }
+xa_PrepareStatement(result) ::= XA PREPARE xa_Identifier(xaid) .
+	{
+		ModAutoPointer<XA_PrepareStatement> p = new XA_PrepareStatement;
+		p->setIdentifier(xaid);
+		// can't delete xaid
+		result = p.release();
+	}
+
+//-----------------------
+// xa commit statement
+//-----------------------
+%type xa_CommitStatement { XA_CommitStatement* }
+%destructor xa_CommitStatement { delete $$; }
+xa_CommitStatement(result) ::= XA COMMIT xa_Identifier(xaid) .
+	{
+		ModAutoPointer<XA_CommitStatement> p = new XA_CommitStatement;
+		p->setIdentifier(xaid);
+		// can't delete xaid
+		result = p.release();
+	}
+xa_CommitStatement(result) ::= XA COMMIT xa_Identifier(xaid) ONE PHASE.
+	{
+		ModAutoPointer<XA_CommitStatement> p = new XA_CommitStatement;
+		p->setIdentifier(xaid);
+		// can't delete xaid
+		p->setOnePhase(true);
+		result = p.release();
+	}
+
+//-----------------------
+// xa rollback statement
+//-----------------------
+%type xa_RollbackStatement { XA_RollbackStatement* }
+%destructor xa_RollbackStatement { delete $$; }
+xa_RollbackStatement(result) ::= XA ROLLBACK xa_Identifier(xaid) .
+	{
+		ModAutoPointer<XA_RollbackStatement> p = new XA_RollbackStatement;
+		p->setIdentifier(xaid);
+		// can't delete xaid
+		result = p.release();
+	}
+
+//-----------------------
+// xa recover statement
+//-----------------------
+%type xa_RecoverStatement { XA_RecoverStatement* }
+%destructor xa_RecoverStatement { delete $$; }
+xa_RecoverStatement(result) ::= XA RECOVER .
+	{
+		result = new XA_RecoverStatement;
+	}
+
+//-----------------------
+// xa forget statement
+//-----------------------
+%type xa_ForgetStatement { XA_ForgetStatement* }
+%destructor xa_ForgetStatement { delete $$; }
+xa_ForgetStatement(result) ::= XA FORGET xa_Identifier(xaid) .
+	{
+		ModAutoPointer<XA_ForgetStatement> p = new XA_ForgetStatement;
+		p->setIdentifier(xaid);
+		// can't delete xaid
+		result = p.release();
+	}
+
+///////////////////////////////
+//---------------------------
+// <database definition>
+//---------------------------
+%type databaseDefinition { DatabaseDefinition* }
+%destructor databaseDefinition { delete $$; }
+databaseDefinition(result) ::= CREATE DATABASE identifier(id) optionalDatabaseCreateOption(opt) .
+	{
+		result = new DatabaseDefinition(id, 0, opt);
+	}
+
+//------------------------------
+// database create option list
+//------------------------------
+%type optionalDatabaseCreateOption { DatabaseCreateOptionList* }
+%destructor optionalDatabaseCreateOption { delete $$; }
+optionalDatabaseCreateOption(result) ::= databaseCreateOptionList(opt) .
+	{
+		opt->assureCreateOptions(*pParser);
+		result = opt;
+	}
+optionalDatabaseCreateOption(result) ::= /*empty*/ .
+	{ result = 0; }
+
+%type databaseCreateOptionList { DatabaseCreateOptionList* }
+%destructor databaseCreateOptionList { delete $$; }
+databaseCreateOptionList(result) ::=  databaseCreateOption(opt) .
+	{
+		result = new DatabaseCreateOptionList(opt);
+	}
+databaseCreateOptionList(result) ::=  databaseCreateOptionList(list) databaseCreateOption(opt) .
+	{
+		list->append(opt);
+		result = list;
+	}
+
+//------------------------
+// database create option
+//------------------------
+%type databaseCreateOption { DatabaseCreateOption* }
+%destructor databaseCreateOption { delete $$; }
+databaseCreateOption(result) ::= dbPathClause(path) .
+	{
+		result = new DatabaseCreateOption( DatabaseCreateOption::PathOption ,path );
+	}
+databaseCreateOption(result) ::= readwriteAttribute(attr) .
+	{
+		result = new DatabaseCreateOption( DatabaseCreateOption::ReadWriteOption ,new IntegerValue( attr ) );
+	}
+databaseCreateOption(result) ::= onlineAttribute(attr) .
+	{
+		result = new DatabaseCreateOption( DatabaseCreateOption::OnlineOption ,new IntegerValue( attr ) );
+	}
+databaseCreateOption(result) ::= recoveryAttribute(attr) .
+	{
+		result = new DatabaseCreateOption(DatabaseCreateOption::RecoveryOption, new IntegerValue(attr));
+	}
+databaseCreateOption(result) ::= userModeAttribute(attr) .
+	{
+		result = new DatabaseCreateOption(DatabaseCreateOption::UserModeOption, new IntegerValue(attr));
+	}
+
+//------------------
+// db path clause
+//------------------
+%type dbPathClause { DatabasePathElementList* }
+%destructor dbPathClause { delete $$; }
+dbPathClause(result) ::= PATH dbPathElementList(list) .
+	{
+		list->assurePathElements(*pParser);
+		result = list;
+	}
+
+//----------------------
+// db path element list
+//----------------------
+%type dbPathElementList { DatabasePathElementList* }
+%destructor dbPathElementList { delete $$; }
+dbPathElementList(result) ::= dbPathElement(path) .
+	{
+		result = new DatabasePathElementList(path);
+	}
+dbPathElementList(result) ::= dbPathElementList(list) dbPathElement(path) .
+	{
+		list->append(path);
+		result = list;
+	}
+
+//
+// db path element
+//
+%type dbPathElement { DatabasePathElement* }
+%destructor dbPathElement { delete $$; }
+dbPathElement(result) ::= pathName(path) .
+	{
+		result = new DatabasePathElement( DatabasePathElement::Database ,path );
+	}
+dbPathElement(result) ::= LOGICALLOG pathName(path) .
+	{
+		result = new DatabasePathElement( DatabasePathElement::LogicalLog ,path );
+	}
+dbPathElement(result) ::= SYSTEM pathName(path) .
+	{
+		result = new DatabasePathElement( DatabasePathElement::System ,path );
+	}
+
+//
+// path name
+//
+%type pathName { Literal* }
+%destructor pathName { delete $$; }
+pathName(result) ::= characterStringLiteral(name) .
+	{
+		result = name;
+	}
+
+//---------------------
+// readwrite attribute
+//---------------------
+%type readwriteAttribute { int }
+readwriteAttribute(result) ::= READ ONLY .
+	{
+		result = DatabaseCreateOption::ReadOnly;
+	}
+readwriteAttribute(result) ::= READ WRITE .
+	{
+		result = DatabaseCreateOption::ReadWrite;
+	}
+
+//----------------------
+// online attribute
+//----------------------
+%type onlineAttribute { int }
+onlineAttribute(result) ::= ONLINE .
+	{
+		result = DatabaseCreateOption::Online;
+	}
+onlineAttribute(result) ::= OFFLINE .
+	{
+		result = DatabaseCreateOption::Offline;
+	}
+
+//----------------------
+// online attribute for alter
+//----------------------
+%type onlineAttributeForAlter { int }
+onlineAttributeForAlter(result) ::= ONLINE WITH DISCARD LOGICALLOG .
+	{
+		result = DatabaseCreateOption::OnlineWithDiscardLogicalLog;
+	}
+
+//----------------------
+// recovery attribute
+//----------------------
+%type recoveryAttribute { int }
+recoveryAttribute(result) ::= RECOVERY FULL .
+	{
+		result = DatabaseCreateOption::RecoveryFull;
+	}
+recoveryAttribute(result) ::= RECOVERY CHECKPOINT .
+	{
+		result = DatabaseCreateOption::RecoveryCheckpoint;
+	}
+
+//----------------------
+// user mode attribute
+//----------------------
+%type userModeAttribute { int }
+userModeAttribute(result) ::= USER ALL .
+	{
+		result = DatabaseCreateOption::AllUser;
+	}
+userModeAttribute(result) ::= USER SYSTEM .
+	{
+		result = DatabaseCreateOption::SuperUser;
+	}
+
+///////////////////////////////
+//---------------------------
+// <drop database statement>
+//---------------------------
+%type dropDatabaseStatement { DropDatabaseStatement* }
+%destructor dropDatabaseStatement { delete $$; }
+dropDatabaseStatement(result) ::= DROP DATABASE identifier(dbname) optionalIfExists(opt) .
+	{
+		result = new DropDatabaseStatement(dbname, opt);
+	}
+
+/////////////////////////////////
+//----------------------------
+// <alter database statement>
+//----------------------------
+%type alterDatabaseStatement { Object* }
+%destructor alterDatabaseStatement { delete $$; }
+alterDatabaseStatement(result) ::= ALTER DATABASE dbName(name) SET dbPathClause(path) .
+	{
+		result = new MoveDatabaseStatement(name, path, MoveDatabaseStatement::Set);
+	}
+alterDatabaseStatement(result) ::= ALTER DATABASE dbName(name) DROP dbPathClause(path) .
+	{
+		result = new MoveDatabaseStatement(name, path, MoveDatabaseStatement::Drop);
+	}
+alterDatabaseStatement(result) ::= ALTER DATABASE dbName(name) alterDatabaseOption(opt) .
+	{
+		result = new AlterDatabaseStatement(name, opt);
+	}
+alterDatabaseStatement(result) ::= ALTER DATABASE dbName(name) START SLAVE .
+	{
+		AlterDatabaseStatement* p =new AlterDatabaseStatement(name, 0);
+		p->setReplicationType(AlterDatabaseStatement::StartSlave);
+		result = p;
+	}
+alterDatabaseStatement(result) ::= ALTER DATABASE dbName(name) STOP SLAVE .
+	{
+		AlterDatabaseStatement* p =new AlterDatabaseStatement(name, 0);
+		p->setReplicationType(AlterDatabaseStatement::StopSlave);
+		result = p;
+	}
+alterDatabaseStatement(result) ::= ALTER DATABASE dbName(name) SET TO MASTER .
+	{
+		AlterDatabaseStatement* p =new AlterDatabaseStatement(name, 0);
+		p->setReplicationType(AlterDatabaseStatement::SetToMaster);
+		result = p;
+	}
+
+//
+// database name
+//
+%type dbName { Identifier* }
+%destructor dbName { delete $$; }
+dbName(result) ::= identifier(id) .
+	{
+		result = id;
+	}
+
+//---------------------------
+// alter database option
+//---------------------------
+%type alterDatabaseOption { AlterDatabaseAttributeList* }
+%destructor alterDatabaseOption { delete $$; }
+alterDatabaseOption(result) ::= alterDatabaseAttributeList(list) .
+	{
+		list->assureDatabaseAttributes(*pParser);
+		result = list;
+	}
+
+//-------------------------------
+// alter database attribute list
+//-------------------------------
+%type alterDatabaseAttributeList { AlterDatabaseAttributeList* }
+%destructor alterDatabaseAttributeList { delete $$; }
+alterDatabaseAttributeList(result) ::= alterDatabaseAttribute(attr) .
+	{
+		result = new AlterDatabaseAttributeList(attr);
+	}
+alterDatabaseAttributeList(result) ::= alterDatabaseAttributeList(list) alterDatabaseAttribute(attr) .
+	{
+		list->append(attr);
+		result = list;
+	}
+
+//-------------------------------
+// alter database attribute list
+//-------------------------------
+%type alterDatabaseAttribute { AlterDatabaseAttribute* }
+%destructor alterDatabaseAttribute { delete $$; }
+alterDatabaseAttribute(result) ::= readwriteAttribute(attr) .
+	{
+		result = new AlterDatabaseAttribute(
+			AlterDatabaseAttribute::ReadWrite, attr );
+	}
+alterDatabaseAttribute(result) ::= onlineAttribute(attr) .
+	{
+		result = new AlterDatabaseAttribute(
+			AlterDatabaseAttribute::Online, attr);
+	}
+alterDatabaseAttribute(result) ::= onlineAttributeForAlter(attr) .
+	{
+		result = new AlterDatabaseAttribute(
+			AlterDatabaseAttribute::Online, attr);
+	}
+alterDatabaseAttribute(result) ::= recoveryAttribute(attr) .
+	{
+		result = new AlterDatabaseAttribute(
+			AlterDatabaseAttribute::RecoveryFull, attr);
+	}
+
+alterDatabaseAttribute(result) ::= userModeAttribute(attr) .
+	{
+		result = new AlterDatabaseAttribute(
+			AlterDatabaseAttribute::SuperUserMode, attr);
+	}
+
+///////////////////////////////
+//---------------------
+// <table definition>
+//---------------------
+%type tableDefinition { TableDefinition* }
+%destructor tableDefinition { delete $$; }
+tableDefinition(result) ::=	  CREATE tableScopeClause(scope) TABLE
+	tableName(name)	tableConstantClause(constant)
+	LEFT_PARENTHESIS tableElementList(elements) RIGHT_PARENTHESIS
+	hint(hint) tableAreaOption(area).
+	{
+		result = new TableDefinition(name, scope, constant, elements,
+									 0, hint, area);
+	}
+
+//
+// table scope clause
+//
+%type tableScopeClause { int }
+tableScopeClause(result) ::=	GLOBAL TEMPORARY  .
+	{ result = TableDefinition::GlobalTemporary; }
+
+tableScopeClause(result) ::=	LOCAL TEMPORARY .
+	{ result = TableDefinition::LocalTemporary; }
+
+tableScopeClause(result) ::=	TEMPORARY .
+	{ result = TableDefinition::LocalTemporary; }
+
+tableScopeClause(result) ::=	/*empty*/ .
+	{ result = TableDefinition::Permanent; }
+
+//
+// table constant clause
+//
+%type tableConstantClause { int }
+tableConstantClause(result) ::=	CONSTANT  .
+	{ result = TableDefinition::Constant; }
+
+tableConstantClause(result) ::= UPDATABLE .
+	{ result = TableDefinition::Updatable; }
+
+tableConstantClause(result) ::= /*empty*/ .
+	{ result = TableDefinition::Updatable; }
+
+//--------------------
+// table element list
+//--------------------
+%type tableElementList { TableElementList* }
+%destructor tableElementList { delete $$; }
+tableElementList(result) ::= tableElement(elem) .
+	{
+		result = new TableElementList(elem);
+	}
+
+tableElementList(result) ::= tableElementList(list) COMMA tableElement(elem) .
+	{
+		list->append(elem);
+		result = list;
+	}
+/* Sydney extension */
+tableElementList(result) ::= tableElementList(list) COMMA .
+	{ result = list; }
+
+//-------------------
+// table element
+//-------------------
+%type tableElement { Object* }
+%destructor tableElement { delete $$; }
+tableElement(result) ::= columnDefinition(coldef) .
+	{
+	result = coldef;
+	}
+
+tableElement(result) ::= tableConstraintDefinition(tblconst) .
+	{
+	result = tblconst;
+	}
+
+//-------------------
+// column definition
+//-------------------
+%type columnDefinition { ColumnDefinition* }
+%destructor columnDefinition { delete $$; }
+columnDefinition(result) ::= identifier(name)
+	dataType(type)
+	optionalDefaultClause(defval) optionalUsingOnUpdate(use)
+	optionalColumnConstraintList(constraints)
+	hint(hint) .
+	{
+		if (!defval && use) {
+			// 'using on update' should specified with default clause
+			pParser->throwSyntaxErrorException(srcFile ,__LINE__);
+		}
+		result = new ColumnDefinition(name, type, defval, constraints, 0, hint, use);
+		delete type;
+	}
+columnDefinition(result) ::= identifier(name)
+	dataType(type)
+	constClause(constval)
+	optionalColumnConstraintList(constraints)
+	hint(hint) .
+	{
+		result = new ColumnDefinition(name, type, 0, constraints, constval, hint, false);
+		delete type;
+	}
+columnDefinition(result) ::= identifier(name)
+	dataType(type)
+	generatorClause(generator)
+	optionalColumnConstraintList(constraints)
+	hint(hint) .
+	{
+		result = new ColumnDefinition(name, type, generator, constraints, 0, hint, false);
+		delete type;
+	}
+
+//----------------
+// data type
+//----------------
+%type dataType { Common::SQLData* }
+%destructor dataType { delete $$; }
+dataType(result) ::= collectionType(colltype) .
+	{ result = colltype; }
+dataType(result) ::= nonCollectionDataType(type) .
+	{ result = type; }
+
+//------------------
+// collection type
+//------------------
+%type collectionType { Common::SQLData* }
+%destructor collectionType { delete $$; }
+collectionType(result) ::= nonCollectionDataType(type)
+						   arraySpecification(ary) .
+	{
+		type->setMaxCardinality(ary);
+		result = type;
+	}
+
+//
+// array specification
+//
+%type arraySpecification { int }
+arraySpecification(result) ::= ARRAY optionalArrayCardinality(num) .
+	{ result = num; }
+
+%type optionalArrayCardinality { int }
+optionalArrayCardinality(result) ::= LEFT_BRACKET length(len) RIGHT_BRACKET .
+	{ result = len; }
+optionalArrayCardinality(result) ::= .
+	{ result = -1; }
+
+//----------------------
+// non collection type
+//----------------------
+%type nonCollectionDataType { Common::SQLData* }
+%destructor nonCollectionDataType { delete $$; }
+nonCollectionDataType(result) ::= preDefinedType(datatype) .
+	{ result = datatype; }
+
+//-----------------
+// predefined type
+//-----------------
+%type preDefinedType { Common::SQLData* }
+%destructor preDefinedType { delete $$; }
+preDefinedType(result) ::= NVARCHAR LEFT_PARENTHESIS length(len) RIGHT_PARENTHESIS .
+	{
+		if (len < 0)
+			result = new Common::SQLData(Common::SQLData::Type::NChar, Common::SQLData::Flag::Variable, 0, 0);
+		else
+			result = new Common::SQLData(Common::SQLData::Type::NChar, Common::SQLData::Flag::Variable, len, 0);
+	}
+
+preDefinedType(result) ::=	VARCHAR LEFT_PARENTHESIS length(len) RIGHT_PARENTHESIS .
+	{
+		if (len < 0)
+			result = new Common::SQLData(Common::SQLData::Type::Char, Common::SQLData::Flag::Variable, 0, 0);
+		else
+			result = new Common::SQLData(Common::SQLData::Type::Char, Common::SQLData::Flag::Variable, len, 0);
+	}
+
+preDefinedType(result) ::=	NTEXT .
+	{
+		// defined as nvarchar different from SQL Server (which define as nclob)
+		result = new Common::SQLData(Common::SQLData::Type::NChar, Common::SQLData::Flag::Variable, 0, 0);
+	}
+
+preDefinedType(result) ::=	FULLTEXT .
+	{
+		// defined as nvarchar different from SQL Server (which define as nclob)
+		result = new Common::SQLData(Common::SQLData::Type::NChar, Common::SQLData::Flag::Variable, 0, 0);
+	}
+
+preDefinedType(result) ::=	INT .
+	{
+		result = new Common::SQLData;
+		(void) Common::Data::getSQLType(Common::DataType::Integer, *result);
+	}
+
+preDefinedType(result) ::=	BIGINT .
+	{
+		result = new Common::SQLData;
+		(void) Common::Data::getSQLType(Common::DataType::Integer64, *result);
+	}
+
+preDefinedType(result) ::=	FLOAT .
+	{
+		result = new Common::SQLData;
+		(void) Common::Data::getSQLType(Common::DataType::Double, *result);
+	}
+
+preDefinedType(result) ::=	DATETIME .
+	{
+		result = new Common::SQLData;
+		(void) Common::Data::getSQLType(Common::DataType::DateTime, *result);
+		// When it is defined as DATETIME, SQL type becomes DATETIME instead of TIMESTAMP
+		result->setType(Common::SQLData::Type::DateTime);
+	}
+
+preDefinedType(result) ::=	TIMESTAMP .
+	{
+		result = new Common::SQLData;
+		(void) Common::Data::getSQLType(Common::DataType::DateTime, *result);
+	}
+
+preDefinedType(result) ::=	UNIQUEIDENTIFIER .
+	{
+		result = new Common::SQLData(Common::SQLData::Type::Char, Common::SQLData::Flag::Fixed, 36, 0);
+	}
+
+preDefinedType(result) ::=	IMAGE .
+	{
+		// defined as binary different from SQL Server (which define as blob)
+		result = new Common::SQLData(Common::SQLData::Type::Binary, Common::SQLData::Flag::Unlimited, 0, 0);
+	}
+
+preDefinedType(result) ::=	LANGUAGE .
+	{
+		result = new Common::SQLData(Common::SQLData::Type::Language, Common::SQLData::Flag::Fixed, 0, 0);
+	}
+
+preDefinedType(result) ::=	NCHAR LEFT_PARENTHESIS length(len) RIGHT_PARENTHESIS .
+	{
+		result = new Common::SQLData(Common::SQLData::Type::NChar, Common::SQLData::Flag::Fixed, len, 0);
+	}
+
+preDefinedType(result) ::=	CHAR LEFT_PARENTHESIS length(len) RIGHT_PARENTHESIS .
+	{
+		result = new Common::SQLData(Common::SQLData::Type::Char, Common::SQLData::Flag::Fixed, len, 0);
+	}
+
+preDefinedType(result) ::=	BINARY LEFT_PARENTHESIS length(len) RIGHT_PARENTHESIS .
+	{
+		if (len < 0) {
+			result = new Common::SQLData(Common::SQLData::Type::Binary, Common::SQLData::Flag::Unlimited, 0, 0);
+		} else {
+			result = new Common::SQLData(Common::SQLData::Type::Binary, Common::SQLData::Flag::Fixed, len, 0);
+		}
+	}
+
+preDefinedType(result) ::= BLOB .
+	{
+		result = new Common::SQLData(Common::SQLData::Type::BLOB, Common::SQLData::Flag::Unlimited, 0, 0);
+	}
+
+preDefinedType(result) ::= NCLOB .
+	{
+		result = new Common::SQLData(Common::SQLData::Type::NCLOB, Common::SQLData::Flag::Unlimited, 0, 0);
+	}
+
+preDefinedType(result) ::= decimalTypeName(t) optionalDecimalLength(l) .
+	{
+		result = new Common::SQLData(t,
+									 Common::SQLData::Flag::Fixed,
+									 l->first, l->second);
+		delete l;
+	}
+
+//
+// decimal type name
+//
+%type decimalTypeName { Common::SQLData::Type::Value }
+decimalTypeName(result) ::= DEC .
+	{ result = Common::SQLData::Type::Decimal; }
+decimalTypeName(result) ::= DECIMAL .
+	{ result = Common::SQLData::Type::Decimal; }
+decimalTypeName(result) ::= NUMERIC .
+	{ result = Common::SQLData::Type::Decimal; }
+
+//
+// decimal length
+//
+%type optionalDecimalLength { ModPair<int, int>* }
+%destructor optionalDecimalLength { delete $$; }
+optionalDecimalLength(result) ::= .
+	{
+		result = new ModPair<int, int>(9, 0);
+	}
+optionalDecimalLength(result) ::= LEFT_PARENTHESIS length(precision) RIGHT_PARENTHESIS .
+	{
+		result = new ModPair<int, int>(precision, 0);
+	}
+optionalDecimalLength(result) ::= LEFT_PARENTHESIS length(precision) COMMA length(scale) RIGHT_PARENTHESIS .
+	{
+		result = new ModPair<int, int>(precision, scale);
+	}
+
+//
+// length
+//
+%type length { int }
+length(result) ::=	unsignedIntegerLiteral(len) .
+	{
+		Common::Data::Pointer pIntData = len->createData(Common::DataType::Integer);
+		if (!pIntData->isNull())
+			result = _SYDNEY_DYNAMIC_CAST(const Common::IntegerData&, *pIntData).getValue();
+		else
+			// intで表せないほど大きな値は無制限と解釈する
+			result = -1;
+		delete len;
+	}
+length(result) ::=	NO LIMIT .
+	{ result = -1; }
+
+//-------------------------
+// column constraint list
+//-------------------------
+%type optionalColumnConstraintList { ColumnConstraintDefinitionList* }
+%destructor optionalColumnConstraintList { delete $$; }
+optionalColumnConstraintList(result) ::=		.
+	{
+		result = 0;
+	}
+optionalColumnConstraintList(result) ::=	columnConstraintList(list)	.
+	{
+		result = list;
+	}
+
+%type columnConstraintList { ColumnConstraintDefinitionList* }
+%destructor columnConstraintList { delete $$; }
+columnConstraintList(result) ::=		columnConstraint(constraint) .
+	{
+		result = new ColumnConstraintDefinitionList(constraint);
+	}
+columnConstraintList(result) ::=	columnConstraintList(list) columnConstraint(constraint) .
+	{
+		list->append(constraint);
+		result = list;
+	}
+
+//
+// column constraint
+//
+%type columnConstraint { ColumnConstraintDefinition* }
+%destructor columnConstraint { delete $$; }
+columnConstraint(result) ::= NOT NULL .
+	{
+		result = new ColumnConstraintDefinition(ColumnConstraintDefinition::NotNull);
+	}
+columnConstraint(result) ::= PRIMARY KEY .
+	{
+		result = new ColumnConstraintDefinition(ColumnConstraintDefinition::PrimaryKey);
+	}
+columnConstraint(result) ::= UNIQUE .
+	{
+		result = new ColumnConstraintDefinition(ColumnConstraintDefinition::Unique);
+	}
+
+//-----------------
+// default clause
+//-----------------
+%type optionalDefaultClause { ValueExpression* }
+%destructor optionalDefaultClause { delete $$; }
+optionalDefaultClause(result) ::= .
+	{result = 0;}
+optionalDefaultClause(result) ::= defaultClause(defval) .
+	{result = defval;}
+
+%type defaultClause { ValueExpression* }
+%destructor defaultClause { delete $$; }
+defaultClause(result) ::= DEFAULT defaultOption(opt) .
+	{ result = opt; }
+
+defaultClause(result) ::= EQUALS  defaultOption(opt) .
+	{ result = opt; }
+
+//
+// default option
+//
+%type defaultOption { ValueExpression* }
+%destructor defaultOption { delete $$; }
+defaultOption(result) ::= nonPredicateValueExpression(exp) .
+	{ result = exp; }
+
+//
+// using on update
+//
+%type optionalUsingOnUpdate { bool }
+optionalUsingOnUpdate(result) ::= .
+	{ result = false; }
+
+optionalUsingOnUpdate(result) ::= USING ON UPDATE .
+	{ result = true; }
+
+//
+// const clause
+//
+%type constClause { ValueExpression* }
+%destructor constClacuse { delete $$; }
+constClause(result) ::= CONST constOption(opt) .
+	{ result = opt; }
+constClause(result) ::= CONSTANT constOption(opt) .
+	{ result = opt; }
+
+//
+// const option
+//
+%type constOption { ValueExpression* }
+%destructor constOption { delete $$; }
+constOption(result) ::= literal(lit) .
+	{ result = new ValueExpression(lit); }
+
+constOption(result) ::= NULL .
+	{ result = 0; }
+
+//----------------------
+// generator clause
+//----------------------
+%type generatorClause { ValueExpression* }
+%destructor generatorClause { delete $$; }
+generatorClause(result) ::= GENERATED generateAlways(always) AS IDENTITY optionalGeneratorOptions(options) .
+	{
+		result = new Generator::Definition(always, options, true /* identity */);
+	}
+
+//
+// generate always
+//
+%type generateAlways { Generator::Definition::When }
+generateAlways(result) ::= ALWAYS .
+	{ result = Generator::Definition::Always; }
+generateAlways(result) ::= BY DEFAULT .
+	{ result = Generator::Definition::ByDefault; }
+
+//------------------------
+// generator option list
+//------------------------
+%type optionalGeneratorOptions { ValueExpressionList* }
+%destructor optionalGeneratorOptions { delete $$; }
+optionalGeneratorOptions(result) ::= .
+	{ result = 0; }
+optionalGeneratorOptions(result) ::= LEFT_PARENTHESIS generatorOptions(options) RIGHT_PARENTHESIS .
+	{ result = options; }
+
+%type generatorOptions { ValueExpressionList* }
+%destructor generatorOptions { delete $$; }
+generatorOptions(result) ::= generatorOption(element) .
+	{
+		if (element) {
+			result = new ValueExpressionList(element);
+		} else {
+			result = 0;
+		}
+	}
+generatorOptions(result) ::= generatorOptions(list) generatorOption(element) .
+	{
+		if (list == 0) {
+			if (element) {
+				result = new ValueExpressionList(element);
+			} else {
+				result = 0;
+			}
+		} else {
+			if (element) {
+				list->appendValueExpression(element);
+			}
+			result = list;
+		}
+	}
+
+//---------------------
+// generator option
+//---------------------
+%type generatorOption { ValueExpression* }
+%destructor generatorOption { delete $$; }
+generatorOption(result) ::= START WITH generatorOptionValue(value) .
+	{
+		result = new Generator::Option(Generator::Option::Start, value);
+	}
+generatorOption(result) ::= INCREMENT BY generatorOptionValue(value) .
+	{
+		result = new Generator::Option(Generator::Option::Increment, value);
+	}
+generatorOption(result) ::= MAXVALUE generatorOptionValue(value) .
+	{
+		result = new Generator::Option(Generator::Option::MaxValue, value);
+	}
+generatorOption(result) ::= NO MAXVALUE .
+	{ result = 0; }
+generatorOption(result) ::= MINVALUE generatorOptionValue(value) .
+	{
+		result = new Generator::Option(Generator::Option::MinValue, value);
+	}
+generatorOption(result) ::= NO MINVALUE .
+	{ result = 0; }
+generatorOption(result) ::= CYCLE .
+	{
+		result = new Generator::Option(Generator::Option::Cycle, 0);
+	}
+generatorOption(result) ::= NO CYCLE .
+	{ result = 0; }
+generatorOption(result) ::= GET MAX .
+	{
+		result = new Generator::Option(Generator::Option::GetMax, 0);
+	}
+
+//
+// generator option value
+//
+%type generatorOptionValue { Literal* }
+%destructor generatorOptionValue { delete $$; }
+generatorOptionValue(result) ::= signedIntegerLiteral(literal) .
+	{
+		result = literal;
+	}
+
+//-------------------------------
+// table constraint definition
+//-------------------------------
+%type tableConstraintDefinition { TableConstraintDefinition* }
+%destructor tableConstraintDefinition { delete $$; }
+tableConstraintDefinition(result) ::=
+	UNIQUE indexType(type) LEFT_PARENTHESIS columnNameList(col) RIGHT_PARENTHESIS hint(hint) .
+	{
+		TableConstraintDefinition* v = new TableConstraintDefinition(TableConstraintDefinition::Unique, col, type, hint);
+		result = v;
+	}
+tableConstraintDefinition(result) ::=
+	PRIMARY KEY indexType(type) LEFT_PARENTHESIS columnNameList(col) RIGHT_PARENTHESIS hint(hint) .
+	{
+		TableConstraintDefinition* v = new TableConstraintDefinition(TableConstraintDefinition::PrimaryKey, col, type, hint);
+		result = v;
+	}
+// FOREIGN KEY (added in v16.1)
+tableConstraintDefinition(result) ::=
+	FOREIGN KEY LEFT_PARENTHESIS columnNameList(col) RIGHT_PARENTHESIS
+		REFERENCES tableName(reftable) referencedColumnName(refcol) hint(hint) .
+	{
+		result = new TableConstraintDefinition(TableConstraintDefinition::ForeignKey,
+											   col, 0, hint, reftable, refcol);
+	}
+
+//
+// referenced column name
+//
+%type referencedColumnName { ColumnNameList* }
+%destructor referencedColumnName { delete $$; }
+referencedColumnName(result) ::= .
+	{ result = 0; }
+referencedColumnName(result) ::= LEFT_PARENTHESIS columnNameList(col) RIGHT_PARENTHESIS .
+	{ result = col; }
+
+//-----------------
+// hint
+//-----------------
+%type hint { Hint* }
+%destructor hint { delete $$; }
+hint(result) ::=		HINT hintElement(hint) .
+	{
+		result = new Hint(hint);
+	}
+
+hint(result) ::=	/* empty */ .
+	{ result = 0; }
+
+//---------------
+// hint element
+//---------------
+%type hintElement { HintElement* }
+%destructor hintElement { delete $$; }
+hintElement(result) ::=		hintPrimary(hint) .
+	{
+		result = new HintElement(hint);
+	}
+
+hintElement(result) ::=		hintElement(elem) hintPrimary(hint) .
+	{
+		elem->append(hint);
+		result = elem;
+	}
+
+//
+// hint primary
+//
+%type hintPrimary { Object* }
+%destructor hintPrimary { delete $$; }
+hintPrimary(result) ::=		literal(lit) .
+	{ result = lit; }
+
+hintPrimary(result) ::=		LEFT_PARENTHESIS hintElementList(list) RIGHT_PARENTHESIS .
+	{ result = list; }
+
+hintPrimary(result) ::= TABLE .
+	{ result = new StringValue("TABLE"); }
+
+hintPrimary(result) ::= COLUMN .
+	{ result = new StringValue("COLUMN"); }
+
+hintPrimary(result) ::= FILE .
+	{ result = new StringValue("FILE"); }
+
+hintPrimary(result) ::= INDEX .
+	{ result = new StringValue("INDEX"); }
+
+hintPrimary(result) ::= TRIGGER .
+	{ result = new StringValue("TRIGGER"); }
+
+hintPrimary(result) ::= HEAP .
+	{ result = new StringValue("HEAP"); }
+
+hintPrimary(result) ::= NONTRUNCATE .
+	{ result = new StringValue("NONTRUNCATE"); }
+
+hintPrimary(result) ::= UNIQUE .
+	{ result = new StringValue("UNIQUE"); }
+
+hintPrimary(result) ::= IN ORDER .
+	{ result = new StringValue("ORDER"); }
+
+//
+// hint element list
+//
+%type hintElementList { HintElementList* }
+%destructor hintElementList { delete $$; }
+hintElementList(result) ::=		hintElement(hint) .
+	{
+		result = new HintElementList(hint);
+	}
+
+hintElementList(result) ::=		hintElementList(list) COMMA hintElement(hint) .
+	{
+		list->append(hint);
+		result = list;
+	}
+
+hintElementList(result) ::=		hintElementList(list) COMMA .
+	{ result = list; }
+
+//-------------------
+// table area option
+//-------------------
+%type tableAreaOption { AreaOption* }
+%destructor tableAreaOption { delete $$; }
+tableAreaOption(result) ::= tableAreaClause(area) .
+	{ result = area; }
+tableAreaOption(result) ::= /* empty */ .
+	{ result = 0; }
+
+////////////////////////
+//------------------------
+// <drop table statement>
+//------------------------
+%type dropTableStatement { DropTableStatement* }
+%destructor dropTableStatement { delete $$; }
+dropTableStatement(result) ::= DROP TABLE tableName(name) optionalIfExists(opt) .
+	{
+		result = new DropTableStatement(name, opt);
+	}
+
+//
+// if exists
+//
+%type optionalIfExists { bool }
+optionalIfExists(result) ::= .
+	{ result = false; }
+optionalIfExists(result) ::= IF EXISTS .
+	{ result = true; }
+
+///////////////////////////
+//-------------------------
+// <alter table statement>
+//-------------------------
+%type alterTableStatement { AlterTableStatement* }
+%destructor alterTableStatement { delete $$; }
+alterTableStatement(result) ::= ALTER TABLE tableName(name) alterTableAction(act) .
+	{
+		result = new AlterTableStatement(name, act);
+	}
+
+//---------------------
+// alter table action
+//---------------------
+%type alterTableAction { AlterTableAction* }
+%destructor alterTableAction { delete $$; }
+alterTableAction(result) ::= setTableAreaClause(clause) .
+	{ result = clause; }
+alterTableAction(result) ::= dropTableAreaClause(clause) .
+	{ result = clause; }
+alterTableAction(result) ::= renameTableClause(clause) .
+	{ result = clause; }
+alterTableAction(result) ::= addColumnDefinition(clause) .
+	{ result = clause; }
+alterTableAction(result) ::= alterColumnDefinition(clause) .
+	{ result = clause; }
+alterTableAction(result) ::= addTableConstraintDefinition(clause) .
+	{ result = clause; }
+// drop column and drop constraint are not supported yet.
+
+//---------------------------
+// set table area clause
+//---------------------------
+%type setTableAreaClause { AlterTableAction* }
+%destructor setTableAreaClause { delete $$; }
+setTableAreaClause(result) ::= SET tableAreaClause(opt) .
+	{
+		result = new AlterTableAction(AlterTableAction::SetArea, opt);
+	}
+
+//-------------------------
+// drop table area clause
+//-------------------------
+%type dropTableAreaClause { AlterTableAction* }
+%destructor dropTableAreaClause { delete $$; }
+dropTableAreaClause(result) ::= DROP tableAreaClause(opt) .
+	{
+        int iIdx;
+        for ( iIdx = 0; iIdx < AreaOption::ValueNum; iIdx++ )
+        {
+            // AreaName が設定されているかチェック
+            if ( opt->getAreaName(static_cast<AreaOption::AreaType>(iIdx)) )
+            {
+                // AreaName は１つ以上設定されている
+                break;
+            }
+        }
+
+        if ( iIdx == AreaOption::ValueNum )
+        {
+            // AreaName は全て Null ポインタであったので Default のみ有効にする
+            opt->setAreaName(AreaOption::Default, new Identifier());
+        }
+
+        // この字句が返すオブジェクトを作成
+        result = new AlterTableAction(AlterTableAction::DropArea, opt);
+	}
+
+//---------------------
+// table area clause
+//---------------------
+%type tableAreaClause { AreaOption* }
+%destructor tableAreaClause { delete $$; }
+tableAreaClause(result) ::= AREA tblAreaOption(opt) .
+	{
+		result = opt;
+	}
+
+//
+// table area option
+//
+%type tblAreaOption { AreaOption* }
+%destructor tblAreaOption { delete $$; }
+tblAreaOption(result) ::= defArea(defarea) heapArea(hparea)
+						  indexArea(idxarea) ftsArea(ftsarea)
+						  pycllogArea(pgarea) .
+	{
+		result = new AreaOption(defarea, 0, hparea, idxarea,
+								ftsarea, 0, pgarea, 0);
+	}
+
+//
+// default area
+//
+%type defArea { Identifier* }
+%destructor defArea { delete $$; }
+defArea(result) ::= areaName(name) .
+	{ result = name; }
+defArea(result) ::= DEFAULT .
+	{ result = new Identifier(); }
+defArea(result) ::= /*empty*/ .
+	{ result = 0; }
+
+//
+// heap area
+//
+%type heapArea { Identifier* }
+%destructor heapArea { delete $$; }
+heapArea(result) ::= HEAP areaName(name) .
+	{ result = name; }
+heapArea(result) ::= HEAP .
+	{ result = new Identifier(); }
+heapArea(result) ::= /*empty*/ .
+	{ result = 0; }
+
+//
+// index area
+//
+%type indexArea { Identifier* }
+%destructor indexArea { delete $$; }
+indexArea(result) ::= INDEX areaName(name) .
+	{ result = name; }
+indexArea(result) ::= INDEX .
+	{ result = new Identifier(); }
+indexArea(result) ::= /*empty*/ .
+	{ result = 0; }
+
+//
+// fulltext index area
+//
+%type ftsArea { Identifier* }
+%destructor ftsArea { delete $$; }
+ftsArea(result) ::= FULLTEXT areaName(name) .
+	{ result = name; }
+ftsArea(result) ::= FULLTEXT .
+	{ result = new Identifier(); }
+ftsArea(result) ::= /*empty*/ .
+	{ result = 0; }
+
+//
+// physical log area
+//
+%type pycllogArea { Identifier* }
+%destructor pycllogArea { delete $$; }
+pycllogArea(result) ::= PHYSICALLOG areaName(name) .
+	{ result = name; }
+pycllogArea(result) ::= PHYSICALLOG .
+	{ result = new Identifier(); }
+pycllogArea(result) ::= /*empty*/ .
+	{ result = 0; }
+
+//-----------------------
+// rename table clause
+//-----------------------
+%type renameTableClause { AlterTableAction* }
+%destructor renameTableClause { delete $$; }
+renameTableClause(result) ::= RENAME TO identifier(name) .
+	{
+		result = new AlterTableAction(AlterTableAction::Rename, name);
+	}
+renameTableClause(result) ::= RENAME asCorrelationName(name) .
+	{
+		result = new AlterTableAction(AlterTableAction::Rename, name);
+	}
+
+//------------------------
+// add column definition
+//------------------------
+%type addColumnDefinition { AlterTableAction* }
+%destructor addColumnDefinition { delete $$; }
+addColumnDefinition(result) ::= ADD addColumnDefinitionBody(coldef) .
+	{
+		result = new AlterTableAction(AlterTableAction::AddColumn, coldef);
+	}
+addColumnDefinition(result) ::= ADD COLUMN addColumnDefinitionBody(coldef) .
+	{
+		result = new AlterTableAction(AlterTableAction::AddColumn, coldef);
+	}
+
+//
+// add column definition body
+//
+%type addColumnDefinitionBody { TableElementList* }
+%destructor addColumnDefinitionBody { delete $$; }
+addColumnDefinitionBody(result) ::= columnDefinition(coldef) .
+	{
+		result = new TableElementList(coldef);
+	}
+addColumnDefinitionBody(result) ::= addColumnDefinitionBody(list) COMMA columnDefinition(coldef) .
+	{
+		list->append(coldef);
+		result = list;
+	}
+addColumnDefinitionBody(result) ::= addColumnDefinitionBody(list) COMMA .
+	{ result = list; }
+
+//---------------------------
+// alter column definition
+//---------------------------
+%type alterColumnDefinition { AlterTableAction* }
+%destructor alterColumnDefinition { delete $$; }
+alterColumnDefinition(result) ::= ALTER alterColumnAction(action) .
+	{
+		result = new AlterTableAction(AlterTableAction::AlterColumn, action);
+	}
+alterColumnDefinition(result) ::= ALTER COLUMN alterColumnAction(action) .
+	{
+		result = new AlterTableAction(AlterTableAction::AlterColumn, action);
+	}
+
+//
+// alter column action
+//
+%type alterColumnAction { Object* }
+%destructor alterColumnAction { delete $$; }
+alterColumnAction(result) ::= columnDefinition(action) .
+	{ result = action; }
+
+//------------------------------------
+// add table constraint definition
+//------------------------------------
+%type addTableConstraintDefinition { AlterTableAction* }
+%destructor addTableConstraintDefinition { delete $$; }
+addTableConstraintDefinition(result) ::= ADD tableConstraintDefinition(constdef) .
+	{
+		result = new AlterTableAction(AlterTableAction::AddTableConstraint, constdef);
+	}
+
+/////////////////////////////
+//-------------------------
+// <index definition>
+//-------------------------
+%type indexDefinition { IndexDefinition* }
+%destructor indexDefinition { delete $$; }
+indexDefinition(result) ::=	CREATE indexType(type) INDEX identifier(idxname) ON
+						 tableName(tblname) LEFT_PARENTHESIS columnNameList(cols) RIGHT_PARENTHESIS
+						 languageColumnOption(langcolopt)
+						 scoreColumnOption(scorecolopt)
+						 hint(hint) indexAreaOption(areaopt) .
+	{
+		result = new IndexDefinition(
+			idxname, tblname, cols, type, langcolopt, scorecolopt, hint, areaopt);
+	}
+
+//
+// index type
+//
+%type indexType { int }
+indexType(result) ::= CLUSTERED		.
+	{ result = IndexDefinition::Clustered; }
+
+indexType(result) ::= NONCLUSTERED	.
+	{ result = IndexDefinition::NonClustered; }
+
+indexType(result) ::= FULLTEXT		.
+	{ result = IndexDefinition::FullText; }
+
+indexType(result) ::= BITMAP		.
+	{ result = IndexDefinition::Bitmap; }
+
+indexType(result) ::= ARRAY			.
+	{ result = IndexDefinition::Array; }
+
+indexType(result) ::= UNIQUE		.
+	{ result = IndexDefinition::Unique; }
+
+indexType(result) ::= ALL ROWS		.
+	{ result = IndexDefinition::AllRows; }
+
+indexType(result) ::= KDTREE		.
+	{ result = IndexDefinition::KdTree; }
+
+indexType(result) ::= /* empty */	.
+	{ result = IndexDefinition::None; }
+
+//
+// language column
+//
+%type languageColumnOption { ColumnName* }
+%destructor languageColumnOption { delete $$; }
+languageColumnOption(result) ::= LANGUAGE COLUMN columnName(name) .
+	{ result = name; }
+languageColumnOption(result) ::= /* empty */ .
+	{ result = 0; }
+
+//
+// score column
+//
+%type scoreColumnOption { ColumnName* }
+%destructor scoreColumnOption { delete $$; }
+scoreColumnOption(result) ::= SCORE COLUMN columnName(name) .
+	{ result = name; }
+scoreColumnOption(result) ::= /* empty */ .
+	{ result = 0; }
+
+//--------------------
+// index area option
+//--------------------
+%type indexAreaOption { AreaOption* }
+%destructor indexAreaOption { delete $$; }
+indexAreaOption(result) ::= indexAreaClause(area) .
+	{ result = area; }
+indexAreaOption(result) ::= /* empty */ .
+	{ result = 0; }
+
+//////////////////////////////
+//-------------------------
+// <drop index statement>
+//-------------------------
+%type dropIndexStatement { DropIndexStatement* }
+%destructor dropIndexStatement { delete $$; }
+dropIndexStatement(result) ::= DROP INDEX identifier(idxname) optionalIfExists(opt) .
+	{
+		result = new DropIndexStatement(idxname, opt);
+	}
+
+/////////////////////////////////
+//----------------------------
+// <alter index statement>
+//----------------------------
+%type alterIndexStatement { AlterIndexStatement* }
+%destructor alterIndexStatement { delete $$; }
+alterIndexStatement(result) ::= ALTER INDEX identifier(idxname) alterIndexAction(action) .
+	{
+		result = new AlterIndexStatement(idxname, action);
+	}
+
+//---------------------
+// alter index action
+//---------------------
+%type alterIndexAction { AlterIndexAction* }
+%destructor alterIndexAction { delete $$; }
+alterIndexAction(result) ::= setIndexAreaClause(action) .
+	{ result = action; }
+alterIndexAction(result) ::= dropIndexAreaClause(action) .
+	{ result = action; }
+alterIndexAction(result) ::= renameIndexClause(action) .
+	{ result = action; }
+alterIndexAction(result) ::= offlineIndexClause(action) .
+	{ result = action; }
+
+//-----------------------
+// set index area clause
+//-----------------------
+%type setIndexAreaClause { AlterIndexAction* }
+%destructor setIndexAreaClause { delete $$; }
+setIndexAreaClause(result) ::= SET indexAreaClause(areaoption) .
+	{
+		result = new AlterIndexAction(AlterIndexAction::SetArea,
+									  areaoption);
+	}
+
+//-------------------------
+// drop index area clause
+//-------------------------
+%type dropIndexAreaClause { AlterIndexAction* }
+%destructor dropIndexAreaClause { delete $$; }
+dropIndexAreaClause(result) ::= DROP indexAreaClause(areaoption) .
+	{
+        int iIdx;
+        for ( iIdx = 0; iIdx < AreaOption::ValueNum; iIdx++ )
+        {
+            // AreaName が設定されているかチェック
+            if ( areaoption->getAreaName(static_cast<AreaOption::AreaType>(iIdx)) )
+            {
+                // AreaName は１つ以上設定されている
+                break;
+            }
+        }
+
+        if ( iIdx == AreaOption::ValueNum )
+        {
+            // AreaName は全て Null ポインタであったので Default のみ有効にする
+            areaoption->setAreaName(AreaOption::Default, new Identifier());
+        }
+        // この字句が返すオブジェクトを作成
+        result = new AlterIndexAction(AlterIndexAction::DropArea, areaoption);
+    }
+
+//-------------------
+// index area clause
+//-------------------
+%type indexAreaClause { AreaOption* }
+%destructor indexAreaClause { delete $$; }
+indexAreaClause(result) ::= AREA idxAreaOption(opt) .
+	{
+		result = opt;
+	}
+
+//-------------------
+// index area option
+//-------------------
+%type idxAreaOption { AreaOption* }
+%destructor idxAreaOption { delete $$; }
+idxAreaOption(result) ::= defArea(defarea) pycllogArea(pgarea)
+						  hintArea(hint) .
+	{
+		result = new AreaOption(defarea, 0, 0, 0, 0, 0, pgarea, hint);
+	}
+
+//
+// hint area
+//
+%type hintArea { Hint* }
+%destructor hintArea { delete $$; }
+hintArea(result) ::= HINT AREA characterStringLiteral(literal) .
+	{
+		result = new Hint(new HintElement(literal));
+	}
+hintArea(result) ::= /*empty*/ .
+	{ result = 0; }
+
+//----------------------
+// rename index clause
+//----------------------
+%type renameIndexClause { AlterIndexAction* }
+%destructor renameIndexClause { delete $$; }
+renameIndexClause(result) ::= RENAME TO identifier(name) .
+	{
+		result = new AlterIndexAction(AlterIndexAction::Rename,
+									  name);
+	}
+renameIndexClause(result) ::= RENAME asCorrelationName(name) .
+	{
+		result = new AlterIndexAction(AlterIndexAction::Rename,
+									  name);
+	}
+
+//
+// online / offline
+//
+%type offlineIndexClause { AlterIndexAction* }
+%destructor offlineIndexClause { delete $$; }
+offlineIndexClause(result) ::= ONLINE .
+	{
+		result = new AlterIndexAction(AlterIndexAction::Online);
+	}
+offlineIndexClause(result) ::= OFFLINE .
+	{
+		result = new AlterIndexAction(AlterIndexAction::Offline);
+	}
+
+////////////////////////////
+//---------------------
+// <area definition>
+//---------------------
+%type areaDefinition { AreaDefinition* }
+%destructor areaDefinition { delete $$; }
+areaDefinition(result) ::= CREATE AREA areaName(name) areaPath(list) .
+	{
+		result = new AreaDefinition(name, list);
+	}
+
+//
+// area name
+//
+%type areaName { Identifier* }
+%destructor areaName { delete $$; }
+areaName(result) ::=	identifier(id) .
+	{ result = id; }
+
+//-----------
+// area path
+//-----------
+%type areaPath { AreaElementList* }
+%destructor areaPath { delete $$; }
+areaPath(result) ::= areaPathElement(elem) .
+	{
+		result = new AreaElementList(elem);
+	}
+areaPath(result) ::= areaPathArray(list) .
+	{ result = list; }
+
+//
+// area path element
+//
+%type areaPathElement { AreaDataDefinition* }
+%destructor areaPathElement { delete $$; }
+areaPathElement(result) ::=	characterStringLiteral(name) .
+	{
+		// Hint は未実装。
+		result = new AreaDataDefinition(name, 0);
+	}
+
+//-------------------
+// area path array
+//-------------------
+%type areaPathArray { AreaElementList* }
+%destructor areaPathArray { delete $$; }
+areaPathArray(result) ::= ARRAY LEFT_BRACKET areaArrayElement(list) RIGHT_BRACKET .
+	{ result = list; }
+
+//
+// area array element list
+//
+%type areaArrayElement { AreaElementList* }
+%destructor areaArrayElement { delete $$; }
+areaArrayElement(result) ::= areaPathElement(elem) .
+	{
+		result = new AreaElementList(elem);
+	}
+areaArrayElement(result) ::= areaArrayElement(list) COMMA areaPathElement(elem) .
+	{
+		list->append(elem);
+		result = list;
+	}
+areaArrayElement(result) ::= areaArrayElement(list) COMMA .
+	{ result = list; }
+
+//////////////////////////////
+//--------------------------
+// <drop area statement>
+//--------------------------
+%type dropAreaStatement { DropAreaStatement* }
+%destructor dropAreaStatement { delete $$; }
+dropAreaStatement(result) ::= DROP AREA areaName(name) optionalIfExists(opt) .
+	{
+		result = new DropAreaStatement(name, opt);
+	}
+
+////////////////////////////////
+//-------------------------
+// <alter area statement>
+//-------------------------
+%type alterAreaStatement { AlterAreaStatement* }
+%destructor alterAreaStatement { delete $$; }
+alterAreaStatement(result) ::= ALTER AREA identifier(areaname) alterAreaAction(action) .
+	{
+		result = new AlterAreaStatement(areaname, action);
+	}
+
+//-----------------------
+// alter area action
+//-----------------------
+%type alterAreaAction { AlterAreaAction* }
+%destructor alterAreaAction { delete $$; }
+alterAreaAction(result) ::= modifyAreaDefinition(action) .
+	{ result = action; }
+
+//------------------------
+// modify area definition
+//------------------------
+%type modifyAreaDefinition { AlterAreaAction* }
+%destructor modifyAreaDefinition { delete $$; }
+modifyAreaDefinition(result) ::= MODIFY singleModifyAreaClause(areaelem) .
+	{
+		result = new AlterAreaAction(AlterAreaAction::SingleModify,
+									 areaelem);
+	}
+modifyAreaDefinition(result) ::= MODIFY arrayFullModifyAreaClause(areaelem) .
+	{
+		result = new AlterAreaAction(AlterAreaAction::FullAryModify,
+									 areaelem);
+	}
+modifyAreaDefinition(result) ::= MODIFY arrayElementModifyAreaClause(areaelem) .
+	{
+		result = new AlterAreaAction(AlterAreaAction::ElemAryModify,
+									 areaelem);
+	}
+
+//
+// sigle modify area clause
+//
+%type singleModifyAreaClause { AreaElementList* }
+%destructor singleModifyAreaClause { delete $$; }
+singleModifyAreaClause(result) ::= areaPathElement(elem) .
+	{
+		result = new AreaElementList(elem);
+	}
+
+//
+// array modify area clause
+//
+%type arrayFullModifyAreaClause { AreaElementList* }
+%destructor arrayFullModifyAreaClause { delete $$; }
+arrayFullModifyAreaClause(result) ::= areaPathArray(list) .
+	{ result = list; }
+
+//
+// array element modify area clause
+//
+%type arrayElementModifyAreaClause { AreaElementList* }
+%destructor arrayElementModifyAreaClause { delete $$; }
+arrayElementModifyAreaClause(result) ::= newAreaSpecifiedPathElement (list) .
+	{ result = list; }
+
+//
+// new area specified path element
+//
+%type newAreaSpecifiedPathElement { AreaElementList* }
+%destructor newAreaSpecifiedPathElement { delete $$; }
+newAreaSpecifiedPathElement(result) ::=
+	LEFT_BRACKET length(idx) RIGHT_BRACKET
+	areaPathElement(elm) .
+	{
+		if (idx >= 0) {
+			AreaElementList* pList = new AreaElementList();
+			for ( int iCnt = 0; iCnt < static_cast<int>(idx); iCnt++ )
+			{
+				pList->setAt(iCnt, 0);
+			}
+			pList->setAt(idx, elm);
+			result = pList;
+		} else {
+			result = 0;
+			pParser->throwSyntaxErrorException(srcFile ,__LINE__);
+		}
+	}
+
+/////////////////////////////////
+//------------------------------
+// <unmount database statement
+//------------------------------
+%type unmountDatabaseStatement { UnmountDatabaseStatement* }
+%destructor unmountDatabaseStatement { delete $$; }
+unmountDatabaseStatement(result) ::= UNMOUNT dbName(name) .
+	{
+		result = new UnmountDatabaseStatement(name);
+	}
+
+//////////////////////////////
+//----------------------------
+// <mount database statement
+//----------------------------
+%type mountDatabaseStatement { MountDatabaseStatement* }
+%destructor mountDatabaseStatement { delete $$; }
+mountDatabaseStatement(result) ::=
+	MOUNT dbName(name) databaseMountOptionList(optionList)
+	optionalAreaParameter(areaParameter) USING SNAPSHOT WITH RECOVERY .
+	{
+		result = new MountDatabaseStatement(
+			name, optionList, areaParameter, true, true, false);
+	}
+
+mountDatabaseStatement(result) ::=
+	MOUNT dbName(name) databaseMountOptionList(optionList)
+	optionalAreaParameter(areaParameter) USING SNAPSHOT .
+	{
+		result = new MountDatabaseStatement(
+			name, optionList, areaParameter, true, false, false);
+	}
+
+mountDatabaseStatement(result) ::=
+	MOUNT dbName(name) databaseMountOptionList(optionList)
+	optionalAreaParameter(areaParameter) WITH DISCARD LOGICALLOG .
+	{
+		result = new MountDatabaseStatement(
+			name, optionList, areaParameter, false, false, true);
+	}
+
+mountDatabaseStatement(result) ::=
+	MOUNT dbName(name) databaseMountOptionList(optionList)
+	optionalAreaParameter(areaParameter) WITH RECOVERY .
+	{
+		result = new MountDatabaseStatement(
+			name, optionList, areaParameter, false, true, false);
+	}
+
+mountDatabaseStatement(result) ::=
+	MOUNT dbName(name) databaseMountOptionList(optionList)
+	optionalAreaParameter(areaParameter) .
+	{
+		result = new MountDatabaseStatement(
+			name, optionList, areaParameter, false, false, false);
+	}
+
+mountDatabaseStatement(result) ::=
+	MOUNT dbName(name) databaseMountOptionList(optionList)
+	optionalAreaParameter(areaParameter) AS SLAVE FROM MASTER
+	characterStringLiteral(url) .
+	{
+		result = new MountDatabaseStatement(
+			name, optionList, areaParameter, false, false, false);
+		result->setMasterUrl(url);
+	}
+
+//----------------------------
+// database mount option list
+//----------------------------
+%type databaseMountOptionList { DatabaseCreateOptionList* }
+%destructor databaseMountOptionList { delete $$; }
+databaseMountOptionList(result) ::= databaseCreateOptionList(opt) .
+	{
+		opt->assureCreateOptions(*pParser);
+
+		//PathOption 要素が必須
+		bool bPathExist = false;
+		for ( int i = opt->getCount() ; 0 < i ; --i ) {
+			Statement::DatabaseCreateOption* pObj = opt->getCreateOptionAt(i-1);
+			if ( pObj && ( pObj->getOptionType() == Statement::DatabaseCreateOption::PathOption ) ) {
+				bPathExist = true;
+				break;
+			}
+		}
+		if ( !bPathExist ) {
+			//PathOption 要素が不足
+			result = 0;
+			pParser->throwSyntaxErrorException(srcFile ,__LINE__);
+		} else {
+			result = opt;//正常
+		}
+	}
+
+//--------------------
+// area parameter
+//--------------------
+%type optionalAreaParameter	{ OptionalAreaParameter* }
+%destructor optionalAreaParameter { delete $$; }
+optionalAreaParameter(result) ::= optionalAreaParameterList(area) .
+	{
+		result = new OptionalAreaParameter( OptionalAreaParameter::ParameterList ,area );
+	}
+optionalAreaParameter(result) ::= DROP ALL AREA.
+	{
+		result = new OptionalAreaParameter( OptionalAreaParameter::DropAllArea ,0 );
+	}
+optionalAreaParameter(result) ::= /* empty */.
+	{
+		result = 0;
+	}
+
+//--------------------------
+// area parameter list
+//--------------------------
+%type optionalAreaParameterList	{ OptionalAreaParameterList* }
+%destructor optionalAreaParameterList { delete $$; }
+optionalAreaParameterList(result) ::= alterAreaStatement(attr) .
+	{
+		result = new OptionalAreaParameterList(attr);
+	}
+optionalAreaParameterList(result) ::= dropAreaStatement(attr) .
+	{
+		result = new OptionalAreaParameterList(attr);
+	}
+optionalAreaParameterList(result) ::= optionalAreaParameterList(list) alterAreaStatement(attr) .
+	{
+		list->append(attr);
+		result = list;
+	}
+optionalAreaParameterList(result) ::= optionalAreaParameterList(list) dropAreaStatement(attr) .
+	{
+		list->append(attr);
+		result = list;
+	}
+
+/////////////////////////////////
+//---------------------------
+// <start backup statement>
+//---------------------------
+%type startBackupStatement { StartBackupStatement* }
+%destructor startBackupStatement { delete $$; }
+startBackupStatement(result) ::= START BACKUP backupType(type) versionType(version).
+	{
+		result = new StartBackupStatement( type, version );
+	}
+
+//
+// backup type
+//
+%type backupType { int }
+backupType(result) ::= FULL .
+	{ result = StartBackupStatement::Full; }
+backupType(result) ::= MASTER .
+	{ result = StartBackupStatement::Master; }
+backupType(result) ::= LOGICALLOG .
+	{ result = StartBackupStatement::LogicalLog; }
+backupType(result) ::= /*empty*/ .
+	{ result = StartBackupStatement::Unknown; }
+
+//
+// version type
+//
+%type versionType { int }
+versionType(result) ::= DISCARD SNAPSHOT .
+    { result = StartBackupStatement::DiscardSnapshot; }
+versionType(result) ::= /*empty*/ .
+    { result = StartBackupStatement::UnknownVersion; }
+
+/////////////////////////////
+//-------------------------
+// <end backup statement>
+//-------------------------
+%type endBackupStatement { EndBackupStatement* }
+%destructor endBackupStatement { delete $$; }
+endBackupStatement(result) ::= END BACKUP WITH DISCARD LOGICALLOG .
+	{
+		result = new EndBackupStatement(LogicalLogOption::Discard);
+	}
+endBackupStatement(result) ::= END BACKUP .
+	{
+		result = new EndBackupStatement();
+	}
+
+//////////////////////////////
+//-------------------------
+// <verify statement>
+//-------------------------
+%type verifyStatement { VerifyStatement* }
+%destructor verifyStatement { delete $$; }
+verifyStatement(result) ::= VERIFY verifySchemaType(type) identifier(ident) .
+    {
+        result = new VerifyStatement(type, ident, 0);
+    }
+verifyStatement(result) ::= VERIFY verifySchemaType(type) identifier(ident) optionList(list) .
+    {
+        result = new VerifyStatement(type, ident, list);
+		delete list;
+    }
+
+//-----------------------
+// verify schema type
+//-----------------------
+%type verifySchemaType { IntegerValue* }
+verifySchemaType(result) ::= DATABASE .
+    {
+        result = new IntegerValue(VerifyStatement::SchemaType::Database);
+    }
+verifySchemaType(result) ::= TABLE .
+    {
+        result = new IntegerValue(VerifyStatement::SchemaType::Table);
+    }
+verifySchemaType(result) ::= INDEX .
+    {
+        result = new IntegerValue(VerifyStatement::SchemaType::Index);
+    }
+
+//-------------------------
+// verify option list
+//-------------------------
+%type optionList { VerifyOptionList* }
+%destructor optionList { delete $$; }
+optionList(result) ::= verifyOption(option) .
+    {
+        ModAutoPointer<VerifyOptionList> p = new VerifyOptionList();
+        p->pushBack(option);
+		result = p.release();
+    }
+optionList(result) ::= optionList(list) verifyOption(option) .
+    {
+        list->pushBack(option);
+        result = list;
+    }
+
+//
+// verify option
+//
+%type verifyOption { int }
+verifyOption(result) ::= CORRECT .
+    { result = VerifyStatement::Option::Correct; }
+verifyOption(result) ::= CONTINUE .
+    { result = VerifyStatement::Option::Continue; }
+verifyOption(result) ::= CASCADE .
+    { result = VerifyStatement::Option::Cascade; }
+verifyOption(result) ::= VERBOSE .
+    { result = VerifyStatement::Option::Verbose; }
+verifyOption(result) ::= VALUE .
+    { result = VerifyStatement::Option::Data; }
+
+//////////////////////////
+//--------------------
+// <sync statement>
+//--------------------
+%type syncStatement { SyncStatement* }
+%destructor syncStatement { delete $$; }
+syncStatement(result) ::=	SYNC .
+	{
+		result = new SyncStatement();
+	}
+syncStatement(result) ::= SYNC unsignedIntegerLiteral(num) .
+	{
+		ModAutoPointer<SyncStatement> p = new SyncStatement();
+		p->setCount(*num);
+		delete num;
+
+		result = p.release();
+	}
+
+//////////////////////////
+//--------------------
+// <disconnect statement>
+//--------------------
+%type disconnectStatement { DisconnectStatement* }
+%destructor disconnectStatement { delete $$; }
+disconnectStatement(result) ::= DISCONNECT SESSION unsignedIntegerLiteral(session) OF CONNECTION unsignedIntegerLiteral(client) .
+	{
+		ModAutoPointer<DisconnectStatement> p = new DisconnectStatement(DisconnectStatement::Mode::SESSION_MODE);
+		p->setClientId(*client);
+		p->setSessionId(*session);
+		delete client;
+		delete session;
+
+		result = p.release();
+	}
+
+disconnectStatement(result) ::= DISCONNECT CONNECTION unsignedIntegerLiteral(client) .
+	{
+		ModAutoPointer<DisconnectStatement> p = new DisconnectStatement(DisconnectStatement::Mode::CLIENT_MODE);
+		p->setClientId(*client);
+		delete client;
+
+		result = p.release();
+	}
+
+
+//////////////////////////
+//--------------------
+// <variable definition>
+//--------------------
+%type declareStatement { DeclareStatement* }
+%destructor declareStatement { delete $$; }
+declareStatement(result) ::= DECLARE variableName(valname) BITMAP.
+	{
+		result = new DeclareStatement(valname);
+	}
+
+
+
+/////////////////////////////
+//------------------------
+// <checkpoint statement>
+//------------------------
+%type checkpointStatement { CheckpointStatement* }
+%destructor checkpointStatement { delete $$; }
+checkpointStatement(result) ::=	CHECKPOINT .
+	{
+		result = new CheckpointStatement();
+	}
+checkpointStatement(result) ::= CHECKPOINT unsignedIntegerLiteral(num) .
+	{
+		ModAutoPointer<CheckpointStatement> p = new CheckpointStatement();
+		p->setCount(*num);
+		delete num;
+
+		result = p.release();
+	}
+
+///////////////////////////////
+//------------------------
+// <grant statement>
+//------------------------
+%type grantStatement { GrantStatement* }
+%destructor grantStatement { delete $$; }
+grantStatement(result) ::= GRANT roles(role) TO granteeList(grantee) .
+	{
+		result = new GrantStatement(role, grantee);
+	}
+
+//
+// roles
+//
+%type roles { IdentifierList* }
+%destructor roles { delete $$; }
+roles(result) ::= identifier(name) .
+	{
+		result = new IdentifierList(name);
+	}
+roles(result) ::= roles(list) COMMA identifier(name) .
+	{
+		list->append(name);
+		result = list;
+	}
+
+//
+// grantee list
+//
+%type granteeList { IdentifierList* }
+%destructor granteeList { delete $$; }
+granteeList(result) ::= identifier(id) .
+	{
+		result = new IdentifierList(id);
+	}
+granteeList(result) ::= granteeList(list) COMMA identifier(id) .
+	{
+		list->append(id);
+		result = list;
+	}
+
+///////////////////////////////
+//------------------------
+// <revoke statement>
+//------------------------
+%type revokeStatement { RevokeStatement* }
+%destructor revokeStatement { delete $$; }
+revokeStatement(result) ::= REVOKE roles(role) FROM granteeList(grantee) .
+	{
+		result = new RevokeStatement(role, grantee);
+	}
+
+/////////////////////////////
+//----------------------
+// <explain statement>
+//----------------------
+%type explainStatement { ExplainStatement* }
+%destructor explainStatement { delete $$; }
+explainStatement(result) ::= EXPLAIN explainOption(option) sqlStatement(statement) .
+	{
+		result = new ExplainStatement(statement, option);
+	}
+
+//----------------------
+// explain option
+//----------------------
+%type explainOption { ExplainOption* }
+%destructor explainOption { delete $$; }
+explainOption(result) ::= hint(hint) .
+	{
+		result = new ExplainOption(0, hint);
+	}
+explainOption(result) ::= explainOptionValueList(option) hint(hint).
+	{
+		result = new ExplainOption(option, hint);
+	}
+
+%type explainOptionValueList { ExplainOption::Value }
+explainOptionValueList(result) ::= explainOptionValue(value) .
+	{
+		result = value;
+	}
+explainOptionValueList(result) ::= explainOptionValueList(list) explainOptionValue(value) .
+	{
+		result = list | value;
+	}
+
+//
+// explain option value
+//
+%type explainOptionValue { ExplainOption::Value }
+explainOptionValue(result) ::= EXECUTE .
+	{ result = ExplainOption::Execute; }
+explainOptionValue(result) ::= NO EXECUTE .
+	{ result = ExplainOption::None; }
+
+//////////////////////////////
+//-----------------------------
+// <start explain statement>
+//-----------------------------
+%type startExplainStatement { StartExplainStatement* }
+%destructor startExplainStatement { delete $$; }
+startExplainStatement(result) ::= START EXPLAIN explainOption(option) .
+	{
+		result = new StartExplainStatement(option);
+	}
+
+//////////////////////////////
+//-----------------------------
+// <end explain statement>
+//-----------------------------
+%type endExplainStatement { EndExplainStatement* }
+%destructor endExplainStatement { delete $$; }
+endExplainStatement(result) ::= END EXPLAIN .
+	{
+		result = new EndExplainStatement;
+	}
+
+/////////////////////////////
+//------------------------
+// <cascade definition>
+//------------------------
+%type cascadeDefinition { CascadeDefinition* }
+%destructor cascadeDefinition { delete $$; }
+cascadeDefinition(result) ::= CREATE CASCADE cascadeName(name) ON hostName(host) portNumber(port) optionalIdentifier(db) .
+	{
+		result = new CascadeDefinition(name, host, port, db);
+	}
+
+%type optionalIdentifier { Identifier* }
+%destructor optionalIdentifier { delete $$; }
+optionalIdentifier(result) ::= .
+	{
+		result = 0;
+	}
+optionalIdentifier(result) ::= identifier(id) .
+	{
+		result = id;
+	}
+
+
+/////////////////////////////
+//------------------------
+// <alter cascade statement>
+//------------------------
+%type alterCascadeStatement { AlterCascadeStatement* }
+%destructor alterCascadeStatement { delete $$; }
+alterCascadeStatement(result) ::= ALTER CASCADE cascadeName(name) TO hostName(host) portNumber(port) optionalIdentifier(db).
+	{
+		result = new AlterCascadeStatement(name, host, port, db);
+	}
+
+/////////////////////////////
+//------------------------
+// <drop cascade statement>
+//------------------------
+%type dropCascadeStatement { DropCascadeStatement* }
+%destructor dropCascadeStatement { delete $$; }
+dropCascadeStatement(result) ::= DROP CASCADE cascadeName(name) optionalIfExists(opt) .
+	{
+		result = new DropCascadeStatement(name, opt);
+	}
+
+//
+// cascade name
+//
+%type cascadeName { Identifier* }
+%destructor cascadeName { delete $$; }
+cascadeName(result) ::= identifier(id) .
+	{
+		result = id;
+	}
+
+//
+// host name
+//
+%type hostName { ValueExpression* }
+%destructor hostName { delete $$; }
+hostName(result) ::= stringValueSpecification(value) .
+	{
+		result = value;
+	}
+
+//
+// port number
+//
+%type portNumber { ValueExpression* }
+%destructor portNumber { delete $$; }
+portNumber(result) ::= numericValueSpecification(value) .
+	{
+		result = value;
+	}
+
+/////////////////////////////
+//------------------------
+// <partition definition>
+//------------------------
+%type partitionDefinition { PartitionDefinition* }
+%destructor partitionDefinition { delete $$; }
+partitionDefinition(result) ::= CREATE optionalPartitionCategory(cat) PARTITION ON tableName(name) BY functionName(function) LEFT_PARENTHESIS columnNameList(col) RIGHT_PARENTHESIS .
+	{
+		result = new PartitionDefinition(name, function, col, cat);
+	}
+
+// partition category
+%type optionalPartitionCategory { PartitionDefinition::Category::Value }
+%destructor optionalPartitionCategory {}
+optionalPartitionCategory(result) ::= .
+	{
+		result = PartitionDefinition::Category::Normal;
+	}
+optionalPartitionCategory(result) ::= READ ONLY .
+	{
+		result = PartitionDefinition::Category::ReadOnly;
+	}
+
+/////////////////////////////
+//------------------------
+// <alter partition statement>
+//------------------------
+%type alterPartitionStatement { AlterPartitionStatement* }
+%destructor alterPartitionStatement { delete $$; }
+alterPartitionStatement(result) ::= ALTER PARTITION ON tableName(name) TO functionName(function) LEFT_PARENTHESIS columnNameList(col) RIGHT_PARENTHESIS .
+	{
+		result = new AlterPartitionStatement(name, function, col);
+	}
+
+/////////////////////////////
+//------------------------
+// <drop partition statement>
+//------------------------
+%type dropPartitionStatement { DropPartitionStatement* }
+%destructor dropPartitionStatement { delete $$; }
+dropPartitionStatement(result) ::= DROP PARTITION ON tableName(name) optionalIfExists(opt) .
+	{
+		result = new DropPartitionStatement(name, opt);
+	}
+
+/////////////////////////////
+//------------------------
+// <function definition>
+//------------------------
+%type functionDefinition { FunctionDefinition* }
+%destructor functionDefinition { delete $$; }
+functionDefinition(result) ::= CREATE FUNCTION functionName(name)
+							parameterSpecification(param)
+							returnsClause(returns)
+							routineBody(body)
+ .
+	{
+		result = new FunctionDefinition(name, param, returns, body);
+	}
+
+/////////////////////////////
+//------------------------
+// <drop function statement>
+//------------------------
+%type dropFunctionStatement { DropFunctionStatement* }
+%destructor dropFunctionStatement { delete $$; }
+dropFunctionStatement(result) ::= DROP FUNCTION functionName(name) optionalIfExists(opt) .
+	{
+		result = new DropFunctionStatement(name, opt);
+	}
+
+//
+// function name
+//
+%type functionName { Identifier* }
+%destructor functionName { delete $$; }
+functionName(result) ::= identifier(id) .
+	{
+		result = id;
+	}
+
+//
+// parameter specification
+//
+%type parameterSpecification { ParameterDeclarationList* }
+%destructor parameterSpecification { delete $$; }
+parameterSpecification(result) ::= LEFT_PARENTHESIS parameterDeclarationList(list) RIGHT_PARENTHESIS .
+	{
+		result = list;
+	}
+
+//
+// SQL parameter declaration list
+//
+%type parameterDeclarationList { ParameterDeclarationList* }
+%destructor parameterDeclarationList { delete $$; }
+parameterDeclarationList(result) ::= parameterDeclaration(param) .
+	{
+		result = new ParameterDeclarationList(param);
+	}
+parameterDeclarationList(result) ::= parameterDeclarationList(list)
+						COMMA parameterDeclaration(param) .
+	{
+		list->append(param);
+		result = list;
+	}
+
+//
+// SQL parameter declaration
+//
+%type parameterDeclaration { ParameterDeclaration* }
+%destructor parameterDeclaration { delete $$; }
+parameterDeclaration(result) ::= parameterName(name) parameterType(type) .
+	{
+		result = new ParameterDeclaration(name, *type);
+		delete type;
+	}
+
+//
+// parameter name
+//
+%type parameterName { Identifier* }
+%destructor parameterName { delete $$; }
+parameterName(result) ::= identifier(id) .
+	{
+		result = id;
+	}
+
+// parameter type
+%type parameterType { Common::SQLData* }
+%destructor parameterType { delete $$; }
+parameterType(result) ::= dataType(type).
+	{
+		result = type;
+	}
+
+//
+// returns clause
+//
+%type returnsClause { ReturnsClause* }
+%destructor returnsClause { delete $$; }
+returnsClause(result) ::= RETURNS returnsDataType(type) .
+	{
+		result = new ReturnsClause(*type);
+		delete type;
+	}
+
+// returns data type
+%type returnsDataType { Common::SQLData* }
+%destructor returnsDataType { delete $$; }
+returnsDataType(result) ::= dataType(type).
+	{
+		result = type;
+	}
+
+//
+// routine bady
+//
+%type routineBody { RoutineBody* }
+%destructor routineBody { delete $$; }
+routineBody(result) ::= routineStatement(statement) .
+	{
+		result = new RoutineBody(statement);
+	}
+
+//
+// routine statement
+//
+%type routineStatement { Object* }
+%destructor routineStatement { delete $$; }
+routineStatement(result) ::= returnStatement(statement) .
+	{
+		result = statement;
+	}
+
+//
+// return statement
+//
+%type returnStatement { ReturnStatement* }
+%destructor returnStatement { delete $$; }
+returnStatement(result) ::= RETURN nonPredicateValueExpression(exp) .
+	{
+		result = new ReturnStatement(exp);
+	}
+
+//
+// Copyright (c) 1998, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2023 Ricoh Company, Ltd.
+// All rights reserved.
+//

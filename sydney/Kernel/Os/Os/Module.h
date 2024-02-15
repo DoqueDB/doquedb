@@ -1,0 +1,52 @@
+// -*-Mode: C++; tab-width: 4; c-basic-offset: 4;-*-
+// vi:set ts=4 sw=4:
+//
+// Module.h -- OS モジュールのソースコードを書くために使用するマクロ定義
+// 
+// Copyright (c) 2000, 2002, 2003, 2023 Ricoh Company, Ltd.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+#ifndef	__TRMEISTER_OS_MODULE_H
+#define	__TRMEISTER_OS_MODULE_H
+
+#include "SyNameSpace.h"
+#include "SyDLL.h"
+
+#define	_TRMEISTER_OS_BEGIN	namespace Os {
+#define	_TRMEISTER_OS_END		}
+#define _TRMEISTER_OS_USING	using namespace Os;
+
+#ifdef SYD_DLL
+#ifdef SYD_OS_EXPORT_FUNCTION
+#define	SYD_OS_FUNCTION		SYD_EXPORT
+#else
+#define	SYD_OS_FUNCTION		SYD_IMPORT
+#endif
+#ifdef SYD_OS_EXPORT_DATA
+#define	SYD_OS_DATA			SYD_EXPORT
+#else
+#define	SYD_OS_DATA			SYD_IMPORT
+#endif
+#else
+#define	SYD_OS_FUNCTION
+#define	SYD_OS_DATA
+#endif
+
+#endif	// __TRMEISTER_OS_MODULE_H
+
+//
+// Copyright (c) 2000, 2002, 2003, 2023 Ricoh Company, Ltd.
+// All rights reserved.
+//

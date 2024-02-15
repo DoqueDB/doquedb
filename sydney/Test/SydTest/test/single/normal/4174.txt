@@ -1,0 +1,34 @@
+# 障害票 1411
+
+Begin;
+
+SetSystemParameter "Inverted_MultiMatchMode" "FALSE";
+
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T ( F nvarchar (256) )";
+Command "create fulltext index T_F on T(F) hint 'inverted=(indexing=dual, tokenizer=DUAL:JAP:ALL:1 @UNARSCID:1 @NORMRSCID:1)'";
+
+Command "insert into T values 'Releases a new digital camera : CX3'";
+
+Command "select count(*) from T where F contains 'digi'";
+Command "select count(*) from T where F contains exactword('digi')";
+Command "select count(*) from T where F contains string('digi')";
+
+Command "select count(*) from T where F like '%digi%'";
+Command "select count(*) from T where F contains freetext('digi')";
+
+Command "select count(*) from T where F contains wordlist('digi')";
+Command "select count(*) from T where F contains wordlist(exactword('digi'))";
+Command "select count(*) from T where F contains wordlist(string('digi'))";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+
+SetSystemParameter "Inverted_MultiMatchMode" "TRUE";
+
+End;

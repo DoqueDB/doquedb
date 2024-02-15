@@ -1,0 +1,161 @@
+#Contains述語のORの組み合わせで索引を使わないことがある
+# 障害票765
+####################################################
+####################################################
+# Contains x Containsでないもの
+####################################################
+####################################################
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "drop database TESTDB";
+Command "create database TESTDB";
+
+# Containsに対するAND OR NOTの組み合わせで正しく動作することを確認する
+
+####################################################
+# 準備
+####################################################
+Command "create table t (f ntext, g ntext, h ntext)";
+Command "insert t values (?, ?, ?)" ["abc", "あいうえお", "123"];
+Command "insert t values (?, ?, ?)" ["bcd", "あかさたな", "135"];
+Command "insert t values (?, ?, ?)" [null,  "かきくけこ", "246"];
+Command "insert t values (?, ?, ?)" ["cde", null,         "139"];
+Command "insert t values (?, ?, ?)" ["def", "なにぬねの", null];
+
+Command "create fulltext index i on t(f) hint 'inverted=(nolocation=true)'";
+Command "create fulltext index j on t(g) hint 'inverted=(nolocation=true)'";
+Command "create fulltext index k on t(h) hint 'inverted=(nolocation=true)'";
+
+####################################################
+# AND, OR, NOTの単体
+####################################################
+
+######
+# AND
+######
+Command "select * from t where (f contains 'c' and g is null)";
+AssureCount 1;
+# 期待結果
+# ('cde', null, '139')
+
+######
+# OR
+######
+Command "select * from t where (f contains 'c' or h is null)";
+AssureCount 4;
+# 期待結果
+# ('abc', 'あいうえお', '123')
+# ('bcd', 'あかさたな', '135')
+# ('cde', null, '139')
+# ('def', 'なにぬねの', null)
+
+###########################################################
+# ANDのOR, ORのAND, ANDのNOT, NOTのAND, ORのNOT, NOTのOR
+###########################################################
+#########
+# ANDのOR
+#########
+# 同じ列
+Command "select * from t where f contains 'a' or (f contains 'b' and f is null)";
+AssureCount 1;
+# 期待結果
+# ('abc', 'あいうえお', '123')
+
+# 2つの列
+Command "select * from t where f contains 'a' or (g contains 'か' and g is null)";
+AssureCount 1;
+# 期待結果
+# ('abc', 'あいうえお', '123')
+
+# 3つの列
+Command "select * from t where f contains 'a' or (g contains 'か' and h is null)";
+AssureCount 1;
+# 期待結果
+# ('abc', 'あいうえお', '123')
+
+#########
+# ORのAND
+#########
+# 同じ列
+Command "select * from t where f contains 'a' and (f contains 'b' or f is null)";
+AssureCount 1;
+# 期待結果
+# ('abc', 'あいうえお', '123')
+
+# 2つの列
+Command "select * from t where f contains 'd' and (g contains 'か' or g is null)";
+AssureCount 2;
+# 期待結果
+# ('bcd', 'あかさたな', '135')
+# ('cde', null, '139')
+
+# 3つの列
+Command "select * from t where f contains 'b' and (g contains 'か' or h is null)";
+AssureCount 1;
+# 期待結果
+# ('bcd', 'あかさたな', '135')
+
+#########
+# ANDのNOT
+#########
+# 同じ列
+Command "select * from t where not (f contains 'b' and f is null)";
+AssureCount 4;
+# 期待結果
+# ('abc', 'あいうえお', '123')
+# ('bcd', 'あかさたな', '135')
+# ('cde', null, '139')
+# ('def', 'なにぬねの', null)
+
+# 2つの列
+Command "select * from t where not (f contains 'b' and g is null)";
+AssureCount 5;
+# 期待結果
+# ('abc', 'あいうえお', '123')
+# ('bcd', 'あかさたな', '135')
+# (null, 'かきくけこ', '246')
+# ('cde', null, '139')
+# ('def', 'なにぬねの', null)
+
+#########
+# NOTのAND
+#########
+# 同じ列
+Command "select * from t where not (f contains 'b') and not (f is null)";
+AssureCount 2;
+# 期待結果
+# ('cde', null, '139')
+# ('def', 'なにぬねの', null)
+
+# 2つの列
+Command "select * from t where not (f contains 'b') and not (g is null)";
+AssureCount 1;
+# 期待結果
+# ('def', 'なにぬねの', null)
+
+#########
+# ORのNOT
+#########
+# 同じ列
+Command "select * from t where not (f contains 'b' or f is null)";
+AssureCount 2;
+# 期待結果
+# ('cde', null, '139')
+# ('def', 'なにぬねの', null)
+
+# 2つの列
+Command "select * from t where not (f contains 'b' or g is null)";
+AssureCount 1;
+# 期待結果
+# ('def', 'なにぬねの', null)
+
+#########
+
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

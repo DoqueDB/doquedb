@@ -1,0 +1,13 @@
+#unmount->terminate->initialize->mount(1)
+#unmountしたのち、terminate->initializeしてからmountする
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+
+Command "unmount DefaultDB";
+TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

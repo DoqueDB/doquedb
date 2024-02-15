@@ -1,0 +1,171 @@
+Begin;
+Initialize;
+InitializeSession "";
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T(
+	F_year int not null, 
+	F_num int not null,
+	F_text char(10) not null)";
+
+CreateThread "InsertData";
+JoinThread "InsertData";
+Command "insert into T select * from T";
+Command "insert into T select * from T";
+Command "insert into T select * from T";
+Command "insert into T select * from T";
+
+
+
+Command "select F_year, count(*)  from T group by F_year order by count(*) desc";
+Command "select F_year, count(*)  from T where F_num = 1 AND F_text = 'aaa' group by F_year";
+Command "select F_year, count(*), MAX(F_num),  from T where F_text = 'bbb' group by F_year";
+Command "declare val bitmap";
+Command "select rowid  into val from T where F_num = 1 AND F_text = 'aaa' ";
+Command "select grouping_element(), count(*) from T where rowid in val group by F_year order by count(*) desc";
+Command "start transaction read write";
+Command "select F_year, count(*)  from T group by F_year";
+Command "commit";
+
+Command "create bitmap index I1 on T(F_year)";
+Command "select F_year, count(*)  from T group by F_year order by count(*) desc";
+Command "select F_year, count(*)  from T where F_num = 1 AND F_text = 'aaa' group by F_year";
+Command "select F_year, count(*), MAX(F_num),  from T where F_text = 'bbb' group by F_year";
+Command "declare val2 bitmap";
+Command "select rowid  into val2 from T where F_num = 1 AND F_text = 'aaa' ";
+Command "select grouping_element(), count(*) from T where rowid in val2 group by F_year order by count(*) desc";
+Command "start transaction read write";
+Command "select F_year, count(*)  from T group by F_year";
+Command "commit";
+
+
+Command "create index I2 on T(F_num)";
+Command "select F_year, count(*)  from T group by F_year order by count(*) desc";
+Command "select F_year, count(*)  from T where F_num = 1 AND F_text = 'aaa' group by F_year";
+Command "select F_year, count(*), MAX(F_num),  from T where F_text = 'bbb' group by F_year";
+Command "declare val3 bitmap";
+Command "select rowid  into val3 from T where F_num = 1 AND F_text = 'aaa' ";
+Command "select grouping_element(), count(*) from T where rowid in val3 group by F_year order by count(*) desc";
+Command "start transaction read write";
+Command "select F_year, count(*)  from T group by F_year";
+Command "commit";
+
+
+Command "create index I3 on T(F_text)";
+Command "select F_year, count(*)  from T group by F_year order by count(*) desc";
+Command "select F_year, count(*)  from T where F_num = 1 AND F_text = 'aaa' group by F_year";
+Command "select F_year, count(*), MAX(F_num),  from T where F_text = 'bbb' group by F_year";
+Command "declare val4 bitmap";
+Command "select rowid  into val4 from T where F_num = 1 AND F_text = 'aaa' ";
+Command "select grouping_element(), count(*) from T where rowid in val4 group by F_year order by count(*) desc";
+Command "start transaction read write";
+Command "select F_year, count(*)  from T group by F_year";
+Command "commit";
+
+
+Command "create bitmap index I4 on T(F_num)";
+Command "select F_year, count(*)  from T group by F_year order by count(*) desc";
+Command "select F_year, count(*)  from T where F_num = 1 AND F_text = 'aaa' group by F_year";
+Command "select F_year, count(*), MAX(F_num),  from T where F_text = 'bbb' group by F_year";
+Command "declare val5 bitmap";
+Command "select rowid  into val5 from T where F_num = 1 AND F_text = 'aaa' ";
+Command "select grouping_element(), count(*) from T where rowid in val5 group by F_year order by count(*) desc";
+Command "start transaction read write";
+Command "select F_year, count(*)  from T group by F_year";
+Command "commit";
+
+
+Command "drop index I2";
+Command "select F_year, count(*)  from T group by F_year order by count(*) desc";
+Command "select F_year, count(*)  from T where F_num = 1 AND F_text = 'aaa' group by F_year";
+Command "select F_year, count(*), MAX(F_num),  from T where F_text = 'bbb' group by F_year";
+Command "declare val6 bitmap";
+Command "select rowid  into val6 from T where F_num = 1 AND F_text = 'aaa' ";
+Command "select grouping_element(), count(*) from T where rowid in val6 group by F_year order by count(*) desc";
+Command "start transaction read write";
+Command "select F_year, count(*)  from T group by F_year";
+Command "commit";
+
+
+Command "drop index I1";
+Command "drop index I3";
+Command "drop index I4";
+
+
+
+Command  "create table T1(C1 varchar(32) array[no limit])";
+CreateThread "InsertArrayData";
+JoinThread "InsertArrayData";
+
+Command "insert into T1 select * from T1";
+Command "insert into T1 select * from T1";
+Command "insert into T1 select * from T1";
+Command "insert into T1 select * from T1";
+Command "insert into T1 select * from T1";
+Command "insert into T1 select * from T1";
+
+
+Command "declare array_val bitmap";
+Command "select rowid into array_val from T1";
+
+# not supported
+#Command "select grouping_element(), count(*) from T1 where rowid in array_val group by C1[] order by count(*) desc";
+Command "select grouping_element(), count(*) from T1 where rowid in array_val group by C1 order by count(*) desc";
+
+Command "create bitmap index I_Array on T1(C1)";
+Command "declare array_val2 bitmap";
+Command "select rowid into array_val2 from T1";
+Command "select grouping_element(), count(*) from T1 where rowid in array_val2 group by C1[] order by count(*) desc";
+Command "select grouping_element(), count(*) from T1 where rowid in array_val2 group by C1 order by count(*) desc";
+
+Command "drop index I_Array";
+Command "drop database TESTDB if exists";
+TerminateSession;
+Terminate;
+End;
+
+
+InsertData
+{
+Command "insert into T (F_year, F_num, F_text) values ('2001', 1, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2002', 1, 'bbb')";
+Command "insert into T (F_year, F_num, F_text) values ('2003', 1, 'ccc')";
+Command "insert into T (F_year, F_num, F_text) values ('2004', 1, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2005', 1, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2006', 2, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2007', 2, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2008', 2, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2009', 2, 'bbb')";
+Command "insert into T (F_year, F_num, F_text) values ('2010', 2, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2003', 1, 'ccc')";
+Command "insert into T (F_year, F_num, F_text) values ('2004', 3, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2005', 1, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2006', 4, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2007', 2, 'ddd')";
+Command "insert into T (F_year, F_num, F_text) values ('2008', 2, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2009', 2, 'bbb')";
+Command "insert into T (F_year, F_num, F_text) values ('2007', 2, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2008', 2, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2009', 2, 'bbb')";
+Command "insert into T (F_year, F_num, F_text) values ('2010', 2, 'aaa')";
+Command "insert into T (F_year, F_num, F_text) values ('2003', 1, 'ccc')";
+Command "insert into T (F_year, F_num, F_text) values ('2004', 3, 'aaa')";
+}
+
+InsertArrayData
+{
+Command  "insert into T1 (C1) values (?)" [["hoge", "hogehoge"]];
+Command  "insert into T1 (C1) values (?)" [["hoge", "hogehoge1"]];
+Command  "insert into T1 (C1) values (?)" [["hoge", "hogehoge1"]];
+Command  "insert into T1 (C1) values (?)" [["hoge2", "hogehoge3"]];
+Command  "insert into T1 (C1) values (?)" [["hoge2", "hogehoge2"]];
+Command  "insert into T1 (C1) values (?)" [["hogehoge", "hogehoge1"]];
+Command  "insert into T1 (C1) values (?)" [["hogehoge", "hogehoge1"]];
+Command  "insert into T1 (C1) values (?)" [["hoge3", "hogehoge1"]];
+Command  "insert into T1 (C1) values (?)" [["hoge2", "hogehoge3"]];
+Command  "insert into T1 (C1) values (?)" [["hoge2", "hogehoge2"]];
+}

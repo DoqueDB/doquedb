@@ -1,0 +1,126 @@
+#
+# データ型ごとのテーブルrenameテスト
+# 障害票629 に対応
+#
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database testdb";
+TerminateSession;
+
+InitializeSession "testdb";
+
+
+
+#
+#表名に50文字作成 rename
+#
+Command "create table t(C char(20))";
+Command "insert into t values ('aaaaaaaaaaaa')";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(C varchar(20))";
+Command "insert into t values ('bbbbbbbbbb')";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(C nchar(20))";
+Command "insert into t values ('あいうえお')";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(C nvarchar(20))";
+Command "insert into t values ('あいうえお')";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(C nvarchar(20) array[no limit])";
+Command "insert into t values (array['あいうえお','かきくけこ'])";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+
+Command "create table t(f int)";
+Command "insert into t values (100)";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(f bigint)";
+Command "insert into t values (10000)";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(f float)";
+Command "insert into t values (0.01)";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(b binary(400))";
+Command "insert into t values (NULL)";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(b image)";
+Command "insert into t values ('..\/..\/doc\/rnd10k')";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+
+Command "create table t(d datetime)";
+Command "insert into t values ('2001-07-07 12:34:56.789')";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(ｎ  uniqueidentifier)";
+Command "insert into t values ('xyz')";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(ｎ ntext)";
+Command "insert into t values ('さしすせそ')";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(L language)";
+Command "insert into t values ('ja')";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+Command "create table t(b blob)";
+Command "insert into t values ('..\/..\/doc\/rnd1k-a')";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+
+Command "create table t(b nclob)";
+Command "insert into t values ('かきくけこ')";
+Command "ALTER TABLE \"t\" RENAME \"r1234567890123456789012345678901234567890123456789\"";
+Command "select * from r1234567890123456789012345678901234567890123456789";
+Command "drop table r1234567890123456789012345678901234567890123456789";
+
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database testdb";
+TerminateSession;
+
+Terminate;
+End;

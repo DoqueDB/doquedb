@@ -1,0 +1,120 @@
+# select * from T1       inner join T2 on <条件, 列2個以上>
+#                   left outer
+#                  right outer
+# on <条件>付きjoinテスト (使用する条件で列が2個又は3個)
+# 複索引
+# --T1索引無し, T2索引無し
+# --同種テスト 11[1-4]32
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# テーブルT1
+Command  "create table T1(C1 int, C2 varchar(2), C3 nvarchar(4), C4 nvarchar(448))";
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "3",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [222,  "4",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null,  1,   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  null, "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "3",   null,  textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [333,  "4",  "ぴよ", null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null, "ぴよ", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  "2",   null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  null, "ホゲ", null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "4",  "null", textsjisfile "..\\..\\doc\\in_lab.txt"];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [444,  null, "ホゲ", textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [111,  null,  null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, "1",   null,  null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null, "ほげ", null                                 ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null,  null,  textsjisfile "..\\..\\doc\\lab.txt"   ];
+Command  "insert into T1 (C1, C2, C3, C4) values (?, ?, ?, ?)" [null, null,  null,  null                                 ];
+
+
+# テーブルT2
+Command  "create table T2(C5 int, C6 varchar(2), C7 nvarchar(4), C8 nvarchar(448))";
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [111,  "1",  "ほげ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  "2",  "ほげ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\ricoh.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "2",  "ホゲ", textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [null,  3,   "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [222,  null, "ぴよ", textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [333,  "3",   null,  textsjisfile "..\\..\\doc\\in_lab.txt"   ];
+Command  "insert into T2 (C5, C6, C7, C8) values (?, ?, ?, ?)" [444,  "3",  "ぷう", null                                 ];
+
+
+# 列リスト2個
+# inner
+Command  "select * from T1 inner join T2 on C1 = C5 and C1 = C5";
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6";
+Command  "select * from T1 inner join T2 on C1 = C5 and C3 = C7";
+Command  "select * from T1 inner join T2 on C1 = C5 and C4 = C8";
+Command  "select * from T1 inner join T2 on C2 = C6 and C2 = C6";
+Command  "select * from T1 inner join T2 on C2 = C6 and C3 = C7";
+Command  "select * from T1 inner join T2 on C2 = C6 and C4 = C8";
+Command  "select * from T1 inner join T2 on C3 = C7 and C3 = C7";
+Command  "select * from T1 inner join T2 on C3 = C7 and C4 = C8";
+Command  "select * from T1 inner join T2 on C4 = C8 and C4 = C8";
+
+# left outer
+Command  "select * from T1 left outer join T2 on C1 = C5 and C1 = C5";
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from T1 left outer join T2 on C1 = C5 and C3 = C7";
+Command  "select * from T1 left outer join T2 on C1 = C5 and C4 = C8";
+Command  "select * from T1 left outer join T2 on C2 = C6 and C2 = C6";
+Command  "select * from T1 left outer join T2 on C2 = C6 and C3 = C7";
+Command  "select * from T1 left outer join T2 on C2 = C6 and C4 = C8";
+Command  "select * from T1 left outer join T2 on C3 = C7 and C3 = C7";
+Command  "select * from T1 left outer join T2 on C3 = C7 and C4 = C8";
+Command  "select * from T1 left outer join T2 on C4 = C8 and C4 = C8";
+
+# right outer
+Command  "select * from T1 right outer join T2 on C1 = C5 and C1 = C5";
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6";
+Command  "select * from T1 right outer join T2 on C1 = C5 and C3 = C7";
+Command  "select * from T1 right outer join T2 on C1 = C5 and C4 = C8";
+Command  "select * from T1 right outer join T2 on C2 = C6 and C2 = C6";
+Command  "select * from T1 right outer join T2 on C2 = C6 and C3 = C7";
+Command  "select * from T1 right outer join T2 on C2 = C6 and C4 = C8";
+Command  "select * from T1 right outer join T2 on C3 = C7 and C3 = C7";
+Command  "select * from T1 right outer join T2 on C3 = C7 and C4 = C8";
+Command  "select * from T1 right outer join T2 on C4 = C8 and C4 = C8";
+
+
+# 列リスト3個
+# inner
+Command  "select * from T1 inner join T2 on C1 = C5 and C2 = C6 and C3 = C7";
+Command  "select * from T1 inner join T2 on C2 = C6 and C3 = C7 and C4 = C8";
+Command  "select * from T1 inner join T2 on C3 = C7 and C4 = C8 and C1 = C5";
+Command  "select * from T1 inner join T2 on C4 = C8 and C1 = C5 and C2 = C6";
+
+# left outer
+Command  "select * from T1 left outer join T2 on C1 = C5 and C2 = C6 and C3 = C7";
+Command  "select * from T1 left outer join T2 on C2 = C6 and C3 = C7 and C4 = C8";
+Command  "select * from T1 left outer join T2 on C3 = C7 and C4 = C8 and C1 = C5";
+Command  "select * from T1 left outer join T2 on C4 = C8 and C1 = C5 and C2 = C6";
+
+# right outer
+Command  "select * from T1 right outer join T2 on C1 = C5 and C2 = C6 and C3 = C7";
+Command  "select * from T1 right outer join T2 on C2 = C6 and C3 = C7 and C4 = C8";
+Command  "select * from T1 right outer join T2 on C3 = C7 and C4 = C8 and C1 = C5";
+Command  "select * from T1 right outer join T2 on C4 = C8 and C1 = C5 and C2 = C6";
+
+Command  "drop table T2";
+
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

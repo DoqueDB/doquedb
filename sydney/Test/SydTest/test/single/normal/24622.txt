@@ -1,0 +1,50 @@
+#  障害票 1235
+
+Begin;
+Initialize;
+InitializeSession "";
+
+Command "create table T(f1 ntext, f2 float)";
+Command "insert T values ('aaa', 1), ('aab', 10), ('abc', 10)";
+Command "create fulltext index I1 on T(f1) score column f2 hint 'inverted=(clustered)'";
+
+#  非クラスタリング検索
+Command "select f1, score(f1) from T where f1 contains 'a' order by score(f1) asc";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) asc";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) asc limit 1";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) asc limit 1 offset 3";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) desc";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) desc limit 1";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) desc limit 1 offset 3";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) asc";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) asc limit 1";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) asc limit 1 offset 3";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) desc";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) desc limit 1";
+Command "select f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) desc limit 1 offset 3";
+
+#  荒いクラスタリング検索
+#  [aaa, aab], [abc] にクラスタリングされる
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a'";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Sum'";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) desc partition by cluster(f1).id limit 1";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Sum' order by score(f1) desc partition by cluster(f1).id limit 1 offset 2";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Multiply'";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) desc partition by cluster(f1).id limit 1";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' score function 'Multiply' order by score(f1) desc partition by cluster(f1).id limit 1 offset 2";
+
+#  詳細なクラスタリング検索
+#  [aaa], [aab], [abc] にクラスタリングされる
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Sum'";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Sum' order by score(f1) desc partition by cluster(f1).id limit 1";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Sum' order by score(f1) desc partition by cluster(f1).id limit 1 offset 3";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Multiply'";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Multiply' order by score(f1) desc partition by cluster(f1).id limit 1";
+Command "select cluster(f1).id, f1, score(f1) from T where f1 contains 'a' clustered limit 0.8 score function 'Multiply' order by score(f1) desc partition by cluster(f1).id limit 1 offset 3";
+
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;

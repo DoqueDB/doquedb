@@ -1,0 +1,1329 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDBA
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDBA
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table IntArrayTable (NUM int, ARRAYVALUE int array[8])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I_DX on IntArrayTable(ARRAYVALUE) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (1, array[1, 2, 5000, 200])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (2, array[2, NULL, 89, 300])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (3, array[300, NULL, NULL, -1234567,NULL,-765432])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (4, array[0, 200, -3566, 9876])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (5, array[-1, 24, 2147483647, 300])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (6, array[2, -250, -2148, 812345])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (7, array[3, -750, 483648, 12345])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (8, array[4, -503, -23648, 612345])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (9, array[25, -520, -83648,2147483643])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (10, array[26, -150, -2147483648, 912345])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into IntArrayTable values (11, NULL)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify table IntArrayTable
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index  I_DX cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable order by NUM
+SydTest::Executor: [INFO] {1,{1,2,5000,200}}
+SydTest::Executor: [INFO] {2,{2,(null),89,300}}
+SydTest::Executor: [INFO] {3,{300,(null),(null),-1234567,(null),-765432}}
+SydTest::Executor: [INFO] {4,{0,200,-3566,9876}}
+SydTest::Executor: [INFO] {5,{-1,24,2147483647,300}}
+SydTest::Executor: [INFO] {6,{2,-250,-2148,812345}}
+SydTest::Executor: [INFO] {7,{3,-750,483648,12345}}
+SydTest::Executor: [INFO] {8,{4,-503,-23648,612345}}
+SydTest::Executor: [INFO] {9,{25,-520,-83648,2147483643}}
+SydTest::Executor: [INFO] {10,{26,-150,-2147483648,912345}}
+SydTest::Executor: [INFO] {11,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 0 order by NUM
+SydTest::Executor: [INFO] {4,{0,200,-3566,9876}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = -2147483648 order by NUM
+SydTest::Executor: [INFO] {10,{26,-150,-2147483648,912345}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 3000000000 order by NUM
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345 order by NUM
+SydTest::Executor: [INFO] {5,{-1,24,2147483647,300}}
+SydTest::Executor: [INFO] {7,{3,-750,483648,12345}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where NUM < 3 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM
+SydTest::Executor: [INFO] {1,{1,2,5000,200}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 1 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM
+SydTest::Executor: [INFO] {1,{1,2,5000,200}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = 2147483647
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = 2147483650
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = -150 and ARRAYVALUE[] = 2147483650 order by NUM
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 1 and ARRAYVALUE[] = 300 or ARRAYVALUE[] = -250 order by NUM
+SydTest::Executor: [INFO] {6,{2,-250,-2148,812345}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] is NULL order by NUM
+SydTest::Executor: [INFO] {2,{2,(null),89,300}}
+SydTest::Executor: [INFO] {3,{300,(null),(null),-1234567,(null),-765432}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE is NULL order by NUM
+SydTest::Executor: [INFO] {11,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I_DX
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable order by NUM
+SydTest::Executor: [INFO] {1,{1,2,5000,200}}
+SydTest::Executor: [INFO] {2,{2,(null),89,300}}
+SydTest::Executor: [INFO] {3,{300,(null),(null),-1234567,(null),-765432}}
+SydTest::Executor: [INFO] {4,{0,200,-3566,9876}}
+SydTest::Executor: [INFO] {5,{-1,24,2147483647,300}}
+SydTest::Executor: [INFO] {6,{2,-250,-2148,812345}}
+SydTest::Executor: [INFO] {7,{3,-750,483648,12345}}
+SydTest::Executor: [INFO] {8,{4,-503,-23648,612345}}
+SydTest::Executor: [INFO] {9,{25,-520,-83648,2147483643}}
+SydTest::Executor: [INFO] {10,{26,-150,-2147483648,912345}}
+SydTest::Executor: [INFO] {11,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 0 order by NUM
+SydTest::Executor: [INFO] {4,{0,200,-3566,9876}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = -2147483648 order by NUM
+SydTest::Executor: [INFO] {10,{26,-150,-2147483648,912345}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 3000000000 order by NUM
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345 order by NUM
+SydTest::Executor: [INFO] {5,{-1,24,2147483647,300}}
+SydTest::Executor: [INFO] {7,{3,-750,483648,12345}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where NUM < 3 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM
+SydTest::Executor: [INFO] {1,{1,2,5000,200}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 1 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM
+SydTest::Executor: [INFO] {1,{1,2,5000,200}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = 2147483647
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = 2147483650
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 26 and ARRAYVALUE[] = -150 and ARRAYVALUE[] = 2147483650 order by NUM
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] = 1 and ARRAYVALUE[] = 300 or ARRAYVALUE[] = -250 order by NUM
+SydTest::Executor: [INFO] {6,{2,-250,-2148,812345}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE[] is NULL order by NUM
+SydTest::Executor: [INFO] {2,{2,(null),89,300}}
+SydTest::Executor: [INFO] {3,{300,(null),(null),-1234567,(null),-765432}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from IntArrayTable where ARRAYVALUE is NULL order by NUM
+SydTest::Executor: [INFO] {11,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table floatArrayTable (NUM int, ARRAYVALUE float array[8])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I_DX1 on floatArrayTable(ARRAYVALUE) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (1, array[-1, 2.3987, 100.0, 1])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (2, array[NULL, NULL, 3.141592, 2])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (3, array[NULL, NULL, 50.5687, 3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (4, array[3.141592, 3.141592,61, 4])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (5, array[0.5687, 50.5687, 52,5])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (6, array[5950.5687, -50.5687, 2,200])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (7, array[9850.56, 14.23550, 758,NULL])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (8, array[12.87, 0.5687, 2,10000])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (9, array[9.1234, 0, 20,1])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (10, array[50.567, NULL, -20000,12345.0])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (11, array[0.0, NULL, -320000,182345.0])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into floatArrayTable values (12, NULL)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify table floatArrayTable
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index  I_DX1 cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable order by NUM
+SydTest::Executor: [INFO] {1,{-1E0,2.3987E0,1E2,1E0}}
+SydTest::Executor: [INFO] {2,{(null),(null),3.141592E0,2E0}}
+SydTest::Executor: [INFO] {3,{(null),(null),5.05687E1,3E0}}
+SydTest::Executor: [INFO] {4,{3.141592E0,3.141592E0,6.1E1,4E0}}
+SydTest::Executor: [INFO] {5,{5.687E-1,5.05687E1,5.2E1,5E0}}
+SydTest::Executor: [INFO] {6,{5.9505687E3,-5.05687E1,2E0,2E2}}
+SydTest::Executor: [INFO] {7,{9.85056E3,1.42355E1,7.58E2,(null)}}
+SydTest::Executor: [INFO] {8,{1.287E1,5.687E-1,2E0,1E4}}
+SydTest::Executor: [INFO] {9,{9.1234E0,0E0,2E1,1E0}}
+SydTest::Executor: [INFO] {10,{5.0567E1,(null),-2E4,1.2345E4}}
+SydTest::Executor: [INFO] {11,{0E0,(null),-3.2E5,1.82345E5}}
+SydTest::Executor: [INFO] {12,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] = 0.0 order by NUM
+SydTest::Executor: [INFO] {9,{9.1234E0,0E0,2E1,1E0}}
+SydTest::Executor: [INFO] {11,{0E0,(null),-3.2E5,1.82345E5}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] = 0.5687 order by NUM
+SydTest::Executor: [INFO] {5,{5.687E-1,5.05687E1,5.2E1,5E0}}
+SydTest::Executor: [INFO] {8,{1.287E1,5.687E-1,2E0,1E4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] = 9223372036854775810.9223372036854775810 order by NUM
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345.0 order by NUM
+SydTest::Executor: [INFO] {1,{-1E0,2.3987E0,1E2,1E0}}
+SydTest::Executor: [INFO] {10,{5.0567E1,(null),-2E4,1.2345E4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where NUM < 8 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM
+SydTest::Executor: [INFO] {6,{5.9505687E3,-5.05687E1,2E0,2E2}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] = -1 and ARRAYVALUE[] = 3.141592 or ARRAYVALUE[] = 50.567 order by NUM
+SydTest::Executor: [INFO] {10,{5.0567E1,(null),-2E4,1.2345E4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] is NULL order by NUM
+SydTest::Executor: [INFO] {2,{(null),(null),3.141592E0,2E0}}
+SydTest::Executor: [INFO] {3,{(null),(null),5.05687E1,3E0}}
+SydTest::Executor: [INFO] {7,{9.85056E3,1.42355E1,7.58E2,(null)}}
+SydTest::Executor: [INFO] {10,{5.0567E1,(null),-2E4,1.2345E4}}
+SydTest::Executor: [INFO] {11,{0E0,(null),-3.2E5,1.82345E5}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE is NULL order by NUM
+SydTest::Executor: [INFO] {12,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I_DX1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] = 0.0 order by NUM
+SydTest::Executor: [INFO] {9,{9.1234E0,0E0,2E1,1E0}}
+SydTest::Executor: [INFO] {11,{0E0,(null),-3.2E5,1.82345E5}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] = 0.5687 order by NUM
+SydTest::Executor: [INFO] {5,{5.687E-1,5.05687E1,5.2E1,5E0}}
+SydTest::Executor: [INFO] {8,{1.287E1,5.687E-1,2E0,1E4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] = 9223372036854775810.9223372036854775810 order by NUM
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345.0 order by NUM
+SydTest::Executor: [INFO] {1,{-1E0,2.3987E0,1E2,1E0}}
+SydTest::Executor: [INFO] {10,{5.0567E1,(null),-2E4,1.2345E4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where NUM < 8 and ARRAYVALUE[] = 2 and ARRAYVALUE[] = 200 order by NUM
+SydTest::Executor: [INFO] {6,{5.9505687E3,-5.05687E1,2E0,2E2}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] = -1 and ARRAYVALUE[] = 3.141592 or ARRAYVALUE[] = 50.567 order by NUM
+SydTest::Executor: [INFO] {10,{5.0567E1,(null),-2E4,1.2345E4}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE[] is NULL order by NUM
+SydTest::Executor: [INFO] {2,{(null),(null),3.141592E0,2E0}}
+SydTest::Executor: [INFO] {3,{(null),(null),5.05687E1,3E0}}
+SydTest::Executor: [INFO] {7,{9.85056E3,1.42355E1,7.58E2,(null)}}
+SydTest::Executor: [INFO] {10,{5.0567E1,(null),-2E4,1.2345E4}}
+SydTest::Executor: [INFO] {11,{0E0,(null),-3.2E5,1.82345E5}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from floatArrayTable where ARRAYVALUE is NULL order by NUM
+SydTest::Executor: [INFO] {12,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table bigintArrayTable (NUM int, ARRAYVALUE bigint array[8])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I_DX2 on bigintArrayTable(ARRAYVALUE) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (1, array[NULL, 3, 100, 1])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (2, array[NULL, NULL, 100, 2867940])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (3, array[NULL, NULL, NULL, -123940567])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (4, array[NULL, NULL, NULL, -123940567,NULL,9238475637,NULL])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (5, array[100, 45000, 5555, -1])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (6, array[1, -1000000, 9223372036854775807, 2])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (7, array[2, 5100, -9223372036854775808, 3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (8, array[3, 4100, -36854580, 4])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (9, array[4, 3100, -9, 5])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (10, array[5, 1100, 808, 63])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (11, array[1, 0, 808, 63])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into bigintArrayTable values (12, NULL)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify table bigintArrayTable
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index  I_DX2 cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable order by NUM
+SydTest::Executor: [INFO] {1,{(null),3,100,1}}
+SydTest::Executor: [INFO] {2,{(null),(null),100,2867940}}
+SydTest::Executor: [INFO] {3,{(null),(null),(null),-123940567}}
+SydTest::Executor: [INFO] {4,{(null),(null),(null),-123940567,(null),9238475637,(null)}}
+SydTest::Executor: [INFO] {5,{100,45000,5555,-1}}
+SydTest::Executor: [INFO] {6,{1,-1000000,9223372036854775807,2}}
+SydTest::Executor: [INFO] {7,{2,5100,-9223372036854775808,3}}
+SydTest::Executor: [INFO] {8,{3,4100,-36854580,4}}
+SydTest::Executor: [INFO] {9,{4,3100,-9,5}}
+SydTest::Executor: [INFO] {10,{5,1100,808,63}}
+SydTest::Executor: [INFO] {11,{1,0,808,63}}
+SydTest::Executor: [INFO] {12,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] = 0 order by NUM
+SydTest::Executor: [INFO] {11,{1,0,808,63}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] = 100 order by NUM
+SydTest::Executor: [INFO] {1,{(null),3,100,1}}
+SydTest::Executor: [INFO] {2,{(null),(null),100,2867940}}
+SydTest::Executor: [INFO] {5,{100,45000,5555,-1}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] = 9223372036854775810 order by NUM
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX) Data exception - numeric value out of range.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345.0 order by NUM
+SydTest::Executor: [INFO] {5,{100,45000,5555,-1}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where NUM>=5 and ARRAYVALUE[] = 5100 and ARRAYVALUE[] = -9223372036854775808 order by NUM
+SydTest::Executor: [INFO] {7,{2,5100,-9223372036854775808,3}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] = -9 and ARRAYVALUE[] = 3 or ARRAYVALUE[] = 63 order by NUM
+SydTest::Executor: [INFO] {10,{5,1100,808,63}}
+SydTest::Executor: [INFO] {11,{1,0,808,63}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] is NULL order by NUM
+SydTest::Executor: [INFO] {1,{(null),3,100,1}}
+SydTest::Executor: [INFO] {2,{(null),(null),100,2867940}}
+SydTest::Executor: [INFO] {3,{(null),(null),(null),-123940567}}
+SydTest::Executor: [INFO] {4,{(null),(null),(null),-123940567,(null),9238475637,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE is NULL order by NUM
+SydTest::Executor: [INFO] {12,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I_DX2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable order by NUM
+SydTest::Executor: [INFO] {1,{(null),3,100,1}}
+SydTest::Executor: [INFO] {2,{(null),(null),100,2867940}}
+SydTest::Executor: [INFO] {3,{(null),(null),(null),-123940567}}
+SydTest::Executor: [INFO] {4,{(null),(null),(null),-123940567,(null),9238475637,(null)}}
+SydTest::Executor: [INFO] {5,{100,45000,5555,-1}}
+SydTest::Executor: [INFO] {6,{1,-1000000,9223372036854775807,2}}
+SydTest::Executor: [INFO] {7,{2,5100,-9223372036854775808,3}}
+SydTest::Executor: [INFO] {8,{3,4100,-36854580,4}}
+SydTest::Executor: [INFO] {9,{4,3100,-9,5}}
+SydTest::Executor: [INFO] {10,{5,1100,808,63}}
+SydTest::Executor: [INFO] {11,{1,0,808,63}}
+SydTest::Executor: [INFO] {12,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] = 0 order by NUM
+SydTest::Executor: [INFO] {11,{1,0,808,63}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] = 100 order by NUM
+SydTest::Executor: [INFO] {1,{(null),3,100,1}}
+SydTest::Executor: [INFO] {2,{(null),(null),100,2867940}}
+SydTest::Executor: [INFO] {5,{100,45000,5555,-1}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] = 9223372036854775810 order by NUM
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] = -1 or ARRAYVALUE[] = 12345.0 order by NUM
+SydTest::Executor: [INFO] {5,{100,45000,5555,-1}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where NUM>=5 and ARRAYVALUE[] = 5100 and ARRAYVALUE[] = -9223372036854775808 order by NUM
+SydTest::Executor: [INFO] {7,{2,5100,-9223372036854775808,3}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] = -9 and ARRAYVALUE[] = 3 or ARRAYVALUE[] = 63 order by NUM
+SydTest::Executor: [INFO] {10,{5,1100,808,63}}
+SydTest::Executor: [INFO] {11,{1,0,808,63}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE[] is NULL order by NUM
+SydTest::Executor: [INFO] {1,{(null),3,100,1}}
+SydTest::Executor: [INFO] {2,{(null),(null),100,2867940}}
+SydTest::Executor: [INFO] {3,{(null),(null),(null),-123940567}}
+SydTest::Executor: [INFO] {4,{(null),(null),(null),-123940567,(null),9238475637,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from bigintArrayTable where ARRAYVALUE is NULL order by NUM
+SydTest::Executor: [INFO] {12,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table c8at (id int,c char(8) array[no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I_DX3 on c8at(c) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into c8at values (1,array['abcd', 'xyz'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into c8at values (2,array['XYXYX', NULL, 'ABAB'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into c8at values (3,array['B', 'OPQ', NULL])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into c8at values (4,array[NULL, 'wedenesday', 'ABC'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into c8at values (5,array['', 'desk', ''])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into c8at values (6, NULL)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify table c8at
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] verify index  I_DX3 cascade continue
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at order by id
+SydTest::Executor: [INFO] {1,{abcd    ,xyz     }}
+SydTest::Executor: [INFO] {2,{XYXYX   ,(null),ABAB    }}
+SydTest::Executor: [INFO] {3,{B       ,OPQ     ,(null)}}
+SydTest::Executor: [INFO] {4,{(null),wedenesd,ABC     }}
+SydTest::Executor: [INFO] {5,{        ,desk    ,        }}
+SydTest::Executor: [INFO] {6,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] = 'B' and  c[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B       ,OPQ     ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] = 'wedenesday' or  c[] = 'abcd' 
+SydTest::Executor: [INFO] {1,{abcd    ,xyz     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] = 'wedenesday' and  c[] = 'ABC' or c[] = 'xyz' 
+SydTest::Executor: [INFO] {1,{abcd    ,xyz     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] like 'ABC'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] like 'ABC%'
+SydTest::Executor: [INFO] {4,{(null),wedenesd,ABC     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] = '' 
+SydTest::Executor: [INFO] {5,{        ,desk    ,        }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] is NULL 
+SydTest::Executor: [INFO] {2,{XYXYX   ,(null),ABAB    }}
+SydTest::Executor: [INFO] {3,{B       ,OPQ     ,(null)}}
+SydTest::Executor: [INFO] {4,{(null),wedenesd,ABC     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c is NULL 
+SydTest::Executor: [INFO] {6,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I_DX3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at order by id
+SydTest::Executor: [INFO] {1,{abcd    ,xyz     }}
+SydTest::Executor: [INFO] {2,{XYXYX   ,(null),ABAB    }}
+SydTest::Executor: [INFO] {3,{B       ,OPQ     ,(null)}}
+SydTest::Executor: [INFO] {4,{(null),wedenesd,ABC     }}
+SydTest::Executor: [INFO] {5,{        ,desk    ,        }}
+SydTest::Executor: [INFO] {6,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] = 'B' and  c[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B       ,OPQ     ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] = 'wedenesday' or  c[] = 'abcd' 
+SydTest::Executor: [INFO] {1,{abcd    ,xyz     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] = 'wedenesday' and  c[] = 'ABC' or c[] = 'xyz' 
+SydTest::Executor: [INFO] {1,{abcd    ,xyz     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] like 'ABC'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] like 'ABC%'
+SydTest::Executor: [INFO] {4,{(null),wedenesd,ABC     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] = '' 
+SydTest::Executor: [INFO] {5,{        ,desk    ,        }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c[] is NULL 
+SydTest::Executor: [INFO] {2,{XYXYX   ,(null),ABAB    }}
+SydTest::Executor: [INFO] {3,{B       ,OPQ     ,(null)}}
+SydTest::Executor: [INFO] {4,{(null),wedenesd,ABC     }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at where  c is NULL 
+SydTest::Executor: [INFO] {6,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table v8at (id int,vc varchar(20) array[no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I_DX4 on v8at(vc) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from c8at order by id
+SydTest::Executor: [INFO] {1,{abcd    ,xyz     }}
+SydTest::Executor: [INFO] {2,{XYXYX   ,(null),ABAB    }}
+SydTest::Executor: [INFO] {3,{B       ,OPQ     ,(null)}}
+SydTest::Executor: [INFO] {4,{(null),wedenesd,ABC     }}
+SydTest::Executor: [INFO] {5,{        ,desk    ,        }}
+SydTest::Executor: [INFO] {6,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into v8at values (1,array['abcd', 'xyz'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into v8at values (2,array['XYXYX', NULL, 'ABAB'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into v8at values (3,array['B', 'OPQ', NULL])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into v8at values (4,array[NULL, 'abcdef', 'ABC'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into v8at values (5,array[NULL, 'spring has come', ''])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into v8at values (6, NULL)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] = 'B' and  vc[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B,OPQ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] = 'abcd' or  vc[] = 'ABC' 
+SydTest::Executor: [INFO] {1,{abcd,xyz}}
+SydTest::Executor: [INFO] {4,{(null),abcdef,ABC}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] = 'abcd' and  vc[] = 'ABC' or vc[] = 'ABAB' 
+SydTest::Executor: [INFO] {2,{XYXYX,(null),ABAB}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] like 'xyz'
+SydTest::Executor: [INFO] {1,{abcd,xyz}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] like 'xyz%'
+SydTest::Executor: [INFO] {1,{abcd,xyz}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] is NULL 
+SydTest::Executor: [INFO] {2,{XYXYX,(null),ABAB}}
+SydTest::Executor: [INFO] {3,{B,OPQ,(null)}}
+SydTest::Executor: [INFO] {4,{(null),abcdef,ABC}}
+SydTest::Executor: [INFO] {5,{(null),spring has come,}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc is NULL 
+SydTest::Executor: [INFO] {6,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] = '' 
+SydTest::Executor: [INFO] {5,{(null),spring has come,}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I_DX4
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] = 'B' and  vc[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B,OPQ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] = 'abcd' or  vc[] = 'ABC' 
+SydTest::Executor: [INFO] {1,{abcd,xyz}}
+SydTest::Executor: [INFO] {4,{(null),abcdef,ABC}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] = 'abcd' and  vc[] = 'ABC' or vc[] = 'ABAB' 
+SydTest::Executor: [INFO] {2,{XYXYX,(null),ABAB}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] like 'xyz'
+SydTest::Executor: [INFO] {1,{abcd,xyz}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] like 'xyz%'
+SydTest::Executor: [INFO] {1,{abcd,xyz}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] is NULL 
+SydTest::Executor: [INFO] {2,{XYXYX,(null),ABAB}}
+SydTest::Executor: [INFO] {3,{B,OPQ,(null)}}
+SydTest::Executor: [INFO] {4,{(null),abcdef,ABC}}
+SydTest::Executor: [INFO] {5,{(null),spring has come,}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc is NULL 
+SydTest::Executor: [INFO] {6,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from v8at where  vc[] = '' 
+SydTest::Executor: [INFO] {5,{(null),spring has come,}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table nc8at (id int,nc nchar(20) array[no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I_DX5 on nc8at(nc) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nc8at values (1,array['abcd', 'xyz'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nc8at values (2,array['XYXYX', NULL, 'ABAB'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nc8at values (3,array['B', 'OPQ', NULL])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nc8at values (4,array[NULL, 'abcdef', 'ABC'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nc8at values (5,array['あいうえお', 'abcdef', '一週間'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nc8at values (6,array['今日は金曜日', '', '一週間'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nc8at values (7, NULL)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] = 'B' and  nc[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B                   ,OPQ                 ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] = 'B' or  nc[] = '一週間' 
+SydTest::Executor: [INFO] {3,{B                   ,OPQ                 ,(null)}}
+SydTest::Executor: [INFO] {5,{あいうえお               ,abcdef              ,一週間                 }}
+SydTest::Executor: [INFO] {6,{今日は金曜日              ,                    ,一週間                 }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] = 'B' and  nc[] = '一週間' or nc[] = 'ABAB'
+SydTest::Executor: [INFO] {2,{XYXYX               ,(null),ABAB                }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  id = 6 or nc[] = 'B' and  nc[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B                   ,OPQ                 ,(null)}}
+SydTest::Executor: [INFO] {6,{今日は金曜日              ,                    ,一週間                 }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] like 'B'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] like 'B%'
+SydTest::Executor: [INFO] {3,{B                   ,OPQ                 ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] is NULL
+SydTest::Executor: [INFO] {2,{XYXYX               ,(null),ABAB                }}
+SydTest::Executor: [INFO] {3,{B                   ,OPQ                 ,(null)}}
+SydTest::Executor: [INFO] {4,{(null),abcdef              ,ABC                 }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc is NULL
+SydTest::Executor: [INFO] {7,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] = ''
+SydTest::Executor: [INFO] {6,{今日は金曜日              ,                    ,一週間                 }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I_DX5
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] = 'B' and  nc[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B                   ,OPQ                 ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] = 'B' or  nc[] = '一週間' 
+SydTest::Executor: [INFO] {3,{B                   ,OPQ                 ,(null)}}
+SydTest::Executor: [INFO] {5,{あいうえお               ,abcdef              ,一週間                 }}
+SydTest::Executor: [INFO] {6,{今日は金曜日              ,                    ,一週間                 }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] = 'B' and  nc[] = '一週間' or nc[] = 'ABAB'
+SydTest::Executor: [INFO] {2,{XYXYX               ,(null),ABAB                }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  id = 6 or nc[] = 'B' and  nc[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B                   ,OPQ                 ,(null)}}
+SydTest::Executor: [INFO] {6,{今日は金曜日              ,                    ,一週間                 }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] like 'B'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] like 'B%'
+SydTest::Executor: [INFO] {3,{B                   ,OPQ                 ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] is NULL
+SydTest::Executor: [INFO] {2,{XYXYX               ,(null),ABAB                }}
+SydTest::Executor: [INFO] {3,{B                   ,OPQ                 ,(null)}}
+SydTest::Executor: [INFO] {4,{(null),abcdef              ,ABC                 }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc is NULL
+SydTest::Executor: [INFO] {7,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nc8at where  nc[] = ''
+SydTest::Executor: [INFO] {6,{今日は金曜日              ,                    ,一週間                 }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table nv8at (id int,nc nvarchar(20) array[no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I_DX6 on nv8at(nc) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nv8at values (1,array['abcd', 'xyz'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nv8at values (2,array['XYXYX', NULL, 'ABAB'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nv8at values (3,array['B', 'OPQ', NULL])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nv8at values (4,array[NULL, 'abcdef', 'ABC'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nv8at values (5,array['time is money', '', 'ABC'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into nv8at values (6, NULL)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nv8at where  nc[] = 'B' and  nc[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B,OPQ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nv8at where  nc[] = 'xyz' or  nc[] = 'ABC' 
+SydTest::Executor: [INFO] {1,{abcd,xyz}}
+SydTest::Executor: [INFO] {4,{(null),abcdef,ABC}}
+SydTest::Executor: [INFO] {5,{time is money,,ABC}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nv8at where  nc[] = 'xyz' and  nc[] = 'ABC' or nc[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B,OPQ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nv8at where  nc[] like 'XYXYX'
+SydTest::Executor: [INFO] {2,{XYXYX,(null),ABAB}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nv8at where  nc[] like 'XYXYX%'
+SydTest::Executor: [INFO] {2,{XYXYX,(null),ABAB}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I_DX6
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nv8at where  nc[] = 'B' and  nc[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B,OPQ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nv8at where  nc[] = 'xyz' or  nc[] = 'ABC' 
+SydTest::Executor: [INFO] {1,{abcd,xyz}}
+SydTest::Executor: [INFO] {4,{(null),abcdef,ABC}}
+SydTest::Executor: [INFO] {5,{time is money,,ABC}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nv8at where  nc[] = 'xyz' and  nc[] = 'ABC' or nc[] = 'OPQ' 
+SydTest::Executor: [INFO] {3,{B,OPQ,(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nv8at where  nc[] like 'XYXYX'
+SydTest::Executor: [INFO] {2,{XYXYX,(null),ABAB}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from nv8at where  nc[] like 'XYXYX%'
+SydTest::Executor: [INFO] {2,{XYXYX,(null),ABAB}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table d8at(id int,d datetime array[8])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I_DX11 on d8at(d) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into d8at values (1,array['2001-01-07 10:34:56.123'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into d8at values (2,array['2002-02-01 11:34:56.456','2002-04-01 11:34:56.456','2002-05-01 11:34:56.456','2002-05-01 11:34:56.456'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into d8at values (3,array['2003-03-10 12:34:56.789','2003-04-10 12:34:56.789','2003-05-10 12:34:56.789','2003-06-10 12:34:56.789'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into d8at values (4,array['2004-04-11 13:34:56.123','2004-05-11 13:34:56.123','2004-06-11 13:34:56.123','2004-07-11 13:34:56.123'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into d8at values (5,array['2005-04-11 13:34:56.123','2005-05-11 13:34:56.123','2005-06-11 13:34:56.123','2004-07-11 13:34:56.123'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into d8at values (6,array[NULL,NULL,'2005-06-11 13:34:56.123','2004-07-11 13:34:56.123'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into d8at values (7, NULL)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from d8at where  d[] = '2004-04-11 13:34:56.123' 
+SydTest::Executor: [INFO] {4,{2004-04-11 13:34:56.123,2004-05-11 13:34:56.123,2004-06-11 13:34:56.123,2004-07-11 13:34:56.123}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from d8at where  d[] = '2001-01-07 10:34:56.123' and  d[] = '2001-02-07 10:34:56.123' 
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from d8at where  d[] = '2004-05-11 13:34:56.123' or  d[] = '2003-04-10 12:34:56.789' 
+SydTest::Executor: [INFO] {3,{2003-03-10 12:34:56.789,2003-04-10 12:34:56.789,2003-05-10 12:34:56.789,2003-06-10 12:34:56.789}}
+SydTest::Executor: [INFO] {4,{2004-04-11 13:34:56.123,2004-05-11 13:34:56.123,2004-06-11 13:34:56.123,2004-07-11 13:34:56.123}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from d8at where  d[] = '2004-05-11 13:34:56.123' and  d[] = '2003-04-10 12:34:56.789' or  d[] = '2003-06-10 12:34:56.789' 
+SydTest::Executor: [INFO] {3,{2003-03-10 12:34:56.789,2003-04-10 12:34:56.789,2003-05-10 12:34:56.789,2003-06-10 12:34:56.789}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from d8at where  d[] is NULL 
+SydTest::Executor: [INFO] {6,{(null),(null),2005-06-11 13:34:56.123,2004-07-11 13:34:56.123}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from d8at where  d is NULL 
+SydTest::Executor: [INFO] {7,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I_DX11
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from d8at where  d[] = '2004-04-11 13:34:56.123' 
+SydTest::Executor: [INFO] {4,{2004-04-11 13:34:56.123,2004-05-11 13:34:56.123,2004-06-11 13:34:56.123,2004-07-11 13:34:56.123}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from d8at where  d[] = '2001-01-07 10:34:56.123' and  d[] = '2001-02-07 10:34:56.123' 
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from d8at where  d[] = '2004-05-11 13:34:56.123' or  d[] = '2003-04-10 12:34:56.789' 
+SydTest::Executor: [INFO] {3,{2003-03-10 12:34:56.789,2003-04-10 12:34:56.789,2003-05-10 12:34:56.789,2003-06-10 12:34:56.789}}
+SydTest::Executor: [INFO] {4,{2004-04-11 13:34:56.123,2004-05-11 13:34:56.123,2004-06-11 13:34:56.123,2004-07-11 13:34:56.123}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from d8at where  d[] = '2004-05-11 13:34:56.123' and  d[] = '2003-04-10 12:34:56.789' or  d[] = '2003-06-10 12:34:56.789' 
+SydTest::Executor: [INFO] {3,{2003-03-10 12:34:56.789,2003-04-10 12:34:56.789,2003-05-10 12:34:56.789,2003-06-10 12:34:56.789}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from d8at where  d[] is NULL 
+SydTest::Executor: [INFO] {6,{(null),(null),2005-06-11 13:34:56.123,2004-07-11 13:34:56.123}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from d8at where  d is NULL 
+SydTest::Executor: [INFO] {7,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table u8at(id int,u uniqueidentifier array[8])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I_DX12 on u8at(u) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into u8at values (1,array['Monday','Tuesday','Wedenesday'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into u8at values (2,array['thursday','Friday','Saturday','Sunday'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into u8at values (3,array['abc','def','yyyyy','pppp'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into u8at values (4,array['opq',NULL,'xxx','January'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into u8at values (5,array['England','Austraria','America','France'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into u8at values (6,array['summer','','winter','autumn'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into u8at values (7, NULL)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from u8at where  u[] = 'opq' and  u[] = 'pppp' 
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] = 'abc' or  u[] = 'England' 
+SydTest::Executor: [INFO] {3,{abc                                 ,def                                 ,yyyyy                               ,pppp                                }}
+SydTest::Executor: [INFO] {5,{England                             ,Austraria                           ,America                             ,France                              }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] = 'abc' and  u[] = 'England' or u[] = 'France' 
+SydTest::Executor: [INFO] {5,{England                             ,Austraria                           ,America                             ,France                              }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] like 'pppp' 
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] like 'pppp%' 
+SydTest::Executor: [INFO] {3,{abc                                 ,def                                 ,yyyyy                               ,pppp                                }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] is NULL 
+SydTest::Executor: [INFO] {4,{opq                                 ,(null),xxx                                 ,January                             }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] = '' 
+SydTest::Executor: [INFO] {6,{summer                              ,                                    ,winter                              ,autumn                              }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I_DX12
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from u8at where  u[] = 'opq' and  u[] = 'pppp' 
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] = 'abc' or  u[] = 'England' 
+SydTest::Executor: [INFO] {3,{abc                                 ,def                                 ,yyyyy                               ,pppp                                }}
+SydTest::Executor: [INFO] {5,{England                             ,Austraria                           ,America                             ,France                              }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] = 'abc' and  u[] = 'England' or u[] = 'France' 
+SydTest::Executor: [INFO] {5,{England                             ,Austraria                           ,America                             ,France                              }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] like 'pppp' 
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] like 'pppp%' 
+SydTest::Executor: [INFO] {3,{abc                                 ,def                                 ,yyyyy                               ,pppp                                }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] is NULL 
+SydTest::Executor: [INFO] {4,{opq                                 ,(null),xxx                                 ,January                             }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from u8at where  u[] = '' 
+SydTest::Executor: [INFO] {6,{summer                              ,                                    ,winter                              ,autumn                              }}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table l8at(id int,L language array[8])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index I_DX13 on l8at(L) hint 'compressed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into l8at values (1,array['de','fr','es','ja'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into l8at values (2,array['en','ja','fr','nl','en'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into l8at values (3,array['ja+en','zh','zh-tw','es'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into l8at values (4,array['de','ja','zh','zh-cn','fr'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into l8at values (5,array['zh','de','es','nl'])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into l8at values (6,array['zh',NULL,'es',''])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into l8at values (7, NULL)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from l8at where  L[] = 'nl'
+SydTest::Executor: [INFO] {2,{en,ja,fr,nl,en}}
+SydTest::Executor: [INFO] {5,{zh,de,es,nl}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from l8at where  L[] = 'ja' and  L[] = 'zh' 
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from l8at where  L[] = 'de' or  L[] = 'es' 
+SydTest::Executor: [INFO] {1,{de,fr,es,ja}}
+SydTest::Executor: [INFO] {3,{en+ja,zh,zh-tw,es}}
+SydTest::Executor: [INFO] {4,{de,ja,zh,zh-cn,fr}}
+SydTest::Executor: [INFO] {5,{zh,de,es,nl}}
+SydTest::Executor: [INFO] {6,{zh,(null),es,}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from l8at where  L[] = 'de' and  L[] = 'es' or L[] = 'ja' 
+SydTest::Executor: [INFO] {1,{de,fr,es,ja}}
+SydTest::Executor: [INFO] {2,{en,ja,fr,nl,en}}
+SydTest::Executor: [INFO] {4,{de,ja,zh,zh-cn,fr}}
+SydTest::Executor: [INFO] {5,{zh,de,es,nl}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from l8at where  L[] is NULL
+SydTest::Executor: [INFO] {6,{zh,(null),es,}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from l8at where  L is NULL
+SydTest::Executor: [INFO] {7,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop index I_DX13
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from l8at where  L[] = 'nl'
+SydTest::Executor: [INFO] {2,{en,ja,fr,nl,en}}
+SydTest::Executor: [INFO] {5,{zh,de,es,nl}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from l8at where  L[] = 'ja' and  L[] = 'zh' 
+SydTest::Executor: [INFO] {4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from l8at where  L[] = 'de' or  L[] = 'es' 
+SydTest::Executor: [INFO] {1,{de,fr,es,ja}}
+SydTest::Executor: [INFO] {3,{en+ja,zh,zh-tw,es}}
+SydTest::Executor: [INFO] {4,{de,ja,zh,zh-cn,fr}}
+SydTest::Executor: [INFO] {5,{zh,de,es,nl}}
+SydTest::Executor: [INFO] {6,{zh,(null),es,}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from l8at where  L[] = 'de' and  L[] = 'es' or L[] = 'ja' 
+SydTest::Executor: [INFO] {1,{de,fr,es,ja}}
+SydTest::Executor: [INFO] {2,{en,ja,fr,nl,en}}
+SydTest::Executor: [INFO] {4,{de,ja,zh,zh-cn,fr}}
+SydTest::Executor: [INFO] {5,{zh,de,es,nl}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from l8at where  L[] is NULL
+SydTest::Executor: [INFO] {6,{zh,(null),es,}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from l8at where  L is NULL
+SydTest::Executor: [INFO] {7,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDBA
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,28 @@
+# Bug report 1565
+
+# KWICのテスト
+# 正規化なしの索引だと、正規化によって文字列が変わる検索語のマークアップに失敗する
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+Command "create database TEST";
+
+Command "create table T(C ntext)";
+Command "insert T values ''";
+Command "select normalize('リコー' using 'UNA:1 wordseparate') from T";
+Command "select normalize('リコウ' using 'UNA:1 wordseparate') from T";
+Command "insert T values 'リコー', 'リコウ'";
+Command "create fulltext index I on T(C) hint 'inverted=(indexing=word, tokenizer=DUAL:JAP @UNARSCID:1 @NORMRSCID:1)'";
+
+# リコーがヒットし、マークアップされる
+# [BUG] マークアップされない
+Command "select kwic(C for 10 enclose with '【' and '】') from T where C contains 'リコー'";
+
+# リコウがヒットし、マークアップされる
+Command "select kwic(C for 10 enclose with '【' and '】') from T where C contains 'リコウ'";
+
+Command "drop database TEST";
+TerminateSession;
+Terminate;
+End;

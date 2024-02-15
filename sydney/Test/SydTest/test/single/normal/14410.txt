@@ -1,0 +1,204 @@
+# 障害票 0991
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C[] = 'abc'";
+Command "delete from T where C[] is null";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C[] = 'abc'";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C[] = 'abc'";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C[] is null";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C[] = 'abc'";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+#
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "create array index I on T(C)";
+Command "delete from T where C[] = 'abc'";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "create array index I on T(C)";
+Command "delete from T where C[] = 'abc'";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [[null]];
+Command "create array index I on T(C)";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C[] = 'abc'";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C[] = 'abc'";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C[] is null";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [[null]];
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+#
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [["abc"]];
+Command "create array index I on T(C)";
+Command "delete from T where C[] = 'abc'";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [[null]];
+Command "create array index I on T(C)";
+Command "delete from T where C[] is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T(C char(4) array[no limit])";
+Command "insert into T (C) values (?)" [null];
+Command "create array index I on T(C)";
+Command "delete from T where C is null";
+Command "verify table T cascade continue";
+Command "select * from T";
+Command "drop table T";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

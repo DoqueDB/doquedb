@@ -1,0 +1,30 @@
+# backup (r/w r/c, discard snapshot, recover)
+# 上記のトランザクションとオプションでDBのバックアップ及び復帰作業を行う。
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "drop database TESTDB";
+# バックアップしたDBの復帰
+System "move /Y d:\\dm\\alter_data_TESTDB d:\\dm\\data\\TESTDB";
+System "move /Y d:\\dm\\alter_system_TESTDB d:\\dm\\system\\TESTDB";
+# バックアップしたDBのマウント
+Command "mount TESTDB path 'd:\\dm\\data\\TESTDB'";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "start transaction read write";
+Command "verify database TESTDB cascade continue";
+Command "commit";
+
+Command  "select * from T";
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

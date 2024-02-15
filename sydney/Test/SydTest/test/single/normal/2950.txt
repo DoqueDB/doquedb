@@ -1,0 +1,14 @@
+#systemDBの中身を覗く
+
+Begin;
+Initialize;
+InitializeSession "$$SystemDB";
+
+Command "start transaction read only, using snapshot";
+Command "select * from System_Database";
+Command "commit";
+
+TerminateSession;
+Terminate;
+End;
+

@@ -1,0 +1,41 @@
+# 障害表 1008
+# array index
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T1(C char(4) array[no limit])";
+Command "create array index I1 on T1(C)";
+Command  "insert into T1 (C) values (?)" [["abc", "abc"]];
+Command  "insert into T1 (C) values (?)" [[" abc", "abc "]];
+Command  "insert into T1 (C) values (?)" [["abc ", "abc"]];
+Command  "insert into T1 (C) values (?)" [["abc", null]];
+
+Command "create table T2(C nchar(4) array[no limit])";
+Command "create array index I2 on T2(C)";
+Command  "insert into T2 (C) values (?)" [["abc", "abc"]];
+Command  "insert into T2 (C) values (?)" [[" abc", "abc "]];
+Command  "insert into T2 (C) values (?)" [["abc ", "abc"]];
+Command  "insert into T2 (C) values (?)" [["abc", null]];
+
+Command  "select * from T1";
+Command  "select * from T2";
+
+Command "select * from T1 where C[] like 'abc' escape ''";
+Command "select * from T2 where C[] like 'abc' escape ''";
+
+Command "drop table T1";
+Command "drop table T2";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

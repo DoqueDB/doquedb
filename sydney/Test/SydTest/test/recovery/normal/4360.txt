@@ -1,0 +1,28 @@
+#AsyncPreparedCommandのテスト
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+
+Command "create table T(N int)";
+
+CreatePreparedCommand "inss" "insert into T values (?), (?), (?), (?), (?)";
+
+AsyncPreparedCommand "ins1-5" "inss" [1, 2, 3, 4, 5];
+GetAsyncResult "ins1-5";
+
+AsyncPreparedCommand "ins6-10" "inss" [6, 7, 8, 9, 10];
+CancelAsync "ins6-10";
+GetAsyncResult "ins6-10";
+
+Command "select * from T";
+
+ErasePreparedCommand "inss";
+
+#Command "drop table T";
+
+TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

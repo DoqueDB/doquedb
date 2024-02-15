@@ -1,0 +1,65 @@
+# 4570: existsテスト
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# 索引無し
+# hintの書き方(HintElementListを使う)
+Command "create table T1(N int, X ntext array [no limit] hint (heap,index))";
+Command "create table T2(N int, X ntext array [no limit])";
+
+Command "insert into T1 values (1, ?)" [["hoge"]];
+Command "insert into T1 values (2, ?)" [["piyo"]];
+Command "insert into T1 values (3, ?)" [["HOGE"]];
+Command "insert into T1 values (4, ?)" [["HOGE"]];
+Command "insert into T2 values (4, ?)" [["HOGE"]];
+Command "insert into T2 values (4, ?)" [["PIYO"]];
+
+# existテスト
+Command "select 1 from T1 where exists (select * from T1 where N>=0)";
+Command "select 2 from T1 where exists (select * from T1 where N<0)";
+
+# not existテスト
+Command "select * from T1 where not exists (select * from T2 where T1.N = T2.N)";
+Command "select * from T1 where not exists (select * from T2 where T1.X = T2.X)";
+
+# or付きexistテスト(障害起票0269)
+Command "select * from T1 where N = 1 or exists (select * from T2 where T1.N = T2.N)";
+Command "select * from T1 where X = (?) or exists (select * from T2 where T1.X = T2.X)" [["HOGE"]];
+
+
+# スクリプト修正前から付いていたので、索引有りで再テスト
+Command "create fulltext index I on T1(X) hint('delayed','sectionized')";
+
+# existテスト
+Command "select 1 from T1 where exists (select * from T1 where N>=0)";
+Command "select 2 from T1 where exists (select * from T1 where N<0)";
+
+# not existテスト
+Command "select * from T1 where not exists (select * from T2 where T1.N = T2.N)";
+Command "select * from T1 where not exists (select * from T2 where T1.X = T2.X)";
+
+# or付きexistテスト(障害起票0269)
+Command "select * from T1 where N = 1 or exists (select * from T2 where T1.N = T2.N)";
+Command "select * from T1 where X = (?) or exists (select * from T2 where T1.X = T2.X)" [["HOGE"]];
+
+
+#Command "drop table T1";
+#Command "drop table T2";
+
+Command  "select * from T1";
+Command  "select * from T2";
+
+TerminateSession;
+# DBの後始末
+#InitializeSession "";
+#Command  "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

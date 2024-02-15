@@ -1,0 +1,232 @@
+# Btreeに対するorder byのテスト
+#
+# 演算子
+#	order by ... / order by ... desc
+#	where句は各列に対して最大一個を=,<,>から選択
+# スキーマ
+#	1列の索引
+#	1列のprimary key
+#	2列に対する複合索引
+#	2列に対するprimary key
+#
+# 未テスト
+#	2列に対して1列の索引 -> 2列に対するprimary keyと同じ？
+#	3列のカラム -> 1604で一部実施
+#	複数の索引を組み合わせ -> 未実施(1224はorder by未使用)
+#	複合索引に対してwhere句無し -> 1602で実施
+#
+#	未実施といっても全文関係や特定商品向けテストで実施しているかも
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# 索引
+Command "create table T(i int)";
+Command "insert into T values(1)";
+Command "insert into T values(2)";
+Command "insert into T values(3)";
+Command "create index I on T(i)";
+
+Command "select * from T order by i";
+Command "select * from T order by i desc";
+Command "select * from T where i = 2 order by i";
+Command "select * from T where i = 2 order by i desc";
+Command "select * from T where i > 1 order by i";
+Command "select * from T where i > 1 order by i desc";
+Command "select * from T where i < 3 order by i";
+Command "select * from T where i < 3 order by i desc";
+Command  "drop table T";
+
+# primary key
+Command "create table T(i int, primary key(i))";
+Command "insert into T values(1)";
+Command "insert into T values(2)";
+Command "insert into T values(3)";
+
+Command "select * from T order by i";
+Command "select * from T order by i desc";
+Command "select * from T where i = 2 order by i";
+Command "select * from T where i = 2 order by i desc";
+Command "select * from T where i > 1 order by i";
+Command "select * from T where i > 1 order by i desc";
+Command "select * from T where i < 3 order by i";
+Command "select * from T where i < 3 order by i desc";
+Command  "drop table T";
+
+# 複合索引
+Command "create table T(i int, c nvarchar(32))";
+Command "insert into T values(1, 'a')";
+Command "insert into T values(1, 'b')";
+Command "insert into T values(1, 'c')";
+Command "insert into T values(2, 'a')";
+Command "insert into T values(2, 'b')";
+Command "insert into T values(2, 'c')";
+Command "insert into T values(3, 'a')";
+Command "insert into T values(3, 'b')";
+Command "insert into T values(3, 'c')";
+Command "create index I on T(i,c)";
+
+#条件無し -> single/normal/1602
+#Command "select * from T order by i";
+#Command "select * from T order by i desc";
+#Command "select * from T order by c";
+#Command "select * from T order by c desc";
+
+#条件一つ 
+Command "select * from T where i = 2 order by i";
+Command "select * from T where i = 2 order by i desc";
+Command "select * from T where i = 2 order by c";
+Command "select * from T where i = 2 order by c desc";
+Command "select * from T where i > 1 order by i";
+Command "select * from T where i > 1 order by i desc,c";
+Command "select * from T where i > 1 order by c";
+Command "select * from T where i > 1 order by c desc";
+Command "select * from T where i < 3 order by i";
+Command "select * from T where i < 3 order by i desc,c";
+Command "select * from T where i < 3 order by c";
+Command "select * from T where i < 3 order by c desc";
+Command "select * from T where c = 'b' order by i";
+Command "select * from T where c = 'b' order by i desc";
+Command "select * from T where c = 'b' order by c";
+Command "select * from T where c = 'b' order by c desc";
+Command "select * from T where c > 'a' order by i";
+Command "select * from T where c > 'a' order by i desc";
+Command "select * from T where c > 'a' order by c";
+Command "select * from T where c > 'a' order by c desc";
+Command "select * from T where c < 'c' order by i";
+Command "select * from T where c < 'c' order by i desc";
+Command "select * from T where c < 'c' order by c";
+Command "select * from T where c < 'c' order by c desc";
+
+#条件二つ
+Command "select * from T where i = 2 and c = 'b' order by i";
+Command "select * from T where i = 2 and c = 'b' order by i desc";
+Command "select * from T where i = 2 and c = 'b' order by c";
+Command "select * from T where i = 2 and c = 'b' order by c desc";
+Command "select * from T where i = 2 and c > 'a' order by i";
+Command "select * from T where i = 2 and c > 'a' order by i desc";
+Command "select * from T where i = 2 and c > 'a' order by c";
+Command "select * from T where i = 2 and c > 'a' order by c desc";
+Command "select * from T where i = 2 and c < 'c' order by i";
+Command "select * from T where i = 2 and c < 'c' order by i desc";
+Command "select * from T where i = 2 and c < 'c' order by c";
+Command "select * from T where i = 2 and c < 'c' order by c desc";
+Command "select * from T where i > 1 and c = 'b' order by i";
+Command "select * from T where i > 1 and c = 'b' order by i desc";
+Command "select * from T where i > 1 and c = 'b' order by c";
+Command "select * from T where i > 1 and c = 'b' order by c desc";
+Command "select * from T where i > 1 and c > 'a' order by i";
+Command "select * from T where i > 1 and c > 'a' order by i desc";
+Command "select * from T where i > 1 and c > 'a' order by c";
+Command "select * from T where i > 1 and c > 'a' order by c desc";
+Command "select * from T where i > 1 and c < 'c' order by i";
+Command "select * from T where i > 1 and c < 'c' order by i desc";
+Command "select * from T where i > 1 and c < 'c' order by c";
+Command "select * from T where i > 1 and c < 'c' order by c desc";
+Command "select * from T where i < 3 and c = 'b' order by i";
+Command "select * from T where i < 3 and c = 'b' order by i desc";
+Command "select * from T where i < 3 and c = 'b' order by c";
+Command "select * from T where i < 3 and c = 'b' order by c desc";
+Command "select * from T where i < 3 and c > 'a' order by i";
+Command "select * from T where i < 3 and c > 'a' order by i desc";
+Command "select * from T where i < 3 and c > 'a' order by c";
+Command "select * from T where i < 3 and c > 'a' order by c desc";
+Command "select * from T where i < 3 and c < 'c' order by i";
+Command "select * from T where i < 3 and c < 'c' order by i desc";
+Command "select * from T where i < 3 and c < 'c' order by c";
+Command "select * from T where i < 3 and c < 'c' order by c desc";
+Command  "drop table T";
+
+# primary key(カラムが複数)
+Command "create table T(i int, c nvarchar(32), primary key(i))";
+Command "insert into T values(1, 'c')";
+Command "insert into T values(2, 'b')";
+Command "insert into T values(3, 'a')";
+Command "insert into T values(4, 'c')";
+Command "insert into T values(5, 'b')";
+Command "insert into T values(6, 'a')";
+Command "insert into T values(7, 'c')";
+Command "insert into T values(8, 'b')";
+Command "insert into T values(9, 'a')";
+
+#条件無し
+Command "select * from T order by i";
+Command "select * from T order by i desc";
+Command "select * from T order by c";
+Command "select * from T order by c desc";
+
+#条件一つ
+Command "select * from T where i = 5 order by i";
+Command "select * from T where i = 5 order by i desc";
+Command "select * from T where i = 5 order by c";
+Command "select * from T where i = 5 order by c desc";
+Command "select * from T where i > 4 order by i";
+Command "select * from T where i > 4 order by i desc";
+Command "select * from T where i > 4 order by c";
+Command "select * from T where i > 4 order by c desc";
+Command "select * from T where i < 6 order by i";
+Command "select * from T where i < 6 order by i desc";
+Command "select * from T where i < 6 order by c";
+Command "select * from T where i < 6 order by c desc";
+Command "select * from T where c = 'b' order by i";
+Command "select * from T where c = 'b' order by i desc";
+Command "select * from T where c = 'b' order by c";
+Command "select * from T where c = 'b' order by c desc";
+Command "select * from T where c > 'a' order by i";
+Command "select * from T where c > 'a' order by i desc";
+Command "select * from T where c > 'a' order by c";
+Command "select * from T where c > 'a' order by c desc";
+Command "select * from T where c < 'c' order by i";
+Command "select * from T where c < 'c' order by i desc";
+Command "select * from T where c < 'c' order by c";
+Command "select * from T where c < 'c' order by c desc";
+
+#条件二つ
+Command "select * from T where i = 5 and c = 'b' order by i";
+Command "select * from T where i = 5 and c = 'b' order by i desc";
+Command "select * from T where i = 5 and c = 'b' order by c";
+Command "select * from T where i = 5 and c = 'b' order by c desc";
+Command "select * from T where i = 5 and c > 'a' order by i";
+Command "select * from T where i = 5 and c > 'a' order by i desc";
+Command "select * from T where i = 5 and c > 'a' order by c";
+Command "select * from T where i = 5 and c > 'a' order by c desc";
+Command "select * from T where i = 5 and c < 'c' order by i";
+Command "select * from T where i = 5 and c < 'c' order by i desc";
+Command "select * from T where i = 5 and c < 'c' order by c";
+Command "select * from T where i = 5 and c < 'c' order by c desc";
+Command "select * from T where i > 4 and c = 'b' order by i";
+Command "select * from T where i > 4 and c = 'b' order by i desc";
+Command "select * from T where i > 4 and c = 'b' order by c";
+Command "select * from T where i > 4 and c = 'b' order by c desc";
+Command "select * from T where i > 4 and c > 'a' order by i";
+Command "select * from T where i > 4 and c > 'a' order by i desc";
+Command "select * from T where i > 4 and c > 'a' order by c";
+Command "select * from T where i > 4 and c > 'a' order by c desc";
+Command "select * from T where i > 4 and c < 'c' order by i";
+Command "select * from T where i > 4 and c < 'c' order by i desc";
+Command "select * from T where i > 4 and c < 'c' order by c";
+Command "select * from T where i > 4 and c < 'c' order by c desc";
+Command "select * from T where i < 6 and c = 'b' order by i";
+Command "select * from T where i < 6 and c = 'b' order by i desc";
+Command "select * from T where i < 6 and c = 'b' order by c";
+Command "select * from T where i < 6 and c = 'b' order by c desc";
+Command "select * from T where i < 6 and c > 'a' order by i";
+Command "select * from T where i < 6 and c > 'a' order by i desc";
+Command "select * from T where i < 6 and c > 'a' order by c";
+Command "select * from T where i < 6 and c > 'a' order by c desc";
+Command "select * from T where i < 6 and c < 'c' order by i";
+Command "select * from T where i < 6 and c < 'c' order by i desc";
+Command "select * from T where i < 6 and c < 'c' order by c";
+Command "select * from T where i < 6 and c < 'c' order by c desc";
+Command  "drop table T";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

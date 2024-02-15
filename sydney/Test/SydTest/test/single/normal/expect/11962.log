@@ -1,0 +1,80 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL1(f int, g ntext, primary key(f))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL2(f int, primary key(f))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values (1, 'abc'), (2, 'def'), (3, 'ghi')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values 1,2,4
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index IDX on TBL1(g)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1 left outer join TBL2 on (TBL1.f = TBL2.f) where (g contains 'a')
+SydTest::Executor: [INFO] {1,abc,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1 left outer join TBL2 on (TBL1.g contains 'a') where (TBL1.f = TBL2.f)
+SydTest::Executor: [INFO] {1,abc,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1 left outer join TBL2 on (TBL1.g contains 'a') where (TBL2.f is null)
+SydTest::Executor: [INFO] {2,def,(null)}
+SydTest::Executor: [INFO] {3,ghi,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1 left outer join TBL2 on (TBL1.g contains 'a' or TBL2.f = 4)
+SydTest::Executor: [INFO] {1,abc,1}
+SydTest::Executor: [INFO] {1,abc,2}
+SydTest::Executor: [INFO] {1,abc,4}
+SydTest::Executor: [INFO] {2,def,4}
+SydTest::Executor: [INFO] {3,ghi,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1 join TBL2 on (TBL1.g contains 'a' or TBL2.f = 4)
+SydTest::Executor: [INFO] {1,abc,1}
+SydTest::Executor: [INFO] {1,abc,2}
+SydTest::Executor: [INFO] {1,abc,4}
+SydTest::Executor: [INFO] {2,def,4}
+SydTest::Executor: [INFO] {3,ghi,4}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1 left outer join TBL2 on (TBL1.f is null)
+SydTest::Executor: [INFO] {1,abc,(null)}
+SydTest::Executor: [INFO] {2,def,(null)}
+SydTest::Executor: [INFO] {3,ghi,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1 left outer join TBL2 on (TBL1.f  = 2)
+SydTest::Executor: [INFO] {1,abc,(null)}
+SydTest::Executor: [INFO] {2,def,1}
+SydTest::Executor: [INFO] {2,def,2}
+SydTest::Executor: [INFO] {2,def,4}
+SydTest::Executor: [INFO] {3,ghi,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

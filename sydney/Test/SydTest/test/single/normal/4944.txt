@@ -1,0 +1,39 @@
+# 障害票 1328
+# ngram索引の正規化ルールの互換性
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table JP(AP nvarchar(256))";
+
+Command "insert into JP (AP) values ('インタ－ナシヨナルビジネスマシ－ンズコ－ポレ－シヨン')";
+Command "insert into JP (AP) values ('インタ－ナショナルビジネスマシ－ンズコ－ポレ－ション')";
+Command "insert into JP (AP) values ('インターナシヨナルビジネスマシーンズコーポレーシヨン')";
+Command "insert into JP (AP) values ('インターナショナルビジネスマシーンズコーポレーション')";
+
+Command "create fulltext index JP_AP  on JP(AP)  hint 'inverted=(normalized=true, indexing=ngram, tokenizer=NGR:1:2 @NORMRSCID:1)'";
+
+# 結果は4
+Command "select count(*) from JP where AP  contains 'インターナショナルビジネスマシーン'";
+# 結果は4
+Command "select count(*) from JP where AP  contains 'インタ－ナショナルビジネスマシ－ン'";
+
+Command "drop index JP_AP";
+
+Command "create fulltext index JP_AP  on JP(AP)  hint 'inverted=(normalized=true, indexing=ngram, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1 @NORMRSCID:1)'";
+
+# 結果は2
+Command "select count(*) from JP where AP  contains 'インターナショナルビジネスマシーン'";
+# 結果は2
+Command "select count(*) from JP where AP  contains 'インタ－ナショナルビジネスマシ－ン'";
+
+Command "drop index JP_AP";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+
+End;

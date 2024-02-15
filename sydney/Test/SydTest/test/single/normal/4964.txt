@@ -1,0 +1,26 @@
+# 障害票 1563
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T (F datetime)";
+Command "create index T_F1 on T(F)";
+Command "create index T_F2 on T(F)";
+Command "create index T_F3 on T(F)";
+Command "create index T_F4 on T(F)";
+Command "create index T_F5 on T(F)";
+Command "insert into T values (CURRENT_TIMESTAMP)";
+Command "delete T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

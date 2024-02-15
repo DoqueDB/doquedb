@@ -1,0 +1,86 @@
+#機能追加　hint nontruncate と書くと末尾に空白があっても削除されない。
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+#
+Command "create table T(c varchar(10))";
+
+Command "insert into T values('ABC')";
+Command "insert into T values('ABC ')";
+Command "insert into T values('ABC  ')";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+Command "create table T(c nvarchar(10))";
+
+Command "insert into T values('ABC')";
+Command "insert into T values('ABC ')";
+Command "insert into T values('ABC  ')";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+Command "create table T(c ntext)";
+
+Command "insert into T values('ABC')";
+Command "insert into T values('ABC ')";
+Command "insert into T values('ABC  ')";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+# hint nontruncate  空白が削除されないことを確認する
+Command "create table T(c varchar(10) hint nontruncate)";
+
+Command "insert into T values('ABC')";
+Command "insert into T values('ABC ')";
+Command "insert into T values('ABC  ')";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+Command "create table T(c nvarchar(10) hint nontruncate)";
+
+Command "insert into T values('ABC')";
+Command "insert into T values('ABC ')";
+Command "insert into T values('ABC  ')";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+Command "create table T(c ntext hint nontruncate)";
+
+Command "insert into T values('ABC')";
+Command "insert into T values('ABC ')";
+Command "insert into T values('ABC  ')";
+
+Command "select * from T";
+
+# tableの後始末
+Command  "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

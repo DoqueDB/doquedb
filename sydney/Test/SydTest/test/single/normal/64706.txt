@@ -1,0 +1,26 @@
+#障害票777 全文の平均文書長が不正確
+#
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+Command "create table T (F ntext)";
+#Command "create fulltext index T_F on T(F) hint 'inverted=(nolocation=true, notf=true)'";
+Command "create fulltext index T_F on T(F) hint 'delayed ,inverted=(nolocation=true, notf=true)'";
+Command "insert into T values ('aaa')";
+
+Command "select avg(char_length(F)) from T";
+
+Command "drop index T_F";
+#Command "create fulltext index T_F on T(F) hint 'inverted=(nolocation=true, notf=true)'";
+Command "create fulltext index T_F on T(F) hint 'delayed ,inverted=(nolocation=true, notf=true)'";
+
+Command "select avg(char_length(F)) from T";
+
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

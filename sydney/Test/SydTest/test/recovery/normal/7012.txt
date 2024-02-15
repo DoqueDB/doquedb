@@ -1,0 +1,109 @@
+# 現象テスト(dirty write, read uncommitted)
+# read writeかつread uncommittedなトランザクションが
+# dirty writeを起こさないことを確認する
+# session2のトランザクション種別にかかわらず同じ結果が得られるはずである
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T(C int)";
+#初期値を用意
+Command "insert into T (C) values (3)";
+TerminateSession;
+
+InitializeSession 1 "TESTDB";
+InitializeSession 2 "TESTDB";
+
+Command 1 "start transaction read write, isolation level read uncommitted";
+Command 1 "update T set C=5";
+# ↓Session#1の終了まで実行を待つはず
+AsyncCommand "2" 2 "update T set C=7";
+Sleep 100; # "2"が待たなかったときに確実に正しくない動作をさせるため少しwait
+# ↓「5」となるはず
+Command 1 "select * from T";
+Command 1 "commit";
+GetAsyncResult "2";
+
+# Tの唯一のタプルの値を元に戻す
+InitializeSession "TESTDB";
+Command "update T set C=3";
+TerminateSession;
+
+Command 1 "start transaction read write, isolation level read uncommitted";
+Command 2 "start transaction read write, isolation level read uncommitted";
+Command 1 "update T set C=5";
+# ↓Session#1の終了まで実行を待つはず
+AsyncCommand "2" 2 "update T set C=7";
+Sleep 100; # "2"が待たなかったときに確実に正しくない動作をさせるため少しwait
+# ↓「5」となるはず
+Command 1 "select * from T";
+Command 1 "commit";
+GetAsyncResult "2";
+Command 2 "commit";
+
+InitializeSession "TESTDB";
+Command "update T set C=3";
+TerminateSession;
+
+Command 1 "start transaction read write, isolation level read uncommitted";
+Command 2 "start transaction read write, isolation level read committed";
+Command 1 "update T set C=5";
+# ↓Session#1の終了まで実行を待つはず
+AsyncCommand "2" 2 "update T set C=7";
+Sleep 100; # "2"が待たなかったときに確実に正しくない動作をさせるため少しwait
+# ↓「5」となるはず
+Command 1 "select * from T";
+Command 1 "commit";
+GetAsyncResult "2";
+Command 2 "commit";
+
+InitializeSession "TESTDB";
+Command "update T set C=3";
+TerminateSession;
+
+Command 1 "start transaction read write, isolation level read uncommitted";
+Command 2 "start transaction read write, isolation level repeatable read";
+Command 1 "update T set C=5";
+# ↓Session#1の終了まで実行を待つはず
+AsyncCommand "2" 2 "update T set C=7";
+Sleep 100; # "2"が待たなかったときに確実に正しくない動作をさせるため少しwait
+# ↓「5」となるはず
+Command 1 "select * from T";
+Command 1 "commit";
+GetAsyncResult "2";
+Command 2 "commit";
+
+InitializeSession "TESTDB";
+Command "update T set C=3";
+TerminateSession;
+
+Command 1 "start transaction read write, isolation level read uncommitted";
+Command 2 "start transaction read write, isolation level serializable";
+Command 1 "update T set C=5";
+# ↓Session#1の終了まで実行を待つはず
+AsyncCommand "2" 2 "update T set C=7";
+Sleep 100; # "2"が待たなかったときに確実に正しくない動作をさせるため少しwait
+# ↓「5」となるはず
+Command 1 "select * from T";
+Command 1 "commit";
+GetAsyncResult "2";
+Command 2 "commit";
+
+TerminateSession 1;
+TerminateSession 2;
+
+#InitializeSession "TESTDB";
+#Command "drop table T";
+#TerminateSession;
+
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

@@ -1,0 +1,524 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL(f int, g ntext, h char(2), i int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX_f on TBL(f)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index IDX_g on TBL(g)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index IDX_h on TBL(h)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX_i on TBL(i)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (1, 'foo', 'aa', 10)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (2, 'bar', 'aa', 20)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (3, 'boo', 'bb', 30)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL values (4, 'buz', 'bb', 40)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+4, g||'foo', 'cc', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+8, g||'bar', 'dd', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+16, g||'boo', 'ee', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+32, g||'buz', 'ff', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+64, g||'foo', 'gg', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+128, g||'bar', 'hh', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+256, g||'boo', 'ii', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+512, g||'buz', 'jj', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+1024, g||'foo', 'kk', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+2048, g||'bar', 'll', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+4096, g||'boo', 'mm', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+8192, g||'buz', 'nn', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL select f+16384, g||'foo', 'oo', i+f from TBL
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] start explain execute hint 'file data'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 0 and g contains 'b' and h is not null order by i limit 1
+SydTest::Executor: [INFO] {index scan on BTR_IDX_f[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {filter by sort(0):#xx <- data:{#xx,#xx} -> data:{#xx,#xx}
+    <-- bitset scan on data:#xx to data:#xx
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                        by data:#xx to data:{#xx}
+                   xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx}
+                   xx:do until line xx unless check data:#xx is not null
+                   xx:continue
+         to data:{#xx,#xx}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {513,foobuz,jj,11}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 0 and g contains 'b' and h is not null order by f limit 1
+SydTest::Executor: [INFO] {index scan on FTS_IDX_g[get by bitset]}
+SydTest::Executor: [INFO] {index scan on BTR_IDX_f[search by bitset:#xx]}
+    execute:
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx}
+           xx:do until line xx unless check data:#xx is not null
+           xx:continue
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {2,bar,aa,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 0 and g contains 'b' and h is not null order by score(g) limit 1
+SydTest::Executor: [INFO] {index scan on FTS_IDX_g}
+    execute:
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx}
+           xx:do until line xx unless (check data:#xx > data:#xx
+                    and check data:#xx is not null)
+           xx:continue
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {17605,foofoofoobarfoofoo,oo,1503}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 0 and g contains 'b' and h is not null order by h limit 1
+SydTest::Executor: [INFO] {index scan on BTR_IDX_f[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {filter by sort(0):#xx <- data:{#xx,#xx} -> data:{#xx,#xx}
+    <-- bitset scan on data:#xx to data:#xx
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                        by data:#xx to data:{#xx}
+                   xx:file fetch on RCD_TBL by data:#xx to data:{#xx}
+                   xx:do until line xx unless check data:#xx is not null
+                   xx:continue
+         to data:{#xx,#xx}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {2,bar,aa,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by i limit 1
+SydTest::Executor: [INFO] {index scan on BMP_IDX_h[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on BTR_IDX_f[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {filter by sort(0):#xx <- data:{#xx,#xx} -> data:{#xx,#xx}
+    <-- bitset scan on data:#xx to data:#xx
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                        by data:#xx to data:{#xx}
+                   xx:file fetch on RCD_TBL by data:#xx to data:{#xx}
+         to data:{#xx,#xx}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {16393,foobarfoo,oo,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by i limit 1
+SydTest::Executor: [INFO] {index scan on BMP_IDX_h[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on BTR_IDX_f[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {filter by sort(0):#xx <- data:{#xx,#xx} -> data:{#xx,#xx}
+    <-- bitset scan on data:#xx to data:#xx
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                        by data:#xx to data:{#xx}
+                   xx:file fetch on RCD_TBL by data:#xx to data:{#xx}
+         to data:{#xx,#xx}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {16393,foobarfoo,oo,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by i limit 1
+SydTest::Executor: [INFO] {index scan on BMP_IDX_h[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on BTR_IDX_f[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {filter by sort(0):#xx <- data:{#xx,#xx} -> data:{#xx,#xx}
+    <-- bitset scan on data:#xx to data:#xx
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                        by data:#xx to data:{#xx}
+                   xx:file fetch on RCD_TBL by data:#xx to data:{#xx}
+         to data:{#xx,#xx}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {16393,foobarfoo,oo,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 15000 and g contains 'b' and h is not null order by i limit 1
+SydTest::Executor: [INFO] {index scan on BTR_IDX_f[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {filter by sort(0):#xx <- data:{#xx,#xx} -> data:{#xx,#xx}
+    <-- bitset scan on data:#xx to data:#xx
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                        by data:#xx to data:{#xx}
+                   xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx}
+                   xx:do until line xx unless check data:#xx is not null
+                   xx:continue
+         to data:{#xx,#xx}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {16393,foobarfoo,oo,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 15000 and g contains 'b' and h is not null order by i limit 1
+SydTest::Executor: [INFO] {index scan on BTR_IDX_f[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {filter by sort(0):#xx <- data:{#xx,#xx} -> data:{#xx,#xx}
+    <-- bitset scan on data:#xx to data:#xx
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                        by data:#xx to data:{#xx}
+                   xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx}
+                   xx:do until line xx unless check data:#xx is not null
+                   xx:continue
+         to data:{#xx,#xx}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {16393,foobarfoo,oo,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 15000 and g contains 'b' and h is not null order by i limit 1
+SydTest::Executor: [INFO] {index scan on BTR_IDX_f[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {filter by sort(0):#xx <- data:{#xx,#xx} -> data:{#xx,#xx}
+    <-- bitset scan on data:#xx to data:#xx
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                        by data:#xx to data:{#xx}
+                   xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx}
+                   xx:do until line xx unless check data:#xx is not null
+                   xx:continue
+         to data:{#xx,#xx}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {16393,foobarfoo,oo,20}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by f limit 1
+SydTest::Executor: [INFO] {index scan on BMP_IDX_h[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {index scan on BTR_IDX_f[search by bitset:#xx]}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {16386,barfoo,oo,22}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by score(g) limit 1
+SydTest::Executor: [INFO] {index scan on BMP_IDX_h[get by bitset]}
+SydTest::Executor: [INFO] {index scan on FTS_IDX_g[search by bitset:#xx]}
+    execute:
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx}
+           xx:do until line xx unless check data:#xx > data:#xx
+           xx:continue
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {17605,foofoofoobarfoofoo,oo,1503}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by h limit 1
+SydTest::Executor: [INFO] {index scan on BMP_IDX_h[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on BTR_IDX_f[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {filter by sort(0):#xx <- data:{#xx,#xx} -> data:{#xx,#xx}
+    <-- bitset scan on data:#xx to data:#xx
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                        by data:#xx to data:{#xx}
+                   xx:file fetch on RCD_TBL by data:#xx to data:{#xx}
+         to data:{#xx,#xx}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {27300,buzbuzbarbuzbarbuzfoo,oo,14560}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 15000 and g contains 'b' and h is not null order by f limit 1
+SydTest::Executor: [INFO] {index scan on FTS_IDX_g[get by bitset]}
+SydTest::Executor: [INFO] {index scan on BTR_IDX_f[search by bitset:#xx]}
+    execute:
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx}
+           xx:do until line xx unless check data:#xx is not null
+           xx:continue
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {15001,foobarboobarbuzbarboobuz,nn,10385}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 15000 and g contains 'b' and h is not null order by score(g) limit 1
+SydTest::Executor: [INFO] {index scan on BTR_IDX_f[get by bitset]}
+SydTest::Executor: [INFO] {index scan on FTS_IDX_g[search by bitset:#xx]}
+    execute:
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx}
+           xx:do until line xx unless check data:#xx is not null
+           xx:continue
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {17509,foofoobuzfoofoofoo,oo,1279}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 15000 and g contains 'b' and h is not null order by h limit 1
+SydTest::Executor: [INFO] {index scan on BTR_IDX_f[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {filter by sort(0):#xx <- data:{#xx,#xx} -> data:{#xx,#xx}
+    <-- bitset scan on data:#xx to data:#xx
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                        by data:#xx to data:{#xx}
+                   xx:file fetch on RCD_TBL by data:#xx to data:{#xx}
+                   xx:do until line xx unless check data:#xx is not null
+                   xx:continue
+         to data:{#xx,#xx}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {15929,foobarboobuzbuzfoobarboobuz,nn,13642}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 15000 and g contains 'b' and h = 'oo' order by f limit 1
+SydTest::Executor: [INFO] {index scan on BMP_IDX_h[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {index scan on BTR_IDX_f[search by bitset:#xx]}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {16386,barfoo,oo,22}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 15000 and g contains 'b' and h = 'oo' order by score(g) limit 1
+SydTest::Executor: [INFO] {index scan on BMP_IDX_h[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on BTR_IDX_f[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {index scan on FTS_IDX_g[search by bitset:#xx][limited]}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {17605,foofoofoobarfoofoo,oo,1503}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL where f > 15000 and g contains 'b' and h = 'oo' order by h limit 1
+SydTest::Executor: [INFO] {index scan on BMP_IDX_h[get by bitset]}
+    execute:
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on BTR_IDX_f[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx
+           xx:do until line xx unless data:#xx is empty
+           xx:iterate once
+                <-- index scan on FTS_IDX_g[get by bitset][search by bitset:#xx]
+           xx:bitset data:#xx intersect data:#xx}
+SydTest::Executor: [INFO] {filter by sort(0):#xx <- data:{#xx,#xx} -> data:{#xx,#xx}
+    <-- bitset scan on data:#xx to data:#xx
+            execute:
+                   xx:file fetch on VCT_TBL_$$Conversion
+                        by data:#xx to data:{#xx}
+                   xx:file fetch on RCD_TBL by data:#xx to data:{#xx}
+         to data:{#xx,#xx}
+    execute:
+           xx:check limit data:#xx
+           xx:file fetch on VCT_TBL_$$Conversion
+                by data:#xx to data:{#xx}
+           xx:file fetch on RCD_TBL by data:#xx to data:{#xx,#xx,#xx}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] {27300,buzbuzbarbuzbarbuzfoo,oo,14560}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] end explain
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

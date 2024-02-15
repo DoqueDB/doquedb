@@ -1,0 +1,1277 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] SydTest_UnreplaceBackSlash
+SydTest::Executor: [INFO] [SydTest Parameter and Value] SydTest_UnreplaceBackSlash, TRUE
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_1(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_1 input from path '../../doc/bulk_3_data1.txt' hint 'ErrorData="error1.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_1
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 31737>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 21455>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 21810>
+SydTest::Executor: [INFO] <length = 31666>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error1.dat ../../doc/bulk_3_error1.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error1.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_2(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_2 input from path '../../doc/bulk_3_data2.utf8' hint 'ErrorData="error2.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2
+SydTest::Executor: [INFO] <length = 21679>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error2.dat ../../doc/bulk_3_error2.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error2.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_3(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_3 input from path '../../doc/bulk_3_data3.txt' hint 'ErrorData="error3.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_3
+SydTest::Executor: [INFO] <length = 21327>
+SydTest::Executor: [INFO] <length = 31791>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 22063>
+SydTest::Executor: [INFO] <length = 31567>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 21327>
+SydTest::Executor: [INFO] <length = 32303>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 31564>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_3
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error3.dat ../../doc/bulk_3_error3.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error3.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_4(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_4 input from path '../../doc/bulk_3_data4.utf8' hint 'ErrorData="error4.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_4
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_4
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error4.dat ../../doc/bulk_3_error4.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error4.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_5(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_5 input from path '../../doc/bulk_3_data5.txt' hint 'ErrorData="error5.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_5
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_5
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error5.dat ../../doc/bulk_3_error5.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error5.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_6(string1 nvarchar(1024),int2 int ARRAY[3],bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_6 input from path '../../doc/bulk_3_data6.utf8' hint 'ErrorData="error6.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_6
+SydTest::Executor: [INFO] <length = 20888>
+SydTest::Executor: [INFO] <length = 21060>
+SydTest::Executor: [INFO] <length = 31298>
+SydTest::Executor: [INFO] <length = 20806>
+SydTest::Executor: [INFO] <length = 20752>
+SydTest::Executor: [INFO] <length = 31556>
+SydTest::Executor: [INFO] <length = 20891>
+SydTest::Executor: [INFO] <length = 20807>
+SydTest::Executor: [INFO] <length = 31089>
+SydTest::Executor: [INFO] <length = 21062>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_6
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error6.dat ../../doc/bulk_3_error6.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error6.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_7(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_7 input from path '../../doc/bulk_3_data7.utf8' hint 'ErrorData="error7.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_7
+SydTest::Executor: [INFO] <length = 21455>
+SydTest::Executor: [INFO] <length = 31919>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 31669>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 21455>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 21810>
+SydTest::Executor: [INFO] <length = 31734>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_7
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error7.dat ../../doc/bulk_3_error7.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error7.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_8(string1 nvarchar(1024),int2 int ARRAY[3],bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_8 input from path '../../doc/bulk_3_data8.txt' hint 'ErrorData="error8.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_8
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_8
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error8.dat ../../doc/bulk_3_error8.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error8.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_9(string1 nvarchar(1024),int2 int,bigint3 bigint ARRAY[3],decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_9 input from path '../../doc/bulk_3_data9.utf8' hint 'ErrorData="error9.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_9
+SydTest::Executor: [INFO] <length = 31191>
+SydTest::Executor: [INFO] <length = 20773>
+SydTest::Executor: [INFO] <length = 21078>
+SydTest::Executor: [INFO] <length = 31316>
+SydTest::Executor: [INFO] <length = 20825>
+SydTest::Executor: [INFO] <length = 20770>
+SydTest::Executor: [INFO] <length = 31574>
+SydTest::Executor: [INFO] <length = 20908>
+SydTest::Executor: [INFO] <length = 20824>
+SydTest::Executor: [INFO] <length = 31107>
+SydTest::Executor: [INFO] <length = 21080>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_9
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error9.dat ../../doc/bulk_3_error9.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error9.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_10(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5) ARRAY[3],file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_10 input from path '../../doc/bulk_3_data10.txt' hint 'ErrorData="error10.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_10
+SydTest::Executor: [INFO] <length = 20889>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_10
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error10.dat ../../doc/bulk_3_error10.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error10.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_11(string1 nvarchar(1024),int2 int,bigint3 bigint ARRAY[3],decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_11 input from path '../../doc/bulk_3_data11.utf8' hint 'ErrorData="error11.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_11
+SydTest::Executor: [INFO] <length = 20901>
+SydTest::Executor: [INFO] <length = 31185>
+SydTest::Executor: [INFO] <length = 20769>
+SydTest::Executor: [INFO] <length = 21073>
+SydTest::Executor: [INFO] <length = 31311>
+SydTest::Executor: [INFO] <length = 20821>
+SydTest::Executor: [INFO] <length = 20765>
+SydTest::Executor: [INFO] <length = 31569>
+SydTest::Executor: [INFO] <length = 20905>
+SydTest::Executor: [INFO] <length = 20819>
+SydTest::Executor: [INFO] <length = 31105>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_11
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error11.dat ../../doc/bulk_3_error11.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error11.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_12(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5) ARRAY[3],file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_12 input from path '../../doc/bulk_3_data12.txt' hint 'ErrorData="error12.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_12
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_12
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error12.dat ../../doc/bulk_3_error12.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error12.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_13(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext ARRAY[3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_13 input from path '../../doc/bulk_3_data13.txt' hint 'ErrorData="error13.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_13
+SydTest::Executor: [INFO] <length = 72067>
+SydTest::Executor: [INFO] <length = 72111>
+SydTest::Executor: [INFO] <length = 61694>
+SydTest::Executor: [INFO] <length = 72239>
+SydTest::Executor: [INFO] <length = 72237>
+SydTest::Executor: [INFO] <length = 61746>
+SydTest::Executor: [INFO] <length = 71931>
+SydTest::Executor: [INFO] <length = 72495>
+SydTest::Executor: [INFO] <length = 61830>
+SydTest::Executor: [INFO] <length = 71986>
+SydTest::Executor: [INFO] <length = 72030>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_13
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error13.dat ../../doc/bulk_3_error13.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error13.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_14(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext ARRAY[3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_14 input from path '../../doc/bulk_3_data14.utf8' hint 'ErrorData="error14.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_14
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_14
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error14.dat ../../doc/bulk_3_error14.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error14.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_15(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_15 input from path '../../doc/bulk_3_data15.utf8' hint 'ErrorData="error15.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_15
+SydTest::Executor: [INFO] <length = 21327>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_15
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error15.dat ../../doc/bulk_3_error15.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error15.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_16(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_16 input from path '../../doc/bulk_3_data16.txt' hint 'ErrorData="error16.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_16
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] <length = 22322>
+SydTest::Executor: [INFO] <length = 32556>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_16
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error16.dat ../../doc/bulk_3_error16.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error16.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_17(string1 nvarchar(1024),int2 int,bigint3 bigint ARRAY[3],decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_17 input from path '../../doc/bulk_3_data17.utf8' hint 'ErrorData="error17.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_17
+SydTest::Executor: [INFO] <length = 20773>
+SydTest::Executor: [INFO] <length = 21076>
+SydTest::Executor: [INFO] <length = 31314>
+SydTest::Executor: [INFO] <length = 20824>
+SydTest::Executor: [INFO] <length = 20768>
+SydTest::Executor: [INFO] <length = 31572>
+SydTest::Executor: [INFO] <length = 20909>
+SydTest::Executor: [INFO] <length = 20823>
+SydTest::Executor: [INFO] <length = 31105>
+SydTest::Executor: [INFO] <length = 21080>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_17
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error17.dat ../../doc/bulk_3_error17.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error17.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_18(string1 nvarchar(1024),int2 int,bigint3 bigint ARRAY[3],decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_18 input from path '../../doc/bulk_3_data18.txt' hint 'ErrorData="error18.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_18
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error18.dat ../../doc/bulk_3_error18.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error18.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_19(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5) ARRAY[3],file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_19 input from path '../../doc/bulk_3_data19.txt' hint 'ErrorData="error19.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_19
+SydTest::Executor: [INFO] <length = 20888>
+SydTest::Executor: [INFO] <length = 31173>
+SydTest::Executor: [INFO] <length = 20756>
+SydTest::Executor: [INFO] <length = 21061>
+SydTest::Executor: [INFO] <length = 31299>
+SydTest::Executor: [INFO] <length = 20808>
+SydTest::Executor: [INFO] <length = 20752>
+SydTest::Executor: [INFO] <length = 31556>
+SydTest::Executor: [INFO] <length = 20892>
+SydTest::Executor: [INFO] <length = 20806>
+SydTest::Executor: [INFO] <length = 31089>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_19
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error19.dat ../../doc/bulk_3_error19.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error19.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_20(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5) ARRAY[3],file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_20 input from path '../../doc/bulk_3_data20.utf8' hint 'ErrorData="error20.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_20
+SydTest::Executor: [INFO] <length = 20757>
+SydTest::Executor: [INFO] <length = 21060>
+SydTest::Executor: [INFO] <length = 31298>
+SydTest::Executor: [INFO] <length = 20809>
+SydTest::Executor: [INFO] <length = 20752>
+SydTest::Executor: [INFO] <length = 31556>
+SydTest::Executor: [INFO] <length = 20892>
+SydTest::Executor: [INFO] <length = 20806>
+SydTest::Executor: [INFO] <length = 31059>
+SydTest::Executor: [INFO] <length = 21064>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_20
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error20.dat ../../doc/bulk_3_error20.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error20.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_21(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_21 input from path '../../doc/bulk_3_data21.utf8' hint 'ErrorData="error21.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_21
+SydTest::Executor: [INFO] <length = 21327>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_21
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error21.dat ../../doc/bulk_3_error21.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error21.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_22(string1 nvarchar(1024),int2 int ARRAY[3],bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_22 input from path '../../doc/bulk_3_data22.txt' hint 'ErrorData="error22.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_22
+SydTest::Executor: [INFO] <length = 20883>
+SydTest::Executor: [INFO] <length = 31167>
+SydTest::Executor: [INFO] <length = 20751>
+SydTest::Executor: [INFO] <length = 21055>
+SydTest::Executor: [INFO] <length = 31293>
+SydTest::Executor: [INFO] <length = 20803>
+SydTest::Executor: [INFO] <length = 20747>
+SydTest::Executor: [INFO] <length = 31551>
+SydTest::Executor: [INFO] <length = 20887>
+SydTest::Executor: [INFO] <length = 20801>
+SydTest::Executor: [INFO] <length = 31087>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_22
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error22.dat ../../doc/bulk_3_error22.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error22.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_23(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_23 input from path '../../doc/bulk_3_data23.txt' hint 'ErrorData="error23.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_23
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_23
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff -b error23.dat ../../doc/bulk_3_error23.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error23.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_24(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_24 input from path '../../doc/bulk_3_data24.utf8' hint 'ErrorData="error24.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_24
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_24
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error24.dat ../../doc/bulk_3_error24.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error24.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_25(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_25 input from path '../../doc/bulk_3_data25.utf8' hint 'ErrorData="error25.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_25
+SydTest::Executor: [INFO] <length = 31919>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 31737>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 21455>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 21810>
+SydTest::Executor: [INFO] <length = 31666>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_25
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error25.dat ../../doc/bulk_3_error25.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error25.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_26(string1 nvarchar(1024),int2 int ARRAY[3],bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_26 input from path '../../doc/bulk_3_data26.txt' hint 'ErrorData="error26.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_26
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_26
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error26.dat ../../doc/bulk_3_error26.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error26.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_27(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext ARRAY[3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_27 input from path '../../doc/bulk_3_data27.txt' hint 'ErrorData="error27.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_27
+SydTest::Executor: [INFO] <length = 61827>
+SydTest::Executor: [INFO] <length = 61871>
+SydTest::Executor: [INFO] <length = 61694>
+SydTest::Executor: [INFO] <length = 61999>
+SydTest::Executor: [INFO] <length = 61997>
+SydTest::Executor: [INFO] <length = 61746>
+SydTest::Executor: [INFO] <length = 61691>
+SydTest::Executor: [INFO] <length = 62255>
+SydTest::Executor: [INFO] <length = 61830>
+SydTest::Executor: [INFO] <length = 61746>
+SydTest::Executor: [INFO] <length = 61790>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_27
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error27.dat ../../doc/bulk_3_error27.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error27.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_28(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext ARRAY[3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_28 input from path '../../doc/bulk_3_data28.txt' hint 'ErrorData="error28.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_28
+SydTest::Executor: [INFO] <length = 61694>
+SydTest::Executor: [INFO] <length = 72239>
+SydTest::Executor: [INFO] <length = 72237>
+SydTest::Executor: [INFO] <length = 61746>
+SydTest::Executor: [INFO] <length = 71931>
+SydTest::Executor: [INFO] <length = 72495>
+SydTest::Executor: [INFO] <length = 61830>
+SydTest::Executor: [INFO] <length = 71986>
+SydTest::Executor: [INFO] <length = 72030>
+SydTest::Executor: [INFO] <length = 62002>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_28
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error28.dat ../../doc/bulk_3_error28.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error28.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_29(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext ARRAY[3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_29 input from path '../../doc/bulk_3_data29.utf8' hint 'ErrorData="error29.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_29
+SydTest::Executor: [INFO] <length = 72067>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_29
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error29.dat ../../doc/bulk_3_error29.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error29.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_30(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_30 input from path '../../doc/bulk_3_data30.utf8' hint 'ErrorData="error30.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_30
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_30
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error30.dat ../../doc/bulk_3_error30.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error30.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_31(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_31 input from path '../../doc/bulk_3_data31.utf8' hint 'ErrorData="error31.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_31
+SydTest::Executor: [INFO] <length = 21455>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 31669>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 21455>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 21810>
+SydTest::Executor: [INFO] <length = 31734>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_31
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error31.dat ../../doc/bulk_3_error31.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error31.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_32(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_32 input from path '../../doc/bulk_3_data32.txt' hint 'ErrorData="error32.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_32
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_32
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error32.dat ../../doc/bulk_3_error32.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error32.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_33(string1 nvarchar(1024),int2 int,bigint3 bigint ARRAY[3],decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_33 input from path '../../doc/bulk_3_data33.txt' hint 'ErrorData="error33.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_33
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_33
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error33.dat ../../doc/bulk_3_error33.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error33.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_34(string1 nvarchar(1024),int2 int ARRAY[3],bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_34 input from path '../../doc/bulk_3_data34.utf8' hint 'ErrorData="error34.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_34
+SydTest::Executor: [INFO] <length = 20886>
+SydTest::Executor: [INFO] <length = 31170>
+SydTest::Executor: [INFO] <length = 20754>
+SydTest::Executor: [INFO] <length = 21058>
+SydTest::Executor: [INFO] <length = 31297>
+SydTest::Executor: [INFO] <length = 20806>
+SydTest::Executor: [INFO] <length = 20751>
+SydTest::Executor: [INFO] <length = 31554>
+SydTest::Executor: [INFO] <length = 20890>
+SydTest::Executor: [INFO] <length = 20805>
+SydTest::Executor: [INFO] <length = 31087>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_34
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error34.dat ../../doc/bulk_3_error34.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error34.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_35(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_35 input from path '../../doc/bulk_3_data35.txt' hint 'ErrorData="error35.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_35
+SydTest::Executor: [INFO] <length = 21429>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_35
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error35.dat ../../doc/bulk_3_error35.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error35.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_36(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5) ARRAY[3],file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_36 input from path '../../doc/bulk_3_data36.utf8' hint 'ErrorData="error36.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_36
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error36.dat ../../doc/bulk_3_error36.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error36.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_37(string1 nvarchar(1024),int2 int,bigint3 bigint ARRAY[3],decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_37 input from path '../../doc/bulk_3_data37.txt' hint 'ErrorData="error37.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_37
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_37
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error37.dat ../../doc/bulk_3_error37.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error37.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_38(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_38 input from path '../../doc/bulk_3_data38.utf8' hint 'ErrorData="error38.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_38
+SydTest::Executor: [INFO] <length = 21679>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 32047>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] <length = 21679>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 22322>
+SydTest::Executor: [INFO] <length = 32044>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_38
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error38.dat ../../doc/bulk_3_error38.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error38.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_39(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext ARRAY[3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_39 input from path '../../doc/bulk_3_data39.utf8' hint 'ErrorData="error39.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_39
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_39
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error39.dat ../../doc/bulk_3_error39.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error39.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_40(string1 nvarchar(1024),int2 int ARRAY[3],bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_40 input from path '../../doc/bulk_3_data40.txt' hint 'ErrorData="error40.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_40
+SydTest::Executor: [INFO] <length = 20755>
+SydTest::Executor: [INFO] <length = 21058>
+SydTest::Executor: [INFO] <length = 31296>
+SydTest::Executor: [INFO] <length = 20806>
+SydTest::Executor: [INFO] <length = 20751>
+SydTest::Executor: [INFO] <length = 31554>
+SydTest::Executor: [INFO] <length = 20890>
+SydTest::Executor: [INFO] <length = 20804>
+SydTest::Executor: [INFO] <length = 31047>
+SydTest::Executor: [INFO] <length = 21063>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_40
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error40.dat ../../doc/bulk_3_error40.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error40.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_41(string1 nvarchar(1024),int2 int,bigint3 bigint ARRAY[3],decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_41 input from path '../../doc/bulk_3_data41.txt' hint 'ErrorData="error41.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_41
+SydTest::Executor: [INFO] <length = 20904>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_41
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error41.dat ../../doc/bulk_3_error41.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error41.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_42(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_42 input from path '../../doc/bulk_3_data42.txt' hint 'ErrorData="error42.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_42
+SydTest::Executor: [INFO] <length = 21551>
+SydTest::Executor: [INFO] <length = 32303>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 22063>
+SydTest::Executor: [INFO] <length = 31791>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] <length = 21551>
+SydTest::Executor: [INFO] <length = 32303>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] <length = 31788>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_42
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error42.dat ../../doc/bulk_3_error42.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error42.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_43(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_43 input from path '../../doc/bulk_3_data43.utf8' hint 'ErrorData="error43.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_43
+SydTest::Executor: [INFO] <length = 21455>
+SydTest::Executor: [INFO] <length = 31919>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 31669>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 21455>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 21810>
+SydTest::Executor: [INFO] <length = 31734>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_43
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error43.dat ../../doc/bulk_3_error43.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error43.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_44(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_44 input from path '../../doc/bulk_3_data44.utf8' hint 'ErrorData="error44.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_44
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] <length = 22322>
+SydTest::Executor: [INFO] <length = 32556>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_44
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error44.dat ../../doc/bulk_3_error44.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error44.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_45(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5) ARRAY[3],file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_45 input from path '../../doc/bulk_3_data45.utf8' hint 'ErrorData="error45.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_45
+SydTest::Executor: [INFO] <length = 20890>
+SydTest::Executor: [INFO] <length = 21062>
+SydTest::Executor: [INFO] <length = 31301>
+SydTest::Executor: [INFO] <length = 20808>
+SydTest::Executor: [INFO] <length = 20755>
+SydTest::Executor: [INFO] <length = 31558>
+SydTest::Executor: [INFO] <length = 20892>
+SydTest::Executor: [INFO] <length = 20809>
+SydTest::Executor: [INFO] <length = 31091>
+SydTest::Executor: [INFO] <length = 21064>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_45
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error45.dat ../../doc/bulk_3_error45.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error45.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_46(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext ARRAY[3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_46 input from path '../../doc/bulk_3_data46.utf8' hint 'ErrorData="error46.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_46
+SydTest::Executor: [INFO] <length = 72067>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_46
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error46.dat ../../doc/bulk_3_error46.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error46.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_47(string1 nvarchar(1024),int2 int ARRAY[3],bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_47 input from path '../../doc/bulk_3_data47.utf8' hint 'ErrorData="error47.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_47
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_47
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error47.dat ../../doc/bulk_3_error47.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error47.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_48(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5) ARRAY[3],file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_48 input from path '../../doc/bulk_3_data48.txt' hint 'ErrorData="error48.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_48
+SydTest::Executor: [INFO] <length = 20890>
+SydTest::Executor: [INFO] <length = 31174>
+SydTest::Executor: [INFO] <length = 20756>
+SydTest::Executor: [INFO] <length = 21063>
+SydTest::Executor: [INFO] <length = 31300>
+SydTest::Executor: [INFO] <length = 20808>
+SydTest::Executor: [INFO] <length = 20754>
+SydTest::Executor: [INFO] <length = 31559>
+SydTest::Executor: [INFO] <length = 20892>
+SydTest::Executor: [INFO] <length = 20809>
+SydTest::Executor: [INFO] <length = 31091>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_48
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error48.dat ../../doc/bulk_3_error48.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error48.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_49(string1 nvarchar(1024),int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext ARRAY[3])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_49 input from path '../../doc/bulk_3_data49.txt' hint 'ErrorData="error49.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_49
+SydTest::Executor: [INFO] <length = 72067>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_49
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error49.dat ../../doc/bulk_3_error49.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error49.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_50(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_50 input from path '../../doc/bulk_3_data50.txt' hint 'ErrorData="error50.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_50
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_50
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error50.dat ../../doc/bulk_3_error50.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error50.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_51(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_51 input from path '../../doc/bulk_3_data51.txt' hint 'ErrorData="error51.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_51
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 22063>
+SydTest::Executor: [INFO] <length = 31567>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 21327>
+SydTest::Executor: [INFO] <length = 32303>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 31564>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_51
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error51.dat ../../doc/bulk_3_error51.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error51.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_52(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_52 input from path '../../doc/bulk_3_data52.utf8' hint 'ErrorData="error52.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_52
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] <length = 22322>
+SydTest::Executor: [INFO] <length = 32556>
+SydTest::Executor: [INFO] <length = 22066>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_52
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error52.dat ../../doc/bulk_3_error52.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error52.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_53(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_53 input from path '../../doc/bulk_3_data53.utf8' hint 'ErrorData="error53.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@" Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_53
+SydTest::Executor: [INFO] <length = 21497>
+SydTest::Executor: [INFO] <length = 32047>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 22319>
+SydTest::Executor: [INFO] <length = 31695>
+SydTest::Executor: [INFO] <length = 21554>
+SydTest::Executor: [INFO] <length = 21429>
+SydTest::Executor: [INFO] <length = 32559>
+SydTest::Executor: [INFO] <length = 21330>
+SydTest::Executor: [INFO] <length = 21682>
+SydTest::Executor: [INFO] <length = 31692>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_53
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error53.dat ../../doc/bulk_3_error53.utf8
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error53.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_54(string1 nvarchar(1024),int2 int ARRAY[3],bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_54 input from path '../../doc/bulk_3_data54.txt' hint 'ErrorData="error54.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_54
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_54
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error54.dat ../../doc/bulk_3_error54.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error54.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_55(string1 nvarchar(1024) ARRAY[3],int2 int,bigint3 bigint,decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_55 input from path '../../doc/bulk_3_data55.txt' hint 'ErrorData="error55.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_55
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_55
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error55.dat ../../doc/bulk_3_error55.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error55.dat
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_56(string1 nvarchar(1024),int2 int,bigint3 bigint ARRAY[3],decimal4 decimal(10,5),file5 ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_56 input from path '../../doc/bulk_3_data56.txt' hint 'ErrorData="error56.dat" RecordSeparator=":\n==\n:" FieldSeparator=":,:" ElementSeparator="@@"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_56
+SydTest::Executor: [INFO] <length = 20904>
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_56
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] diff error56.dat ../../doc/bulk_3_error56.txt
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] rm error56.dat
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

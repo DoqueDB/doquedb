@@ -1,0 +1,60 @@
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# KWICのテスト
+
+# SFが同義語展開されて検索され、同義語も含めてマークアップされることを確認する。
+Command "create table T(C ntext)";
+Command "create fulltext index I on T(C) hint 'kwic, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1 @NORMRSCID:1)'";
+# SFの同義語
+Command "insert into T(C) values 'SF, sf, エスエフ, 空想科学小説, 科学小説'";
+# SFの同義語だけでもヒットする
+Command "insert into T(C) values 'エスエフ'";
+# 文字一致なので単語中の部分文字列もマークアップされる
+Command "insert into T(C) values 'SF, Successful, 疑似科学小説'";
+# 以下はSFの同義語ではないのでヒットしない
+Command "insert into T(C) values 'Science Fiction, 空想科学'";
+# 以下はエスエフに正規化されないのでヒットしない。
+Command "insert into T(C) values 'えすえふ'";
+Command "select kwic(C for 100 enclose with '【' and '】' escape 'none' ellipsis '…') from T where C contains expand_synonym('エスエフ')";
+Command "drop table T";
+
+
+# 長音を含む単語のマークアップ
+
+# [NOTE] 単語の一部のみのマークアップが正確ではないことがある。
+# 正規化前の位置は、正規化後の位置から正規化前後の比率を使って計算している。
+# スーパーマンはスパマン、スーパーはスパ、マンはマン、にそれぞれ正規化されるので、
+# 【スパ】マン->【スーパ】ーマン
+# スパ【マン】->スーパ【ーマン】
+# のようにマークアップされてしまう。
+Command "create table T(C ntext)";
+Command "insert into T(C) values ''";
+Command "select normalize('スーパーマン' using 'UNA:1 wordseparate') from T";
+Command "select normalize('スーパーカー' using 'UNA:1 wordseparate') from T";
+Command "select normalize('エコカー' using 'UNA:1 wordseparate') from T";
+Command "drop table T";
+Command "create table T(C ntext)";
+Command "insert into T(C) values 'スーパーマン'";
+Command "insert into T(C) values 'スーパーカー'";
+Command "insert into T(C) values 'エコカー'";
+Command "create fulltext index I on T(C) hint 'kwic, inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1 @NORMRSCID:1)'";
+Command "select kwic(C for 100 enclose with '【' and '】' escape 'none' ellipsis '…') from T where C contains 'スーパーマン'";
+Command "select kwic(C for 100 enclose with '【' and '】' escape 'none' ellipsis '…') from T where C contains 'スーパーカー'";
+Command "select kwic(C for 100 enclose with '【' and '】' escape 'none' ellipsis '…') from T where C contains 'エコカー'";
+Command "select kwic(C for 100 enclose with '【' and '】' escape 'none' ellipsis '…') from T where C contains 'スーパー'";
+Command "select kwic(C for 100 enclose with '【' and '】' escape 'none' ellipsis '…') from T where C contains 'エコ'";
+Command "select kwic(C for 100 enclose with '【' and '】' escape 'none' ellipsis '…') from T where C contains 'カー'";
+Command "select kwic(C for 100 enclose with '【' and '】' escape 'none' ellipsis '…') from T where C contains 'マン'";
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

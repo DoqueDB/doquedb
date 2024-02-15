@@ -1,0 +1,317 @@
+#!/usr/bin/perl
+# 
+# Copyright (c) 2000,2014, 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+#
+# dounamk - frontend of unamk
+#
+=head1 NAME
+
+ dounamk - unamk実行フロントエンド
+
+=head1 SYNOPSIS
+
+ dounamk [オプション] [テキストファイル]
+
+=head1 DESCRIPTION
+
+ 日本語形態素解析UNA(unamk)を実行して、テキストファイルを解析
+ するためのフロントエンド。入力テキストの漢字コードはUTF-8。
+
+ 解析結果は、-oオプションで指定された場所、または、入力ファイルと同じ
+ 場所に、テキストファイル.ana というファイル名で出力される。
+ また -a オプション指定時には、デバッグファイルがテキストファイル.dbg 
+ というファイル名で出力される。
+
+ テキストファイルが指定されなかった場合には、標準出力に解析結果が出力
+ され、デバッグファイルは、stdin.dbg というファイル名で出力される。
+
+ 以下のプログラムを使用する。これらは、-bオプションで指定された場所に
+ インストールされていなければならない。 
+    unamk
+    promo
+    anadbg
+
+ また、./tmpディレクトリもしくは、出力ディレクトリのサブディレクトリtmpに
+ 中間ファイルを作成する。途中終了した場合、
+ または-Dオプション指定時には、これらは削除されない。
+
+ オプションは以下の通り。
+
+=item -n
+
+ 実行しない。-vオプションと同時に使用することで、どのようなコマンドが
+ 実行されるかを確認するのに使える。
+
+=item -r I<ディレクトリ>
+
+ 実行用辞書などのリソースのあるディレクトリを指定する(Resource directory)。
+ 参照するデータは以下のもの。
+	connect.tbl  gram.tbl     unastd.tbl   unkcost.tbl
+	engmk.tbl    unaapp2.dic  unawrd.dic   unkmk.tbl
+ デフォルトは ./。
+
+=item -w I<ディレクトリ>
+
+ 辞書ビルド時に作られた作業用データのあるディレクトリを指定する。
+ 参照するデータは以下のもの。
+	conn.log     costmax.log  kuattr.utf8  unacon.utf8  unadic.utf8  unahin.h
+	connck.log   hingrp.log   kutbl.utf8   unadic.dbg   unahin.utf8
+ デフォルトは ./。
+
+=item -b I<ディレクトリ>
+
+ 解析ツール、コード変換ツールなどのあるディレクトリを指定する
+ (Tool directory)。デフォルトは、/proj/nlp/local/bin である。
+ windowsでは、proj/nlp/resource/v400/tools/perl を指定する。
+
+=item -u I<ディレクトリ>
+
+ unamk,unamk2のあるディレクトリを指定する(UNA directory)。
+ デフォルトは、/proj/nlp/una/v3.2/una-3.2.standard/bin である。
+ windowsでは、proj/nlp/resource/v400/tools/bin を指定する。
+
+=item -o I<ディレクトリ>
+
+ 出力ファイルを作成するディレクトリを指定する。
+ デフォルトは、入力ファイルと同じディレクトリである。
+ さらに、下記サブディレクトリに中間ファイルが作成される。実行後は削除される。
+   tmp
+
+=item -p I<オプション>
+
+ unamkへ渡すパラメータを指定する(Parameter)。
+ デフォルトは、... である。
+
+=item -s
+
+ 複合語を下位構造に分割して出力する(unamkのオプション -s を指定する)。
+
+=item -a
+
+ anadbgを実行するためのデバッグファイル(〜.dbg)を作成する(Analyze)。
+ このオプションを指定しない場合に比べて多量の時間がかかる。
+
+=item -y
+
+ 表記と異表記を出力する。
+
+=item -Y
+
+ 表記を出力する。
+
+=item -v
+
+ 詳細な情報を出力する(Verbose)。
+
+=item -D
+
+ デバッグ用の情報を出力する(Debug)。
+
+=item -h
+
+ 簡単なヘルプを出力する(Help)。
+
+=head1 HISTORY
+
+ Ver.1.01 2000/11/30 最初の動作版
+ Ver.1.04 2000/12/01 テンポラリディレクトリを変更可能に
+ Ver.2.01 2001/12/14 /proj/nlp/local/binからコピーしパスを変更
+ Ver.2.02 2002/02/20 オプション追加(-u,-b,-o,-s),euc/ucs2変換仕様のjj準拠
+ Ver.2.03 2002/03/14 データ所在の変更に対応(mkunadataの変更に伴う)
+ Ver.2.04 2002/03/14 -uオプションのデフォルトを変更
+ Ver.5.00 2002/04/30 UNA-WorkToolsとしてRCS管理に
+ Ver.5.01 2002/08/20 ツールの実行環境を/proj/nlp/tools/UNA-CmnTools/v1.2.dist
+                     に変更
+ Ver.5.02 2002/09/11 rsc_dir,tmp_dirのデフォルト値を変更
+                     -tオプションを削除し、tmpディレクトリを出力ディレクトリの
+                     下に作成するよう変更
+ Ver.5.03 2012/03/19 windowsの動作環境に合わせて変更
+
+=head1 BUG
+
+=cut
+
+use utf8;
+use warnings;
+use strict;
+binmode STDIN,  ":utf8";
+binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
+use open IO => ":utf8";
+
+use File::Basename;
+use Cwd 'realpath';
+my $tool_dir = realpath(dirname($0));
+my $una_dir = "${tool_dir}/../bin";
+my $rsc_dir = "./";
+my $work_dir = "./";
+my $tmp_dir = "./tmp";
+#my $una_opts = '-d -l -a unaapp2.dic -N -s -Y';	# 品詞名と下位構造出力と原表記出力
+my $una_opts = '-d -l -N -s -Y';	# 複数辞書対応によりアプリ辞書の指定は廃止
+
+# 以下は絶対パスを保持するため。絶対パスはjcodeの実行に必要
+use Cwd;
+my $cur_dir = cwd();
+$cur_dir =~ s/^[a-zA-Z]://;
+
+# 引数の評価
+use Getopt::Std;
+my %opt;
+getopts('nr:w:u:b:p:o:sayYvDh', \%opt);
+if ($opt{h} || $#ARGV > 0) {
+        die <<EOU;
+Usage: dounamk [OPTIONS] TEXT
+   Example:
+      dounamk -v -a -o OUTDIR -s TEXT
+      perl ../tools/perl/dounamk -r unadic/una -w uwork -o . -a -v TEXT
+   -n         No execution
+   -r DIR     Resource directory ($rsc_dir)
+   -w DIR     Work data directory ($work_dir)
+   -b DIR     Tool (anadbg,etc.) directory ($tool_dir)
+   -u DIR     UNA (unamk,etc.) directory ($una_dir)
+   -o DIR     Output directory (same as input file unless defined)
+   -p OPTION  unamk Parameters ($una_opts)
+   -s         Segmenting compounds into sub-morphemes
+   -a         Analyze mode (too slow)
+   -y         Output hyoki and ihyoki
+   -Y         Output hyoki
+   -v         Verbose
+   -D         Debug
+   -h         Help
+EOU
+}
+print STDERR "dounamk\n" if $opt{v};
+
+$rsc_dir = $opt{r} if exists $opt{r};
+$work_dir = $opt{w} if exists $opt{w};
+$una_dir = $opt{u} if exists $opt{u};
+$tool_dir = $opt{b} if exists $opt{b};
+
+if (! -e "$rsc_dir/connect.tbl") {
+	print STDERR "connect.tbl not found in resource directory (-r)\n";
+	exit;
+}
+if (! -e "$work_dir/unahin.utf8") {
+	print STDERR "unahin.utf8 not found in work data directory (-w)\n";
+	exit;
+}
+if (! -e "$tool_dir/anadbg") {
+	print STDERR "anadbg not found in tool directory (-b)\n";
+	exit;
+}
+if (! -e "$una_dir/unamk") {
+	print STDERR "unamk not found in UNA directory (-u)\n";
+	exit;
+}
+
+my $out_dir = '';
+if ($opt{o}){
+    $out_dir = $opt{o};
+    $tmp_dir = "$out_dir/tmp";
+}
+mkdir $out_dir, 0775 || die "can't create $out_dir: $!\n" if(! -d $out_dir);
+mkdir $tmp_dir, 0775 || die "can't create $tmp_dir: $!\n" if(! -d $tmp_dir);
+$una_opts = $opt{p} if exists $opt{p};
+$una_opts =~ s/^/-s / if $opt{s};
+if ($opt{y}) {
+	$una_opts =~ s/-Y//;
+	$una_opts =~ s/^/-y /;
+}
+
+my $tmp_in = "$tmp_dir/\#dounamk.$$.in";
+my $tmp_out = "$tmp_dir/\#dounamk.$$.out";
+my $tmp_ana = "$tmp_dir/\#dounamk.$$.ana";
+my $tmp_dbg = "$tmp_dir/\#dounamk.$$.dbg";
+my $textfile = '';
+if (@ARGV) {
+    $textfile = shift @ARGV;
+}
+my($arg_textfile, $arg_anafile, $dbgfile);
+if ($textfile) {
+    $arg_textfile = "$textfile";
+	if (!exists $opt{o}) {
+		if ($textfile =~ /\//) {
+			($out_dir = $textfile) =~ s/\/[^\/]*$//;
+		} else {
+			$out_dir = ".";
+		}
+	}
+    $textfile =~ s/^.+\///;
+    $arg_anafile = ">$out_dir/$textfile\.ana";
+    $dbgfile = "$out_dir/$textfile\.dbg";
+}
+else {
+    $arg_textfile = "";
+    $arg_anafile = "";
+    $dbgfile = "stdin\.dbg";
+}
+my $ana_opt = $opt{a} ? "-a" : "";
+
+&do_commands(<<"EOC");
+# 解析結果の作成
+iconv -f UTF8 -t UTF16LE $arg_textfile -o $tmp_in
+$una_dir/unamk -r $rsc_dir $una_opts $ana_opt -o $tmp_out $tmp_in >$tmp_dbg
+iconv -f UTF16LE -t UTF8 $tmp_out -o $tmp_ana
+perl $tool_dir/promo $tmp_ana $arg_anafile
+EOC
+if ($opt{a}) {
+		&do_commands(<<"EOC");
+# デバッグファイルの作成
+perl $tool_dir/anadbg -r $work_dir $tmp_dbg >$dbgfile
+EOC
+}
+
+END {
+	if (!$opt{D} && defined $tmp_in && -e $tmp_in) {
+		unlink $tmp_in, $tmp_out, $tmp_ana, $tmp_dbg;
+	}
+}
+
+# 複数のプログラムを実行する
+sub do_commands {
+    my($lines) = @_;
+    for (split (/\n/, $lines)) {
+        &do_command($_);
+    }
+}
+
+# プログラムを実行する
+sub do_command {
+    my($com) = @_;
+    print STDERR "$com\n" if $opt{v};
+    s/^\#.*$//;
+    s/^\s+//;
+    s/\s+$//;
+    return if !$_;
+    my $r = 0;
+    $r = system $com if !$opt{n};
+    if ($r) {
+	$com =~ s/\s.*$//; # プログラム名にする
+	my $exit_value = $? >> 8;
+	my $signal_num = $? & 0x7f;
+        die "dounamk: $com: exit($exit_value): signal($signal_num)\n";
+    }
+}
+
+=head1 SEE ALSO
+
+L<Config>, L<unamk>, L<promo>, L<anadbg>
+
+=head1 COPYRIGHT
+
+ Copyright 2000,2014, 2023 RICOH Co, Ltd. All rights reserved.
+
+=cut

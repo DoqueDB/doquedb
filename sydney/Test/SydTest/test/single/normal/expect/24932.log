@@ -1,0 +1,123 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 nvarchar(2497) hint heap, C2 int array[no limit] hint heap)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1_1 on T1(C1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T2(C1 nvarchar(2497), C2 int array[no limit])
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I2_1 on T2(C1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {foo,{777}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {bar,{777}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {boo,{555}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T2 (C1, C2) values (?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {foo,{333}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 || 'hoge' from T1
+SydTest::Executor: [INFO] {foohoge}
+SydTest::Executor: [INFO] {barhoge}
+SydTest::Executor: [INFO] {boohoge}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 || array['hoge'] from T1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - function operands are not compatible each other.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 || C2 from T1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - function operands are not compatible each other.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C2 || C1 from T1
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - function operands are not compatible each other.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C2 || array[C1] from T1
+SydTest::Executor: [INFO] {{777,foo}}
+SydTest::Executor: [INFO] {{777,bar}}
+SydTest::Executor: [INFO] {{555,boo}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ? || array[C1] from T1
+SydTest::Executor: [INFO] [[SQL Parameter]] {{hoge}}
+SydTest::Executor: [INFO] {{hoge,foo}}
+SydTest::Executor: [INFO] {{hoge,bar}}
+SydTest::Executor: [INFO] {{hoge,boo}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1 || ? from T1
+SydTest::Executor: [INFO] [[SQL Parameter]] {{hoge}}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) Can't cast class.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ? || ? from T1
+SydTest::Executor: [INFO] [[SQL Parameter]] {foo,bar}
+SydTest::Executor: [INFO] {foobar}
+SydTest::Executor: [INFO] {foobar}
+SydTest::Executor: [INFO] {foobar}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select ? || ? from T1
+SydTest::Executor: [INFO] [[SQL Parameter]] {{foo},{bar}}
+SydTest::Executor: [INFO] {{foo,bar}}
+SydTest::Executor: [INFO] {{foo,bar}}
+SydTest::Executor: [INFO] {{foo,bar}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] CreatePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Query]] select ? || ? from T1
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {foo,bar}
+SydTest::Executor: [INFO] {foobar}
+SydTest::Executor: [INFO] {foobar}
+SydTest::Executor: [INFO] {foobar}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {{foo},{bar}}
+SydTest::Executor: [INFO] {{foo,bar}}
+SydTest::Executor: [INFO] {{foo,bar}}
+SydTest::Executor: [INFO] {{foo,bar}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {foo,{bar}}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - function operands are not compatible each other.
+SydTest::Executor: [INFO] [Main] PreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [[SQL Parameter]] {{foo},bar}
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - function operands are not compatible each other.
+SydTest::Executor: [INFO] [Main] ErasePreparedCommand
+SydTest::Executor: [INFO] [[Label]] sel
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

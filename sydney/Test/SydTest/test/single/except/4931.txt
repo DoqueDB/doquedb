@@ -1,0 +1,31 @@
+# 空文字つかたときのテスト
+# Bug report 1820
+
+Begin;
+Initialize;
+
+# 
+InitializeSession "";
+Command "CREATE DATABASE \"\"";
+TerminateSession;
+
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+# 
+InitializeSession "TESTDB";
+Command "CREATE TABLE \"\" (f int)";
+Command "SELECT * FROM \"\"";
+Command "INSERT \"\" VALUES (1)";
+Command "DELETE \"\"";
+Command "UPDATE \"\" SET f = 1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

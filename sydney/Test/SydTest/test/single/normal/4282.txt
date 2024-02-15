@@ -1,0 +1,34 @@
+Begin;
+Initialize;
+
+InitializeSession "TEST";
+Command "create database TEST";
+Command "create table T(ID int, F nvarchar(512), primary key(ID))";
+Command "create fulltext index T_F on T(F) hint 'inverted=(indexing=dual, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1 @NORMRSCID:1)'";
+
+Command "insert into T values (1, 'リコーの環境への取り組み')";
+Command "insert into T values (2, '低炭素社会をめざすシャープ')";
+
+# それぞれ1件づつヒットする
+Command "select id from T where F contains within('リコー' synonym('環境' 'エコ') upper 10)";
+Command "select id from T where F contains within(synonym('低' '文') 'シャ' upper 10)";
+Command "select id from T where F contains within(synonym('低炭素' '文学的') 'シ' upper 10)";
+
+Command "select id from T where F contains within('リコー' synonym('環境' 'エコ' '取り') upper 10)";
+Command "select id from T where F contains within(synonym('低' '文' '美') 'シャ' upper 10)";
+Command "select id from T where F contains within(synonym('低炭素' '文学的' '社会') 'シ' upper 10)";
+
+Command "select id from T where F contains within('リコー' synonym('環境' 'エコ') synonym('取り' '取れ') upper 10)";
+Command "select id from T where F contains within(synonym('低' '文') 'シャ' synonym('プ' 'ペ') upper 14)";
+Command "select id from T where F contains within(synonym('低炭素' '文学的') synonym('社会' '会社') 'シ' upper 10)";
+
+# 以下の3つは何もヒットしない
+Command "select id from T where F contains within('リコー' synonym('患境' 'エコ') upper 10)";
+Command "select id from T where F contains within(synonym('高' '文') 'シャ' upper 10)";
+Command "select id from T where F contains within(synonym('高酸素' '文学的') 'シ' upper 10)";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

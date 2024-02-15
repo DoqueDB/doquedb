@@ -1,0 +1,14 @@
+Begin;
+
+SetSystemParameter "Exception_FakeError" "LogicalLog::File::rotate2 count=2";
+
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T(F int)";
+Command "insert into T values (1)";
+
+Command "sync 1";
+
+End;

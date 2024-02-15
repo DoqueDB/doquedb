@@ -1,0 +1,99 @@
+# 障害票 1066
+
+Begin;
+Initialize;
+InitializeSession "";
+
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# 基本形
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' language 'fr'";
+Command "drop table T";
+
+#
+#Command "create table T(c ntext)";
+#Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+#Command "insert T values 'あいう', '%う'";
+#Command "select * from T where c like 'あ%う%' language 'fr'";
+#Command "drop table T";
+
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' language 'fr' escape ''";  #Invalid Escape Character
+Command "drop table T";
+
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' language 'fr' escape 'あ'";
+Command "drop table T";
+
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' language ''";
+Command "drop table T";
+
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' language '' escape ''"; #Invalid Escape Character
+Command "drop table T";
+
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' language '' escape 'あ'";
+Command "drop table T";
+
+#
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' escape 'あ'";
+Command "drop table T";
+
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' escape 'あ' language ''";
+Command "drop table T";
+
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' escape 'あ' language 'fr'";
+Command "drop table T";
+
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' escape ''"; #Invalid Escape Character
+Command "drop table T";
+
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' escape '' language ''"; #Invalid Escape Character
+Command "drop table T";
+
+Command "create table T(c ntext)";
+Command "create fulltext index I on T(c) hint 'inverted=(nolocation=true)'";
+Command "insert T values 'あいう', '%う'";
+Command "select * from T where c like 'あ%う%' escape '' language 'fr'"; #Invalid Escape Character
+Command "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

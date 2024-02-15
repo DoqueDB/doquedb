@@ -1,0 +1,65 @@
+# Linux 環境のみ対象
+# パラメータ Os_PrintCriticalSection を設定せずにクリティカルセクションのログ出力を指示する
+
+Begin;
+
+SetSystemParameter "Os_PrintCriticalSection" "";
+
+Initialize;
+
+PrintCriticalSection;
+
+InitializeSession "TestDB";
+
+# 一通り基本操作してエラーが発生しないこと
+
+Command "create database TestDB";
+Command "create table T(C1 int, C2 ntext)";
+Command "insert into T values (1, 'test text')";
+Command "create fulltext index T_C2 on T(C2)";
+Command "select * from T";
+Command "update T set C2 = 'test text 2' where C1 = 1";
+
+# もう一度
+
+PrintCriticalSection;
+
+Command "create table T2(C1 int, C2 ntext)";
+Command "insert into T2 values (1, 'test text')";
+Command "create fulltext index T2_C2 on T(C2)";
+Command "select * from T2";
+Command "update T2 set C2 = 'test text 2' where C1 = 1";
+
+Command "drop table T";
+Command "drop table T2";
+
+# もう一度
+
+PrintCriticalSection;
+
+Command "create table T(C1 int, C2 ntext)";
+Command "insert into T values (1, 'test text')";
+Command "create fulltext index T_C2 on T(C2)";
+Command "select * from T";
+Command "update T set C2 = 'test text 2' where C1 = 1";
+
+Command "drop database TestDB";
+
+# もう一度
+
+PrintCriticalSection;
+
+Command "create database TestDB";
+
+Command "create table T(C1 int, C2 ntext)";
+Command "insert into T values (1, 'test text')";
+Command "create fulltext index T_C2 on T(C2)";
+Command "select * from T";
+Command "update T set C2 = 'test text 2' where C1 = 1";
+
+TerminateSession;
+
+Terminate;
+
+End;
+

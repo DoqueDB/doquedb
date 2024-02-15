@@ -1,0 +1,349 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Table
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Column
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Constraint
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Index
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Key
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_File
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Field
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Area
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_AreaContent
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f1 int, f2 nchar(100), f3 ntext array [no limit], primary key (f2))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index T_f1 on T(f1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_FTS on T(f3) hint 'delayed sectionized'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area area1 'd:\dm\area\1'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create area area2 array ['d:\dm\area\2a', 'd:\dm\area\2b']
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] alter table T set area area1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (1, ?, ?)
+SydTest::Executor: [INFO] [[SQL Parameter]] {hoge,{hoge,hoge,hoge}}
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Table
+SydTest::Executor: [INFO] {T,{33,4294967295,4294967295,4294967295,4294967295,4294967295,4294967295}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Table where name = 'T'
+SydTest::Executor: [INFO] {T,{33,4294967295,4294967295,4294967295,4294967295,4294967295,4294967295}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Column
+SydTest::Executor: [INFO] {1,ROWID,1,0,8,size=8,8,{12,int,4,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {1,f1,2,1,12,size=8,8,{12,int,10,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {1,f2,2,2,13,size=8,9,{3,nchar,100,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {1,f3,2,3,14,size=8,10,{4,nvarchar,-1,0,-1,(null),(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Column where exists (select * from system_table where name = 'T' and rowid = system_column.parentid)
+SydTest::Executor: [INFO] {1,ROWID,1,0,8,size=8,8,{12,int,4,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {1,f1,2,1,12,size=8,8,{12,int,10,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {1,f2,2,2,13,size=8,9,{3,nchar,100,0,0,(null),(null)}}
+SydTest::Executor: [INFO] {1,f3,2,3,14,size=8,10,{4,nvarchar,-1,0,-1,(null),(null)}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Constraint
+SydTest::Executor: [INFO] {1,T_$$PrimaryKey,3,0,{4,16}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Constraint where exists (select * from system_table where name = 'T' and rowid = system_constraint.parentid)
+SydTest::Executor: [INFO] {1,T_$$PrimaryKey,3,0,{4,16}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Index
+SydTest::Executor: [INFO] {1,T_$$PrimaryKey,1,5,18,(null),(null)}
+SydTest::Executor: [INFO] {1,T_f1,1,0,24,(null),(null)}
+SydTest::Executor: [INFO] {1,T_FTS,2,0,30,(null),'delayed sectionized'}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Index where name = 'T_f1'
+SydTest::Executor: [INFO] {1,T_f1,1,0,24,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Index where exists (select * from system_table where name = 'T' and rowid = system_index.parentid)
+SydTest::Executor: [INFO] {1,T_$$PrimaryKey,1,5,18,(null),(null)}
+SydTest::Executor: [INFO] {1,T_f1,1,0,24,(null),(null)}
+SydTest::Executor: [INFO] {1,T_FTS,2,0,30,(null),'delayed sectionized'}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Key
+SydTest::Executor: [INFO] {16,0,4,20}
+SydTest::Executor: [INFO] {22,0,3,26}
+SydTest::Executor: [INFO] {28,0,5,31}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Key where exists (select * from system_index where name = 'T_f1' and rowid = system_key.parentid)
+SydTest::Executor: [INFO] {22,0,3,26}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_File
+SydTest::Executor: [INFO] {1,BTR_T_$$PrimaryKey,2,size=301,{33},458752}
+SydTest::Executor: [INFO] {1,RCD_T,1,size=366,{33},524288}
+SydTest::Executor: [INFO] {1,VCT_T_$$Conversion,4,size=180,{33},131072}
+SydTest::Executor: [INFO] {1,BTR_T_f1,2,size=259,{33},131072}
+SydTest::Executor: [INFO] {1,FTS_T_FTS,3,size=991,{33},917504}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_File where exists (select * from system_table where name = 'T' and rowid = system_file.parentid)
+SydTest::Executor: [INFO] {1,BTR_T_$$PrimaryKey,2,size=301,{33},458752}
+SydTest::Executor: [INFO] {1,RCD_T,1,size=366,{33},524288}
+SydTest::Executor: [INFO] {1,VCT_T_$$Conversion,4,size=180,{33},131072}
+SydTest::Executor: [INFO] {1,BTR_T_f1,2,size=259,{33},131072}
+SydTest::Executor: [INFO] {1,FTS_T_FTS,3,size=991,{33},917504}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_File where exists (select * from system_index where name = 'T_f1' and fileid = system_file.rowid)
+SydTest::Executor: [INFO] {1,BTR_T_f1,2,size=259,{33},131072}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Field
+SydTest::Executor: [INFO] {18,1,0,0,2,4294967295,4294967295,4294967295,1013}
+SydTest::Executor: [INFO] {18,2,0,1,3,13,4294967295,17,1005}
+SydTest::Executor: [INFO] {18,3,0,2,3,8,4294967295,4294967295,1002}
+SydTest::Executor: [INFO] {6,1,0,0,3,4294967295,4294967295,4294967295,1013}
+SydTest::Executor: [INFO] {6,3,0,1,3,4294967295,2,4294967295,1002}
+SydTest::Executor: [INFO] {6,3,0,2,3,4294967295,3,4294967295,1001}
+SydTest::Executor: [INFO] {6,3,0,3,3,4294967295,4,4294967295,1005}
+SydTest::Executor: [INFO] {6,3,0,4,3,4294967295,5,4294967295,2000}
+SydTest::Executor: [INFO] {9,2,0,0,3,8,4294967295,4294967295,1002}
+SydTest::Executor: [INFO] {9,3,0,1,3,7,4294967295,4294967295,1013}
+SydTest::Executor: [INFO] {24,1,0,0,2,4294967295,4294967295,4294967295,1013}
+SydTest::Executor: [INFO] {24,2,0,1,3,12,4294967295,23,1001}
+SydTest::Executor: [INFO] {24,3,0,2,3,8,4294967295,4294967295,1002}
+SydTest::Executor: [INFO] {30,2,0,0,2,14,4294967295,29,2000}
+SydTest::Executor: [INFO] {30,3,0,1,3,8,4294967295,4294967295,1002}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Field where exists (select * from system_table, system_file where system_table.name = 'T' and system_table.rowid = system_file.parentid and system_file.rowid = system_field.parentid)
+SydTest::Executor: [INFO] {18,1,0,0,2,4294967295,4294967295,4294967295,1013}
+SydTest::Executor: [INFO] {18,2,0,1,3,13,4294967295,17,1005}
+SydTest::Executor: [INFO] {18,3,0,2,3,8,4294967295,4294967295,1002}
+SydTest::Executor: [INFO] {6,1,0,0,3,4294967295,4294967295,4294967295,1013}
+SydTest::Executor: [INFO] {6,3,0,1,3,4294967295,2,4294967295,1002}
+SydTest::Executor: [INFO] {6,3,0,2,3,4294967295,3,4294967295,1001}
+SydTest::Executor: [INFO] {6,3,0,3,3,4294967295,4,4294967295,1005}
+SydTest::Executor: [INFO] {6,3,0,4,3,4294967295,5,4294967295,2000}
+SydTest::Executor: [INFO] {9,2,0,0,3,8,4294967295,4294967295,1002}
+SydTest::Executor: [INFO] {9,3,0,1,3,7,4294967295,4294967295,1013}
+SydTest::Executor: [INFO] {24,1,0,0,2,4294967295,4294967295,4294967295,1013}
+SydTest::Executor: [INFO] {24,2,0,1,3,12,4294967295,23,1001}
+SydTest::Executor: [INFO] {24,3,0,2,3,8,4294967295,4294967295,1002}
+SydTest::Executor: [INFO] {30,2,0,0,2,14,4294967295,29,2000}
+SydTest::Executor: [INFO] {30,3,0,1,3,8,4294967295,4294967295,1002}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Field where exists (select * from system_index, system_file where system_index.name = 'T_f1' and system_index.fileid = system_file.rowid and system_file.rowid = system_field.parentid)
+SydTest::Executor: [INFO] {24,1,0,0,2,4294967295,4294967295,4294967295,1013}
+SydTest::Executor: [INFO] {24,2,0,1,3,12,4294967295,23,1001}
+SydTest::Executor: [INFO] {24,3,0,2,3,8,4294967295,4294967295,1002}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Area
+SydTest::Executor: [INFO] {area1,{d:\dm\area\1}}
+SydTest::Executor: [INFO] {area2,{d:\dm\area\2a,d:\dm\area\2b}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Area where name = 'area1'
+SydTest::Executor: [INFO] {area1,{d:\dm\area\1}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_AreaContent
+SydTest::Executor: [INFO] {33,1}
+SydTest::Executor: [INFO] {33,6}
+SydTest::Executor: [INFO] {33,9}
+SydTest::Executor: [INFO] {33,18}
+SydTest::Executor: [INFO] {33,24}
+SydTest::Executor: [INFO] {33,30}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_AreaContent where exists (select * from system_area where name = 'area1' and rowid = system_areacontent.areaid)
+SydTest::Executor: [INFO] {33,1}
+SydTest::Executor: [INFO] {33,6}
+SydTest::Executor: [INFO] {33,9}
+SydTest::Executor: [INFO] {33,18}
+SydTest::Executor: [INFO] {33,24}
+SydTest::Executor: [INFO] {33,30}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_AreaContent where exists (select * from system_table where name = 'T' and rowid = system_areacontent.objectid)
+SydTest::Executor: [INFO] {33,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select RowID, AreaID, ObjectID from system_Areacontent where system_areacontent.areaid=33
+SydTest::Executor: [INFO] {35,33,1}
+SydTest::Executor: [INFO] {36,33,6}
+SydTest::Executor: [INFO] {37,33,9}
+SydTest::Executor: [INFO] {38,33,18}
+SydTest::Executor: [INFO] {39,33,24}
+SydTest::Executor: [INFO] {40,33,30}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area area1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop area area2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Table
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Table where name = 'T'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Column
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Column where exists (select * from system_table where name = 'T' and rowid = system_column.parentid)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Constraint
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Constraint where exists (select * from system_table where name = 'T' and rowid = system_constraint.parentid)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Index
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Index where name = 'T_f1'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Index where exists (select * from system_table where name = 'T' and rowid = system_index.parentid)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Key
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Key where exists (select * from system_index where name = 'T_f1' and rowid = system_key.parentid)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_File
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_File where exists (select * from system_table where name = 'T' and rowid = system_file.parentid)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_File where exists (select * from system_index where name = 'T_f1' and fileid = system_file.rowid)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Field
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Field where exists (select * from system_table, system_file where system_table.name = 'T' and system_table.rowid = system_file.parentid and system_file.rowid = system_field.parentid)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Field where exists (select * from system_index, system_file where system_index.name = 'T_f1' and system_index.fileid = system_file.rowid and system_file.rowid = system_field.parentid)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Area
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_Area where name = 'area1'
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_AreaContent
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_AreaContent where exists (select * from system_area where name = 'area1' and rowid = system_areacontent.areaid)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from System_AreaContent where exists (select * from system_table where name = 'T' and rowid = system_areacontent.objectid)
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select RowID, AreaID, ObjectID from system_Areacontent where system_areacontent.areaid=33
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,28 @@
+# 障害票 1237
+# 条件に使われていない列でORDER BYを使う
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table TBL(f int, g ntext, primary key(f))";
+Command "insert TBL values (1, 'aaa'), (2, 'bbb'), (3, 'ccc'), (4, 'ddd')";
+Command "create fulltext index IDX_g on TBL(g)";
+
+Command "explain execute hint 'file' select * from TBL where g contains 'a'|'b'|'c'|'d'";
+Command "explain execute hint 'file' select * from TBL where g contains 'a'|'b'|'c'|'d' order by f";
+
+Command "drop table TBL";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

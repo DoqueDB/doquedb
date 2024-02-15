@@ -1,0 +1,18 @@
+# 障害票 0871
+# LOBの更新を含むUPDATE文でWHERE句に使われている列も同時に更新する
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+
+Command "create table T(f int, g nclob)";
+Command "insert T values (1, 'aaa')";
+
+Command "update T set f = 2, g = 'bbb' where f = 1";
+Command "select * from T";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

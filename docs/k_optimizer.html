@@ -1,0 +1,958 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<!--
+  Copyright (c) 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the License);
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<html>
+
+<head>
+  <!-- Google Tag Manager -->
+  <script type="text/javascript">(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-KRXS4RS');</script>
+  <!-- End Google Tag Manager -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="css/default.css">
+  <title>オプティマイザー</title>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRXS4RS" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <h1>オプティマイザー</h1>
+  <div class="right"><a href="knowledge.html">[ナレッジに戻る]</a></div>
+  <div class="contents">
+    <dl>
+      <dt>
+        <a href="#sec1">1. はじめに</a>
+      </dt>
+      <dt>
+        <a href="#sec2">2. オプティマイザーについて</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec21">2.1 アクセスプランの確認方法</a>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <a href="#sec211">2.1.1 ログに出力する</a>
+              </dt>
+              <dt>
+                <a href="#sec212">2.1.2 EXPLAIN文を使用する</a>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <a href="#sec22">2.2 アクセスプランの判断ポイント</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec3">3. 索引ファイルの使用</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec31">3.1 ANDの場合</a>
+          </dt>
+          <dt>
+            <a href="#sec32">3.2 ORの場合</a>
+          </dt>
+          <dt>
+            <a href="#sec33">3.3 AND NOTの場合</a>
+          </dt>
+          <dt>
+            <a href="#sec34">3.4 OR NOTの場合</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec4">4. 表の結合順序</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec41">4.1 2つの表の結合</a>
+          </dt>
+          <dt>
+            <a href="#sec42">4.2 3つ以上の表の結合</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec5">5. ソート順</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec51">5.1 B木索引のついた列(1つ)でソート</a>
+          </dt>
+          <dt>
+            <a href="#sec52">5.2 B木索引のついた列(2つ以上、複合キー)でソート</a>
+          </dt>
+          <dt>
+            <a href="#sec53">5.3 全文検索のスコアでソート</a>
+          </dt>
+          <dt>
+            <a href="#sec54">5.4 索引のついた列とついていない列が混合したキーでソート</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec6">6. 同等な問い合わせへの変換</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec61">6.1 EXISTS</a>
+          </dt>
+          <dt>
+            <a href="#sec62">6.2 NOT</a>
+          </dt>
+          <dt>
+            <a href="#sec63">6.3 OR</a>
+          </dt>
+        </dl>
+      </dd>
+    </dl>
+  </div>
+
+
+  <h2><a id="sec1">1. はじめに</a></h2>
+  <p>
+    ここではDoqueDBのオプティマイザーの動作について説明します。
+    オプティマイザーの動作の概要を知ることは、アプリケーション開発においてスキーマ定義やSQL文を考える上で役立ちます。
+  </p>
+
+  <h2><a id="sec2">2. オプティマイザーについて</a></h2>
+  <p>
+    DoqueDBのデータベースは、表ごとにレコードファイルと索引ファイルなどから構成されます。
+    これらのファイルは、単体ではinsert、getのような単純な操作のみを提供しています。
+    オプティマイザーは、SQL文で指示されたデータ操作や問い合わせ操作を、各ファイルに対する操作の組み合わせに変換します。
+  </p>
+  <p>
+    一般に、あるSQL文を実行するためのファイル操作の組み合わせは複数あることがほとんどです。<br>
+    以下ではこの組み合わせかたをアクセスプランまたは単にプランと呼ぶことにします。<br>
+    オプティマイザーの処理では、考えられるアクセスプランから、できるだけ速く処理できるプランを選択することがポイントになります。
+  </p>
+
+  <h3><a id="sec21">2.1 アクセスプランの確認方法</a></h3>
+  <p>
+    アプリケーション開発者が、与えた問い合わせがどのようなアクセスプランで処理されるかを知る方法は2つあります。<br>
+  </p>
+
+  <h3><a id="sec211">2.1.1 ログに出力する</a></h3>
+  <p>
+    confファイルで指定するパラメーターに以下を追加します。
+  </p>
+  <pre>
+Plan_TraceOptimizationOutput     &lt;文字列&gt;
+</pre>
+  <p>
+    パラメーターの値は文字列で、ログを出力するファイル名を指定します。<br>
+    以下のパラメーターを加えると、アクセスプランの前に与えたSQL文を確認できます。
+  </p>
+  <pre>
+Statement_KeepSQLStatement       "true"
+Server_PrintSQLStatement         &lt;文字列&gt;
+Server_PrintParameter            &lt;文字列&gt;
+</pre>
+  <p>
+    パラメーターの値にはPlan_TraceOptimizationOutputと同じファイル名を指定すると便利です。
+    パラメーターを変更した後は、DoqueDBを再起動しないと有効になりません。
+  </p>
+
+  <h3><a id="sec212">2.1.2 EXPLAIN文を使用する</a></h3>
+  <p>
+    EXPLAIN文によりクライアントからアクセスプランを確認できます。
+    EXPLAIN文は以下のように問い合わせのSQL文の前にEXPLAIN句を挿入することで使用します。
+  </p>
+  <pre>
+SQL&gt; explain hint 'file' select * from TBL;
+{Plan}
+{retrieve TBL
+    sequential scan on RCD_TBL}
+</pre>
+  <p>
+    hint 'file'をつけると索引ファイルの使用状況が確認できます。<br>
+    また、デフォルトではEXPLAIN文では問い合わせ自体を実行しません。問い合わせも実行させたいときはEXECUTE句をつけます。
+  </p>
+  <pre>
+SQL&gt; explain execute hint 'file' select * from TBL;
+</pre>
+  <p>
+    この場合、最初のResultSetとしてアクセスプランが、次のResultSetとして問い合わせ結果が得られます。<br>
+    以下の説明では、EXPLAIN文の実行結果でアクセスプランを例示します。
+  </p>
+
+  <h3><a id="sec22">2.2 アクセスプランの判断ポイント</a></h3>
+  <p>
+    DoqueDBのオプティマイザーでは、主に以下のような観点で選択を行います。
+  </p>
+  <dl>
+    <dt class="bold">索引ファイルの使用</dt>
+    <dd>
+      DoqueDBでは<a href="k_schema.html#idxtype">いろいろな種類の索引</a>が定義できます。
+      WHERE句などで指定された条件から、どの索引ファイルをどんな順序で使用するかを判断します。
+    </dd>
+    <dt class="bold">表の結合順序</dt>
+    <dd>
+      複数の表を結合するSQL文の場合、結合順序により処理時間に大きな差があることがあります。
+      考えられる結合順序の候補に対してコスト見積もりを行い、できるだけコストの小さな結合順序を選択します。
+    </dd>
+    <dt class="bold">ソート順</dt>
+    <dd>
+      問い合わせにORDER BYが含まれている場合、指定された列の昇順または降順で結果を返します。
+      ソートの処理には全件を取得する必要があり、ソート自体も軽い処理ではありません。
+      一定の条件のもとでは、B木ファイルをスキャンすることでソートせずに指定された順序で結果を返すことができる場合があります。
+      オプティマイザーはソートするか索引ファイルを使用するかをコスト見積もりを用いて選択します。
+    </dd>
+    <dt class="bold">同等な問い合わせへの変換</dt>
+    <dd>
+      一部の問い合わせでは、SQL文で指定された問い合わせと同等の問い合わせ処理に変換することで、より適切なアクセスプランを候補にできることがあります。
+      変換には以下のようなものがあります。
+      <ul>
+        <li>EXISTS ⇒ 結合 + DISTINCT</li>
+        <li>NOT &lt; ⇒ &gt;= など比較演算子の変換</li>
+        <li>OR ⇒ UNION</li>
+      </ul>
+    </dd>
+  </dl>
+  <p>
+    以下でそれぞれの観点でどのようにアクセスプランが生成されるかについて少し説明します。
+  </p>
+
+  <h2><a id="sec3">3. 索引ファイルの使用</a></h2>
+  <p>
+    ここでは1つの表に対する問い合わせを考えます。
+  </p>
+  <p>
+    WHERE句は、一般に比較演算や文字列検索演算などの述語がAND、OR、NOTで結合された形式になります。
+    オプティマイザーは以下のようにしてWHERE句を処理する索引を決めます。
+  </p>
+  <ol>
+    <li class="nomargin">それぞれの述語について、それを処理できる索引を探す。</li>
+    <li class="nomargin">ANDやORがあったら、処理できる索引をキーにそのオペランドをグループ分けする。</li>
+    <li class="nomargin">各グループについて、対応する索引がそのグループをまとめて処理できるか調べ、まとめて処理できるならまとめる。</li>
+    <li class="nomargin">索引ファイルからの結果を、ANDならintersection、ORならunionをとるようなアクセスプランを作成する。</li>
+  </ol>
+  <p>
+    索引と結び付けられない述語が含まれる場合は、索引からの結果と組み合わせて最終結果を作ります。<br>
+    以下で、AND、OR、NOTの処理について、例を挙げながら説明していきます。
+  </p>
+
+  <h3><a id="sec31">3.1 ANDの場合</a></h3>
+  <p>
+    例1：
+  </p>
+  <pre>
+select * from TBL where id &gt; 10 and id &lt; 20
+</pre>
+  <p class="sub">
+    idにはB木索引がついているものとします。<br>
+    B木索引は比較演算のANDをまとめて処理できるので、索引ファイルをスキャンして、レコードファイルからすべての列値を取得する、というプランになります。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TBL where id &gt; 10 and id &lt; 20;
+{Plan}
+{retrieve TBL
+    index scan on BTR_TBL_IDXid for
+        (TBL.id &gt; 10 and TBL.id &lt; 20)}
+</pre>
+  <p>
+    例2：
+  </p>
+  <pre>
+select * from TBL where id &gt; 10 and text contains 'abc'
+</pre>
+  <p class="sub">
+    idにはB木索引が、textには全文索引がついているものとします。<br>
+    それぞれの索引から得た結果をintersectし、レコードファイルから列値を取得する、というプランになります。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TBL where id &gt; 10 and text contains 'abc';
+{Plan}
+{retrieve TBL
+    intersect files
+        index scan on BTR_TBL_IDXid for
+            TBL.id &gt; 10
+        index scan on FTS_TBL_IDXtext for
+            TBL.text contains abc}
+</pre>
+  <p>
+    例3：
+  </p>
+  <pre>
+select * from TBL where id &gt; 10 and flag = 1
+</pre>
+  <p class="sub">
+    idにはB木索引がついていますが、flagにはついていないものとします。<br>
+    索引から結果を得たらレコードファイルから列値を取得し、flagに関する条件に合致するもののみ結果に出力します。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TBL where id &gt; 10 and flag = 1;
+{Plan}
+{retrieve TBL
+    check predicate
+        TBL.flag = 1
+    index scan on BTR_TBL_IDXid for
+        TBL.id &gt; 10}
+</pre>
+
+  <h3><a id="sec32">3.2 ORの場合</a></h3>
+  <p>
+    例1：
+  </p>
+  <pre>
+select * from TBL where id &gt; 10 or id &lt; 20
+</pre>
+  <p class="sub">
+    idにはB木索引がついているものとします。<br>
+    B木索引は比較演算のORをまとめて処理できるので、索引ファイルをスキャンして、レコードファイルからすべての列値を取得する、というプランになります。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TBL where id &lt; 10 or id &gt; 20;
+{Plan}
+{retrieve TBL
+    index scan on BTR_TBL_IDXid for
+        (TBL.id &lt; 10 or TBL.id &gt; 20)}
+</pre>
+  <p>
+    例2：
+  </p>
+  <pre>
+select * from TBL where id &gt; 10 or text contains 'abc'
+</pre>
+  <p class="sub">
+    idにはB木索引が、textには全文索引がついているものとします。<br>
+    それぞれの索引から得た結果をunionし、レコードファイルから列値を取得する、というプランになります。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TBL where id &gt; 10 or text contains 'abc';
+{Plan}
+{retrieve TBL
+    union files
+        index scan on BTR_TBL_IDXid for
+            TBL.id &gt; 10
+        index scan on FTS_TBL_IDXtext for
+            TBL.text contains abc}
+</pre>
+  <p><a id="or3"></a>
+    例3：
+  </p>
+  <pre>
+select * from TBL where id &gt; 10 or flag = 1
+</pre>
+  <p class="sub">
+    idにはB木索引がついていますが、flagにはついていないものとします。<br>
+    この場合、まず索引ファイルから条件を満たすレコードのROWIDの集合を得ます。
+    次に、レコードファイルから1件ずつ取得し、上記ROWIDの集合に含まれるか検査します。
+    含まれなかった場合、索引が使えない条件を調べます。<br>
+    このように、ORのオペランドに索引と結び付けられない述語がある場合、全件取得の必要があるため、すべて索引で処理できる場合に比べて効率が悪くなります。
+    LIMIT指定などで取得レコード数が制限できる場合は別ですが、ORのオペランドに来る条件はできるだけ索引が使えるものにするようにしましょう。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TBL where id &gt; 10 or flag = 1;
+{Plan}
+{retrieve TBL
+    check predicate
+        ((check existence
+            index scan on BTR_TBL_IDXid for
+                TBL.id &gt; 10)
+        or TBL.flag = 1)
+    sequential scan on RCD_TBL}
+</pre>
+
+  <h3><a id="sec33">3.3 AND NOTの場合</a></h3>
+  <p>
+    例1：
+  </p>
+  <pre>
+select * from TBL where id &lt; 10 and not id = 2
+</pre>
+  <p class="sub">
+    idにはB木索引がついているものとします。<br>
+    B木索引は比較演算との組み合わせの場合に限り、!=の処理ができるので、索引ファイルをスキャンして、レコードファイルからすべての列値を取得する、というプランになります。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TBL where id &lt; 10 and not id = 2;
+{Plan}
+{retrieve TBL
+    index scan on BTR_TBL_IDXid for
+        (TBL.id&nbsp;!= 2 and TBL.id &lt; 10)}
+</pre>
+  <p>
+    例2：
+  </p>
+  <pre>
+select * from TBL where id &gt; 10 and not text contains 'abc'
+</pre>
+  <p class="sub">
+    idにはB木索引が、textには全文索引がついているものとします。<br>
+    まず全文索引の結果をROWIDの集合として得ておきます。<br>
+    次に、B木索引から得た結果のそれぞれについてROWIDが上記ROWIDの集合に含まれていないか調べ、含まれていないときのみレコードファイルから列値を取得する、というプランになります。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TBL where id &gt; 10 and not text contains 'abc';
+{Plan}
+{retrieve TBL
+    check predicate
+        (check nonexistence
+            index scan on FTS_TBL_IDXtext for
+                TBL.text contains abc)
+    index scan on BTR_TBL_IDXid for
+        TBL.id &gt; 10}
+</pre>
+  <p>
+    例3：
+  </p>
+  <pre>
+select * from TBL where flag = 1 and not id = 10
+</pre>
+  <p class="sub">
+    idにはB木索引がついていますが、flagにはついていないものとします。<br>
+    B木索引は単独で現れる!=は処理できないので、すべての検索述語で索引が使えないことになります。<br>
+    つまり、レコードファイルから取得した1件ごとに条件を判定します。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TBL where flag = 1 and not id = 10;
+{Plan}
+{retrieve TBL
+    check predicate
+        (TBL.id&nbsp;!= 10 and TBL.flag = 1)
+    sequential scan on RCD_TBL}
+</pre>
+
+  <h3><a id="sec34">3.4 OR NOTの場合</a></h3>
+  <p>
+    例1：
+  </p>
+  <pre>
+select * from TBL where id &lt; 10 or not id = 2
+</pre>
+  <p class="sub">
+    idにはB木索引がついているものとします。<br>
+    ORの後の!=は、単独で現れるものと同じくB木索引では処理できません。
+    したがって、<a href="#or3">ORの例3</a>と同様のアクセスプランになります。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TL where id &lt; 10 or not id = 2;
+{Plan}
+{retrieve TBL
+    check predicate
+        ((check existence
+            index scan on BTR_TBL_IDXid for
+                TBL.id &lt; 10)
+        or TBL.id&nbsp;!= 2)
+    sequential scan on RCD_doc}
+</pre>
+  <p>
+    例2：
+  </p>
+  <pre>
+select * from TBL where id &gt; 10 or not text contains 'abc'
+</pre>
+  <p class="sub">
+    idにはB木索引が、textには全文索引がついているものとします。<br>
+    まずB木索引と全文索引のそれぞれの結果をROWIDの集合として得ておきます。
+    次にレコードファイルから1件ずつ取得し、ROWIDがB木索引から得られたROWIDの集合に含まれ、全文索引から得られたROWIDの集合に含まれない場合に結果とする、というプランになります。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TBL where id &gt; 10 or not text contains 'abc';
+{Plan}
+{retrieve TBL
+    check predicate
+        ((check existence
+            index scan on BTR_TBL_IDXid for
+                TBL.id &gt; 10)
+        or (check nonexistence
+                index scan on FTS_TBL_IDXtext for
+                    TBL.text contains abc))
+    sequential scan on RCD_TBL}
+</pre>
+  <p>
+    例3：
+  </p>
+  <pre>
+select * from TBL where flag = 1 or not text contains 'abc'
+</pre>
+  <p class="sub">
+    textには全文索引がついていますが、flagにはついていないものとします。<br>
+    まず全文索引から条件を満たすレコードのROWIDの集合を得ます。
+    次にレコードファイルから1件ずつ取得し、ROWIDが上記集合に含まれていなければ結果とし、含まれていればflag=1の条件を判定します。
+  </p>
+  <pre>
+SQL&gt;explain hint 'file' select * from TBL where flag = 1 or not text contains 'abc';
+{Plan}
+{retrieve TBL
+    check predicate
+        ((check nonexistence
+            index scan on FTS_TBL_IDXtext for
+                TBL.text contains abc)
+        and TBL.flag = 1)
+    sequential scan on RCD_TBL}
+</pre>
+
+  <h2><a id="sec4">4. 表の結合順序</a></h2>
+  <p>
+    ここでは二つ以上の表を結合する問い合わせを考えます。
+  </p>
+  <p>
+    DoqueDBでは表の結合にあたってIndexed Join(索引を用いた結合)とNested Loop Join(索引を用いない結合)を用います。
+  </p>
+
+  <h3><a id="sec41">4.1 2つの表の結合</a></h3>
+  <p>
+    結合される表が2つの場合、Indexed Joinが可能ならIndexed Joinが採用されます。
+    Indexed Joinでは、索引への入力となる件数が処理時間に大きく影響します。
+  </p>
+  <p>
+    たとえば、以下のように10万件入った表と10件入った表の結合を作る場合を考えます。
+  </p>
+  <pre>
+select * from TBL_100K, TBL_10 where TBL_100K.x = TBL_10.id
+</pre>
+  <p>
+    ここで、xおよびidにはどちらもB木索引がついているものとします。
+  </p>
+  <p>
+    このとき、結合順序としてはTBL_100K→TBL_10と、TBL_10→TBL_100Kの2種類があります。
+    10万件の表から先にスキャンする場合、TBL_10.idについている索引に対して10万回検索操作を実行することになります。
+    一方、10件の表から先にスキャンする場合、TBL_100K.xについている索引に対して10回だけ検索操作を実行することになります。
+  </p>
+  <p>
+    B木索引をたどるのにかかる時間は、簡単にいうと件数のlogにほぼ比例するので、1回の検索操作についていえば前者は後者の5倍速いはずです。
+    しかし、実行回数が1万倍多いので、結果として2000倍も遅い計算になります。
+    つまり、索引が使える場合は件数の少ない表から先にスキャンするのがいいといえます。
+  </p>
+  <p>
+    DoqueDBのオプティマイザーは、それぞれの表に指定されている条件から結果件数を推定し、索引に対する検索操作が小さくなる順序でアクセスプランを作ります。
+  </p>
+
+  <h3><a id="sec42">4.2 3つ以上の表の結合</a></h3>
+  <p>
+    結合される表が3つ以上になると、もう少し複雑になります。
+  </p>
+  <p>
+    たとえば、以下のように10万件、10件、20件の表を結合する問い合わせを考えます。
+  </p>
+  <pre>
+select * from TBL_100K, TBL_10, TBL_20
+    where TBL_100K.x = TBL_10.id and TBL_100K.y = TBL_20.id
+</pre>
+  <p>
+    TBL_20のid列にも索引がついているものとします。
+  </p>
+  <p>
+    このとき、結合順序としてはTBL_100K→TBL_10→TBL_20、TBL_100K→TBL_20→TBL_10、
+    TBL_10→TBL_100K→TBL_20、TBL_10→TBL_20→TBL_100K、
+    TBL_20→TBL_100K→TBL_10、TBL_20→TBL_10→TBL_100Kの6通りがあります。
+  </p>
+  <p>
+    DoqueDBのオプティマイザーは、中間結果をできるだけ小さくしようとします。
+    また、Indexed Joinが使える結合があればそれを先に処理しようとします。
+    中間結果を小さくするという観点ではTBL_10→TBL_20→TBL_100Kが一番よいのですが、最初の結合が直積になるため採用されません。この例では、TBL_10→TBL_100K→TBL_20が採用されます。
+  </p>
+  <p>
+    実は、直積を単純に避けるという方法は、場合によっては最適な順序を見落とすことになっています。
+    この例でも、10件と10万件の結合結果件数が多い場合、10件と20件の直積を作ってから10万件の表とIndexed Joinしたほうが速いことがあります。
+    今後見直しが行われるかもしれません。
+  </p>
+
+  <h2><a id="sec5">5. ソート順</a></h2>
+  <p>
+    問い合わせでORDER BYが指定されている場合を考えます。
+  </p>
+  <p>
+    この場合、指定された1つまたは複数の列に対して、昇順あるいは降順にソートされた結果を返す必要があります。
+    単純な実装では、すべての結果を溜めてからソートしたものを返すという実装になります。
+    しかし、特にLIMITが同時に指定されている場合など、たとえば10件の結果を得るために10万件をソートすることになりかねず、効率が悪くなる可能性があります。
+  </p>
+  <p>
+    ORDER BYに指定された列に索引が定義されている場合、索引によってこの処理を高速に実行できることがあります。
+    ただし、WHERE句の条件により十分に件数が絞られることが推定される場合は、単純な実装が選択されます。
+    あくまでもアクセスプランの選択肢に加わるだけです。
+  </p>
+  <p>
+    以下で適用可能な例を見ていきます。
+  </p>
+
+  <h3><a id="sec51">5.1 B木索引のついた列(1つ)でソート</a></h3>
+  <p>
+    ORDER BYで指定された列にB木索引が定義されている場合、さらに以下のいずれかの条件を満たすと、索引を使ったORDER BY処理ができます。
+  </p>
+  <ul>
+    <li>列にNOT NULL制約がついている</li>
+    <li>列がPRIMARY KEYである</li>
+    <li>列に、NULL値がヒットしない検索条件(比較、LIKE、IS NOT NULLなど)がついている</li>
+    <li>B木索引がALL ROWS指定つきで作られている</li>
+    <li>列が複合索引の2番目以降のキーで、かつその列の先頭から直前までのキーのそれぞれに対して
+      等号条件(x = 10など)が指定されている</li>
+  </ul>
+  <p>
+    例として以下のスキーマを用います。
+  </p>
+  <pre>
+create table TBL (
+     f_key      int,
+     f_not_null int not null,
+     f_nullable int,
+     f_allrows  int,
+     f_comb0 int,
+     f_comb1 int,
+     f_text     ntext,
+     primary key(f_key)
+ );
+
+create index IDX_f_not_null on TBL(f_not_null);          -- not null制約つきの列に索引
+create index IDX_f_nullable on TBL(f_nullable);          -- not null制約のない列に索引
+create all rows index IDX_f_allrows on TBL(f_allrows);   -- all rows索引の定義
+create index IDX_f_comb on TBL(f_comb0, f_comb1);        -- 複合索引の定義
+create fulltext index IDX_f_text on TBL(f_text);         -- 全文索引の定義
+</pre>
+  <p>
+    それぞれのプランは以下のようになります。
+  </p>
+  <ul>
+    <li>列にNOT NULL制約がついている
+      <pre>
+SQL&gt; explain select * from TBL order by f_not_null;
+{Plan}
+{retrieve TBL
+    sequential scan on BTR_IDX_f_not_null for
+        order by f_not_null asc}
+</pre>
+    </li>
+    <li>列がPRIMARY KEYである
+      <pre>
+SQL&gt; select * from TBL order by f_key desc;
+{Plan}
+{retrieve TBL
+    sequential scan on BTR_TBL_$$PrimaryKey for
+        order by f_key desc}
+</pre>
+    </li>
+    <li>列に、NULL値がヒットしない検索条件(比較、LIKE、IS NOT NULLなど)がついている
+      <pre>
+SQL&gt; select * from TBL where f_nullable &gt; 10 order by f_nullable;
+{Plan}
+{retrieve TBL
+    index scan on BTR_IDX_f_nullable for
+        TBL.f_nullable &gt; 10,
+        order by f_nullable asc}
+</pre>
+    </li>
+    <li>B木索引がALL ROWS指定つきで作られている
+      <pre>
+SQL&gt; select * from TBL order by f_allrows;
+{Plan}
+{retrieve TBL
+    sequential scan on BTR_IDX_f_allrows for
+        order by f_allrows asc}
+</pre>
+    </li>
+    <li>列が複合索引の2番目以降のキーで、かつその列の先頭から直前までのキーのそれぞれに対して
+      等号条件(x = 10など)が指定されている
+      <pre>
+SQL&gt; select * from TBL where f_comb0 = 100 order by f_comb1;
+{Plan}
+{retrieve TBL
+    index scan on BTR_IDX_f_comb for
+        TBL.f_comb0 = 100,
+        order by f_comb1 asc}
+</pre>
+    </li>
+  </ul>
+
+  <h3><a id="sec52">5.2 B木索引のついた列(2つ以上、複合キー)でソート</a></h3>
+  <p>
+    ORDER BYで指定された列が2つ以上あり、そのすべてが同じ複合索引のキーである場合、さらに以下の条件をすべて満たすと、索引を使ったORDER BY処理ができます。
+  </p>
+  <ul>
+    <li>ORDER BYで最初に指定された列が上記列(1つ)の場合の条件を満たす</li>
+    <li>ORDER BYで指定された列の昇順、降順指定がすべて同じ
+    </li>
+  </ul>
+  <p>
+    例：
+  </p>
+  <pre>
+SQL&gt; explain hint 'file' select * from TBL where f_comb0 &gt; 100 order by f_comb0, f_comb1;
+{Plan}
+{retrieve TBL
+    index scan on BTR_IDX_f_comb for
+        TBL.f_comb0 &gt; 100,
+        order by f_comb0 asc, f_comb1 asc}
+</pre>
+
+  <h3><a id="sec53">5.3 全文検索のスコアでソート</a></h3>
+  <p>
+    ORDER BYで指定されたキーが全文検索のスコア値(score(data)など)の場合、常に索引を使った処理が候補になります。
+  </p>
+  <p>
+    例：
+  </p>
+  <pre>
+SQL&gt; select * from TBL where f_text contains 'keyword' order by score(f_text) desc;
+{Plan}
+{retrieve TBL
+    index scan on FTS_IDX_f_text for
+        TBL.f_text contains keyword,
+        order by score(f_text) desc}
+</pre>
+
+  <h3><a id="sec54">5.4 索引のついた列とついていない列が混合したキーでソート</a></h3>
+  <p>
+    ORDER BYに2つ以上のキーが指定されていて、その一部だけに索引がついている場合、さらに以下の条件をすべて満たすと、索引によってソート対象の件数を絞ることができます。
+  </p>
+  <ul>
+    <li>LIMITが指定されている</li>
+    <li>ORDER BYに指定されているキーの先頭からk番目(k&gt;=1)までを取り出した部分が、上記索引のついた列に記載の条件を満たす</li>
+  </ul>
+  <p>
+    この場合、以下の手順でソートが実行されます。
+  </p>
+  <ol>
+    <li class="nomargin">k番目までのキーでソートした順序で索引から取得する。</li>
+    <li class="nomargin">LIMIT値に達したときのk番目までのキーの値を記録する。</li>
+    <li class="nomargin">2.で記録した値に一致しなくなったら取得をやめる。</li>
+    <li class="nomargin">3.までで取得された結果に対してすべてのキーを用いてソートする。</li>
+  </ol>
+  <p>
+    このようにすることで、LIMIT値を少し超える件数まで取得したところでソート可能になり、単純な実装に比べて高速に処理できるようになります。
+  </p>
+  <p>
+    例：
+  </p>
+  <pre>
+SQL&gt; select * from TBL order by f_not_null, f_nullable, f_allrows limit 10;
+{Plan}
+{limit 10
+    &lt;-- sort order by TBL.f_not_null asc, TBL.f_nullable asc, TBL.f_allrows asc limit
+            &lt;-- retrieve TBL
+                    sequential scan on BTR_IDX_f_not_null for
+                        order by f_not_null asc}
+</pre>
+  <p class="sub">
+    この例ではf_not_nullについている索引の順に取得し、10件目まで取得したときのf_not_nullの値を記録し、11件目以降でf_not_nullの値が変わったら取得をやめ、f_not_null,f_nullable,f_allrowsをキーとしたソートを実施します。
+  </p>
+
+  <h2><a id="sec6">6. 同等な問い合わせへの変換</a></h2>
+  <p>
+    特殊なケースにおける問い合わせの変換について説明します。
+  </p>
+
+  <h3><a id="sec61">6.1 EXISTS</a></h3>
+  <p>
+    EXISTSを用いた副問い合わせは、結合に変換することで最適な結合順序を探索することができます。
+    副問い合わせ内の表が結合順序の最後以外に現れた場合、結果はFROM句に並べられた表のROWIDの組み合わせについてDISTINCTを取る必要があります。
+  </p>
+  <p>
+    例として以下のスキーマを用います。
+  </p>
+  <pre>
+create table TBL0 (
+    f_key       int,
+    f_link_TBL1 int,
+    f_text      ntext,
+    primary key(f_key)
+);
+create index IDX_f_link_TBL1 on TBL0(f_link_TBL1);
+
+create table TBL1 (
+    g_key     int,
+    g_text    ntext,
+    primary key(g_key)
+);
+</pre>
+  <p>
+    ここで、以下のSQL文を実行します。
+  </p>
+  <pre>
+select * from TBL0 where
+    exists (select * from TBL1 where f_link_TBL1 = g_key);
+</pre>
+  <p>
+    TBL0の件数が少ない場合は、そのままEXISTSの処理を行うことができます。
+  </p>
+  <pre>
+SQL&gt; select * from TBL0 where
+       exists (select * from TBL1 where f_link_TBL1 = g_key);
+{Plan}
+{exists join
+    &lt;-- retrieve TBL0
+            sequential scan on RCD_TBL0
+    &lt;-- retrieve TBL1
+            index fetch on BTR_TBL1_$$PrimaryKey for
+                TBL0.f_link_TBL1 = TBL1.g_key}
+</pre>
+  <p>
+    TBL0の件数が多くなると、TBL1→TBL0の順に結合し、DISTINCTを取ったほうが速くなります。
+  </p>
+  <pre>
+SQL&gt; explain hint 'file' select * from TBL0 where
+       exists (select * from TBL1 where f_link_TBL1 = g_key);
+{Plan}
+{distinct TBL0.ROWID
+    &lt;-- index join
+            &lt;-- retrieve TBL1
+                    sequential scan on BTR_TBL1_$$PrimaryKey
+            &lt;-- retrieve TBL0
+                    index fetch on BTR_IDX_f_link_TBL1 for
+                        TBL0.f_link_TBL1 = TBL1.g_key}
+</pre>
+
+  <h3><a id="sec62">6.2 NOT</a></h3>
+  <p>
+    NOTを用いた条件は、同等のNOTを用いない述語に変換できることがあります。
+    変換を試みられるのは以下の述語です。
+  </p>
+  <ul>
+    <li>不等号を用いた比較述語</li>
+    <li>AND、OR、NOT</li>
+  </ul>
+  <p>
+    例として前述のスキーマを用います。
+  </p>
+  <ul>
+    <li>不等号を用いた比較述語
+      <pre>
+SQL&gt; explain hint 'file' select * from TBL0 where not f_key &lt; 10;
+{Plan}
+{retrieve TBL0
+    index scan on BTR_TBL0_$$PrimaryKey for
+        TBL0.f_key &gt;= 10}
+</pre>
+    </li>
+    <li>AND
+      <pre>
+SQL&gt; explain hint 'file' select * from TBL0 where not (f_key &lt; 10 and f_key &gt; 0);
+{Plan}
+{retrieve TBL0
+    index scan on BTR_TBL0_$$PrimaryKey for
+        (TBL0.f_key &gt;= 10 or TBL0.f_key &lt;= 0)}
+</pre>
+    </li>
+    <li>OR
+      <pre>
+SQL&gt; explain hint 'file' select * from TBL0 where not (f_key &lt; 10 or f_link_TBL1 &gt; 100);
+{Plan}
+{retrieve TBL0
+    intersect files
+        index scan on BTR_TBL0_$$PrimaryKey for
+            TBL0.f_key &gt;= 10
+        index scan on BTR_IDX_f_link_TBL1 for
+            TBL0.f_link_TBL1 &lt;= 100}
+</pre>
+    </li>
+    <li>NOT
+      <pre>
+SQL&gt; explain hint 'file' select * from TBL0 where not (f_key &lt; 10 or f_text not like '%x%');
+{Plan}
+{retrieve TBL0
+    check predicate
+        TBL0.f_text like&nbsp;%x%
+    index scan on BTR_TBL0_$$PrimaryKey for
+        TBL0.f_key &gt;= 10}
+</pre>
+    </li>
+  </ul>
+
+  <h3><a id="sec63">6.3 OR</a></h3>
+  <p>
+    ORのオペランドにある述語が2つ以上の表にまたがる場合、そのまま評価しようとするといずれかの表を全件取得する必要が生じます。
+    ORのオペランドのそれぞれを適用した結果を合成した結果を用いることで、より効率的な結合処理ができる可能性があります。
+  </p>
+  <p>
+    例として以下のスキーマを用います。
+  </p>
+  <pre>
+create table TBL2 (
+    f_key    int,
+    f_text   ntext,
+    primary key(f_key)
+);
+create fulltext index IDX_TBL2_text on TBL2(f_text);
+
+create table TBL3 (
+    g_key    int,
+    g_text   ntext,
+    primary key(g_key)
+);
+create fulltext index IDX_TBL3_text on TBL3(g_text);
+</pre>
+  <p>
+    例1：別々の表に対する全文検索のOR
+  </p>
+  <pre>
+SQL&gt; explain hint 'file' select * from TBL2, TBL3 where f_key = g_key
+    and (f_text contains 'key' or g_text contains 'word');
+{Plan}
+{union
+    &lt;-- index join
+            &lt;-- retrieve TBL2
+                    index scan on FTS_IDX_TBL2_text for
+                        TBL2.f_text contains key
+            &lt;-- retrieve TBL3
+                    index fetch on BTR_TBL3_$$PrimaryKey for
+                        TBL2.f_key = TBL3.g_key
+    &lt;-- index join
+            &lt;-- retrieve TBL3
+                    index scan on FTS_IDX_TBL3_text for
+                        TBL3.g_text contains word
+            &lt;-- retrieve TBL2
+                    index fetch on BTR_TBL2_$$PrimaryKey for
+                        TBL2.f_key = TBL3.g_key}
+</pre>
+  <p>
+    例2：普通の条件とEXISTSのOR
+  </p>
+  <p class="sub">
+    普通の検索とEXISTSの結合になります。
+  </p>
+  <pre>
+SQL&gt; explain hint 'file' select * from TBL2 where f_text contains 'key' or
+    exists (select * from TBL3 where f_key = g_key and g_text contains 'word');
+{Plan}
+{union
+    &lt;-- retrieve TBL2
+            index scan on FTS_IDX_TBL2_text for
+                TBL2.f_text contains key
+    &lt;-- distinct TBL2.ROWID
+            &lt;-- index join
+                    &lt;-- retrieve TBL3
+                            index scan on FTS_IDX_TBL3_text for
+                                TBL3.g_text contains word
+                    &lt;-- retrieve TBL2
+                            index fetch on BTR_TBL2_$$PrimaryKey for
+                                TBL2.f_key = TBL3.g_key}
+</pre>
+
+  <hr>
+  <p class="center">Copyright (c) 2023 Ricoh Company, Ltd. All rights reserved.</p>
+
+</body>
+
+</html>

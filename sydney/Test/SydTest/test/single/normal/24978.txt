@@ -1,0 +1,81 @@
+# Bug report 2357
+# ORDER BYとLIMITがあるときにプランの確認
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+Command "create table TBL(f int, g ntext, h char(2), i int)";
+Command "create index IDX_f on TBL(f)";
+Command "create fulltext index IDX_g on TBL(g)";
+Command "create bitmap index IDX_h on TBL(h)";
+Command "create index IDX_i on TBL(i)";
+
+Command "insert TBL values (1, 'foo', 'aa', 10)";
+Command "insert TBL values (2, 'bar', 'aa', 20)";
+Command "insert TBL values (3, 'boo', 'bb', 30)";
+Command "insert TBL values (4, 'buz', 'bb', 40)";
+
+Command "insert TBL select f+4, g||'foo', 'cc', i+f from TBL";
+Command "insert TBL select f+8, g||'bar', 'dd', i+f from TBL";
+Command "insert TBL select f+16, g||'boo', 'ee', i+f from TBL";
+Command "insert TBL select f+32, g||'buz', 'ff', i+f from TBL";
+
+Command "insert TBL select f+64, g||'foo', 'gg', i+f from TBL";
+Command "insert TBL select f+128, g||'bar', 'hh', i+f from TBL";
+Command "insert TBL select f+256, g||'boo', 'ii', i+f from TBL";
+Command "insert TBL select f+512, g||'buz', 'jj', i+f from TBL";
+
+Command "insert TBL select f+1024, g||'foo', 'kk', i+f from TBL";
+Command "insert TBL select f+2048, g||'bar', 'll', i+f from TBL";
+Command "insert TBL select f+4096, g||'boo', 'mm', i+f from TBL";
+Command "insert TBL select f+8192, g||'buz', 'nn', i+f from TBL";
+
+Command "insert TBL select f+16384, g||'foo', 'oo', i+f from TBL";
+
+Command "start explain execute hint 'file data'";
+
+#######################
+# 遅かったSQL
+# X: index scan on FTSのみ
+# O: get by bitsetのあとにbitset scan
+#######################
+Command "select * from TBL where f > 0 and g contains 'b' and h is not null order by i limit 1";
+
+# 他のパターン(修正前後で変化がないかもしれない)
+# ソートキーを索引からとれる
+Command "select * from TBL where f > 0 and g contains 'b' and h is not null order by f limit 1";
+Command "select * from TBL where f > 0 and g contains 'b' and h is not null order by score(g) limit 1";
+Command "select * from TBL where f > 0 and g contains 'b' and h is not null order by h limit 1";
+
+# bitmap索引で半分に絞る
+Command "select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by i limit 1";
+Command "select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by i limit 1";
+Command "select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by i limit 1";
+
+# B木索引で半分に絞る
+Command "select * from TBL where f > 15000 and g contains 'b' and h is not null order by i limit 1";
+Command "select * from TBL where f > 15000 and g contains 'b' and h is not null order by i limit 1";
+Command "select * from TBL where f > 15000 and g contains 'b' and h is not null order by i limit 1";
+
+# ソートキーを索引からとれる x bitmap索引で半分に絞る
+Command "select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by f limit 1";
+Command "select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by score(g) limit 1";
+Command "select * from TBL where f > 0 and g contains 'b' and h = 'oo' order by h limit 1";
+
+# ソートキーを索引からとれる x B木索引で半分に絞る
+Command "select * from TBL where f > 15000 and g contains 'b' and h is not null order by f limit 1";
+Command "select * from TBL where f > 15000 and g contains 'b' and h is not null order by score(g) limit 1";
+Command "select * from TBL where f > 15000 and g contains 'b' and h is not null order by h limit 1";
+
+# ソートキーを索引からとれる x B木索引で半分に絞る x bitmap索引でさらに絞る
+Command "select * from TBL where f > 15000 and g contains 'b' and h = 'oo' order by f limit 1";
+Command "select * from TBL where f > 15000 and g contains 'b' and h = 'oo' order by score(g) limit 1";
+Command "select * from TBL where f > 15000 and g contains 'b' and h = 'oo' order by h limit 1";
+
+Command "end explain";
+
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,78 @@
+# -----------------------------
+# Install directry path
+# -----------------------------
+installpath=/opt/sydney
+
+# -----------------------------
+# Database directory path
+# -----------------------------
+databasepath=/opt/sydney/db
+
+# -----------------------------
+# The port number used by SydServer
+# -----------------------------
+portnumber=54321
+
+# -----------------------------
+# Buffer maximum size
+#   -- TRMeister module will consume process size almost same as this size + 10-40 MB.
+#   -- (see user's manual 2.2)
+#   -- The default value is 20971520 (= 20MB)
+# -----------------------------
+# ** 20MB(default) **
+# buffersize=20971520
+# ** 128MB **
+# buffersize=134217728
+# ** 256MB **
+# buffersize=268435456
+# ** 512MB **
+# buffersize=536870912
+
+# -----------------------------
+# Batch insert buffer maximum size
+#   -- Set large value to this size in case of creating fulltext indexes for large size tables.
+#   -- Also set large value to 'buffersize'. (see user's manual 2.2)
+#   -- The default value is 62914560 (= 60MB)
+# -----------------------------
+# ** 60MB(default) **
+# batchsize=62914560
+# ** 128MB **
+# batchsize=134217728
+# ** 256MB **
+# batchsize=268435456
+
+# -----------------------------
+# Checkpoint period (interval between checkpoints in milliseconds)
+#   -- Short period makes performance slower but also makes recovery time shorter and file size smaller.
+#   -- Long period makes performance faster but also makes recovery time longer and fise size larger.
+#   -- The default value is 1800000 (= 30min.)
+# -----------------------------
+# ** 30min.(default) **
+# checkpointperiod=1800000
+# ** 10min. **
+# checkpointperiod=600000
+# ** 60min. **
+# checkpointperiod=3600000
+# ** no checkpoint (!!use only for read-only case!!) **
+# checkpointperiod=2147483647
+
+# -----------------------------
+# Set normalize to 1 if you want the 'like' predicate not to distinguish
+# capital/small letters, half/full width letters and hiragana/katakana.
+# If a character string column has an index, some special hint should be specified.
+# Call us (Ricoh 'TRMeister' team) for detail.
+# -----------------------------
+normalize=0
+
+# -----------------------------
+# Set remaindata to 1 if you want the uninstaller to remain the database files.
+# In such a case, next installation will be fail unless the remained files would be moved
+# or the value of databasepath (and databasepath_e) would be changed.
+# -----------------------------
+remaindata=0
+
+# -----------------------------
+# Set remaindll to a value except for 1 if you want the uninstaller to remove
+# all the files under the installed directory.
+# -----------------------------
+remaindll=0

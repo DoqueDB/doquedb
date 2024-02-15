@@ -1,0 +1,51 @@
+#ROWIDに関するテスト(正常系)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#表を作る
+Command "create table t0 (
+	c0	int,
+	c1	int hint heap
+)";
+
+#通常のinsert
+Command "insert t0 ( c0, c1 ) values ( 1, 1 )";
+Command "insert t0 ( c0, c1 ) values ( 2, 2 )";
+
+#ROWIDを用いた検索
+Command "select ROWID, c0, c1 from t0 where ROWID = 0";
+Command "select ROWID, c0, c1 from t0 where ROWID > 0";
+
+#ROWIDを用いた更新
+Command "update t0 set c1 = 3 where ROWID > 0";
+Command "select ROWID, c0, c1 from t0 where ROWID > 0";
+
+#ROWIDへの挿入
+#insertの際のROWIDへの指定はsuccessになるが無視される
+Command "insert t0 ( ROWID, c0, c1 ) values ( 5, 7, 9 )";
+Command "insert t0 ( ROWID, c0, c1 ) values ( 0, 0, 0 )";
+Command "select ROWID, c0, c1 from t0";
+
+#ROWIDへの更新
+#updateの際のROWIDへの指定はsuccessになるが無視される
+Command "update t0 set ROWID = 8 where ROWID > 1";
+Command "select ROWID, c0, c1 from t0";
+
+Command  "select * from t0";
+
+#Command "drop table t0";
+
+TerminateSession;
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+

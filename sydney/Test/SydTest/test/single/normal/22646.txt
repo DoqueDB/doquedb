@@ -1,0 +1,63 @@
+Begin;
+
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB recovery full";
+Command "create table T(ID int, F nvarchar(64), primary key(ID))";
+Command "insert into T values (1, 'aaa'), (2, 'bbb'), (3, 'ccc')";
+Command "create table T2(ID int, F nvarchar(64), primary key(ID))";
+Command "insert into T2 values (1, 'aaa'), (2, 'bbb'), (3, 'ccc')";
+
+# バックアップを開始する - オンラインバックアップ
+Command "start transaction read write";
+Command "start backup discard snapshot";
+
+System "..\\..\\switchcopy.bat d:\\dm\\data\\TESTDB d:\\dm\\data\\TESTDB1";
+System "..\\..\\switchcopy.bat d:\\dm\\system\\TESTDB d:\\dm\\system\\TESTDB1";
+
+Command "end backup";
+Command "commit";
+
+# 更新する
+Command "update T set F = 'AAA' where ID = 1";
+Command "insert into T values (4, 'ddd')";
+Command "delete from T where ID = 2";
+Command "create index T_F on T(F)";
+Command "insert into T values (5, 'eee')";
+Command "select * from T";
+Command "insert into T2 values (10, 'AAA')";
+Command "drop table T2";
+Command "create table T2(ID int, F nvarchar(64), primary key(ID))";
+Command "insert into T2 values (1, 'AAA'), (2, 'BBB'), (3, 'CCC')";
+Command "create index T2_F on T2(F)";
+Command "select * from T2";
+
+# ロールフォワードリカバリログをバックアップに上書きする
+Command "alter database TESTDB offline";
+
+System "rm -rf d:\\dm\\data\\TESTDB1\\LOGICALLOG.SYD";
+System "rm -rf d:\\dm\\data\\TESTDB1\\LOGICALLOGDIR";
+
+System "..\\..\\switchcopy.bat d:\\dm\\data\\TESTDB\\LOGICALLOG.SYD d:\\dm\\data\\TESTDB1";
+System "..\\..\\switchcopy.bat d:\\dm\\data\\TESTDB\\LOGICALLOGDIR d:\\dm\\data\\TESTDB1\\LOGICALLOGDIR";
+
+Command "alter database TESTDB online";
+TerminateSession;
+
+# ロールフォワードリカバリする
+InitializeSession "TESTDB1";
+Command "mount TESTDB1 path 'd:\\dm\\data\\TESTDB1' logicallog 'd:\\dm\\data\\TESTDB1' system 'd:\\dm\\system\\TESTDB1' with recovery";
+
+Command "select * from T";
+Command "select * from T2";
+Command "drop index T_F";
+Command "drop index T2_F";
+
+# 後始末
+Command "drop database TESTDB1";
+Command "drop database TESTDB";
+
+TerminateSession;
+Terminate;
+End;

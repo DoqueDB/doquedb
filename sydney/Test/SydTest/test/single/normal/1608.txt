@@ -1,0 +1,22 @@
+# Btreeに対するorder byのテスト
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T(i int, c nvarchar(32))";
+Command "insert into T values(1, 'a')";
+Command "create index I on T(i,c)";
+Command "select * from T where i > 0 order by i";
+Command "select * from T where i > 0 order by i desc";
+Command  "drop table T";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

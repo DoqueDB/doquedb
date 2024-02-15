@@ -1,0 +1,22 @@
+# Bug report 2033
+# 空の配列があるときの整合性検査
+
+Begin;
+
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T (ID int, F int array[no limit])";
+Command "create array index T_F on T(F)";
+
+Command "insert into T values (1, array[1])";
+Command "insert into T values (2, array[])";
+
+Command "verify database TEST value cascade continue";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

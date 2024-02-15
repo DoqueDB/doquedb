@@ -1,0 +1,23 @@
+Begin;
+
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "DISKFULLTEST";
+Command "verify database DISKFULLTEST cascade continue";
+
+Command "select * from T1";
+
+#妨げられていたコマンドを繰り返す
+Command  "update T1 set C1=? where C1=?" [textsjisfile "..\\..\\doc\\kenpou.txt", 
+	   textsjisfile "..\\..\\doc\\Teihon.txt"];
+#中身を確かめる
+Command "select * from T1";
+Command "drop table T1";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database DISKFULLTEST";
+TerminateSession;
+Terminate;
+End;

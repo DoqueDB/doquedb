@@ -1,0 +1,131 @@
+#alter table area (複数パス、正常系)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+#テストに使うデータベースを設定したセッションを作る
+InitializeSession "DefaultDB";
+
+#複数のパスが設定される場合
+Command "create area area1 array ['d:\\dm\\area\\1', 'd:\\dm\\area\\2']";
+NotExists "d:\\dm\\area\\1";
+NotExists "d:\\dm\\area\\2";
+
+# エリア・表・索引の各々について、(ROWIDを除き)エリアが2つずつできることを確認する
+Command "create table T (f1 int, f2 ntext array [no limit]) area area1 index area1 fulltext area1";
+Command "insert into T values (1, ?)" [["hoge"]];
+Exists "d:\\dm\\area\\1\\T";
+NotExists "d:\\dm\\area\\2\\T";
+Exists "d:\\dm\\area\\1\\T\\ROWID";
+
+Command "create index T_f1 on T(f1)";
+Exists "d:\\dm\\area\\1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\area\\2\\T\\BTR_T_f1";
+
+Command "create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'";
+Exists "d:\\dm\\area\\1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\area\\2\\T\\FTS_T_f2";
+
+#dropコマンドがエリアを正しく抹消することを確認する
+Command "drop index T_f2";
+NotExists "d:\\dm\\area\\1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\area\\2\\T\\FTS_T_f2";
+Command "drop index T_f1";
+NotExists "d:\\dm\\area\\1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\area\\2\\T\\BTR_T_f1";
+Command "drop table T";
+NotExists "d:\\dm\\area\\1\\T";
+NotExists "d:\\dm\\area\\2\\T";
+Command "drop area area1";
+NotExists "d:\\dm\\area\\1";
+NotExists "d:\\dm\\area\\2";
+
+#準備
+Command "create area area1 array ['d:\\dm\\area\\1', 'd:\\dm\\area\\2']";
+Command "create table T (f1 int, f2 ntext array [no limit]) area area1 index area1 fulltext area1";
+Command "insert into T values (1, ?)" [["hoge"]];
+Command "create index T_f1 on T(f1)";
+Command "create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'";
+
+#複数のパスの両方を同時に変更する
+Command "alter area area1 modify array ['d:\\dm\\area\\alter1', 'd:\\dm\\area\\alter2']";
+NotExists "d:\\dm\\area\\1";
+NotExists "d:\\dm\\area\\2";
+Exists "d:\\dm\\area\\alter1\\T";
+NotExists "d:\\dm\\area\\alter2\\T";
+
+#dropコマンドがエリアを正しく抹消することを確認する
+Command "drop index T_f2";
+NotExists "d:\\dm\\area\\alter1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\area\\alter2\\T\\FTS_T_f2";
+Command "drop index T_f1";
+NotExists "d:\\dm\\area\\alter1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\area\\alter2\\T\\BTR_T_f1";
+Command "drop table T";
+NotExists "d:\\dm\\area\\alter1\\T";
+NotExists "d:\\dm\\area\\alter2\\T";
+Command "drop area area1";
+NotExists "d:\\dm\\area\\alter1";
+NotExists "d:\\dm\\area\\alter2";
+
+#準備
+Command "create area area1 array ['d:\\dm\\area\\1', 'd:\\dm\\area\\2']";
+Command "create table T (f1 int, f2 ntext array [no limit]) area area1 index area1 fulltext area1";
+Command "insert into T values (1, ?)" [["hoge"]];
+Command "create index T_f1 on T(f1)";
+Command "create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'";
+
+# 複数のパスの片方だけを変更する(使われているほうのパス)
+Command "alter area area1 modify [0] 'd:\\dm\\area\\alter1'";
+NotExists "d:\\dm\\area\\1";
+Exists "d:\\dm\\area\\alter1\\T";
+NotExists "d:\\dm\\area\\2\\T";
+
+#dropコマンドがエリアを正しく抹消することを確認する
+Command "drop index T_f2";
+NotExists "d:\\dm\\area\\alter1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\area\\1\\T\\FTS_T_f2";
+Command "drop index T_f1";
+NotExists "d:\\dm\\area\\alter1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\area\\2\\T\\BTR_T_f1";
+Command "drop table T";
+NotExists "d:\\dm\\area\\alter1\\T";
+NotExists "d:\\dm\\area\\2\\T";
+Command "drop area area1";
+NotExists "d:\\dm\\area\\alter1";
+NotExists "d:\\dm\\area\\2";
+
+#準備
+Command "create area area2 array ['d:\\dm\\area\\1', 'd:\\dm\\area\\2']";
+Command "create table T (f1 int, f2 ntext array [no limit]) area area2 index area2 fulltext area2";
+Command "insert into T values (1, ?)" [["hoge"]];
+Command "create index T_f1 on T(f1)";
+Command "create fulltext index T_f2 on T(f2) hint 'sectionized, delayed ,inverted=(nolocation=true)'";
+
+#複数のパスの片方だけを変更する(使われていないほうのパス)
+Command "alter area area2 modify [1] 'd:\\dm\\area\\alter2'";
+NotExists "d:\\dm\\area\\2";
+Exists "d:\\dm\\area\\1\\T";
+NotExists "d:\\dm\\area\\alter2\\T";
+
+#dropコマンドがエリアを正しく抹消することを確認する
+Command "drop index T_f2";
+NotExists "d:\\dm\\area\\1\\T\\FTS_T_f2";
+NotExists "d:\\dm\\area\\alter2\\T\\FTS_T_f2";
+Command "drop index T_f1";
+NotExists "d:\\dm\\area\\1\\T\\BTR_T_f1";
+NotExists "d:\\dm\\area\\alter2\\T\\BTR_T_f1";
+Command "drop table T";
+NotExists "d:\\dm\\area\\1\\T";
+NotExists "d:\\dm\\area\\alter2\\T";
+Command "drop area area2";
+NotExists "d:\\dm\\area\\1";
+NotExists "d:\\dm\\area\\alter1";
+
+TerminateSession;
+
+Terminate;
+End;
+

@@ -1,0 +1,90 @@
+# Test for PAD SPACE
+
+Begin;
+Initialize;
+InitializeSession "";
+
+Command "create table T(c nchar(4) array[1])";
+Command "insert T values (array['abc']), (array['abc
+']), (array['abc ']), (array['abca'])";
+Command "create bitmap index I on T(c)";
+
+# abc
+Command "select * from T where c[] = 'abc'";
+Command "select * from T where c[] > 'abc'";
+Command "select * from T where c[] < 'abc'";
+Command "select * from T where c[] like 'abc'";
+
+# abc + SP
+Command "select * from T where c[] = 'abc '";
+Command "select * from T where c[] > 'abc '";
+Command "select * from T where c[] < 'abc '";
+Command "select * from T where c[] like 'abc '";
+
+# abc + SP + HT
+Command "select * from T where c[] = 'abc 	'";
+Command "select * from T where c[] > 'abc 	'";
+Command "select * from T where c[] < 'abc 	'";
+Command "select * from T where c[] like 'abc 	'";
+
+# abc + SP + NL
+Command "select * from T where c[] = 'abc 
+'";
+Command "select * from T where c[] > 'abc 
+'";
+Command "select * from T where c[] < 'abc 
+'";
+Command "select * from T where c[] like 'abc 
+'";
+
+# abc + SP + SP
+Command "select * from T where c[] = 'abc  '";
+Command "select * from T where c[] > 'abc  '";
+Command "select * from T where c[] < 'abc  '";
+Command "select * from T where c[] like 'abc  '";
+
+# abc + SP + a
+Command "select * from T where c[] = 'abc a'";
+Command "select * from T where c[] > 'abc a'";
+Command "select * from T where c[] < 'abc a'";
+Command "select * from T where c[] like 'abc a'";
+
+# abc + _ or %
+Command "select * from T where c[] like 'abc_'";
+Command "select * from T where c[] like 'abc%'";
+
+# abc + SP + _ or %
+Command "select * from T where c[] like 'abc _'";
+Command "select * from T where c[] like 'abc %'";
+
+# between
+# the keys are assined by ascending order with PAD SPACE.
+Command "select * from T where c[] between 'abc' and 'abc	'";
+Command "select * from T where c[] between 'abc' and 'abc
+'";
+Command "select * from T where c[] between 'abc' and 'abc 	'";
+Command "select * from T where c[] between 'abc' and 'abc 
+'";
+Command "select * from T where c[] between 'abc' and 'abc'";
+Command "select * from T where c[] between 'abc' and 'abc '";
+Command "select * from T where c[] between 'abc' and 'abc  '";
+Command "select * from T where c[] between 'abc' and 'abc a'";
+Command "select * from T where c[] between 'abc' and 'abca'";
+
+Command "select * from T where c[] between 'abc	' and 'abc'";
+Command "select * from T where c[] between 'abc
+' and 'abc'";
+Command "select * from T where c[] between 'abc 	' and 'abc'";
+Command "select * from T where c[] between 'abc 
+' and 'abc'";
+Command "select * from T where c[] between 'abc' and 'abc'";
+Command "select * from T where c[] between 'abc ' and 'abc'";
+Command "select * from T where c[] between 'abc  ' and 'abc'";
+Command "select * from T where c[] between 'abc a' and 'abc'";
+Command "select * from T where c[] between 'abca' and 'abc'";
+
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;

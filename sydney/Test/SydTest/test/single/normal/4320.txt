@@ -1,0 +1,51 @@
+# Bug report 1720
+
+# 配列索引のテスト
+# 削除中に例外が発生しても索引が破損しないことを確認
+# FakeErrorを使うのでdebug版で実行する
+
+Begin;
+
+SetSystemParameter "Exception_FakeError" 
+"Array::ArrayFile::insert count=(1 3 5)";
+
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+
+Command "create table T(C1 int, C2 int array[no limit])";
+Command "create array index I on T(C2)";
+
+# 1件も入っていない状態
+# 1度目はエラー
+Command "insert T values (1, array[1])";
+Command "select * from T";
+Command "verify table T cascade continue";
+# 2度目はOK
+Command "insert T values (1, array[1])";
+Command "select * from T";
+
+# 1件入っている状態
+# 3度目はエラー
+Command "insert T values (1, array[1])";
+Command "select * from T";
+Command "verify table T cascade continue";
+# 4度目はOK
+Command "insert T values (1, array[1])";
+Command "select * from T";
+
+# 他の木には1件入っているが、これから入れる木は空の状態
+# 5度目はエラー
+Command "insert T values (1, array[null])";
+Command "select * from T";
+Command "verify table T cascade continue";
+# 6度目はOK
+Command "insert T values (1, array[null])";
+Command "select * from T";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+SetSystemParameter "Exception_FakeError" "";
+End;
+

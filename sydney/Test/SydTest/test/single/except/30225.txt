@@ -1,0 +1,61 @@
+# insert[1]/fulltext(plain)
+# fulltextに対してはnullを含む配列をinsert出来ないことを確かめる(heapあり)
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command  "create table T1(C1 ntext hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true)'";
+Command  "create table T2(C1 ntext hint heap)";
+Command  "create fulltext index I2_1 on T2(C1) hint 'inverted=(nolocation=true)'";
+
+#下の2つのinsertはエラーにならない
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "select C1 from T1";
+Command  "insert into T2 (C1) values (?), (?)" [null, null];
+Command  "select C1 from T2";
+
+Command  "drop table T1";
+Command  "drop table T2";
+
+#表を配列型に置き換える
+Command  "create table T1(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I1_1 on T1(C1) hint 'inverted=(nolocation=true)'";
+Command  "create table T2(C1 ntext array [no limit] hint heap)";
+Command  "create fulltext index I2_1 on T2(C1) hint 'inverted=(nolocation=true)'";
+
+Command  "insert into T1 (C1) values (?)" [[null, null]];
+Command  "insert into T1 (C1) values (?)" [["hoge", null]];
+Command  "insert into T1 (C1) values (?)" [[null, "piyo"]];
+Command  "insert into T1 (C1) values (?)" [[null]];
+#配列ではないnullは入る
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "select C1 from T1";
+
+#以下のinsertは全て失敗する
+Command  "insert into T2 (C1) values (?), (?)" [[null, null], [null, null]];
+Command  "insert into T2 (C1) values (?), (?)" [[null], [null]];
+Command  "insert into T2 (C1) values (?), (?)" [[null, null], [null]];
+Command  "insert into T2 (C1) values (?), (?)" [["hoge", null], [null]];
+Command  "insert into T2 (C1) values (?), (?)" [[null, "piyo"], [null]];
+Command  "insert into T2 (C1) values (?), (?)" [[null], [null, null]];
+Command  "insert into T2 (C1) values (?), (?)" [[null], ["hoge", null]];
+Command  "insert into T2 (C1) values (?), (?)" [[null], [null, "piyo"]];
+# 2つ同時に入れるタプルの片方だけがOKな場合も両方捨てられる
+Command  "insert into T2 (C1) values (?), (?)" [["hoge"], [null, null]];
+Command  "insert into T2 (C1) values (?), (?)" [[null, null], ["piyo"]];
+Command  "select C1 from T2";
+Command  "drop table T1";
+Command  "drop table T2";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

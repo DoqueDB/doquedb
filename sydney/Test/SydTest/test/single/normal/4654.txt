@@ -1,0 +1,72 @@
+#障害票0802
+#副問い合わせの結果を P.* のように取得しようとすると得られない
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command  "create table P
+(
+	p_id	int,
+	p_text	nvarchar(no limit),
+	primary key(p_id)
+)";
+
+#Command  "create fulltext index page_text on P(p_text) hint '...'";
+
+Command  "create table Q
+(
+	q_id	int,
+	q_text	nvarchar(no limit),
+	primary key(q_id)
+)";
+
+#Command  "create fulltext index region_text on Q(q_text) hint '...'";
+
+Command  "insert into P (p_id, p_text) values (1, 'a')";
+Command  "insert into P (p_id, p_text) values (2, 'b')";
+Command  "insert into P (p_id, p_text) values (3, 'c')";
+Command  "insert into P (p_id, p_text) values (4, '')";
+Command  "insert into P (p_id, p_text) values (5, '')";
+Command  "insert into P (p_id, p_text) values (6, '')";
+Command  "insert into P (p_id, p_text) values (7, '')";
+Command  "insert into P (p_id, p_text) values (8, 'null')";
+Command  "insert into P (p_id, p_text) values (9, 'null')";
+Command  "insert into P (p_id, p_text) values (10, 'null')";
+Command  "insert into P (p_id, p_text) values (11, 'null')";
+
+Command  "insert into Q (q_id, q_text) values (1, 'A')";
+Command  "insert into Q (q_id, q_text) values (2, 'B')";
+Command  "insert into Q (q_id, q_text) values (3, '')";
+Command  "insert into Q (q_id, q_text) values (4, 'D')";
+Command  "insert into Q (q_id, q_text) values (5, '')";
+Command  "insert into Q (q_id, q_text) values (6, 'null')";
+Command  "insert into Q (q_id, q_text) values (8, 'H')";
+Command  "insert into Q (q_id, q_text) values (9, '')";
+Command  "insert into Q (q_id, q_text) values (10, 'null')";
+
+Command  "select * from P";
+Command  "select * from Q";
+
+#単純な場合
+Command  "select P.* from (select * from P) as P";
+
+#副問い合わせ内で別名定義
+Command  "select P.* from (select p_id id, p_text text from P) as P";
+
+#JOINの一部で別名定義
+Command  "select P.*, Q.q_text from (select * from P) as P INNER JOIN Q on P.p_id = Q.q_id";
+
+TerminateSession;
+
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

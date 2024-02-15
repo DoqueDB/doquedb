@@ -1,0 +1,46 @@
+# Skip Purify BoundsChecker
+# 障害票 1052
+
+Begin;
+SetSystemParameter "Buffer_NormalPoolSize" "20M";
+SetSystemParameter "FullText_InsertMergeTupleSize" "4";
+Initialize;
+InitializeSession "TEST";
+Command "create database TEST";
+Command "create table T (I int, F ntext)";
+Command "create fulltext index T_F on T(F) hint 'delayed ,inverted=(nolocation=true)'";
+Command "insert into T(I) values (1),(2),(3),(4),(5),(6),(7),(8),(9),(10)";
+Command "insert into T(I) select I from T";	#20
+Command "insert into T(I) select I from T";	#40
+Command "insert into T(I) select I from T";	#80
+Command "insert into T(I) select I from T";	#160
+Command "insert into T(I) select I from T";	#320
+Command "insert into T(I) select I from T";	#640
+Command "insert into T(I) select I from T";	#1280
+Command "insert into T(I) select I from T";	#2560
+Command "insert into T(I) select I from T";	#5120
+Command "insert into T(I) select I from T";	#10240
+Command "insert into T(I) select I from T";	#20480
+Command "insert into T(I) select I from T";	#40960
+Command "insert into T(I) select I from T";	#81920
+Command "insert into T(I) select I from T";	#163840
+Command "insert into T(I) select I from T";	#327680
+Command "insert into T(I) select I from T";	#655360
+Command "insert into T(I) select I from T";	#1310720
+Command "insert into T(I) select I from T";	#2621440
+Command "insert into T(I) select I from T";	#5242880
+Command "insert into T values (101, 'aaaa')";
+Command "insert into T values (102, 'aaaa')";
+Command "insert into T values (103, 'aaaa')";
+Command "insert into T values (104, 'aaaa')";
+Command "insert into T values (105, 'aaaa')";
+Command "insert into T values (106, 'aaaa')";
+Command "insert into T values (107, 'aaaa')";
+Sleep 5000;
+Command "drop index T_F";
+Command "create fulltext index T_F on T(F) hint 'delayed ,inverted=(nolocation=true)'";
+
+Command "drop database TEST";
+TerminateSession;
+Terminate;
+End;

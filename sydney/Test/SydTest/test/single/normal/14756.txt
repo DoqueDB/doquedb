@@ -1,0 +1,302 @@
+# 比較演算子によるNullのテスト
+# 
+#C1	int
+#C2	bigint
+#C3	char(8)
+#C4	float
+#C5	datetime
+#C6	uniqueidentifier
+#C7	language
+#C8	nchar(6)
+#C9	nvarchar(256)
+#C10	varchar(128)
+# (not including binary, image, ntext, ntext hint heap 'compressed', fulltext, blob, nclob)
+#
+# 4736 ALL ROWS版
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+# Tableの作成
+InitializeSession "TESTDB";
+
+# データの作成
+# null値含め４件挿入
+#
+
+
+#Command "create table T1 (C1 int,C2 bigint,C3 char(8),C4 float,C5 datetime,C6 uniqueidentifier,C7 language,C8 nchar(6),C9 nvarchar(256),C10 varchar(128))";
+#Command "insert into T1 (C1,C2,C3,C4,C5,C6,C7,C8,C9,C10) values (50,5900030,'foo',0.86,'2005-12-07 19:18:53.487','0DEA3504-6A8C-4751-97E2-5674850F2CB6','fr','あいう','データ構造','Java Native Interface')" ;
+#Command "insert into T1 (C1,C2,C3,C4,C5,C6,C7,C8,C9,C10) values (null,null,null,null,'1980-10-27 00:30:13.785','090-2468-2578EGDT','ab','はひふ','ITインフラストラクチャ','Business Solution')" ;
+#Command "insert into T1 (C1,C2,C3,C4,C8,C9,C10) values (1878546,215648795463,'wine',3.0054328,'らりる','建造物アーキテクチャー','Financial Resource')" ;
+#Command "insert into T1 (C1,C2,C3,C4,C5,C6,C7) values (62510,894545342,'kick',-1.25468567,'2000-05-20 13:43:23.135','2345-4567-2345-2456-GT','ik')" ;
+
+
+# 比較演算(1)
+#C1	int
+Command "create table T1 (C1 int)";
+Command "insert into T1 (C1) values (?)" [50];
+Command "insert into T1 (C1) values (?)" [null];
+Command "insert into T1 (C1) values (?)" [1878546];
+Command "insert into T1 (C1) values (?)" [62510];
+Command "create all rows index I1 on T1(C1)";
+Command "select * from T1";
+
+Command  "select  C1 from T1 where C1=?" [62510];
+Command  "select  C1 from T1 where C1>?" [62510];
+Command  "select  C1 from T1 where C1<?" [62510];
+Command  "select  C1 from T1 where C1>=?" [62510];
+Command  "select  C1 from T1 where C1<=?" [62510];
+Command  "select  C1 from T1 where C1<>?" [62510];
+
+Command  "select  C1 from T1 where C1=?" [null];
+Command  "select  C1 from T1 where C1>?" [null];
+Command  "select  C1 from T1 where C1<?" [null];
+Command  "select  C1 from T1 where C1>=?" [null];
+Command  "select  C1 from T1 where C1<=?" [null];
+Command  "select  C1 from T1 where C1<>?" [null];
+
+
+#C2	bigint
+Command "create table T2 (C2 bigint)";
+Command "insert into T2 (C2) values (?)" [5900030];
+Command "insert into T2 (C2) values (?)" [null];
+Command "insert into T2 (C2) values (?)" [2156487];
+Command "insert into T2 (C2) values (?)" [894545342];
+Command "insert into T2 (C2) values (?)" [1111];
+Command "insert into T2 (C2) values (9223372036854775807)";
+Command "insert into T2 (C2) values (?)" [integer64 215648795463];
+
+Command "create all rows index I2 on T2(C2)";
+Command "select * from T2";
+
+Command  "select  C2 from T2 where C2=?" [5900030];
+Command  "select  C2 from T2 where C2>?" [5900030];
+Command  "select  C2 from T2 where C2<?" [5900030];
+Command  "select  C2 from T2 where C2>=?" [5900030];
+Command  "select  C2 from T2 where C2<=?" [5900030];
+Command  "select  C2 from T2 where C2<>?" [5900030];
+
+Command  "select  C2 from T2 where C2=?" [null];
+Command  "select  C2 from T2 where C2>?" [null];
+Command  "select  C2 from T2 where C2<?" [null];
+Command  "select  C2 from T2 where C2>=?" [null];
+Command  "select  C2 from T2 where C2<=?" [null];
+Command  "select  C2 from T2 where C2<>?" [null];
+
+
+#C3	char(8)
+Command "create table T3 (C3 char(8))";
+Command "insert into T3 (C3) values (?)" ["foo"];
+Command "insert into T3 (C3) values (?)" [null];
+Command "insert into T3 (C3) values (?)" ["wine"];
+Command "insert into T3 (C3) values (?)" ["kick"];
+Command "create all rows index I3 on T3(C3)";
+Command "select * from T3";
+
+Command  "select  C3 from T3 where C3=?" ["kick"];
+Command  "select  C3 from T3 where C3>?" ["kick"];
+Command  "select  C3 from T3 where C3<?" ["kick"];
+Command  "select  C3 from T3 where C3>=?" ["kick"];
+Command  "select  C3 from T3 where C3<=?" ["kick"];
+Command  "select  C3 from T3 where C3<>?" ["kick"];
+
+Command  "select  C3 from T3 where C3=?" [null];
+Command  "select  C3 from T3 where C3>?" [null];
+Command  "select  C3 from T3 where C3<?" [null];
+Command  "select  C3 from T3 where C3>=?" [null];
+Command  "select  C3 from T3 where C3<=?" [null];
+Command  "select  C3 from T3 where C3<>?" [null];
+
+
+#C4	float
+Command "create table T4 (C4 float)";
+Command "insert into T4 (C4) values (?)" [0.86];
+Command "insert into T4 (C4) values (?)" [null];
+Command "insert into T4 (C4) values (?)" [3.0054328];
+Command "insert into T4 (C4) values (?)" [-1.25468567];
+Command "create all rows index I4 on T4(C4)";
+Command "select * from T4";
+
+Command  "select  C4 from T4 where C4=?" [0.86];
+Command  "select  C4 from T4 where C4>?" [0.86];
+Command  "select  C4 from T4 where C4<?" [0.86];
+Command  "select  C4 from T4 where C4>=?" [0.86];
+Command  "select  C4 from T4 where C4<=?" [0.86];
+Command  "select  C4 from T4 where C4<>?" [0.86];
+
+Command  "select  C4 from T4 where C4=?" [null];
+Command  "select  C4 from T4 where C4>?" [null];
+Command  "select  C4 from T4 where C4<?" [null];
+Command  "select  C4 from T4 where C4>=?" [null];
+Command  "select  C4 from T4 where C4<=?" [null];
+Command  "select  C4 from T4 where C4<>?" [null];
+
+
+#C5	datetime
+Command "create table T5 (C5 datetime)";
+Command "insert into T5 (C5) values (?)" ["2005-12-07 19:18:53.487"];
+Command "insert into T5 (C5) values (?)" ["1980-10-27 00:30:13.785"];
+Command "insert into T5 (C5) values (?)" [null];
+Command "insert into T5 (C5) values (?)" ["2000-05-20 13:43:23.135"];
+Command "create all rows index I5 on T5(C5)";
+Command "select * from T5";
+
+Command  "select  C5 from T5 where C5=?" ["2000-05-20 13:43:23.135"];
+Command  "select  C5 from T5 where C5>?" ["2000-05-20 13:43:23.135"];
+Command  "select  C5 from T5 where C5<?" ["2000-05-20 13:43:23.135"];
+Command  "select  C5 from T5 where C5>=?" ["2000-05-20 13:43:23.135"];
+Command  "select  C5 from T5 where C5<=?" ["2000-05-20 13:43:23.135"];
+Command  "select  C5 from T5 where C5<>?" ["2000-05-20 13:43:23.135"];
+
+Command  "select  C5 from T5 where C5=?" [null];
+Command  "select  C5 from T5 where C5>?" [null];
+Command  "select  C5 from T5 where C5<?" [null];
+Command  "select  C5 from T5 where C5>=?" [null];
+Command  "select  C5 from T5 where C5<=?" [null];
+Command  "select  C5 from T5 where C5<>?" [null];
+
+
+#C6	uniqueidentifier
+Command "create table T6 (C6 uniqueidentifier)";
+Command "insert into T6 (C6) values (?)" ["0DEA3504-6A8C-4751-97E2-5674850F2CB6"];
+Command "insert into T6 (C6) values (?)" ["090-2468-2578EGDT"];
+Command "insert into T6 (C6) values (?)" [null];
+Command "insert into T6 (C6) values (?)" ["2345-4567-2345-2456-GT"];
+Command "create all rows index I6 on T6(C6)";
+Command "select * from T6";
+
+Command  "select  C6 from T6 where C6=?" ["0DEA3504-6A8C-4751-97E2-5674850F2CB6"];
+Command  "select  C6 from T6 where C6>?" ["0DEA3504-6A8C-4751-97E2-5674850F2CB6"];
+Command  "select  C6 from T6 where C6<?" ["0DEA3504-6A8C-4751-97E2-5674850F2CB6"];
+Command  "select  C6 from T6 where C6>=?" ["0DEA3504-6A8C-4751-97E2-5674850F2CB6"];
+Command  "select  C6 from T6 where C6<=?" ["0DEA3504-6A8C-4751-97E2-5674850F2CB6"];
+Command  "select  C6 from T6 where C6<>?" ["0DEA3504-6A8C-4751-97E2-5674850F2CB6"];
+
+Command  "select  C6 from T6 where C6=?" [null];
+Command  "select  C6 from T6 where C6>?" [null];
+Command  "select  C6 from T6 where C6<?" [null];
+Command  "select  C6 from T6 where C6>=?" [null];
+Command  "select  C6 from T6 where C6<=?" [null];
+Command  "select  C6 from T6 where C6<>?" [null];
+
+
+#C7	language
+Command "create table T7 (C7 language)";
+Command "insert into T7 (C7) values (?)" ["fr"];
+Command "insert into T7 (C7) values (?)" ["ab"];
+Command "insert into T7 (C7) values (?)" [null];
+Command "insert into T7 (C7) values (?)" ["ik"];
+Command "create all rows index I7 on T7(C7)";
+Command "select * from T7";
+
+Command  "select  C7 from T7 where C7=?" ["fr"];
+Command  "select  C7 from T7 where C7>?" ["fr"];
+Command  "select  C7 from T7 where C7<?" ["fr"];
+Command  "select  C7 from T7 where C7>=?" ["fr"];
+Command  "select  C7 from T7 where C7<=?" ["fr"];
+Command  "select  C7 from T7 where C7<>?" ["fr"];
+
+Command  "select  C7 from T7 where C7=?" [null];
+Command  "select  C7 from T7 where C7>?" [null];
+Command  "select  C7 from T7 where C7<?" [null];
+Command  "select  C7 from T7 where C7>=?" [null];
+Command  "select  C7 from T7 where C7<=?" [null];
+Command  "select  C7 from T7 where C7<>?" [null];
+
+
+#C8	nchar(6)
+Command "create table T8 (C8 nchar(6))";
+Command "insert into T8 (C8) values (?)" ["あいう"];
+Command "insert into T8 (C8) values (?)" ["はひふ"];
+Command "insert into T8 (C8) values (?)" ["らりる"];
+Command "insert into T8 (C8) values (?)" [null];
+Command "create all rows index I8 on T8(C8)";
+Command "select * from T8";
+
+Command  "select  C8 from T8 where C8=?" ["はひふ"];
+Command  "select  C8 from T8 where C8>?" ["はひふ"];
+Command  "select  C8 from T8 where C8<?" ["はひふ"];
+Command  "select  C8 from T8 where C8>=?" ["はひふ"];
+Command  "select  C8 from T8 where C8<=?" ["はひふ"];
+Command  "select  C8 from T8 where C8<>?" ["はひふ"];
+
+Command  "select  C8 from T8 where C8=?" [null];
+Command  "select  C8 from T8 where C8>?" [null];
+Command  "select  C8 from T8 where C8<?" [null];
+Command  "select  C8 from T8 where C8>=?" [null];
+Command  "select  C8 from T8 where C8<=?" [null];
+Command  "select  C8 from T8 where C8<>?" [null];
+
+
+#C9	nvarchar(256)
+Command "create table T9 (C9 nvarchar(256))";
+Command "insert into T9 (C9) values (?)" ["データ構造"];
+Command "insert into T9 (C9) values (?)" ["ITインフラストラクチャ"];
+Command "insert into T9 (C9) values (?)" ["建造物アーキテクチャー"];
+Command "insert into T9 (C9) values (?)" [null];
+Command "create all rows index I9 on T9(C9)";
+Command "select * from T9";
+
+Command  "select  C9 from T9 where C9=?" ["データ構造"];
+Command  "select  C9 from T9 where C9>?" ["データ構造"];
+Command  "select  C9 from T9 where C9<?" ["データ構造"];
+Command  "select  C9 from T9 where C9>=?" ["データ構造"];
+Command  "select  C9 from T9 where C9<=?" ["データ構造"];
+Command  "select  C9 from T9 where C9<>?" ["データ構造"];
+
+Command  "select  C9 from T9 where C9=?" [null];
+Command  "select  C9 from T9 where C9>?" [null];
+Command  "select  C9 from T9 where C9<?" [null];
+Command  "select  C9 from T9 where C9>=?" [null];
+Command  "select  C9 from T9 where C9<=?" [null];
+Command  "select  C9 from T9 where C9<>?" [null];
+
+
+#C10	varchar(128)  
+Command "create table T10 (C10 varchar(128))";
+Command "insert into T10 (C10) values (?)" ["Java Native Interface"];
+Command "insert into T10 (C10) values (?)" ["Business Solution"];
+Command "insert into T10 (C10) values (?)" ["Financial Resource"];
+Command "insert into T10 (C10) values (?)" [null];
+Command "create all rows index I10 on T10(C10)";
+Command "select * from T10";
+
+Command  "select  C10 from T10 where C10=?" ["Financial Resource"];
+Command  "select  C10 from T10 where C10>?" ["Financial Resource"];
+Command  "select  C10 from T10 where C10<?" ["Financial Resource"];
+Command  "select  C10 from T10 where C10>=?" ["Financial Resource"];
+Command  "select  C10 from T10 where C10<=?" ["Financial Resource"];
+Command  "select  C10 from T10 where C10<>?" ["Financial Resource"];
+
+Command  "select  C10 from T10 where C10=?" [null];
+Command  "select  C10 from T10 where C10>?" [null];
+Command  "select  C10 from T10 where C10<?" [null];
+Command  "select  C10 from T10 where C10>=?" [null];
+Command  "select  C10 from T10 where C10<=?" [null];
+Command  "select  C10 from T10 where C10<>?" [null];
+
+
+Command "drop table T1";
+Command "drop table T2";
+Command "drop table T3";
+Command "drop table T4";
+Command "drop table T5";
+Command "drop table T6";
+Command "drop table T7";
+Command "drop table T8";
+Command "drop table T9";
+Command "drop table T10";
+
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

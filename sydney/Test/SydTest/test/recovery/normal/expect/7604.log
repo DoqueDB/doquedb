@@ -1,0 +1,103 @@
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] create table T(C ntext)
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] start transaction read write, isolation level repeatable read
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] start backup full discard snapshot
+SydTest::Executor: [INFO] <<1>> {d:\dm\data\TESTDB}
+SydTest::Executor: [INFO] <<1>> {d:\dm\system\TESTDB}
+SydTest::Executor: [INFO] <<1>> End Of Data.
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] end backup
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<1>> [[SQL Query]] commit
+SydTest::Executor: [INFO] <<1>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] create fulltext index I on T(C)
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] create area A 'd:\dm\area\a'
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T values ('Foo')
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] update T set C='Hogege'
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T values ('Bar')
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] alter table T set area A
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T values ('Baz')
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] alter index I set area A
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T values ('Quux')
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] alter index I drop area
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] delete from T where C='Quux'
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] alter table T drop area
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] insert into T values ('Quux')
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] drop area A
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] <<2>> [[SQL Query]] select * from T
+SydTest::Executor: [INFO] <<2>> {Hogege}
+SydTest::Executor: [INFO] <<2>> {Bar}
+SydTest::Executor: [INFO] <<2>> {Baz}
+SydTest::Executor: [INFO] <<2>> {Quux}
+SydTest::Executor: [INFO] <<2>> End Of Data.
+SydTest::Executor: [INFO] <<2>> Success.
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] BeginTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] EndTimeSpan
+SydTest::Executor: [INFO] [Time Option] DefaultTimeSpan
+SydTest::Executor: [INFO] [TIME] TimeSpan: 
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] move /Y d:\dm\alter_data_TESTDB d:\dm\data\TESTDB
+        1 個のファイルを移動しました。
+SydTest::Executor: [INFO] [Main] System
+SydTest::Executor: [INFO] [System Parameter] move /Y d:\dm\alter_system_TESTDB d:\dm\system\TESTDB
+        1 個のファイルを移動しました。
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] mount TESTDB path 'd:\dm\data\TESTDB'
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] start transaction read write
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] verify database TESTDB cascade continue
+SydTest::Executor: [INFO] <<0>> End Of Data.
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] commit
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] select * from T
+SydTest::Executor: [INFO] <<0>> End Of Data.
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] <<0>> [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] <<0>> Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

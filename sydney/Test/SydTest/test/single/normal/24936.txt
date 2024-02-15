@@ -1,0 +1,55 @@
+# Bug report 1937
+# サイズの大きなカラムにビットマップ索引
+
+Begin;
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+
+# 32KBぎりぎり
+Command "create table T (ID int, F nvarchar(333))";
+Command "create bitmap index T_F on T(F) hint 'compressed'";
+
+Command "insert into T values (1, 'aaa')";
+Command "insert into T values (2, 'bbb')";
+Command "insert into T values (3, 'bbb')";
+Command "insert into T values (4, 'ccc')";
+
+Command "select ID from T where F = 'bbb'";
+Command "drop table T";
+
+# 32KBちょっと超え
+Command "create table T (ID int, F nvarchar(334))";
+Command "create bitmap index T_F on T(F) hint 'compressed'";
+
+Command "insert into T values (1, 'aaa')";
+Command "insert into T values (2, 'bbb')";
+Command "insert into T values (3, 'bbb')";
+Command "insert into T values (4, 'ccc')";
+
+Command "select ID from T where F = 'bbb'";
+Command "drop table T";
+
+# 64KBぎりぎり
+Command "create table T (ID int, F nvarchar(497))";
+Command "create bitmap index T_F on T(F) hint 'compressed'";
+
+Command "insert into T values (1, 'aaa')";
+Command "insert into T values (2, 'bbb')";
+Command "insert into T values (3, 'bbb')";
+Command "insert into T values (4, 'ccc')";
+
+Command "select ID from T where F = 'bbb'";
+Command "drop table T";
+
+# 64KB超えなので、crate index でエラーになる
+Command "create table T (ID int, F nvarchar(498))";
+Command "create bitmap index T_F on T(F) hint 'compressed'";
+Command "drop table T";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

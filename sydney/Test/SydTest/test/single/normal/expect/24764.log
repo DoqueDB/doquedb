@@ -1,0 +1,205 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TEST
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (ID int, K char(1), F1 ntext, F2 ntext, primary key(ID))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create bitmap index T_K on T(K)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_F on T(F1, F2) hint 'inverted=(indexing=dual, tokenizer=DUAL:JAP:ALL:2)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table Ta (ID int, F1 ntext, F2 ntext, primary key(ID))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index Ta_F on Ta(F1, F2) hint 'inverted=(indexing=dual, tokenizer=DUAL:JAP:ALL:2)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table Tb (ID int, F1 ntext, F2 ntext, primary key(ID))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index Tb_F on Tb(F1, F2) hint 'inverted=(indexing=dual, tokenizer=DUAL:JAP:ALL:2)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (1, 'a', 'リコーの環境への取り組み', 'リコーの環境への取り組み')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (2, 'b', '複写機大手のリコー', '複写機大手のリコー')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (3, 'a', 'リストラと戦うリコーユニオン', 'リストラと戦うリコーユニオン')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (4, 'b', 'リコーはかつてリストラしたことがない', 'リコーはかつてリストラしたことがない')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (5, 'a', '株式会社リコー', '株式会社リコー')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (6, 'b', 'リコージャパン株式会社', 'リコージャパン株式会社')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (7, 'a', 'オンラインストレージならリコーのquanp', 'オンラインストレージならリコーのquanp')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (8, 'b', 'リコーテクノシステムズ株式会社', 'リコーテクノシステムズ株式会社')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (9, 'a', 'リコーがHOYAのカメラ事業を買収', 'リコーテクノシステムズ株式会社')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T values (10, 'b', 'リコー【7752】事務機で国内首位級', 'リコー【7752】事務機で国内首位級')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Ta values (1, 'リコーの環境への取り組み', 'リコーの環境への取り組み')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Ta values (3, 'リストラと戦うリコーユニオン', 'リコーの環境への取り組み')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Ta values (5, '株式会社リコー', '株式会社リコー')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Ta values (7, 'オンラインストレージならリコーのquanp', 'オンラインストレージならリコーのquanp')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Ta values (9, 'リコーがHOYAのカメラ事業を買収', 'リコーがHOYAのカメラ事業を買収')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Tb values (2, '複写機大手のリコー', '複写機大手のリコー')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Tb values (4, 'リコーはかつてリストラしたことがない', 'リコーはかつてリストラしたことがない')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Tb values (6, 'リコージャパン株式会社', 'リコージャパン株式会社')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Tb values (8, 'リコーテクノシステムズ株式会社', 'リコーテクノシステムズ株式会社')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into Tb values (10, 'リコー【7752】事務機で国内首位級', 'リコー【7752】事務機で国内首位級')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f1) from ta where f1 contains 'リコー'
+SydTest::Executor: [INFO] {1.341144905867E-1}
+SydTest::Executor: [INFO] {1.317491556557E-1}
+SydTest::Executor: [INFO] {1.404168632646E-1}
+SydTest::Executor: [INFO] {1.240893210245E-1}
+SydTest::Executor: [INFO] {1.283535588604E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f1) from t where f1 contains 'リコー' rank from (select * from t where k = 'a')
+SydTest::Executor: [INFO] {1.341144905867E-1}
+SydTest::Executor: [INFO] {1.317491556557E-1}
+SydTest::Executor: [INFO] {1.404168632646E-1}
+SydTest::Executor: [INFO] {1.240893210245E-1}
+SydTest::Executor: [INFO] {1.283535588604E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f1) from t where f1 contains 'リコー' rank from (select * from t where id in (1,3,5,7,9))
+SydTest::Executor: [INFO] {1.341144905867E-1}
+SydTest::Executor: [INFO] {1.317491556557E-1}
+SydTest::Executor: [INFO] {1.404168632646E-1}
+SydTest::Executor: [INFO] {1.240893210245E-1}
+SydTest::Executor: [INFO] {1.283535588604E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f2) from tb where f2 contains 'リコー'
+SydTest::Executor: [INFO] {1.378261462302E-1}
+SydTest::Executor: [INFO] {1.272602576776E-1}
+SydTest::Executor: [INFO] {1.353292957550E-1}
+SydTest::Executor: [INFO] {1.305975021971E-1}
+SydTest::Executor: [INFO] {1.272602576776E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Pause
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f2) from t where f2 contains 'リコー' rank from (select * from t where k = 'b')
+SydTest::Executor: [INFO] {1.376628666046E-1}
+SydTest::Executor: [INFO] {1.269821269542E-1}
+SydTest::Executor: [INFO] {1.351369424467E-1}
+SydTest::Executor: [INFO] {1.303533338645E-1}
+SydTest::Executor: [INFO] {1.269821269542E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f2) from t where f2 contains 'リコー' rank from (select * from t where id in (2,4,6,8,10))
+SydTest::Executor: [INFO] {1.376628666046E-1}
+SydTest::Executor: [INFO] {1.269821269542E-1}
+SydTest::Executor: [INFO] {1.351369424467E-1}
+SydTest::Executor: [INFO] {1.303533338645E-1}
+SydTest::Executor: [INFO] {1.269821269542E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f1, f2) from ta where (f1, f2) contains 'リコー'
+SydTest::Executor: [INFO] {1.774689967071E-1}
+SydTest::Executor: [INFO] {1.764063081041E-1}
+SydTest::Executor: [INFO] {1.829804562322E-1}
+SydTest::Executor: [INFO] {1.683420197336E-1}
+SydTest::Executor: [INFO] {1.722798447566E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f1, f2) from t where (f1, f2) contains 'リコー' rank from (select * from t where k = 'a')
+SydTest::Executor: [INFO] {1.841730662821E-1}
+SydTest::Executor: [INFO] {1.830368968417E-1}
+SydTest::Executor: [INFO] {1.870761726232E-1}
+SydTest::Executor: [INFO] {1.791683633940E-1}
+SydTest::Executor: [INFO] {1.819146595833E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f1, f2) from t where (f1, f2) contains 'リコー' rank from (select * from t where id in (1,3,5,7,9))
+SydTest::Executor: [INFO] {1.841730662821E-1}
+SydTest::Executor: [INFO] {1.830368968417E-1}
+SydTest::Executor: [INFO] {1.870761726232E-1}
+SydTest::Executor: [INFO] {1.791683633940E-1}
+SydTest::Executor: [INFO] {1.819146595833E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f1, f2) from tb where (f1, f2) contains 'リコー' score combiner 'sum'
+SydTest::Executor: [INFO] {2.756522924605E-1}
+SydTest::Executor: [INFO] {2.545205153553E-1}
+SydTest::Executor: [INFO] {2.706585915101E-1}
+SydTest::Executor: [INFO] {2.611950043943E-1}
+SydTest::Executor: [INFO] {2.545205153553E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f1, f2) from t where (f1, f2) contains 'リコー' score combiner 'sum' rank from (select * from t where k = 'b')
+SydTest::Executor: [INFO] {2.754890128348E-1}
+SydTest::Executor: [INFO] {2.542423846319E-1}
+SydTest::Executor: [INFO] {2.704662382017E-1}
+SydTest::Executor: [INFO] {2.609508360617E-1}
+SydTest::Executor: [INFO] {2.542423846319E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select score(f1, f2) from t where (f1, f2) contains 'リコー' score combiner 'sum' rank from (select * from t where id in (2,4,6,8,10))
+SydTest::Executor: [INFO] {2.754890128348E-1}
+SydTest::Executor: [INFO] {2.542423846319E-1}
+SydTest::Executor: [INFO] {2.704662382017E-1}
+SydTest::Executor: [INFO] {2.609508360617E-1}
+SydTest::Executor: [INFO] {2.542423846319E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

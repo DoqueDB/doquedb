@@ -1,0 +1,547 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 int, C2 datetime, C3 ntext, C4 varchar(14), primary key(C1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (1, '2009-04-10 00:00:00.000', '東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', 'Aa')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (2, '2009-04-20 00:00:00.000', '京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', 'Zz')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (3, '2009-04-30 00:00:00.000', '北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。', (null))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (4, '2009-04-30 00:00:00.000', '東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', (null))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (5, '2009-04-10 00:00:00.000', '京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', 'Aa')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (6, '2009-04-20 00:00:00.000', '北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。', 'Zz')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (7, '2009-04-30 00:00:00.000', '東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', (null))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (8, '2009-04-30 00:00:00.000', '京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', (null))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (9, '2009-04-10 00:00:00.000', '北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。', 'Aa')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (10, '2009-04-20 00:00:00.000', '東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', 'Zz')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (11, '2009-04-30 00:00:00.000', '京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。', (null))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4) values (12, '2009-04-30 00:00:00.000', '北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。', (null))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index I1 on T1(C3) hint 'inverted=(clustered=(feature=10))'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by score(C3) desc partition by cluster(C3).id
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by score(C3) desc partition by cluster(C3).id limit 1
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C2
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C2 limit 1
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C4
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C4 limit 1
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 desc partition by cluster(C3).id
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 desc partition by cluster(C3).id limit 1 offset 1
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C2
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C2 limit 1 offset 1
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4 limit 1 offset 1
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 asc partition by cluster(C3).id
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 asc partition by cluster(C3).id limit 1 offset 2
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C2
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C2 limit 1 offset 2
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C4
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C4 limit 1 offset 2
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C2
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C2 limit 2
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by score(C3) desc partition by cluster(C3).id
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by score(C3) desc partition by cluster(C3).id limit 2
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C4
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C4 limit 2
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 desc partition by cluster(C3).id
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 desc partition by cluster(C3).id limit 2 offset 1
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C2
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C2 limit 2 offset 1
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4 limit 2 offset 1
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 asc partition by cluster(C3).id
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' clustered limit 0.98 order by C1 asc partition by cluster(C3).id limit 2 offset 2
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,2,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,9,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C2
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 desc partition by C2 limit 2 offset 2
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by score(C3) desc partition by C4 limit 2 offset 2
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C4
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] {2,2009-04-20 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {6,2009-04-20 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Zz}
+SydTest::Executor: [INFO] {10,2009-04-20 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Zz}
+SydTest::Executor: [INFO] {3,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] {4,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {7,2009-04-30 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {8,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {11,2009-04-30 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,(null)}
+SydTest::Executor: [INFO] {12,2009-04-30 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C2, cluster(C3).id, C3, score(C3), C4 from T1 where C3 contains 'には' order by C1 asc partition by C4 limit 1 offset 1
+SydTest::Executor: [INFO] {1,2009-04-10 00:00:00.000,1,東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {5,2009-04-10 00:00:00.000,1,京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。,9.972729837143E-2,Aa}
+SydTest::Executor: [INFO] {9,2009-04-10 00:00:00.000,2,北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。,9.852091976210E-2,Aa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

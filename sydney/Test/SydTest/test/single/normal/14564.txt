@@ -1,0 +1,64 @@
+# Test for PAD SPACE
+
+Begin;
+Initialize;
+InitializeSession "";
+
+Command "create table T(c varchar(4) hint nontruncate)";
+Command "insert T values 'abc', 'abc
+', 'abc ', 'abca'";
+Command "create bitmap index I on T(c) hint 'compressed'";
+
+# abc
+Command "select * from T where c = 'abc'";
+Command "select * from T where c > 'abc'";
+Command "select * from T where c < 'abc'";
+Command "select * from T where c like 'abc'";
+
+# abc + SP
+Command "select * from T where c = 'abc '";
+Command "select * from T where c > 'abc '";
+Command "select * from T where c < 'abc '";
+Command "select * from T where c like 'abc '";
+
+# abc + SP + HT
+Command "select * from T where c = 'abc 	'";
+Command "select * from T where c > 'abc 	'";
+Command "select * from T where c < 'abc 	'";
+Command "select * from T where c like 'abc 	'";
+
+# abc + SP + NL
+Command "select * from T where c = 'abc 
+'";
+Command "select * from T where c > 'abc 
+'";
+Command "select * from T where c < 'abc 
+'";
+Command "select * from T where c like 'abc 
+'";
+
+# abc + SP + SP
+Command "select * from T where c = 'abc  '";
+Command "select * from T where c > 'abc  '";
+Command "select * from T where c < 'abc  '";
+Command "select * from T where c like 'abc  '";
+
+# abc + SP + a
+Command "select * from T where c = 'abc a'";
+Command "select * from T where c > 'abc a'";
+Command "select * from T where c < 'abc a'";
+Command "select * from T where c like 'abc a'";
+
+# abc + _ or %
+Command "select * from T where c like 'abc_'";
+Command "select * from T where c like 'abc%'";
+
+# abc + SP + _ or %
+Command "select * from T where c like 'abc _'";
+Command "select * from T where c like 'abc %'";
+
+Command "drop table T";
+
+TerminateSession;
+Terminate;
+End;

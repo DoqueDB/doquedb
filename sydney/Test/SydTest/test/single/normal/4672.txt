@@ -1,0 +1,33 @@
+# 障害票 1224
+# select word(x)のSELECT文のWHERE句にContains以外の述語
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command  "create table TBL(f int, g ntext, primary key(f))";
+Command  "create fulltext index IDX_g on TBL(g)";
+
+Command  "insert TBL values (1, 'select wordとほかの条件を組み合わせる')";
+
+#-- not supportedのエラー
+Command  "select word(g) from TBL where g contains wordlist('select','word') and f = 1";
+#-- 2件出力
+Command  "select word(g) from TBL where g contains wordlist('select','word')";
+#-- 1件出力
+Command  "select f from TBL where g contains wordlist('select','word') and f = 1";
+
+Command  "drop table TBL";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

@@ -1,0 +1,124 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TEST
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (ID int, F nvarchar(no limit), primary key(ID))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_F on T(F) hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:2 @UNARSCID:1 @NORMRSCID:1)'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(ID, F) values (1, 'ＳＦもその「ＳＦ大陸」の中で、歴史ＳＦ、時代ＳＦ、教養ＳＦ、ユーモアＳＦ、ホラーＳＦ、企業ＳＦなどと様々に分化し発展していったわけです。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(ID, F) values (2, '小学校の本校舎二階の図書館にあった忘れもしない児童向け少年少女空想科学小説シリーズに収録されていたアイザックが原点であった。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(ID, F) values (3, 'Successful Agingに関する先行研究のうち海外文献に焦点を絞って、15文献の検討を行った。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(ID, F) values (4, 'Sforzando プリュームファイバーケースと弓付きでお得なセットとなっております！')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T(ID, F) values (5, 'エスエフもその「エスエフ大陸」の中で、歴史エスエフ、時代エスエフ、教養エスエフ、ユーモアエスエフ、ホラーエスエフ、企業エスエフなどと様々に分化し発展していったわけです。')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select expand_synonym('エスエフ' using 'UNA:1') from T where ID = 1
+SydTest::Executor: [INFO] {{エスエフ,サイエンスフィクション,科学小説,空想科学小説}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select expand_synonym('空想科学小説' using 'UNA:1') from T where ID = 1
+SydTest::Executor: [INFO] {{空想科学小説,エスエフ,サイエンスフィクション,科学小説}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select expand_synonym('新しい科学小説である' using 'UNA:1') from T where ID = 1
+SydTest::Executor: [INFO] {{新しい科学小説である,新しいエスエフである,新しいサイエンスフィクションである,新しい空想科学小説である}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select expand_synonym('図書館' using 'UNA:1') from T where ID = 1
+SydTest::Executor: [INFO] {{図書館,蔵書館}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select expand_synonym('sf' using 'UNA:1') from T where ID = 1
+SydTest::Executor: [INFO] {{sf}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select expand_synonym('ＳＦ' using 'UNA:1') from T where ID = 1
+SydTest::Executor: [INFO] {{ＳＦ}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select expand_synonym('エスエフの中のエスエフ' using 'UNA:1') from T where ID = 1
+SydTest::Executor: [INFO] {{エスエフの中のエスエフ,エスエフの中のサイエンスフィクション,エスエフの中の科学小説,エスエフの中の空想科学小説,サイエンスフィクションの中のエスエフ,サイエンスフィクションの中のサイエンスフィクション,サイエンスフィクションの中の科学小説,サイエンスフィクションの中の空想科学小説,科学小説の中のエスエフ,科学小説の中のサイエンスフィクション,科学小説の中の科学小説,科学小説の中の空想科学小説,空想科学小説の中のエスエフ,空想科学小説の中のサイエンスフィクション,空想科学小説の中の科学小説,空想科学小説の中の空想科学小説}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from T where F contains expand_synonym('エスエフ')
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from T where F contains expand_synonym('図書館')
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from T where F contains expand_synonym(string('エスエフ'))
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from T where F contains expand_synonym(exactword('エスエフ'))
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from T where F contains expand_synonym(simpleword('科学小説'))
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from T where F contains expand_synonym(wordhead('空想科学小説'))
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from T where F contains expand_synonym(wordtail('サイエンスフィクション'))
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from T where F contains expand_synonym('エスエフ' language 'ja+en')
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select id from T where F contains expand_synonym(string('エスエフ' language 'ja+en'))
+SydTest::Executor: [INFO] {2}
+SydTest::Executor: [INFO] {5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TEST
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

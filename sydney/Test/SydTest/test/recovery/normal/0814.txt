@@ -1,0 +1,436 @@
+# select[1]/btree(index)/heap
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command  "create table T1(C1 nvarchar(32) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(32) hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+Command  "insert into T1 (C1) values (?)" ["ホゲ"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" ["ぴよ"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" ["ほげ", "ぴよ"];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=?" ["ほげ"];
+Command  "select count(*) from T1 where C1<?" ["ほげ"];
+Command  "select count(*) from T1 where C1>?" ["ほげ"];
+Command  "select count(*) from T1 where C1<=?" ["ほげ"];
+Command  "select count(*) from T1 where C1>=?" ["ほげ"];
+Command  "select count(*) from T1 where C1<>?" ["ほげ"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\ublab.txt"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ublab.txt"];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=?" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1<?" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1>?" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1<=?" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1>=?" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "select count(*) from T1 where C1<>?" [textsjisfile "..\\..\\doc\\hello.txt"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\speak.txt"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1<?" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1>?" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1<=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1>=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "select count(*) from T1 where C1<>?" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 int hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 int hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [777];
+Command  "insert into T1 (C1) values (?)" [777];
+Command  "insert into T1 (C1) values (?)" [555];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [333];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [777, 333];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=?" [777];
+Command  "select count(*) from T1 where C1<?" [777];
+Command  "select count(*) from T1 where C1>?" [777];
+Command  "select count(*) from T1 where C1<=?" [777];
+Command  "select count(*) from T1 where C1>=?" [777];
+Command  "select count(*) from T1 where C1<>?" [777];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 float hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 float hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [3.141592];
+Command  "insert into T1 (C1) values (?)" [3.141592];
+Command  "insert into T1 (C1) values (?)" [2.718281];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [1.414213];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [3.141592, 1.414213];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=?" [3.141592];
+Command  "select count(*) from T1 where C1<?" [3.141592];
+Command  "select count(*) from T1 where C1>?" [3.141592];
+Command  "select count(*) from T1 where C1<=?" [3.141592];
+Command  "select count(*) from T1 where C1>=?" [3.141592];
+Command  "select count(*) from T1 where C1<>?" [3.141592];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 datetime hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 datetime hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1) values (?)" [time "2001-09-09 00:00:00.000"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [time "2002-10-11 17:34:51.000"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [time "2001-07-07 12:34:56.789", time "2002-10-11 17:34:51.000"];
+# さまざまな条件を課しつつselectする
+# さまざまな等号や不等号の検索条件を試す
+Command  "select count(*) from T1 where C1=?" [time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<?" [time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1>?" [time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<=?" [time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1>=?" [time "2001-07-07 12:34:56.789"];
+Command  "select count(*) from T1 where C1<>?" [time "2001-07-07 12:34:56.789"];
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is null";
+# is (not) nullを試す
+Command  "select count(*) from T1 where C1 is not null";
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(32) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(32) hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" ["ホゲ"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T2.C1 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\ricoh.txt"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T2.C1 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\speak.txt"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T2.C1 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 int hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 int hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [555];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T2.C1 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 float hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 float hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [2.718281];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T2.C1 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 datetime hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 datetime hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [null];
+Command  "insert into T1 (C1) values (?)" [time "2001-09-09 00:00:00.000"];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [null];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1 is null and T2.C1 is null" [, ];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(32) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(32) hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+Command  "insert into T1 (C1) values (?)" ["ほげ"];
+Command  "insert into T1 (C1) values (?)" [null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" ["ぴよ"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" ["ほげ", "ぴよ"];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\hello.txt"];
+Command  "insert into T1 (C1) values (?)" [null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\ublab.txt"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [textsjisfile "..\\..\\doc\\hello.txt", textsjisfile "..\\..\\doc\\ublab.txt"];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 nvarchar(496) hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 nvarchar(496) hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "insert into T1 (C1) values (?)" [textsjisfile "..\\..\\doc\\sasameyuki.txt"];
+Command  "insert into T1 (C1) values (?)" [null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [textsjisfile "..\\..\\doc\\sasameyuki.txt", textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 int hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 int hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [777];
+Command  "insert into T1 (C1) values (?)" [777];
+Command  "insert into T1 (C1) values (?)" [null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [333];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [777, 333];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 float hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 float hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [3.141592];
+Command  "insert into T1 (C1) values (?)" [3.141592];
+Command  "insert into T1 (C1) values (?)" [null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [1.414213];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [3.141592, 1.414213];
+Command  "drop table T1";
+Command  "drop table T2";
+
+Command  "create table T1(C1 datetime hint heap)";
+Command  "create index I1 on T1(C1)";
+Command  "create table T2(C1 datetime hint heap)";
+Command  "create index I2 on T2(C1)";
+# selectの対象となるタプルをinsertする
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+Command  "insert into T1 (C1) values (?)" [null];
+# 2つ目のtableにもinsertする
+Command  "insert into T2 (C1) values (?)" [time "2002-10-11 17:34:51.000"];
+# 全体が取れるかどうか、何通りかの方法で試す
+Command  "select C1 from T1";
+Command  "select * from T1";
+Command  "select count(*) from T1";
+# 複数tableのjoinをselectする
+Command  "select * from T1, T2 where T1.C1=? and T2.C1=?" [time "2001-07-07 12:34:56.789", time "2002-10-11 17:34:51.000"];
+#Command  "drop table T1";
+#Command  "drop table T2";
+
+Command  "select * from T1";
+Command  "select * from T2";
+
+TerminateSession;
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+

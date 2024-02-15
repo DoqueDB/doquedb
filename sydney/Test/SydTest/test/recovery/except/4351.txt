@@ -1,0 +1,27 @@
+# PreparedCommandのテスト(異常系、ないDB)
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作らない
+
+InitializeSession "TESTDB";
+
+CreatePreparedCommand "ct" "create table T1(C1 int, C2 ntext)";
+PreparedCommand "ct";
+ErasePreparedCommand "ct";
+
+CreatePreparedCommand "ci"  "create fulltext index I1_2 on T1(C2)";
+PreparedCommand "ci";
+ErasePreparedCommand "ci";
+
+CreatePreparedCommand "ins" "insert into T1 (C1, C2) values (?, ?)";
+PreparedCommand "ins" [1, "ほげ"];
+ErasePreparedCommand "ins";
+
+Command "select * from T1";
+
+TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;

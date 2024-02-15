@@ -1,0 +1,231 @@
+# select * from T1 natural       inner join T2
+# select * from T1               inner join T2 on <条件, 列1個>
+# select * from T1               inner join T2 using <条件, 列1個>
+#                           left outer
+#                          right outer
+#
+# Join条件の列のうち索引のついているものが1個(T1のみ、T2のみ)で、その列は
+#   1) 比較対象と同じ型で、
+#   2) キーがふたつの複合索引がついていて、その列は第二キー
+#
+# 単索引
+# --T1索引無し, T2索引有り
+# --同種テスト 11528, 11530
+
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+
+# テーブルT2 --int型
+Command  "create table T2(C1 int, C2 int, primary key (C2))";
+Command  "create index I2_1 on T2(C1, C2)";
+Command  "insert into T2 (C1, C2) values (?, ?)" [1,    111];
+Command  "insert into T2 (C1, C2) values (?, ?)" [null, 222];
+Command  "insert into T2 (C1, C2) values (?, ?)" [2,    333];
+Command  "insert into T2 (C1, C2) values (?, ?)" [3,    444];
+Command  "insert into T2 (C1, C2) values (?, ?)" [4,    666];
+
+
+# テーブルT1 --int型
+Command  "create table T1(C2 int)";
+Command  "insert into T1 (C2) values (?)" [111 ];
+Command  "insert into T1 (C2) values (?)" [null];
+Command  "insert into T1 (C2) values (?)" [333 ];
+Command  "insert into T1 (C2) values (?)" [555 ];
+
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C2 = T2.C2";
+Command  "select * from T1 left outer join T2 on T1.C2 = T2.C2";
+Command  "select * from T1 right outer join T2 on T1.C2 = T2.C2";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C2)";
+Command  "select * from T1 left outer join T2 using (C2)";
+Command  "select * from T1 right outer join T2 using (C2)";
+
+Command  "drop table T1";
+
+Command  "drop table T2";
+
+
+# テーブルT2 --char型
+Command  "create table T2(C1 int, C2 char(10), primary key (C2))";
+Command  "create index I2_1 on T2(C1, C2)";
+Command  "insert into T2 (C1, C2) values (?, ?)" [1,    "111"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [null, "222"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [2,    "333"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [3,    "444"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [4,    "666"];
+
+
+# テーブルT1 --char型
+Command  "create table T1(C2 char(10))";
+Command  "insert into T1 (C2) values (?)" ["111"];
+Command  "insert into T1 (C2) values (?)" [null ];
+Command  "insert into T1 (C2) values (?)" ["333"];
+Command  "insert into T1 (C2) values (?)" ["555"];
+
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C2 = T2.C2";
+Command  "select * from T1 left outer join T2 on T1.C2 = T2.C2";
+Command  "select * from T1 right outer join T2 on T1.C2 = T2.C2";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C2)";
+Command  "select * from T1 left outer join T2 using (C2)";
+Command  "select * from T1 right outer join T2 using (C2)";
+
+Command  "drop table T1";
+
+Command  "drop table T2";
+
+
+# テーブルT2 --nchar型
+Command  "create table T2(C1 int, C2 nchar(10), primary key (C2))";
+Command  "create index I2_1 on T2(C1, C2)";
+Command  "insert into T2 (C1, C2) values (?, ?)" [1,    "ぴよ"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [null, "ぷう"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [2,    "ほげ"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [3,    "ピヨ"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [4,    "ホゲ"];
+
+
+# テーブルT2 --nchar型
+Command  "create table T1(C2 nchar(10))";
+Command  "insert into T1 (C2) values (?)" ["ぴよ"];
+Command  "insert into T1 (C2) values (?)" [ null ];
+Command  "insert into T1 (C2) values (?)" ["ほげ"];
+Command  "insert into T1 (C2) values (?)" ["プウ"];
+
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C2 = T2.C2";
+Command  "select * from T1 left outer join T2 on T1.C2 = T2.C2";
+Command  "select * from T1 right outer join T2 on T1.C2 = T2.C2";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C2)";
+Command  "select * from T1 left outer join T2 using (C2)";
+Command  "select * from T1 right outer join T2 using (C2)";
+
+Command  "drop table T1";
+
+Command  "drop table T2";
+
+
+# テーブルT2 --varchar型
+Command  "create table T2(C1 int, C2 varchar(10), primary key (C2))";
+Command  "create index I2_1 on T2(C1, C2)";
+Command  "insert into T2 (C1, C2) values (?, ?)" [1,    "111"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [null, "222"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [2,    "333"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [3,    "444"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [4,    "666"];
+
+
+# テーブルT1 --varchar型
+Command  "create table T1(C2 varchar(10))";
+Command  "insert into T1 (C2) values (?)" ["111"];
+Command  "insert into T1 (C2) values (?)" [null ];
+Command  "insert into T1 (C2) values (?)" ["333"];
+Command  "insert into T1 (C2) values (?)" ["555"];
+
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C2 = T2.C2";
+Command  "select * from T1 left outer join T2 on T1.C2 = T2.C2";
+Command  "select * from T1 right outer join T2 on T1.C2 = T2.C2";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C2)";
+Command  "select * from T1 left outer join T2 using (C2)";
+Command  "select * from T1 right outer join T2 using (C2)";
+
+Command  "drop table T1";
+
+Command  "drop table T2";
+
+
+# テーブルT2 --nvarchar型
+Command  "create table T2(C1 int, C2 nvarchar(10), primary key (C2))";
+Command  "create index I2_1 on T2(C1, C2)";
+Command  "insert into T2 (C1, C2) values (?, ?)" [1,    "ぴよ"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [null, "ぷう"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [2,    "ほげ"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [3,    "ピヨ"];
+Command  "insert into T2 (C1, C2) values (?, ?)" [4,    "ホゲ"];
+
+
+# テーブルT1 --nvarchar型
+Command  "create table T1(C2 nvarchar(10))";
+Command  "insert into T1 (C2) values (?)" ["ぴよ"];
+Command  "insert into T1 (C2) values (?)" [ null ];
+Command  "insert into T1 (C2) values (?)" ["ほげ"];
+Command  "insert into T1 (C2) values (?)" ["プウ"];
+
+
+# -- --natural join
+Command  "select * from T1 natural inner join T2";
+Command  "select * from T1 natural left outer join T2";
+Command  "select * from T1 natural right outer join T2";
+
+
+# -- --join .. on 
+Command  "select * from T1 inner join T2 on T1.C2 = T2.C2";
+Command  "select * from T1 left outer join T2 on T1.C2 = T2.C2";
+Command  "select * from T1 right outer join T2 on T1.C2 = T2.C2";
+
+
+# -- --join .. using 
+Command  "select * from T1 inner join T2 using (C2)";
+Command  "select * from T1 left outer join T2 using (C2)";
+Command  "select * from T1 right outer join T2 using (C2)";
+
+Command  "drop table T1";
+
+Command  "drop table T2";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

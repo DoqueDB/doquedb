@@ -1,0 +1,41 @@
+# Bug report 1899
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+
+Command "create table TBL1(f int, g int, h int)";
+Command "create table TBL2(x int, y int, z int)";
+Command "create index IDX1_f on TBL1(f)";
+Command "create index IDX1_g on TBL1(g)";
+Command "create index IDX2_x on TBL2(x)";
+Command "create index IDX2_y on TBL2(y)";
+
+Command "insert TBL1 values (?, ?, ?)" [1, 10, 100];
+Command "insert TBL1 values (?, ?, ?)" [2, 20, 400];
+Command "insert TBL1 values (?, ?, ?)" [3, 30, 900];
+
+Command "insert TBL2 values (?, ?, ?)" [1, 10, 100];
+Command "insert TBL2 values (?, ?, ?)" [1, 20, 300];
+Command "insert TBL2 values (?, ?, ?)" [2, 30, 400];
+Command "insert TBL2 values (?, ?, ?)" [2, 40, 600];
+Command "insert TBL2 values (?, ?, ?)" [2, 40, 800];
+Command "insert TBL2 values (?, ?, ?)" [3, 40, 500];
+Command "insert TBL2 values (?, ?, ?)" [3, 20, 100];
+Command "insert TBL2 values (?, ?, ?)" [3, 60, 900];
+Command "insert TBL2 values (?, ?, ?)" [3, 90, 300];
+
+Command "select * from TBL1 join (select count(z) from TBL2 where g = y group by y) X(c) on (f = c)";
+Command "select * from TBL2 join (select count(h) from TBL1 where y = g group by g) X(c) on (x = c)";
+
+Command "select * from TBL1, (select count(z) from TBL2 where g = y group by y) X(c)";
+Command "select * from TBL2, (select count(h) from TBL1 where y = g group by g) X(c)";
+
+Command "select TBL1.*, (select count(z) from TBL2 where g = y group by y) from TBL1";
+Command "select TBL2.*, (select count(h) from TBL1 where y = g group by g) from TBL2";
+
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

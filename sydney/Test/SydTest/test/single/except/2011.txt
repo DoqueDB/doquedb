@@ -1,0 +1,54 @@
+## -*-Mode: text; tab-width: 4; c-basic-offset: 4;-*-
+## vi:set ts=4 sw=4:
+##
+## 2011.txt -- index 作成のテスト
+##
+##	TEST CONTENTS
+##		・同名インデックスの作成
+##
+##	START CONDITIONS
+##		特に無し
+##		
+##	END CONDITIONS
+##		satart 前と同じ状態である
+##
+##	CHECK
+##		同じ名前の索引が同じDBに複数作れないことを確認する
+##
+##	NOTE
+##		シングルスレッド
+##		異常系
+##		Schema の単体テストも兼ねる
+##
+## Copyright (c) 2001 Ricoh Company, Ltd.
+## All rights reserved.
+##
+##		$Author$
+##		$Date$
+##		$Revision$
+##
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database DB_xxxx";
+TerminateSession;
+
+InitializeSession "DB_xxxx";
+
+Command "create table T(A int)";
+
+# 同名インデックスの作成
+Command "create index IDX on T(A)";
+Command "create index IDX on T(A)";
+
+#Command "drop database DB_xxxx";
+
+TerminateSession;
+
+#下三行は伊戸川が追加
+InitializeSession "";
+Command "drop database DB_xxxx";
+TerminateSession;
+Terminate;
+End;

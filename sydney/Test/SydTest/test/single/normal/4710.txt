@@ -1,0 +1,128 @@
+# Insert, Select, Where構文で他のスクリプト(主に0***番台)ではテストされていない部分を追加
+# ある程度たまったら、別にした方がいいかも。
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#Create table, index構文
+# 値をインサートした後に索引作成
+Command  "create table T1(C1 char(10))";
+Command  "insert into T1 (C1) values ('111')";
+Command  "create index I1 on T1(C1)";
+Command  "drop table T1";
+
+#Insert構文
+# defaultを使った構文
+Command  "create table T(f1 int default 0, f2 char(4) default 'aaaa')";
+Command  "insert T default values";
+Command  "select * from T";
+Command  "drop table T";
+
+# 上と同じでheapを付けた
+Command  "create table T(f1 int default 0, f2 char(4) default 'aaaa' hint heap)";
+Command  "insert T default values";
+Command  "select * from T";
+Command  "drop table T";
+
+# テーブルがbinary列
+Command  "create table T (f1 binary(10))";
+Command  "insert T values 'abc'";
+Command  "insert T values 'abcde'";
+Command  "select * from T";
+Command  "drop table T";
+
+# テーブルがbigint列
+Command  "create table t (c bigint)";
+Command  "insert into t values (2147483648)";
+Command  "select * from t";
+Command  "drop table t";
+
+
+#Select構文
+# 構文にテーブル名と*を組み合わせる
+Command  "create table T1(N int, X ntext array [no limit])";
+Command  "create table T2(N int, X ntext array [no limit])";
+Command  "insert into T1 values (1, ?)" [["hoge"]];
+Command  "insert into T1 values (2, ?)" [["piyo"]];
+Command  "insert into T1 values (3, ?)" [["HOGE"]];
+Command  "insert into T1 values (4, ?)" [["PIYO"]];
+Command  "insert into T2 values (10, ?)" [["HOGE"]];
+Command  "insert into T2 values (20, ?)" [["PIYO"]];
+Command  "select T1.* from T1, T2 where T1.X = T2.X";
+Command  "drop table T1";
+Command  "drop table T2";
+
+# 全文索引に対してcharの長さを出力させる
+Command  "create table T (f1 ntext)";
+Command  "create fulltext index I on T(f1)";
+Command  "insert into T values (?)" ["hoge"];
+Command  "insert into T values (?)" ["piyo"];
+Command  "select avg(char_length(f1)) from T";
+Command  "insert into T values (?)" ["puu"];
+Command  "select avg(char_length(f1)) from T";
+Command  "drop table T";
+
+
+#Where構文
+# ()で括った構文
+Command  "create table T(f1 int, f2 int)";
+Command  "insert T values (0, 1), (0, 2), (1, 0)";
+Command  "select * from T where (f1, f2) < (1, 2)";
+Command  "drop table T";
+
+# boolean付きで索引無しの列, order by付き, 及びROWID出力
+Command  "create table T (f1 int, f2 int, f3 int, f4 int)";
+Command  "create index I_f1 on T(f1)";
+Command  "create index I_f2 on T(f2)";
+Command  "insert T values (0, 1, 2, 3), (1, 2, 3, 4)";
+Command  "select f3 from T where f1 < 1 and f2 < 2";
+Command  "select ROWID from T where f1 < 1 and f2 < 2";
+Command  "select ROWID from T where f1 < 1 and f2 < 2 and f3 < 3 order by f2";
+Command  "drop table T";
+
+# boolean付きで索引有りの列, order by付き, 及びROWID出力
+Command  "create table T (f1 int, f2 int, f3 int, f4 int)";
+Command  "create index I_f1 on T(f1)";
+Command  "create index I_f2 on T(f2)";
+Command  "create index I_f3 on T(f3)";
+Command  "insert T values (0, 1, 2, 3), (1, 2, 3, 4)";
+Command  "select f3 from T where f1 < 1 and f2 < 2";
+Command  "select ROWID from T where f1 < 1 and f2 < 2";
+Command  "select ROWID from T where f1 < 1 and f2 < 2 and f3 < 3 order by f2";
+Command  "select f3 from T where f1 < 1 and f2 < 2 and f3 < 3 order by f2";
+Command  "drop table T";
+
+# NOT構文
+Command  "create table T (f1 int, f2 int, f3 int)";
+Command  "insert T values (5,  10, 1)";
+Command  "insert T values (10, 20, 2)";
+Command  "insert T values (15, 30, 3)";
+Command  "insert T values (20, 20, 4)";
+Command  "insert T values (25, 10, 5)";
+Command  "select * from T where NOT (f1 < 10 or f2 < 20)";
+Command  "select * from T where NOT (f1 < 10 and f2 < 20)";
+Command  "select * from T where NOT (NOT (f1 < 10))";
+Command  "drop table T";
+
+# Where構文の代わりにhavingを使う
+Command  "create table T (f1 int, f2 int)";
+Command  "select count(*) from T having count(*) > 1";
+Command  "select count(*) from T having count(*) < -1";
+Command  "insert T values (10, 1)";
+Command  "insert T values (20, 1)";
+Command  "insert T values (30, 1)";
+Command  "select count(*) from T having count(*) > 1";
+Command  "select count(*) from T having count(*) < -1";
+Command  "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

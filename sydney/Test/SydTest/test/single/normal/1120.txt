@@ -1,0 +1,137 @@
+# blobファイルのテスト
+
+Begin;
+SetSystemParameter "SydTest_ShowBinary" "True";
+SetSystemParameter "SydTest_MessageDisplayThreshold" "0";
+Initialize;
+
+
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T1(C1 blob hint 'compressed')";
+Command "select C1 from T1";
+Command "insert into T1 (C1) values (?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from       1 for 1000) from T1";
+Command "select substring(C1 from 1499501 for 1000) from T1";
+Command "select substring(C1 from 2999001 for 1000) from T1";
+Command "select substring(C1 from       1 for 10000) from T1";
+Command "select substring(C1 from 1497501 for 10000) from T1";
+Command "select substring(C1 from 2995001 for 10000) from T1";
+Command "select substring(C1 from       1 for 100000) from T1";
+Command "select substring(C1 from 1497501 for 100000) from T1";
+Command "select substring(C1 from 2900001 for 100000) from T1";
+Command "select substring(C1 from 2900001) from T1";
+Command "update T1 set C1 = overlay(C1 placing ? from       1)" [binaryfile "..\\..\\doc\\rnd5k-a"]; 
+Command "verify table T1 cascade";
+Command "start transaction read write";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "rollback";
+Command "verify table T1 cascade";
+Command "start transaction read write";
+Command "update T1 set C1 = overlay(C1 placing ? from       1)" [binaryfile "..\\..\\doc\\rnd5k-a"];
+Command "rollback";
+Command "verify table T1 cascade";
+Command "drop table T1";
+
+Command "create table T1(C1 blob)";
+Command "select C1 from T1";
+Command "insert into T1 (C1) values (?)" [binaryfile "..\\..\\doc\\rnd1M-a"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-b"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from       1 for 1000) from T1";
+Command "select substring(C1 from 1499501 for 1000) from T1";
+Command "select substring(C1 from 2999001 for 1000) from T1";
+Command "select substring(C1 from       1 for 10000) from T1";
+Command "select substring(C1 from 1497501 for 10000) from T1";
+Command "select substring(C1 from 2995001 for 10000) from T1";
+Command "select substring(C1 from       1 for 100000) from T1";
+Command "select substring(C1 from 1497501 for 100000) from T1";
+Command "select substring(C1 from 2900001 for 100000) from T1";
+Command "select substring(C1 from 2900001) from T1";
+Command "verify table T1 cascade";
+Command "start transaction read write";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\rnd1M-c"];
+Command "rollback";
+Command "verify table T1 cascade";
+Command "start transaction read write";
+Command "update T1 set C1 = overlay(C1 placing ? from       1)" [binaryfile "..\\..\\doc\\rnd1k-a"];
+Command "update T1 set C1 = overlay(C1 placing ? from 1499501)" [binaryfile "..\\..\\doc\\rnd1k-b"];
+Command "update T1 set C1 = overlay(C1 placing ? from 2999001)" [binaryfile "..\\..\\doc\\rnd1k-c"];
+Command "rollback";
+Command "verify table T1 cascade";
+Command "drop table T1";
+
+Command "create table T1(C1 blob hint 'compressed')";
+Command "select C1 from T1";
+Command "insert into T1 (C1) values (?)" [binaryfile "..\\..\\doc\\Teihon.txt"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\dictionary.txt"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\Teihon.txt"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from      1 for  32291) from T1";
+Command "select substring(C1 from  32292 for 112709) from T1";
+Command "select substring(C1 from 112710 for 999999) from T1";
+Command "select substring(C1 from 142734 for    100) from T1";
+Command "select substring(C1 from 142734) from T1";
+Command "verify table T1 cascade";
+Command "start transaction read write";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\takekurabe.txt"];
+Command "rollback";
+Command "verify table T1 cascade";
+Command "start transaction read write";
+Command "update T1 set C1 = overlay(C1 placing ? from       1)" [binaryfile "..\\..\\doc\\takekurabe.txt"];
+Command "rollback";
+Command "verify table T1 cascade";
+Command "drop table T1";
+
+Command "create table T1(C1 blob)";
+Command "select C1 from T1";
+Command "insert into T1 (C1) values (?)" [binaryfile "..\\..\\doc\\ROMEO_AND_JULIET.txt"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\dictionary.txt"];
+Command "select char_length(C1) from T1";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\Teihon.txt"];
+Command "select char_length(C1) from T1";
+Command "select substring(C1 from      1 for  32291) from T1";
+Command "select substring(C1 from  32292 for 112709) from T1";
+Command "select substring(C1 from 112710 for 999999) from T1";
+Command "select substring(C1 from 142734 for    100) from T1";
+Command "select substring(C1 from 142734) from T1";
+Command "verify table T1 cascade";
+Command "start transaction read write";
+Command "update T1 set C1 = C1||?" [binaryfile "..\\..\\doc\\takekurabe.txt"];
+Command "rollback";
+Command "verify table T1 cascade";
+Command "start transaction read write";
+Command "update T1 set C1 = overlay(C1 placing ? from      1)" [binaryfile "..\\..\\doc\\Teihon.txt"];
+Command "update T1 set C1 = overlay(C1 placing ? from  32292)" [binaryfile "..\\..\\doc\\dictionary.txt"];
+Command "update T1 set C1 = overlay(C1 placing ? from 112710)" [binaryfile "..\\..\\doc\\Teihon.txt"];
+Command "rollback";
+Command "verify table T1 cascade";
+Command "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+SetSystemParameter "SydTest_MessageDisplayThreshold" "500";
+SetSystemParameter "SydTest_ShowBinary" "False";
+End;
+

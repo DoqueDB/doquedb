@@ -1,0 +1,103 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f1 int, f2 nvarchar(100), f3 image, f4 datetime, f5 float, f6 bigint, g1 int array[10], primary key(f1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create fulltext index T_f2 on T(f2) hint 'delayed'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] INSERT T input from path '../../doc/bulk_1_data1.txt' HINT 'Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {1,タイトル1,(null),2006-01-01 01:01:01.000,1.11E0,111111111111111111,{1,11,111}}
+SydTest::Executor: [INFO] {2,タイトル2,(null),2006-02-02 02:02:02.000,2.22E0,222222222222222222,{2,22,222}}
+SydTest::Executor: [INFO] {3,タイトル3,(null),2006-03-03 03:03:03.000,3.33E0,333333333333333333,{3,33,333}}
+SydTest::Executor: [INFO] {4,タイトル4,(null),2006-04-04 04:04:04.000,4.44E0,444444444444444444,{4,44,444}}
+SydTest::Executor: [INFO] {5,タイトル5,(null),2006-05-05 05:05:05.000,5.55E0,555555555555555555,{5,55,555}}
+SydTest::Executor: [INFO] {6,タイトル6,(null),2006-06-06 06:06:06.000,6.66E0,666666666666666666,{6,66,666}}
+SydTest::Executor: [INFO] {7,タイトル7,(null),2006-07-07 07:07:07.000,7.77E0,777777777777777777,{7,77,777}}
+SydTest::Executor: [INFO] {8,タイトル8,(null),2006-08-08 08:08:08.000,8.88E0,888888888888888888,{8,88,888}}
+SydTest::Executor: [INFO] {9,タイトル9,(null),2006-09-09 09:09:09.000,9.99E0,999999999999999999,{9,99,999}}
+SydTest::Executor: [INFO] {10,タイトル10,(null),2006-10-10 10:10:10.000,1.0101E1,101010101010101010,{10,1010,101010}}
+SydTest::Executor: [INFO] {11,タイトル11,(null),2006-11-11 11:11:11.000,1.11111E1,111111111111111111,{11,1111,111111}}
+SydTest::Executor: [INFO] {12,タイトル12,(null),2006-12-12 12:12:12.000,1.21212E1,121212121212121212,{12,1212,121212}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] INSERT T input from path '../../doc/bulk_1_data1_2.txt' HINT 'Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {1,タイトル1,(null),2006-01-01 01:01:01.000,1.11E0,111111111111111111,{1,11,111}}
+SydTest::Executor: [INFO] {2,タイトル2,(null),2006-02-02 02:02:02.000,2.22E0,222222222222222222,{2,22,222}}
+SydTest::Executor: [INFO] {3,タイトル3,(null),2006-03-03 03:03:03.000,3.33E0,333333333333333333,{3,33,333}}
+SydTest::Executor: [INFO] {4,タイトル4,(null),2006-04-04 04:04:04.000,4.44E0,444444444444444444,{4,44,444}}
+SydTest::Executor: [INFO] {5,タイトル5,(null),2006-05-05 05:05:05.000,5.55E0,555555555555555555,{5,55,555}}
+SydTest::Executor: [INFO] {6,タイトル6,(null),2006-06-06 06:06:06.000,6.66E0,666666666666666666,{6,66,666}}
+SydTest::Executor: [INFO] {7,タイトル7,(null),2006-07-07 07:07:07.000,7.77E0,777777777777777777,{7,77,777}}
+SydTest::Executor: [INFO] {8,タイトル8,(null),2006-08-08 08:08:08.000,8.88E0,888888888888888888,{8,88,888}}
+SydTest::Executor: [INFO] {9,タイトル9,(null),2006-09-09 09:09:09.000,9.99E0,999999999999999999,{9,99,999}}
+SydTest::Executor: [INFO] {10,タイトル10,(null),2006-10-10 10:10:10.000,1.0101E1,101010101010101010,{10,1010,101010}}
+SydTest::Executor: [INFO] {11,タイトル11,(null),2006-11-11 11:11:11.000,1.11111E1,111111111111111111,{11,1111,111111}}
+SydTest::Executor: [INFO] {12,タイトル12,(null),2006-12-12 12:12:12.000,1.21212E1,121212121212121212,{12,1212,121212}}
+SydTest::Executor: [INFO] {21,タイトル1,(null),2006-01-01 01:01:01.000,1.11E0,111111111111111111,{1,11,111}}
+SydTest::Executor: [INFO] {22,タイトル2,(null),2006-02-02 02:02:02.000,2.22E0,222222222222222222,{2,22,222}}
+SydTest::Executor: [INFO] {23,タイトル3,(null),2006-03-03 03:03:03.000,3.33E0,333333333333333333,{3,33,333}}
+SydTest::Executor: [INFO] {24,タイトル4,(null),2006-04-04 04:04:04.000,4.44E0,444444444444444444,{4,44,444}}
+SydTest::Executor: [INFO] {25,タイトル5,(null),2006-05-05 05:05:05.000,5.55E0,555555555555555555,{5,55,555}}
+SydTest::Executor: [INFO] {26,タイトル6,(null),2006-06-06 06:06:06.000,6.66E0,666666666666666666,{6,66,666}}
+SydTest::Executor: [INFO] {27,タイトル7,(null),2006-07-07 07:07:07.000,7.77E0,777777777777777777,{7,77,777}}
+SydTest::Executor: [INFO] {28,タイトル8,(null),2006-08-08 08:08:08.000,8.88E0,888888888888888888,{8,88,888}}
+SydTest::Executor: [INFO] {29,タイトル9,(null),2006-09-09 09:09:09.000,9.99E0,999999999999999999,{9,99,999}}
+SydTest::Executor: [INFO] {30,タイトル10,(null),2006-10-10 10:10:10.000,1.0101E1,101010101010101010,{10,1010,101010}}
+SydTest::Executor: [INFO] {31,タイトル11,(null),2006-11-11 11:11:11.000,1.11111E1,111111111111111111,{11,1111,111111}}
+SydTest::Executor: [INFO] {32,タイトル12,(null),2006-12-12 12:12:12.000,1.21212E1,121212121212121212,{12,1212,121212}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] delete from T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] INSERT T input from path '../../doc/bulk_1_data1.txt' HINT 'Code="utf-8"'
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {12,タイトル12,(null),2006-12-12 12:12:12.000,1.21212E1,121212121212121212,{12,1212,121212}}
+SydTest::Executor: [INFO] {11,タイトル11,(null),2006-11-11 11:11:11.000,1.11111E1,111111111111111111,{11,1111,111111}}
+SydTest::Executor: [INFO] {10,タイトル10,(null),2006-10-10 10:10:10.000,1.0101E1,101010101010101010,{10,1010,101010}}
+SydTest::Executor: [INFO] {9,タイトル9,(null),2006-09-09 09:09:09.000,9.99E0,999999999999999999,{9,99,999}}
+SydTest::Executor: [INFO] {8,タイトル8,(null),2006-08-08 08:08:08.000,8.88E0,888888888888888888,{8,88,888}}
+SydTest::Executor: [INFO] {7,タイトル7,(null),2006-07-07 07:07:07.000,7.77E0,777777777777777777,{7,77,777}}
+SydTest::Executor: [INFO] {6,タイトル6,(null),2006-06-06 06:06:06.000,6.66E0,666666666666666666,{6,66,666}}
+SydTest::Executor: [INFO] {5,タイトル5,(null),2006-05-05 05:05:05.000,5.55E0,555555555555555555,{5,55,555}}
+SydTest::Executor: [INFO] {4,タイトル4,(null),2006-04-04 04:04:04.000,4.44E0,444444444444444444,{4,44,444}}
+SydTest::Executor: [INFO] {3,タイトル3,(null),2006-03-03 03:03:03.000,3.33E0,333333333333333333,{3,33,333}}
+SydTest::Executor: [INFO] {2,タイトル2,(null),2006-02-02 02:02:02.000,2.22E0,222222222222222222,{2,22,222}}
+SydTest::Executor: [INFO] {1,タイトル1,(null),2006-01-01 01:01:01.000,1.11E0,111111111111111111,{1,11,111}}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

@@ -1,0 +1,240 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t (f varchar(no limit))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t1 (f char(4))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t2 (f2 nvarchar(no limit))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t3 (id3 int,f3 nvarchar(no limit))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX3 on t3(id3)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table t4 (id4 int,f4 varchar(no limit))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX4 on t4(id4)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t(f) values ('abcde')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t(f) values ('fghij')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t(f) values ('xyzuvw')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t(f) values ('ccccccccc')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t(f) values ('ccccccccc')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t2(f2) values ('あああああ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t2(f2) values ('いいいいい')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t2(f2) values ('ううううう')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t2(f2) values ('かかかかか')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t3(id3,f3) values (1,'あああああ')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t3(id3,f3) values (2,'いいいいい')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t4(id4,f4) values (1,'aaaaaaaaaa')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t4(id4,f4) values (2,'bbbbbbbbbb')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t1 (select distinct substring(f from 1 for 4) from t)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from t1
+SydTest::Executor: [INFO] {abcd}
+SydTest::Executor: [INFO] {fghi}
+SydTest::Executor: [INFO] {xyzu}
+SydTest::Executor: [INFO] {cccc}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t1 (select distinct substring(f from 1 for 4) from t order by f)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from t1
+SydTest::Executor: [INFO] {abcd}
+SydTest::Executor: [INFO] {fghi}
+SydTest::Executor: [INFO] {xyzu}
+SydTest::Executor: [INFO] {cccc}
+SydTest::Executor: [INFO] {abcd}
+SydTest::Executor: [INFO] {cccc}
+SydTest::Executor: [INFO] {fghi}
+SydTest::Executor: [INFO] {xyzu}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t2 (select f from t)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from t2
+SydTest::Executor: [INFO] {あああああ}
+SydTest::Executor: [INFO] {いいいいい}
+SydTest::Executor: [INFO] {ううううう}
+SydTest::Executor: [INFO] {かかかかか}
+SydTest::Executor: [INFO] {abcde}
+SydTest::Executor: [INFO] {fghij}
+SydTest::Executor: [INFO] {xyzuvw}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t2 (select distinct f from t)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t2 (select distinct * from t)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from t2
+SydTest::Executor: [INFO] {あああああ}
+SydTest::Executor: [INFO] {いいいいい}
+SydTest::Executor: [INFO] {ううううう}
+SydTest::Executor: [INFO] {かかかかか}
+SydTest::Executor: [INFO] {abcde}
+SydTest::Executor: [INFO] {fghij}
+SydTest::Executor: [INFO] {xyzuvw}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] {abcde}
+SydTest::Executor: [INFO] {fghij}
+SydTest::Executor: [INFO] {xyzuvw}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] {abcde}
+SydTest::Executor: [INFO] {fghij}
+SydTest::Executor: [INFO] {xyzuvw}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t2 (select * from t)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from t2
+SydTest::Executor: [INFO] {あああああ}
+SydTest::Executor: [INFO] {いいいいい}
+SydTest::Executor: [INFO] {ううううう}
+SydTest::Executor: [INFO] {かかかかか}
+SydTest::Executor: [INFO] {abcde}
+SydTest::Executor: [INFO] {fghij}
+SydTest::Executor: [INFO] {xyzuvw}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] {abcde}
+SydTest::Executor: [INFO] {fghij}
+SydTest::Executor: [INFO] {xyzuvw}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] {abcde}
+SydTest::Executor: [INFO] {fghij}
+SydTest::Executor: [INFO] {xyzuvw}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] {abcde}
+SydTest::Executor: [INFO] {fghij}
+SydTest::Executor: [INFO] {xyzuvw}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] {ccccccccc}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t3 (select id4,f4 from t4)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from t3
+SydTest::Executor: [INFO] {1,あああああ}
+SydTest::Executor: [INFO] {2,いいいいい}
+SydTest::Executor: [INFO] {1,aaaaaaaaaa}
+SydTest::Executor: [INFO] {2,bbbbbbbbbb}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t3 (select distinct id4,substring(f4 from 1 for 2) from t4)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from t3
+SydTest::Executor: [INFO] {1,あああああ}
+SydTest::Executor: [INFO] {2,いいいいい}
+SydTest::Executor: [INFO] {1,aaaaaaaaaa}
+SydTest::Executor: [INFO] {2,bbbbbbbbbb}
+SydTest::Executor: [INFO] {1,aa}
+SydTest::Executor: [INFO] {2,bb}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t3 (select id4,f4 from t4 where id4 =1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from t3
+SydTest::Executor: [INFO] {1,あああああ}
+SydTest::Executor: [INFO] {2,いいいいい}
+SydTest::Executor: [INFO] {1,aaaaaaaaaa}
+SydTest::Executor: [INFO] {2,bbbbbbbbbb}
+SydTest::Executor: [INFO] {1,aa}
+SydTest::Executor: [INFO] {2,bb}
+SydTest::Executor: [INFO] {1,aaaaaaaaaa}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t3 (select * from t4)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] Select * from t3
+SydTest::Executor: [INFO] {1,あああああ}
+SydTest::Executor: [INFO] {2,いいいいい}
+SydTest::Executor: [INFO] {1,aaaaaaaaaa}
+SydTest::Executor: [INFO] {2,bbbbbbbbbb}
+SydTest::Executor: [INFO] {1,aa}
+SydTest::Executor: [INFO] {2,bb}
+SydTest::Executor: [INFO] {1,aaaaaaaaaa}
+SydTest::Executor: [INFO] {1,aaaaaaaaaa}
+SydTest::Executor: [INFO] {2,bbbbbbbbbb}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert t3 (select distinct * from t4)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

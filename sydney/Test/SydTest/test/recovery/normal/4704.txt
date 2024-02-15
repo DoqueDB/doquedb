@@ -1,0 +1,42 @@
+# 列どうしの比較(正常系)
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# データの準備
+Command "create table T (I1 int, I2 int, I3 int array [no limit],
+			 F1 float, NVC nvarchar(256))";
+Command "insert into T values (12, 34, ?, 12.0, '12')" [[1, 4, 7]];
+Command "insert into T values (66, 55, ?, 34.5, '34.5')" [[2, 5, 8]];
+Command "insert into T values (56, 78, ?, 99.9, 'Foo')" [[3, 6, 9]];
+
+# 型が同じだが異なる列の比較
+Rowset "select NVC from T where I1=I2";
+
+# 互いに型の異なる列の比較
+Rowset "select NVC from T where I1=NVC";
+Rowset "select NVC from T where NVC=I1";
+
+Rowset "select I1 from T where I1=F1";
+Rowset "select I1 from T where F1=I1";
+
+Rowset "select NVC from T where NVC=F1";
+Rowset "select NVC from T where F1=NVC";
+
+#Command "drop table T";
+
+Command  "select * from T";
+
+TerminateSession;
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+

@@ -1,0 +1,390 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (N int, C ntext)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values ( 1, '_____')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values ( 2, '%%%%%')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values ( 3, '%__%_')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values ( 4, '_%__%')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values ( 5, '__%__')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values ( 6, '%___%')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values ( 7, '_%_%_')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values ( 8, '%_%__')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values ( 9, '__%_%')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (10, '%_%_%')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (11, '%%___')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (12, '_%%__')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (13, '__%%_')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T (N, C) values (14, '___%%')
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '+%%' escape '+'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%+%' escape '+'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%+%%' escape '+'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {7,_%_%_}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%+%+%%' escape '+'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%+__+_%' escape '+'
+SydTest::Executor: [INFO] {1,_____}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {7,_%_%_}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%+___+_%' escape '+'
+SydTest::Executor: [INFO] {1,_____}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '+____+_' escape '+'
+SydTest::Executor: [INFO] {1,_____}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {7,_%_%_}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '+__+__+_' escape '+'
+SydTest::Executor: [INFO] {1,_____}
+SydTest::Executor: [INFO] {7,_%_%_}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Pause
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '\%%' escape '\'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%\%' escape '\'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%\%%' escape '\'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {7,_%_%_}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%\%\%%' escape '\'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%\__\_%' escape '\'
+SydTest::Executor: [INFO] {1,_____}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {7,_%_%_}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%\___\_%' escape '\'
+SydTest::Executor: [INFO] {1,_____}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '\____\_' escape '\'
+SydTest::Executor: [INFO] {1,_____}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {7,_%_%_}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '\__\__\_' escape '\'
+SydTest::Executor: [INFO] {1,_____}
+SydTest::Executor: [INFO] {7,_%_%_}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Pause
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '_%%' escape '_'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%_%' escape '_'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%_%%' escape '_'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {7,_%_%_}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%_%_%%' escape '_'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%__%' escape '_'
+SydTest::Executor: [INFO] {1,_____}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {7,_%_%_}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%____%' escape '_'
+SydTest::Executor: [INFO] {1,_____}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%______%' escape '_'
+SydTest::Executor: [INFO] {1,_____}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Pause
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%%____' escape '%'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {3,%__%_}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '____%%' escape '%'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {4,_%__%}
+SydTest::Executor: [INFO] {6,%___%}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '__%%__' escape '%'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] {12,_%%__}
+SydTest::Executor: [INFO] {13,__%%_}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '_%_%%%__' escape '%'
+SydTest::Executor: [INFO] {5,__%__}
+SydTest::Executor: [INFO] {8,%_%__}
+SydTest::Executor: [INFO] {9,__%_%}
+SydTest::Executor: [INFO] {10,%_%_%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '%%%%___' escape '%'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {11,%%___}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where C like '___%%%%' escape '%'
+SydTest::Executor: [INFO] {2,%%%%%}
+SydTest::Executor: [INFO] {14,___%%}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Pause
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

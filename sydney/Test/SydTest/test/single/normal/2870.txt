@@ -1,0 +1,20 @@
+# テーブルを含むDBをunmountし、そのDBのパスを削除する。
+
+Begin;
+Initialize;
+
+InitializeSession "DefaultDB";
+Command "create table T(N int, C ntext)";
+Command "insert into T values (1, ?)" ["dummy"];
+Command "insert into T values (2, ?)" ["すぐ消されます"];
+Command "delete from T";
+TerminateSession;
+
+InitializeSession "";
+Command "unmount DefaultDB";
+TerminateSession;
+
+System "rm -rf d:\\dm\\data\\DefaultDB";
+System "rm -rf d:\\dm\\system\\DefaultDB";
+Terminate;
+End;

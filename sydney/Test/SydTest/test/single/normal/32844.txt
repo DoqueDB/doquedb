@@ -1,0 +1,63 @@
+#backup full discard snapshot
+#read write transactionでDBをbackupし、そのままdropする
+#対象モジュール: Admin
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+
+Command "create area area1 'd:\\dm\\area\\1'";
+Command  "create table T1(C1 int, C2 ntext array [no limit] hint heap 'compressed')";
+Command "alter table T1 set area area1";
+
+Command  "create fulltext index I1_2 on T1(C2) hint 'sectionized, delayed ,inverted=(nolocation=true)'";
+Command  "insert into T1 (C1, C2) values (?, ?)" [1, ["1"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [2, ["2"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [3, ["3"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [4, ["4"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [5, ["5"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [6, ["6"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [7, ["7"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [8, ["8"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [9, ["9"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [10, ["10"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [11, ["11"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [12, ["12"]];
+
+Command "start transaction read write";
+#fullは現在必須、discard snapshotもトランザクションがread writeならば必須
+Command "start backup full discard snapshot";
+Command "end backup";
+#rollbackしてもエラーにならないことを確認する
+Command "rollback";
+
+# やり直し
+Command "start transaction read write";
+Command "start backup full discard snapshot";
+Command "end backup";
+#こんどはcommitする
+Command "commit";
+
+# backupは繰り返して実行可能である
+Command "start transaction read write";
+Command "start backup full discard snapshot";
+#再びcommitする
+#end backupなしにcommitしても、commitの途中でend backupが行われる
+#このとき、Admin::EndBackup::EndAllが呼ばれる
+Command "commit";
+
+#DBの検査を行う
+Command "start transaction read write";
+Command "verify database DefaultDB cascade continue";
+Command "commit";
+
+Command "drop table T1";
+Command "drop area area1";
+
+TerminateSession;
+
+Terminate;
+End;
+

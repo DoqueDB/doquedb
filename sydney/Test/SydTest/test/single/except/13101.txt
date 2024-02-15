@@ -1,0 +1,14 @@
+Begin;
+SetSystemParameter "Exception_FakeError" "Buffer::Page::attach count=(20 25 30)";
+
+Initialize;
+InitializeSession "TEST";
+Command "create database TEST";
+Command "create table TT (A int, B ntext)";
+Command "insert into TT values (1, 'abc')";
+Command "insert into TT values (2, 'ABC')";
+TerminateSession;
+Terminate;
+
+SetSystemParameter "Exception_FakeError" "";
+End;

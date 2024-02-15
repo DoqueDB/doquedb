@@ -1,0 +1,20 @@
+# Bug report 1497
+
+# 配列索引のテスト
+# 要素数0の配列があると索引定義できない
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+Command "create database TESTDB";
+Command "create table T(C int array[no limit])";
+Command "insert T values ?" [[]];
+Command "select * from T";
+# [BUG] 索引作成できない
+Command "create array index I on T(C)";
+
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

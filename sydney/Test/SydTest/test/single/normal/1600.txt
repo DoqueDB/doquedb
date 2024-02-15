@@ -1,0 +1,64 @@
+# 
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T (N int, C ntext)";
+Command "insert into T values (1, 'a brown')";
+Command "insert into T values (2, 'fox jumps')";
+Command "insert into T values (3, 'quickly over')";
+Command "insert into T values (4, 'the lazy dog')";
+Command "insert into T values (5, 'A BROWN')";
+Command "insert into T values (6, 'FOX JUMPS')";
+Command "insert into T values (7, 'QUICKLY OVER')";
+Command "insert into T values (8, 'THE LAZY DOG')";
+Command "insert into T values (9, 'a brown')";
+Command "insert into T values (10, 'fox jumps')";
+
+TerminateSession;
+Terminate;
+
+Initialize;
+InitializeSession "TESTDB";
+Command "select N from T order by N asc";
+Command "select N from T order by N desc";
+Command "select N from T order by C asc";
+Command "select N from T order by C desc";
+Command "select C from T order by N asc";
+Command "select C from T order by N desc";
+Command "select C from T order by C asc";
+Command "select C from T order by C desc";
+
+Command "select distinct N from T order by N asc";
+Command "select distinct N from T order by N desc";
+Command "select distinct N from T order by C asc";
+Command "select distinct N from T order by C desc";
+Command "select distinct C from T order by N asc";
+Command "select distinct C from T order by N desc";
+Command "select distinct C from T order by C asc";
+Command "select distinct C from T order by C desc";
+
+# 障害によるテスト
+Command "insert into T values (1, 'a brown')";
+Command "insert into T values (5, 'A BROWN')";
+Command "insert into T values (10, 'fox jumps')";
+
+Command "select distinct * from T order by N asc";
+Command "select distinct * from T order by N desc";
+Command "select distinct * from T order by C asc";
+Command "select distinct * from T order by C desc";
+
+
+Command "drop table T";
+TerminateSession;
+
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

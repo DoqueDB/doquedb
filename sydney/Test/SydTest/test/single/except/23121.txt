@@ -1,0 +1,98 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# XA START -- トランザクションモードに関するテスト
+#
+
+# 指定なし
+Command "xa start X'00' ,";
+Command "xa start X'00' , ,";
+
+# 指定なし A + カンマ1つ または カンマ2つ
+Command "xa start X'00' read only,";
+Command "xa start X'00' read only, ,";
+
+Command "xa start X'00' read write,";
+Command "xa start X'00' read write, ,";
+
+# 指定なし B + カンマ1つ
+Command "xa start X'00' isolation level read uncommitted,";
+
+Command "xa start X'00' isolation level read committed,";
+
+Command "xa start X'00' isolation level repeatable read,";
+
+Command "xa start X'00' isolation level serializable,";
+
+# 指定なし C + カンマ1つ
+Command "xa start X'00' using snapshot,";
+
+# 指定なし A, B + カンマ1つ
+Command "xa start X'00' read only, isolation level read uncommitted,";
+
+Command "xa start X'00' read write, isolation level read committed,";
+
+Command "xa start X'00' read only, isolation level repeatable read,";
+
+Command "xa start X'00' read write, isolation level serializable,";
+
+Command "xa start X'00' read write, isolation level read uncommitted,";
+
+Command "xa start X'00' read only, isolation level read committed,";
+
+Command "xa start X'00' read write, isolation level repeatable read,";
+
+Command "xa start X'00' read only, isolation level serializable,";
+
+# 組み合わせ A, B, C, ABCのいずれかを再度指定
+Command "xa start X'00' read only, isolation level read uncommitted, using snapshot, read only";
+Command "xa start X'00' read only, isolation level read uncommitted, using snapshot, isolation level repeatable read";
+Command "xa start X'00' read only, isolation level read uncommitted, using snapshot, using snapshot";
+
+Command "xa start X'00' read write, isolation level read committed, using snapshot, read only";
+Command "xa start X'00' read write, isolation level read committed, using snapshot, isolation level repeatable read";
+Command "xa start X'00' read write, isolation level read committed, using snapshot, using snapshot";
+
+Command "xa start X'00' read only, isolation level repeatable read, using snapshot, read only";
+Command "xa start X'00' read only, isolation level repeatable read, using snapshot, isolation level repeatable read";
+Command "xa start X'00' read only, isolation level repeatable read, using snapshot, using snapshot";
+
+Command "xa start X'00' read write, isolation level serializable, using snapshot, read only";
+Command "xa start X'00' read write, isolation level serializable, using snapshot, isolation level repeatable read";
+Command "xa start X'00' read write, isolation level serializable, using snapshot, using snapshot";
+
+Command "xa start X'00' read write, isolation level read uncommitted, using snapshot, read only";
+Command "xa start X'00' read write, isolation level read uncommitted, using snapshot, isolation level repeatable read";
+Command "xa start X'00' read write, isolation level read uncommitted, using snapshot, using snapshot";
+
+Command "xa start X'00' read only, isolation level read committed, using snapshot, read only";
+Command "xa start X'00' read only, isolation level read committed, using snapshot, isolation level repeatable read";
+Command "xa start X'00' read only, isolation level read committed, using snapshot, using snapshot";
+
+Command "xa start X'00' read write, isolation level repeatable read, using snapshot, read only";
+Command "xa start X'00' read write, isolation level repeatable read, using snapshot, isolation level repeatable read";
+Command "xa start X'00' read write, isolation level repeatable read, using snapshot, using snapshot";
+
+Command "xa start X'00' read only, isolation level serializable, using snapshot, read only";
+Command "xa start X'00' read only, isolation level serializable, using snapshot, isolation level repeatable read";
+Command "xa start X'00' read only, isolation level serializable, using snapshot, using snapshot";
+
+# 他のオプションと同時に指定
+Command "xa start X'00' read write join";
+
+Command "xa start X'00' read write resume";
+
+Command "xa start X'00' read write join resume";
+
+Command "xa start X'00' read write resume join";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

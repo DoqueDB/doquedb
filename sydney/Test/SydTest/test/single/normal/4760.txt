@@ -1,0 +1,29 @@
+Begin;
+SetSystemParameter "Execution_LikeNormalizedString" 1;
+
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T (F nvarchar(100))";
+
+Command "insert into T values '！～ぁゞ'";
+Command "insert into T values '！～ァヾ'";
+Command "insert into T values '!~ｱ'";
+
+Command "select * from T where F like '%！%'";
+Command "select * from T where F like '%～%'";
+Command "select * from T where F like '%ぁ%'";
+Command "select * from T where F like '%ゞ%'";
+Command "select * from T where F like '%ァ%'";
+Command "select * from T where F like '%ヾ%'";
+Command "select * from T where F like '%!%'";
+Command "select * from T where F like '%~%'";
+Command "select * from T where F like '%あ%'";
+Command "select * from T where F like '%ア%'";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

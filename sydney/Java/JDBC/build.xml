@@ -1,0 +1,277 @@
+<?xml version="1.0"?>
+<project name="doquedb" default="dist" basedir=".">
+
+  <property name="name" value="doquedb"/>
+  <property name="src" value="src"/>
+  <property name="build" value="build"/>
+  <property name="lib" value="lib"/>
+  <property name="olib" value="olib"/>
+  <property name="bin" value="bin"/>
+  <property name="test" value="test"/>
+  <property name="doc" value="docs/api"/>
+  <property environment="env"/>
+
+  <property name="build.version" value="1.6"/>
+  <path id="build.bootclass.path">
+    <pathelement path="${env.JAVA8_HOME}/jre/lib/rt.jar"/>
+    <pathelement path="${env.JAVA_HOME8}/jre/lib/rt.jar"/>
+    <pathelement path="${env.JAVA_HOME_8}/jre/lib/rt.jar"/>
+    <pathelement path="${env.JAVA8_HOME}/jre/lib/jce.jar"/>
+    <pathelement path="${env.JAVA_HOME8}/jre/lib/jce.jar"/>
+    <pathelement path="${env.JAVA_HOME_8}/jre/lib/jce.jar"/>
+  </path>
+
+  <target name="prepare">
+    <!-- create time stamp -->
+    <tstamp/>
+    <!-- create directory -->
+    <mkdir dir="${build}"/>
+    <mkdir dir="${bin}"/>
+    <mkdir dir="${lib}"/>
+    <mkdir dir="${olib}"/>
+  </target>
+
+  <target name="compile" depends="prepare">
+    <javac encoding="utf-8" srcdir="${src}" destdir="${build}" debug="on" source="${build.version}" target="${build.version}" bootclasspathref="build.bootclass.path">
+      <classpath>
+        <fileset dir="olib"><include name="**/*.jar"/></fileset>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="dist" depends="compile">
+    <jar jarfile="${lib}/${name}.jar" manifest="${src}/jp/co/ricoh/doquedb/jdbc/META-INF/MANIFEST.MF">
+      <fileset dir="${build}">
+        <include name="jp/co/ricoh/doquedb/**"/>
+        <include name="jp/co/ricoh/sydney/jdbc/Driver.java"/>
+      </fileset>
+      <metainf dir="META-INF">
+      </metainf>
+    </jar>
+  </target>
+
+  <target name="testcompile" depends="dist">
+    <javac encoding="utf-8" srcdir="${test}" destdir="${build}" debug="on" source="${build.version}" target="${build.version}" bootclasspathref="build.bootclass.path">
+      <classpath>
+        <fileset dir="olib"><include name="**/*.jar"/></fileset>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="doc" depends="prepare">
+    <delete dir="${doc}"/>
+    <javadoc destdir="docs/api"
+             author="false" version="false" use="true"
+             windowtitle="DoqueDB JDBC Document (javadoc)"
+             encoding="utf-8" charset="utf-8" docencoding="utf-8">
+      <sourcepath path="${src}"/>
+      <package name="jp.co.ricoh.doquedb.common"/>
+      <package name="jp.co.ricoh.doquedb.jdbc"/>
+      <package name="jp.co.ricoh.doquedb.jdbcx"/>
+      <classpath>
+        <fileset dir="lib"><include name="**/*.jar"/></fileset>
+        <fileset dir="olib"><include name="**/*.jar"/></fileset>
+      </classpath>
+      <doctitle><![CDATA[<h1>DoqueDB JDBC Driver</h1>]]></doctitle>
+      <bottom><![CDATA[<i>Copyright &#169; 2023 RICOH Co., Ltd.
+              All Rights Reserved.</i>]]></bottom>
+    </javadoc>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build}"/>
+  </target>
+
+  <target name="test" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/*Test.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+  <target name="connectiontest" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/ConnectionTest.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+  <target name="databasemetadatatest" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/DatabaseMetaDataTest.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+  <target name="drivermanagertest" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/DriverManagerTest.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+  <target name="drivertest" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/DriverTest.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+  <target name="statementtest" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/StatementTest.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+  <target name="preparedstatementtest" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/PreparedStatementTest.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+  <target name="resultsettest" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/ResultSetTest.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+  <target name="resultsetmetadatatest" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/ResultSetMetaDataTest.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+  <target name="arraytest" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/ArrayTest.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+  <target name="availabilitytest" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/AvailabilityTest.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+  <target name="pooltest" depends="testcompile">
+  <junit>
+    <classpath>
+      <pathelement location="${build}"/>
+      <fileset dir="lib"><include name="**/*.jar"/></fileset>
+      <fileset dir="olib"><include name="**/*.jar"/></fileset>
+    </classpath>
+    <batchtest fork="yes">
+      <formatter type="plain" usefile="false"/>
+      <fileset dir="${test}">
+        <include name="**/PoolTest.java"/>
+      </fileset>
+    </batchtest>
+  </junit>
+  </target>
+
+</project>

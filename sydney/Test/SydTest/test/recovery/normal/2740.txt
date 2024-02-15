@@ -1,0 +1,39 @@
+#alter database readwrite/readonly, online/offline (正常系)
+# DBの属性を切り替えてみる
+
+Begin;
+Initialize;
+
+InitializeSession "DefaultDB";
+Command "create table T(C int)";
+
+#readwrite
+Command "alter database DefaultDB offline";
+#onlineに切り替える
+Command "alter database DefaultDB online";
+#このinsert/selectは成功する
+Command "insert into T (C) values (777)";
+Command "select C from T";
+
+#readonlyに切り替える
+Command "alter database DefaultDB read only";
+#offlineに切り替える
+Command "alter database DefaultDB offline";
+#onlineに切り替える
+Command "alter database DefaultDB online";
+#このselectは成功する
+Command "select C from T";
+
+#readwrite again
+Command "alter database DefaultDB read write";
+Command "alter database DefaultDB online";
+#このinsert/selectは成功する
+Command "insert into T (C) values (777)";
+Command "select C from T";
+
+#Command "drop table T";
+TerminateSession;
+
+# (障害回復を試すためTerminateしない)
+End;
+

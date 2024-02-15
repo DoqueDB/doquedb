@@ -1,0 +1,33 @@
+# insert->create index /fulltext(normalized, sectionized, delayed)
+# 先に索引のない状態で何件か入っているtableに後から索引をつけるテストを行う。
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# 列が配列型であるtableのテスト
+Command  "create table T1(C1 ntext array [no limit])";
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\hello.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\ricoh.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Teihon.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\takekurabe.txt"]];
+Command  "insert into T1 (C1) values (?)" [[textsjisfile "..\\..\\doc\\Alangri-Gloriban.txt"]];
+# Indexが正常につけられれば成功
+Command  "create fulltext index I1_1 on T1(C1) hint 'sectionized, delayed, inverted=(nolocation=true, normalized=true)'";
+# 念のためselect
+Command  "select * from T1";
+Command  "drop table T1";
+
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

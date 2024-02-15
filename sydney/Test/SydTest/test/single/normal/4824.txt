@@ -1,0 +1,273 @@
+# Bug report 1380, 1381
+
+Begin;
+
+# 正規化あり
+SetSystemParameter "Execution_LikeNormalizedString" "1";
+
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+#
+# 索引なし
+#
+
+# NCHAR
+Command "create table T(C nchar(4))";
+Command "insert T values '\\%aa', '\\aaa', '\\aa%', '%a%', '_a%', 'aaa%', 'aa%\\'";
+
+# エスケープ文字が\、条件に＼
+
+# 直後がエスケープ文字
+Command "select * from T where C like '＼\\%a%' escape '\\'";
+# 直後が被エスケープ文字
+Command "select * from T where C like '＼%a\\%' escape '\\'";
+Command "select * from T where C like '＼_a\\%' escape '\\'";
+# 直後が上記以外の文字
+Command "select * from T where C like '＼a%\\%' escape '\\'";
+# 最後の文字
+Command "select * from T where C like 'a%\\%＼' escape '\\'";
+
+# エスケープ文字が＼、条件に\
+Command "select * from T where C like '\\＼%a%' escape '＼'";
+Command "select * from T where C like '\\%a＼%' escape '＼'";
+Command "select * from T where C like '\\_a＼%' escape '＼'";
+Command "select * from T where C like '\\a%＼%' escape '＼'";
+Command "select * from T where C like 'a%＼%\\' escape '＼'";
+
+Command "delete T";
+Command "insert T values '*%aa', '*aaa', '*aa%', '%a%', '_a%', 'aaa%', 'aa%*'";
+
+# エスケープ文字が\(*,＊以外)、条件に＊
+Command "select * from T where C like '＊\\%a%' escape '\\'";
+Command "select * from T where C like '＊%a\\%' escape '\\'";
+Command "select * from T where C like '＊_a\\%' escape '\\'";
+Command "select * from T where C like '＊a%\\%' escape '\\'";
+Command "select * from T where C like 'a%\\%＊' escape '\\'";
+
+# エスケープ文字が*、条件に＊
+Command "select * from T where C like '＊*%a%' escape '*'";
+Command "select * from T where C like '＊%a*%' escape '*'";
+Command "select * from T where C like '＊_a*%' escape '*'";
+Command "select * from T where C like '＊a%*%' escape '*'";
+Command "select * from T where C like 'a%*%＊' escape '*'";
+
+# エスケープ文字が＊、条件に＊
+Command "select * from T where C like '＊＊＊%a%' escape '＊'";
+Command "select * from T where C like '＊＊%a＊%' escape '＊'";
+Command "select * from T where C like '＊＊_a＊%' escape '＊'";
+Command "select * from T where C like '＊＊a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%＊＊' escape '＊'";
+
+# エスケープ文字が＊、条件に*
+Command "select * from T where C like '*＊%a%' escape '＊'";
+Command "select * from T where C like '*%a＊%' escape '＊'";
+Command "select * from T where C like '*_a＊%' escape '＊'";
+Command "select * from T where C like '*a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%*' escape '＊'";
+
+Command "drop table T";
+
+# NVARCHAR
+Command "create table T(C nvarchar(4))";
+Command "insert T values '\\%aa', '\\aaa', '\\aa%', '%a%', '_a%', 'aaa%', 'aa%\\'";
+Command "select * from T where C like '＼\\%a%' escape '\\'";
+Command "select * from T where C like '＼%a\\%' escape '\\'";
+Command "select * from T where C like '＼_a\\%' escape '\\'";
+Command "select * from T where C like '＼a%\\%' escape '\\'";
+Command "select * from T where C like 'a%\\%＼' escape '\\'";
+Command "select * from T where C like '\\＼%a%' escape '＼'";
+Command "select * from T where C like '\\%a＼%' escape '＼'";
+Command "select * from T where C like '\\_a＼%' escape '＼'";
+Command "select * from T where C like '\\a%＼%' escape '＼'";
+Command "select * from T where C like 'a%＼%\\' escape '＼'";
+Command "delete T";
+Command "insert T values '*%aa', '*aaa', '*aa%', '%a%', '_a%', 'aaa%', 'aa%*'";
+Command "select * from T where C like '＊\\%a%' escape '\\'";
+Command "select * from T where C like '＊%a\\%' escape '\\'";
+Command "select * from T where C like '＊_a\\%' escape '\\'";
+Command "select * from T where C like '＊a%\\%' escape '\\'";
+Command "select * from T where C like 'a%\\%＊' escape '\\'";
+Command "select * from T where C like '＊*%a%' escape '*'";
+Command "select * from T where C like '＊%a*%' escape '*'";
+Command "select * from T where C like '＊_a*%' escape '*'";
+Command "select * from T where C like '＊a%*%' escape '*'";
+Command "select * from T where C like 'a%*%＊' escape '*'";
+Command "select * from T where C like '＊＊＊%a%' escape '＊'";
+Command "select * from T where C like '＊＊%a＊%' escape '＊'";
+Command "select * from T where C like '＊＊_a＊%' escape '＊'";
+Command "select * from T where C like '＊＊a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%＊＊' escape '＊'";
+Command "select * from T where C like '*＊%a%' escape '＊'";
+Command "select * from T where C like '*%a＊%' escape '＊'";
+Command "select * from T where C like '*_a＊%' escape '＊'";
+Command "select * from T where C like '*a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%*' escape '＊'";
+Command "drop Table T";
+
+
+#
+# B+木索引
+#
+Command "create table T(C nchar(4))";
+Command "create index I on T(C) hint 'normalized'";
+Command "insert T values '\\%aa', '\\aaa', '\\aa%', '%a%', '_a%', 'aaa%', 'aa%\\'";
+Command "select * from T where C like '＼\\%a%' escape '\\'";
+Command "select * from T where C like '＼%a\\%' escape '\\'";
+Command "select * from T where C like '＼_a\\%' escape '\\'";
+Command "select * from T where C like '＼a%\\%' escape '\\'";
+Command "select * from T where C like 'a%\\%＼' escape '\\'";
+Command "select * from T where C like '\\＼%a%' escape '＼'";
+Command "select * from T where C like '\\%a＼%' escape '＼'";
+Command "select * from T where C like '\\_a＼%' escape '＼'";
+Command "select * from T where C like '\\a%＼%' escape '＼'";
+Command "select * from T where C like 'a%＼%\\' escape '＼'";
+Command "delete T";
+Command "insert T values '*%aa', '*aaa', '*aa%', '%a%', '_a%', 'aaa%', 'aa%*'";
+Command "select * from T where C like '＊\\%a%' escape '\\'";
+Command "select * from T where C like '＊%a\\%' escape '\\'";
+Command "select * from T where C like '＊_a\\%' escape '\\'";
+Command "select * from T where C like '＊a%\\%' escape '\\'";
+Command "select * from T where C like 'a%\\%＊' escape '\\'";
+Command "select * from T where C like '＊*%a%' escape '*'";
+Command "select * from T where C like '＊%a*%' escape '*'";
+Command "select * from T where C like '＊_a*%' escape '*'";
+Command "select * from T where C like '＊a%*%' escape '*'";
+Command "select * from T where C like 'a%*%＊' escape '*'";
+Command "select * from T where C like '＊＊＊%a%' escape '＊'";
+Command "select * from T where C like '＊＊%a＊%' escape '＊'";
+Command "select * from T where C like '＊＊_a＊%' escape '＊'";
+Command "select * from T where C like '＊＊a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%＊＊' escape '＊'";
+Command "select * from T where C like '*＊%a%' escape '＊'";
+Command "select * from T where C like '*%a＊%' escape '＊'";
+Command "select * from T where C like '*_a＊%' escape '＊'";
+Command "select * from T where C like '*a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%*' escape '＊'";
+Command "drop table T";
+Command "create table T(C nvarchar(4))";
+Command "create index I on T(C) hint 'normalized'";
+Command "insert T values '\\%aa', '\\aaa', '\\aa%', '%a%', '_a%', 'aaa%', 'aa%\\'";
+Command "select * from T where C like '＼\\%a%' escape '\\'";
+Command "select * from T where C like '＼%a\\%' escape '\\'";
+Command "select * from T where C like '＼_a\\%' escape '\\'";
+Command "select * from T where C like '＼a%\\%' escape '\\'";
+Command "select * from T where C like 'a%\\%＼' escape '\\'";
+Command "select * from T where C like '\\＼%a%' escape '＼'";
+Command "select * from T where C like '\\%a＼%' escape '＼'";
+Command "select * from T where C like '\\_a＼%' escape '＼'";
+Command "select * from T where C like '\\a%＼%' escape '＼'";
+Command "select * from T where C like 'a%＼%\\' escape '＼'";
+Command "delete T";
+Command "insert T values '*%aa', '*aaa', '*aa%', '%a%', '_a%', 'aaa%', 'aa%*'";
+Command "select * from T where C like '＊\\%a%' escape '\\'";
+Command "select * from T where C like '＊%a\\%' escape '\\'";
+Command "select * from T where C like '＊_a\\%' escape '\\'";
+Command "select * from T where C like '＊a%\\%' escape '\\'";
+Command "select * from T where C like 'a%\\%＊' escape '\\'";
+Command "select * from T where C like '＊*%a%' escape '*'";
+Command "select * from T where C like '＊%a*%' escape '*'";
+Command "select * from T where C like '＊_a*%' escape '*'";
+Command "select * from T where C like '＊a%*%' escape '*'";
+Command "select * from T where C like 'a%*%＊' escape '*'";
+Command "select * from T where C like '＊＊＊%a%' escape '＊'";
+Command "select * from T where C like '＊＊%a＊%' escape '＊'";
+Command "select * from T where C like '＊＊_a＊%' escape '＊'";
+Command "select * from T where C like '＊＊a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%＊＊' escape '＊'";
+Command "select * from T where C like '*＊%a%' escape '＊'";
+Command "select * from T where C like '*%a＊%' escape '＊'";
+Command "select * from T where C like '*_a＊%' escape '＊'";
+Command "select * from T where C like '*a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%*' escape '＊'";
+Command "drop Table T";
+
+
+#
+# 全文索引
+#
+Command "create table T(C nchar(4))";
+Command "create fulltext index I on T(C) hint 'inverted=(normalized)'";
+Command "insert T values '\\%aa', '\\aaa', '\\aa%', '%a%', '_a%', 'aaa%', 'aa%\\'";
+Command "select * from T where C like '＼\\%a%' escape '\\'";
+Command "select * from T where C like '＼%a\\%' escape '\\'";
+Command "select * from T where C like '＼_a\\%' escape '\\'";
+Command "select * from T where C like '＼a%\\%' escape '\\'";
+Command "select * from T where C like 'a%\\%＼' escape '\\'";
+Command "select * from T where C like '\\＼%a%' escape '＼'";
+Command "select * from T where C like '\\%a＼%' escape '＼'";
+Command "select * from T where C like '\\_a＼%' escape '＼'";
+Command "select * from T where C like '\\a%＼%' escape '＼'";
+Command "select * from T where C like 'a%＼%\\' escape '＼'";
+Command "delete T";
+Command "insert T values '*%aa', '*aaa', '*aa%', '%a%', '_a%', 'aaa%', 'aa%*'";
+Command "select * from T where C like '＊\\%a%' escape '\\'";
+Command "select * from T where C like '＊%a\\%' escape '\\'";
+Command "select * from T where C like '＊_a\\%' escape '\\'";
+Command "select * from T where C like '＊a%\\%' escape '\\'";
+Command "select * from T where C like 'a%\\%＊' escape '\\'";
+Command "select * from T where C like '＊*%a%' escape '*'";
+Command "select * from T where C like '＊%a*%' escape '*'";
+Command "select * from T where C like '＊_a*%' escape '*'";
+Command "select * from T where C like '＊a%*%' escape '*'";
+Command "select * from T where C like 'a%*%＊' escape '*'";
+Command "select * from T where C like '＊＊＊%a%' escape '＊'";
+Command "select * from T where C like '＊＊%a＊%' escape '＊'";
+Command "select * from T where C like '＊＊_a＊%' escape '＊'";
+Command "select * from T where C like '＊＊a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%＊＊' escape '＊'";
+Command "select * from T where C like '*＊%a%' escape '＊'";
+Command "select * from T where C like '*%a＊%' escape '＊'";
+Command "select * from T where C like '*_a＊%' escape '＊'";
+Command "select * from T where C like '*a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%*' escape '＊'";
+Command "drop table T";
+Command "create table T(C nvarchar(4))";
+Command "create fulltext index I on T(C) hint 'inverted=(normalized)'";
+Command "insert T values '\\%aa', '\\aaa', '\\aa%', '%a%', '_a%', 'aaa%', 'aa%\\'";
+Command "select * from T where C like '＼\\%a%' escape '\\'";
+Command "select * from T where C like '＼%a\\%' escape '\\'";
+Command "select * from T where C like '＼_a\\%' escape '\\'";
+Command "select * from T where C like '＼a%\\%' escape '\\'";
+Command "select * from T where C like 'a%\\%＼' escape '\\'";
+Command "select * from T where C like '\\＼%a%' escape '＼'";
+Command "select * from T where C like '\\%a＼%' escape '＼'";
+Command "select * from T where C like '\\_a＼%' escape '＼'";
+Command "select * from T where C like '\\a%＼%' escape '＼'";
+Command "select * from T where C like 'a%＼%\\' escape '＼'";
+Command "delete T";
+Command "insert T values '*%aa', '*aaa', '*aa%', '%a%', '_a%', 'aaa%', 'aa%*'";
+Command "select * from T where C like '＊\\%a%' escape '\\'";
+Command "select * from T where C like '＊%a\\%' escape '\\'";
+Command "select * from T where C like '＊_a\\%' escape '\\'";
+Command "select * from T where C like '＊a%\\%' escape '\\'";
+Command "select * from T where C like 'a%\\%＊' escape '\\'";
+Command "select * from T where C like '＊*%a%' escape '*'";
+Command "select * from T where C like '＊%a*%' escape '*'";
+Command "select * from T where C like '＊_a*%' escape '*'";
+Command "select * from T where C like '＊a%*%' escape '*'";
+Command "select * from T where C like 'a%*%＊' escape '*'";
+Command "select * from T where C like '＊＊＊%a%' escape '＊'";
+Command "select * from T where C like '＊＊%a＊%' escape '＊'";
+Command "select * from T where C like '＊＊_a＊%' escape '＊'";
+Command "select * from T where C like '＊＊a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%＊＊' escape '＊'";
+Command "select * from T where C like '*＊%a%' escape '＊'";
+Command "select * from T where C like '*%a＊%' escape '＊'";
+Command "select * from T where C like '*_a＊%' escape '＊'";
+Command "select * from T where C like '*a%＊%' escape '＊'";
+Command "select * from T where C like 'a%＊%*' escape '＊'";
+
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+
+SetSystemParameter "Execution_LikeNormalizedString" "0";
+
+End;

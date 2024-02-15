@@ -1,0 +1,372 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<!--
+  Copyright (c) 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the License);
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<html>
+
+<head>
+  <!-- Google Tag Manager -->
+  <script type="text/javascript">(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-KRXS4RS');</script>
+  <!-- End Google Tag Manager -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="css/default.css">
+  <title>自動復旧について</title>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRXS4RS" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <h1>自動復旧について</h1>
+  <div class="right"><a href="knowledge.html">[ナレッジに戻る]</a></div>
+  <div class="contents">
+    <dl>
+      <dt>
+        <a href="#sec1">1. はじめに</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec11">1.1 用語定義</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec2">2. 自動復旧とは</a>
+      </dt>
+      <dt>
+        <a href="#sec3">3. 自動復旧処理が必要になるケース</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec31">3.1 Not available</a>
+          </dt>
+          <dt>
+            <a href="#sec32">3.2 終了処理なしのプロセスの終了</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec4">4. 自動復旧処理の詳細</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec41">4.1 処理内容</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec5">5. 参考情報</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec51">5.1 復旧処理に時間のかかる場合</a>
+          </dt>
+          <dt>
+            <a href="#sec52">5.2 ログへの出力</a>
+          </dt>
+        </dl>
+      </dd>
+    </dl>
+  </div>
+
+  <h2><a id="sec1">1. はじめに</a></h2>
+  <p>
+    ここでは障害発生後の再起動で実施する自動復旧処理について記述します。
+    DBMSの基本的な知識を前提としています。
+  </p>
+
+  <h3><a id="sec11">1.1 用語定義</a></h3>
+  <p>
+    ここで使用する用語について、以下にその意味を記載しておきます。
+  </p>
+  <dl>
+    <dt class="bold">データベースが壊れる</dt>
+    <dd>
+      データベースを構成するファイルの内容に異常があり、バックアップから戻す以外に回復する手段がないことです。
+      自動復旧で回復できる場合は、ここでは壊れているとは呼びません。
+    </dd>
+    <dt class="bold">正常終了</dt>
+    <dd>
+      プロセスが、正常に動作している状態から必要な終了処理を実行したのちに終了することです。
+    </dd>
+    <dt class="bold">異常終了</dt>
+    <dd>
+      正常終了以外のプロセスの終了です。
+    </dd>
+    <dt class="bold">例外</dt>
+    <dd>
+      プロセスが、実行中に何らかの異常を検知したときになる状態です。<br>
+      何らかの異常には以下を含みます。
+      <dl>
+        <dt>1. 実行環境の異常</dt>
+        <dd>例：メモリの確保に失敗した, ディスク容量が不足した。</dd>
+        <dt>2. プログラムの異常</dt>
+        <dd>例：不正なアドレスを参照した。</dd>
+      </dl>
+    </dd>
+    <dt class="bold">チェックポイント</dt>
+    <dd>
+      定期的に動作するデーモンスレッドにより、バッファ上のデータの一部がデータベースを構成するファイルにフラッシュされる処理です。
+    </dd>
+    <dt class="bold">版</dt>
+    <dd>
+      DoqueDBはOracleやSQL Serverのようなページ単位のロックではなく、MVCC(Multi Version Concurrency
+      Control)とタプル単位のロックにより、トランザクションごとに指定されるアイソレーションレベルを実現しています。
+      版とは、MVCCにより作られる、ある時点におけるデータベースの仮想的なコピーのことをいいます。
+      版はVERSION.SYDというファイルに格納され、データベースを構成する各ファイルに対して作成されます。
+    </dd>
+    <dt class="bold">論理ログ</dt>
+    <dd>
+      データベースに対する操作の内容を、SQL文単位あるいは処理対象レコード単位に記録するファイルです。
+      OracleのREDOログファイル、SQL Serverのトランザクションログと似たようなものです。
+    </dd>
+    <dt class="bold">物理ログ</dt>
+    <dd>
+      ある時点のデータベースイメージです。
+      版のうち特定の条件を満たすものを物理ログとして用います。
+    </dd>
+  </dl>
+
+  <h2><a id="sec2">2. 自動復旧とは</a></h2>
+  <p>
+    DoqueDBが行う自動復旧、は以下のような処理です。
+    OracleやSQL Serverが行う自動復旧をご存知なら、同様の処理と考えてください。
+  </p>
+  <p class="sub">
+    いつ：異常終了した後にプロセスを再度起動したときに、<br>
+    誰が：DoqueDBのプログラムが自動的に<br>
+    何を：データベースを<br>
+    どうする：使用可能な状態にします。
+  </p>
+
+  <h2><a id="sec3">3. 自動復旧処理が必要になるケース</a></h2>
+  <p>
+    前述のとおり、DoqueDBが自動復旧を行うのはプロセスが異常終了したときです。
+    以下でその具体的なケースを挙げます。
+  </p>
+
+  <h3><a id="notavailable"></a><a id="sec31">3.1 Not available</a></h3>
+  <p>
+    DoqueDBではプロセスが致命的な異常状態になったときに、データベースが壊われるような状態にならないように、発生以後のデータベース操作を一切行わなくなります。
+    致命的な異常状態には以下のようなものがあります。
+  </p>
+  <ol>
+    <li class="nomargin">予期せぬ例外が発生した。</li>
+    <li class="nomargin">トランザクションのロールバックに失敗した。</li>
+    <li class="nomargin">その他何らかのエラー処理が失敗した。</li>
+    <li class="nomargin">自動復旧処理が失敗した。</li>
+  </ol>
+  <p>
+    予期せぬ例外とは、例外のうちプログラムの中で発生を想定していない箇所で発生するものをいいます。
+    用語定義で例外の例に挙げたもののうちでは「不正なアドレス参照」が相当します。
+    つまり、1.のケースは残念ながらプログラムに不具合があることを意味します。
+  </p>
+  <p>
+    メモリーの確保失敗とディスク容量の不足は、発生を想定した実装がなされているので1.のケースには該当しません。
+    ただし、これらの例外がロールバックやエラー処理で発生すると、2.や3.のケースに該当することになります。
+    この場合は実行環境の問題と捉えられます。
+  </p>
+  <p>
+    自動復旧処理が失敗するのは、ディスク容量が不足しているのでない限り、データベースが壊れている可能性がいちばん高いと考えられます。
+    ディスク容量が不足している場合は、容量を空けてから再度自動復旧を試みれば回復します。
+    データベースが壊れている場合は、バックアップから戻す以外に回復の手段はありません。
+    データベースが壊れるのは、ディスクのハード的な障害でなければ、プログラムの不具合の可能性があります。
+  </p>
+  <p>
+    いずれにせよ、この状態になると、データベース操作を行おうとしても「Database is not available」または「Server is not available」という例外が発生して操作できません。
+  </p>
+  <p>
+    この状態になっていることは、ログに「Database is not available」(特定のデータベースのみ利用不可)または「Server is not
+    available」(システム全体が利用不可)という文字列が出力されているかをチェックすることで確認できます。
+    「Not available」な状態は正常に動作している状態ではないので、このプロセスの終了は異常終了であり、終了後の再起動で自動復旧が行われることになります。
+  </p>
+
+  <h3><a id="sec32">3.2 終了処理なしのプロセスの終了</a></h3>
+  <p>
+    DoqueDBプロセスは、正常終了した場合に終了処理の中で論理ログにその旨を記録します。
+    終了処理が行われずにプロセスが終了した場合、次のプロセスの起動時に前回異常終了したと判断され、自動復旧が行われます。
+  </p>
+  <p>
+    終了処理が行われないのは以下のようなケースが考えられます。
+  </p>
+  <dl>
+    <dt class="bold">サーバーホストの急な停止</dt>
+    <dd>急な電源断、OSの異常動作、ハードの異常などによりプロセスが動作しているサーバー自体が急に停止した場合です。
+    </dd>
+    <dt class="bold">終了処理のタイムアウト</dt>
+    <dd>OSシャットダウン時にOSがすべてのサービスを停止しようとしましたが、サービスプロセスの終了処理に時間がかかったため、タイムアウトによりプロセスが強制終了された場合です。
+    </dd>
+  </dl>
+  <p class="sub">
+    [補足]<br>
+    PCの再起動により復旧したとの報告をいただくケースがありますが、無闇に再起動すると終了処理のタイムアウトにより、不必要に自動復旧処理を行うことになりかねません。
+    また、復旧処理には時間がかかる場合があるため、短い間隔でPCの再起動を繰り返すと、無意味に復旧処理を繰り返すことになります。
+    ログに「Not available」の出力を確認したら、サービスコントロールマネージャーを用いてサービスの再起動を行ったほうが安全です。
+  </p>
+
+  <h2><a id="sec4">4. 自動復旧処理の詳細</a></h2>
+
+  <h3><a id="sec41">4.1 処理内容</a></h3>
+  <p>
+    自動復旧処理は以下のような手順で行われます。(付随的な細かい処理は割愛します。)
+  </p>
+  <ol>
+    <li>サービス起動時に論理ログの最後尾に「正常終了した」という記録があるか調べます。<br>
+      ⇒ 記録があれば何もしません。<br>
+      ⇒ 記録がなければ以下の処理を行います。</li>
+    <li>論理ログを最後からスキャンして、整合性の取れたデータがファイルにフラッシュされている時点(最後から2つ目のチェックポイント処理)を求めます。</li>
+    <li>物理ログを使用して、データベースイメージを2.で求めた時点に戻します。</li>
+    <li>論理ログをスキャンして、2.で求めた時点に実行中のトランザクションで異常終了時までにコミットされなかったものの中で実行された更新操作を取り消します。(UNDO)</li>
+    <li>論理ログをスキャンして、2.で求めた時点に実行中のトランザクションで異常終了時までにコミットされたものの中で実行された更新操作を再実行します。(REDO)</li>
+  </ol>
+  <p>
+    上記手順の結果、異常終了時までにコミットされていたトランザクションが実行された状態に回復します。
+    自動復旧が正常に実行されたかどうかは、ログに「Database recovered」と出力されたことで確認できます。
+  </p>
+
+  <h2><a id="sec5">5. 参考情報</a></h2>
+
+  <h3><a id="sec51">5.1 復旧処理に時間のかかる場合</a></h3>
+  <p>
+    自動復旧処理は、サービスの起動時に(必要なら)暗黙のうちに実行されます。
+    復旧処理が完了するまでは、サービスが「開始中」のままで利用可能な状態にならないため、復旧処理に時間のかかる場合は注意が必要です。
+  </p>
+  <p>
+    以下で自動復旧処理に時間がかかるケースについて記します。
+  </p>
+  <dl>
+    <dt class="bold">大量のデータベースがある場合</dt>
+    <dd>
+      自動復旧はデータベースごとに順番に実行されます。
+      仮に自動復旧が必要ないデータベースであっても、必要かどうかを判定するために論理ログが検査されるため、数百程度のデータベースがあると、自動復旧に数分程度の時間がかかる場合があります。
+    </dd>
+    <dt class="bold">大量の更新操作を実施後1時間以内に異常終了した場合</dt>
+    <dd>
+      上記の手順で分かるように、UNDO、REDOの必要な更新操作が多ければ、それだけ復旧処理に時間がかかります。
+      使用環境にもよりますが、やはり数分程度の時間がかかる場合があります。
+    </dd>
+    <dt class="bold">実行時間が長かったSQL文の実行後1時間以内に異常終了した場合</dt>
+    <dd>
+      もっとも注意が必要なのはこのケースです。
+    </dd>
+    <dt></dt>
+    <dd>
+      用語定義にあるように、チェックポイント処理は定期ジョブとして動作します。
+      しかし、整合性を保つために、SQL文を処理するあいだは終了までチェックポイント処理は行われません。
+      したがって、実行に時間のかかるSQL文が実行されると、そのSQL文が終了するまでの長い時間チェックポイント処理が発生しないことになります。
+    </dd>
+    <dt></dt>
+    <dd>
+      このことは、時間のかかるSQL文を実行した直後に異常終了すると、そのSQL文が実行される前の時点からREDOの処理が行われることを意味します。
+      たとえば、全文索引の作成直後に異常終了すると、自動復旧において全文索引の作成にかかったのと同程度の時間(数十分の場合もある)がかかります。
+    </dd>
+    <dt></dt>
+    <dd>
+      このような場合を防ぐために、時間のかかる更新操作や索引作成を行ったあとにはcheckpoint文を実行してください。
+      checkpoint文は定期ジョブで行われるチェックポイント処理を強制的に実施させるためのSQL文です。
+      <pre>
+SQL&gt; checkpoint;
+</pre>
+    </dd>
+  </dl>
+
+  <h3><a id="sec52">5.2 ログへの出力</a></h3>
+  <p>
+    DoqueDBの状態は、ログファイルを確認することである程度把握することができます。
+    ログファイルは以下の場所に出力されます。
+  </p>
+  <pre>
+&lt;インストールパス&gt;/log/syslog.csv
+</pre>
+  <p>
+    重要な出力について以下に記します。
+  </p>
+  <dl>
+    <dt class="sub">[INFO] Checkpoint occurred</dt>
+    <dd>
+      チェックポイント処理が行われたことを示します。
+    </dd>
+    <dt class="sub">[INFO] Server terminated</dt>
+    <dd>
+      正常終了したことを示します。
+    </dd>
+    <dt class="sub">[INFO] Database recovered</dt>
+    <dd>
+      自動復旧処理が行われ、成功したことを示します。
+    </dd>
+    <dt class="sub">[INFO] Server initialized</dt>
+    <dd>
+      サーバーが処理を受け付ける状態になったことを示します。
+    </dd>
+    <dt class="sub">[ERR] Recovering database ‘DB1’ failed.</dt>
+    <dd>
+      データベースの自動復旧に失敗したことを示します。<br>
+      [補足]<br>
+      このログが出ていても、他のデータベースの復旧に成功した場合は”Database recovered”のログがこのあとに出力されます。
+      この場合、復旧に失敗したデータベースは使用できませんが、他のデータベースは使用できます。
+    </dd>
+    <dt class="sub">[ERR] Database ‘DB1' is not available<br>
+      [ERR] Server is not available</dt>
+    <dd>
+      前述のように、これらの出力があったときは一切の問い合わせを受け付けない状態になっているため、サービスの停止および再開が必要です。
+    </dd>
+    <dt class="sub">[ERR] Database 'DB1' may be corrupted</dt>
+    <dd>
+      データベースを構成するファイルに整合性がなくなっていることを示します。
+      データベースが壊れている可能性が高いと考えられます。
+      自動復旧を試みたあとに再度この出力が出たときは、壊れていると判断すべきです。
+    </dd>
+    <dt class="sub">[ERR] Data in bad page XXXX of file YYYY</dt>
+    <dd>
+      データベースを構成するファイルのうち、ファイルYYYYのページXXXXの内容が不正な状態を示します。
+      データベースが壊れている可能性が高いと考えられます。
+      自動復旧を試みたあとに再度この出力が出たときは、壊れていると判断すべきです。
+    </dd>
+    <dt class="sub">[ERR] Not enough space on the disk</dt>
+    <dd>
+      ディスク容量の不足を示します。
+    </dd>
+    <dt class="sub">[ERR] Can’t allocate memory</dt>
+    <dd>
+      メモリー確保に失敗したことを示します。
+    </dd>
+    <dt class="sub">[ERR] Unexpected exception</dt>
+    <dd>
+      予期しない例外が発生したことを意味します。
+      プログラムの不具合の可能性が高いと考えられます。
+      多くの場合、データベースは壊れておらず、自動復旧で回復します。
+    </dd>
+  </dl>
+
+  <hr>
+  <p class="center">Copyright (c) 2023 Ricoh Company, Ltd. All rights reserved.</p>
+
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+# Bug report 1665
+# CONTAINS述語がOR結合の中でスコア値をもとめるテスト 
+
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+
+CreateThread "Prepare";
+JoinThread "Prepare";
+
+
+# 全文(A)+B木(B)
+# オペランド２つ　A AND B
+Command "select AN, AB, score(JP.AB) from JP where (JP.AB contains '管理' and JP.AN='JP2010181696') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, score(JP.AB) from JP where (JP.AB contains '文書' and not JP.AN='JP2010181692') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, score(JP.AB) from JP where (not JP.AB contains '管理' and JP.AN='JP2010181698') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, score(JP.AB) from JP where (not JP.AB contains '管理' and not JP.AN='JP2010181695') order by score(JP.AB) desc limit 10";
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where not (JP.TITLE contains 'ソリューション' and JP.PRODUCT='MFP') order by score(JP.TITLE) desc limit 10";
+
+# オペランド２つ　A OR B
+Command "select AN, AB, score(JP.AB) from JP where JP.AB contains '文書' or JP.AN = 'JP2010181697' order by score(JP.AB) desc limit 10";
+Command "select AN, AB, score(JP.AB) from JP where (JP.AB contains '文書' or not JP.PRODUCT=='MFP') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, score(JP.AB) from JP where (not JP.AB contains '文書' or JP.AN='JP2010181694') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, score(JP.AB) from JP where (not JP.AB contains '文書' or not JP.AN='JP2010181692') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, score(JP.AB) from JP where not (JP.AB contains '管理' or JP.AN ='JP2010181695') order by score(JP.AB) desc limit 10";
+
+
+# オペランド3つ　
+# A OR (A' * B)
+Command "select AN, AB, score(JP.AB) from JP where JP.AB contains '文書' or (JP.AB contains '管理' and JP.AN='JP2010181696') order by score(JP.AB) desc limit 10";
+# 要確認
+Command "select AN, AB, TITLE, score(JP.AB) from JP where (not JP.TITLE contains 'ソリューション') or (JP.AB contains '文書' and JP.AN='JP2010181692') order by score(JP.AB) desc limit 10";
+
+Command "select AN, AB, TITLE, score(JP.AB) from JP where JP.TITLE contains 'サービス' or JP.AB contains '文書' or JP.AN='JP2010181692' order by score(JP.AB) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.AB) from JP where (not JP.TITLE contains 'ソリューション') or JP.AB contains '文書' or JP.AN='JP2010181697' order by score(JP.AB) desc limit 10";
+# 要確認
+Command "select AN, AB, score(JP.AB) from JP where not ((JP.AB contains '管理' and not JP.AN='JP2010181696') or JP.AB contains '検索') order by score(JP.AB) desc limit 10";
+
+# A AND (A' * B)
+Command "select AN, AB, PRODUCT, TITLE, score(JP.AB) from JP where JP.TITLE contains 'ソリューション' and JP.AB contains '文書' and JP.PRODUCT='FAX' order by score(JP.AB) desc limit 10";
+Command "select AN, AB, PRODUCT, TITLE, score(JP.AB) from JP where (not JP.TITLE contains 'ソリューション') and JP.AB contains '管理' and JP.PRODUCT='FAX' order by score(JP.AB) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.AB) from JP where JP.TITLE contains 'ソリューション' and (JP.AB contains '文書' or JP.AN='JP2010181692') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.AB) from JP where (not JP.TITLE contains 'システム') and (JP.AB contains '文書' or JP.AN='JP2010181696') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.AB) from JP where not (JP.TITLE contains 'ソリューション' and not JP.AB contains '文書' and not JP.AN='JP2010181692') order by score(JP.AB) desc limit 10";
+
+
+# B OR (A' * B)
+Command "select AN, TITLE, score(JP.TITLE) from JP where JP.AN = 'JP2010181693' or (not JP.TITLE contains 'ソリューション' and JP.AN='JP2010181696') order by score(JP.TITLE) desc limit 10";
+Command "select AN, AB, PRODUCT, score(JP.AB) from JP where (not JP.PRODUCT = 'MFP') or (JP.AB contains '文書' and JP.AN='JP2010181693') order by score(JP.AB) desc limit 10";
+
+Command "select AN, AB, PRODUCT, score(JP.AB) from JP where JP.PRODUCT ='CAMERA' or JP.AB contains '文書' or JP.AN='JP2010181696' order by score(JP.AB) desc limit 10";
+Command "select AN, AB, PRODUCT, score(JP.AB) from JP where (not JP.PRODUCT = 'MFP') or JP.AB contains '文書' or JP.AN='JP2010181697' order by score(JP.AB) desc limit 10";
+Command "select AN, AB, score(JP.AB) from JP where not (JP.AN = 'JP2010181694' or (JP.AB contains 'ソリューション' and not JP.AN='JP2010181692')) order by score(JP.AB) desc limit 10";
+
+
+# B AND (A' * B)
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where JP.PRODUCT = 'FAX'  and (not JP.TITLE contains 'ソリューション' and not JP.AN='JP2010181696') order by score(JP.TITLE) desc limit 10";
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where (not JP.PRODUCT = 'MFP') and JP.TITLE contains 'ソリューション' and  (not JP.AN='JP2010181691') order by score(JP.TITLE) desc limit 10";
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  JP.PRODUCT = 'FAX' and (JP.TITLE contains 'サービス' or  JP.AN='JP2010181692') order by score(JP.TITLE) desc limit 10";
+Command "select AN, AB, PRODUCT, score(JP.AB) from JP where (not JP.PRODUCT = 'MFP') and (JP.AB contains '文書' or JP.AN='JP2010181697') order by score(JP.AB) desc limit 10";
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where not (JP.PRODUCT = 'MFP' and JP.TITLE contains 'サービス' and (not JP.AN='JP2010181693')) order by score(JP.TITLE) desc limit 10";
+
+# オペランド４つ
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (JP.PRODUCT = 'SCANNER' or JP.TITLE contains 'クラウド') and (JP.TITLE contains 'プリント' or JP.TITLE contains 'サービス')  order by score(JP.TITLE) desc limit 10";
+# Bug No.1953で落ちるためコメントアウト
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (JP.PRODUCT = 'MFP' and JP.TITLE contains 'サービス') or (JP.TITLE contains 'サービス' and JP.PRODUCT = 'FAX')  order by score(JP.TITLE) desc limit 10";
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (JP.TITLE contains 'サービス' and JP.PRODUCT = 'FAX') or (JP.PRODUCT = 'MFP' and JP.TITLE contains 'サービス')  order by score(JP.TITLE) desc limit 10";
+# 要確認
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (JP.PRODUCT = 'FAX' or JP.TITLE contains 'カラ集合') and (JP.TITLE contains 'サービス' or JP.TITLE = 'ソリューション')  order by score(JP.TITLE) desc limit 10";
+# 要確認
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  not (JP.PRODUCT = 'MFP' and JP.TITLE contains 'ソリューション') or ((not JP.TITLE contains 'ソリューション') and JP.TITLE contains 'クラウド')  order by score(JP.TITLE) desc limit 10";
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (JP.TITLE = 'デジタルドキュメント検索サービス' and JP.TITLE contains 'ソリューション') or (JP.TITLE contains 'ソリューション' and JP.PRODUCT = 'FAX') order by score(JP.TITLE) desc limit 10";
+
+Command "select AN, PRODUCT, TITLE, score(JP.TITLE) from JP where  (not JP.TITLE = 'デジタルドキュメント検索サービス') and JP.PRODUCT = 'FAX' and (JP.TITLE contains 'ソリューション' or not JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10";
+
+
+
+# 全文+全文
+# オペランド２つ
+# A AND B
+Command "select AN, AB, TITLE, score(JP.AB) from JP where (JP.AB contains '管理' and JP.TITLE contains 'サービス') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.AB contains '管理' and JP.TITLE contains 'サービス') order by score(JP.TITLE) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.AB contains '管理' and not JP.TITLE contains 'ソリューション') order by score(JP.TITLE) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.AB) from JP where (JP.AB contains '文書' and JP.TITLE contains 'ドキュメント') order by score(JP.AB) desc limit 10";
+# 要確認
+Command "select AN, TITLE, score(JP.TITLE) from JP where (JP.TITLE = 'ドキュメントソリューション' and JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10";
+
+# A OR B
+Command "select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.AB contains '文書' or JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.AB contains '文書' or not JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.AB) from JP where not (not JP.AB contains '文書' or JP.TITLE contains 'ドキュメント') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.TITLE) from JP where not (not JP.AB contains '文書' or JP.TITLE contains 'ドキュメント') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.TITLE contains 'プリントサービス' or JP.TITLE contains 'サービス') order by score(JP.TITLE) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.AB) from JP where (JP.TITLE contains 'サービス' or JP.AB contains '保管') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.TITLE = 'ドキュメントソリューション' or JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10";
+
+
+# オペランド３つ
+Command "select AN, AB, TITLE, score(JP.TITLE) from JP where (JP.AB contains '文書' or JP.TITLE contains 'ドキュメント') and JP.TITLE contains 'ソリューション' order by score(JP.TITLE) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.AB) from JP where  JP.TITLE contains 'ソリューション' and (JP.AB contains '文書' or JP.TITLE contains 'ドキュメント') order by score(JP.AB) desc limit 10";
+Command "select AN, AB, TITLE, score(JP.TITLE) from JP where JP.AB contains '文書' and (JP.TITLE contains 'ソリューション' or JP.TITLE contains 'ドキュメント') order by score(JP.TITLE) desc limit 10";
+
+
+
+
+
+TerminateSession;
+Terminate;
+End;
+
+Prepare
+{
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+
+Command "create table JP (AN varchar(12), AB ntext hint heap, PRODUCT varchar(10), TITLE ntext hint heap)";
+
+Command "insert JP values ('JP2010181694', '管理', 'MFP', 'クラウドネットワークソリューション')";
+Command "insert JP values ('JP2010181695', '検索', 'MFP', 'プリントソリューション')";
+Command "insert JP select * from JP";
+Command "insert JP select * from JP";
+Command "insert JP select * from JP";
+Command "insert JP select * from JP";
+Command "insert JP select * from JP";
+Command "insert JP select * from JP";
+Command "insert JP select * from JP";
+Command "insert JP select * from JP";
+Command "insert JP select * from JP";
+Command "insert JP select * from JP";
+Command "insert JP select * from JP";
+Command "insert JP values ('JP2010181691', '文書', 'SCANNER', 'ドキュメントソリューション')";
+Command "insert JP values ('JP2010181692', '文書', 'FAX', 'ペーパーレスソリューション')";
+Command "insert JP values ('JP2010181693', '文書', 'MFP', 'デジタルドキュメント検索サービス')";
+Command "insert JP values ('JP2010181696', '管理', 'FAX', 'ネクストジェネレーションネットワークサービス')";
+Command "insert JP values ('JP2010181697', '管理', 'CAMERA', '類似画像検索システム')";
+Command "insert JP values ('JP2010181698', '保管', 'FAX', 'クラウドプリントサービス')";
+Command "insert JP values ('JP2010181699', '文書', 'MFP', 'デジタルサイネージサービス')";
+
+
+
+Command "create index JP_AN on JP(AN)";
+Command "create fulltext index JP_AB on JP(AB)";
+
+Command "create index JP_PRODUCT on JP(PRODUCT)";
+Command "create fulltext index JP_TITLE on JP(TITLE)";
+}
+
+
+

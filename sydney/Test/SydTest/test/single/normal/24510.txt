@@ -1,0 +1,19 @@
+Begin;
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T (ID int, primary key(ID))";
+Command "insert into T values 1,2,3,4,5,6,7,8,9,10";
+
+Command "delete from T where ID = 3";
+Command "select * from T where ID = 3";
+
+Command "insert into T values (3)";
+Command "select * from T where ID = 3";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

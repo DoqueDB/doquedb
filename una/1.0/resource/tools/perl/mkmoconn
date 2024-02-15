@@ -1,0 +1,238 @@
+#!/usr/bin/perl
+# 
+# Copyright (c) 2000,2002, 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+#
+# mkmoconn - make morphological connection table source
+
+=head1 NAME
+
+ mkmoconn - 形態素接続表ソース作成ツール
+
+=head1 SYNOPSIS
+
+ mkmoconn [オプション]
+
+=head1 DESCRIPTION
+
+ 主に、日本語形態素解析UNA V3(unamk)の形態素接続表ソースを作成する
+ ためのツールである。
+ mkmoconnは、UNA::MkMoConnのフロントエンドとして動作する。
+ 詳しくは、UNA::MkMoConnのマニュアルを参照のこと。
+
+ オプションは以下の通り。(一部のみ。詳しくは、-hオプションを実行のこと。)
+
+=item -r I<出力ディレクトリ>
+
+ UNA用ソースデータ(UTF8形式)の出力ディレクトリを指定する。
+ デフォルトは、./ である。
+ 指定したディレクトリに以下のサブディレクトリ uwork/ が作成され、
+ UNA用ソースデータ(UTF8形式)が出力される。
+ 既にサブディレクトリが存在する場合は、ファイルを上書きする。
+
+=item -E I<UNAツールディレクトリ>
+
+ UNA用ソースデータ作成ツールおよびetcデータなどのあるディレクトリを指定する。
+ デフォルトは、../src-data/unaである。
+
+=item -c I<接続表:接続表:...>
+
+ 接続表を指定する。:を区切りとして複数の接続表を指定できる。
+ デフォルトは、connect.src である。
+
+=item -g I<品詞グループ定義:品詞グループ定義:...>
+
+ 品詞グループ定義を指定する。:を区切りとして複数の品詞グループ定義を指定できる。
+ デフォルトは、hinsi.grp である。
+
+=item -t I<語尾テーブル:語尾テーブル:...>
+
+ 語尾テーブルを指定する。:を区切りとして複数の語尾テーブルを指定できる。
+ デフォルトは、gobi.tbl である。
+
+=item -f I<素性定義リスト:素性定義リスト:...>
+
+ 素性定義リストを指定する。:を区切りとして複数の素性定義リストを指定できる。
+ デフォルトは、mfeature.lst である。
+
+=item -l I<UNA品詞リスト>
+
+ UNA品詞リストを指定する。
+ デフォルトは、uwork/unahin.utf8 である。
+
+=item -s I<接続頻度推定テーブル>
+
+ 接続頻度推定テーブルを指定する。
+ デフォルトは、etc/smap.lst である。
+
+=item -C I<コスト最大値ファイル>
+
+ コスト最大値ファイルを指定する。
+ デフォルトは、etc/costmax.dat である。
+
+=item -U
+
+ コスト最大値ファイルの更新する。
+
+=item -O I<UNA用接続表ソース>
+
+ UNA用接続表ソースを作成する。
+ デフォルトは、uwork/unacon.utf8 である。
+
+=item -z I<接続チェックファイル>
+
+ 接続チェックファイルを作成する。
+ デフォルトは、uwork/connck.log である。
+
+=item -y I<接続ログファイル>
+
+ 接続ログファイルを作成する。
+ デフォルトは、uwork/conn.log である。
+
+=item -v
+
+ 不必要に詳細な情報を出力する(Verbose)。
+
+=item -D
+
+ デバッグ用の情報を出力する(Debug)。ただし、現バージョンでは未使用。
+
+=item -h
+
+ 簡単なヘルプを出力する(Help)。
+
+=head1 HISTORY
+
+ Ver.5.00 2002/04/30 UNA-CmnToolsとしてRCS管理に
+ Ver.5.01 2002/08/13 ツールの実行環境を/proj/nlp/tools/UNA-CmnTools/v1.2.dist
+                     に変更
+                     -Eオプションを追加
+                     perldocを補足
+ Ver.5.02 2002/09/11 -rオプションの動作を変更
+
+=head1 BUG
+
+=cut
+
+use lib "../tools/perl/lib";
+use utf8;
+
+# デフォールトの設定
+my $out_dir = "./";
+my $cmn_dir = "../src-data/una/";
+my $conn_files = "./connect.src";
+my $hingrp_files = "./hinsi.grp";
+my $gobitbl_files = "./gobi.tbl";
+my $fealst_files = "./mfeature.lst";
+my $hinlst_file = "./uwork/unahin.utf8";
+my $moconn_file = "./uwork/unacon.utf8";
+my $smap_file = "./etc/smap.lst";
+my $costmax_file = "./etc/costmax.log";
+
+# 引数の評価
+use Getopt::Std;
+getopts('r:E:c:g:t:f:l:s:C:UO:z:y:vDh');
+if ($opt_h || $#ARGV >= 0) {
+	die <<EOU;
+mkmoconn
+Usage: mkmoconn [OPTIONS]
+   -r OUTDIR           output directory ($out_dir)
+   -E COMMONDIR        common source directory ($cmn_dir)
+   -c FILE1:FILE2:...  connection table ($conn_files)
+   -g FILE1:FILE2:...  hinshi group ($hingrp_files)
+   -t FILE1:FILE2:...  gobi table ($gobitbl_files)
+   -f FILE1:FILE2:...  feature list ($fealst_files)
+   -l FILE             hinshi list ($hinlst_file)
+   -s FILE             symobol map list ($smap_file)
+   -C FILE             maximum cost file ($costmax_file)
+   -U                  updates maximum cost file
+   -O FILE             produced connection table ($moconn_file)
+   -z FILE             makes connection check file
+   -y FILE             makes connection log file
+   -v                  verbose (show max/min cost)
+   -D                  Debug
+   -h                  Help
+EOU
+}
+$out_dir = $opt_r if defined $opt_r;
+$cmn_dir = $opt_E if defined $opt_E;
+$conn_files = $opt_c if $opt_c;
+$hingrp_files = $opt_g if $opt_g;
+$gobitbl_files = $opt_t if $opt_t;
+$fealst_files = $opt_f if $opt_f;
+$hinlst_file = $opt_l if $opt_l;
+$smap_file = $opt_s if $opt_s;
+$moconn_file = $opt_O if $opt_O;
+$costmax_file = $opt_C if defined $opt_C;
+
+use UNA::MkMoConn;
+my $mkconn = new UNA::MkMoConn;
+$mkconn->{checkfile} = &mkfile($out_dir, $opt_z) if $opt_z; # 接続チェックファイル
+$mkconn->{conn}{logf} = &mkfile($out_dir, $opt_y) if $opt_y; # 接続ログファイル
+
+# ファイルの読みこみ
+for (split(/:/, $conn_files)) {
+	$mkconn->load('conn', &mkfile($cmn_dir, $_));
+}
+for (split(/:/, $hingrp_files)) {
+	$mkconn->load('hingrp', &mkfile($cmn_dir, $_));
+}
+for (split(/:/, $gobitbl_files)) {
+	$mkconn->load('gobitbl', &mkfile($cmn_dir, $_));
+}
+for (split(/:/, $fealst_files)) {
+	$mkconn->load('fealst', &mkfile($cmn_dir, $_));
+}
+$mkconn->load('hinlst', &mkfile($out_dir, $hinlst_file)); # かならず1つしかない
+$mkconn->load('smap', &mkfile($cmn_dir, $smap_file)); # 複数でも悪くないがひとつにする
+
+# 品詞接続表ソースの作成
+$mkconn->make_morphconn(&mkfile($out_dir, $moconn_file));
+
+# コストの最大値と最小値の表示と更新
+if ($opt_v) {
+	printf "maximum cost=%f\n", $mkconn->{max_cost};
+	printf "minimum cost=%f\n", $mkconn->{min_cost};
+	printf "kinougo hindo avarage=%f\n", $mkconn->{hindo_avg};
+}
+use UNA::CostMax;
+if ($costmax_file) {
+	if ($opt_U) {
+		&update_costmax(&mkfile($cmn_dir, $costmax_file), $mkconn->{max_cost});
+	}
+	else {
+		&create_costmax(&mkfile($out_dir, $costmax_file), $mkconn->{max_cost});
+	}
+}
+
+# ディレクトリと相対パスからファイル名を作る
+sub mkfile {
+	my($dir, $path) = @_;
+	return '' if $path eq '';	# 空ならそのまま
+	$dir =~ s/\/$//g if $dir ne '/'; # 最後の/を取る
+	my $file = "$dir/$path";
+	$file =~ s/.*\/\//\//; # // があったらそこまでを / に変える
+	$file;
+}
+
+=head1 SEE ALSO
+
+L<NLP::MkMoConn>, L<mkunadata>, L<unamk>, L<mkmodic>, L<mkkutbl>, L<paco>
+
+=head1 COPYRIGHT
+
+ Copyright 2000,2002, 2023 RICOH Co, Ltd. All rights reserved.
+
+=cut

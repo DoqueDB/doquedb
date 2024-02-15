@@ -1,0 +1,142 @@
+// -*-Mode: C++; tab-width: 4; c-basic-offset: 4;-*-
+// vi:set ts=4 sw=4:
+//
+// Manager.cpp -- ロックマネージャ関連の関数定義
+// 
+// Copyright (c) 2000, 2001, 2002, 2005, 2023 Ricoh Company, Ltd.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+namespace {
+const char srcFile[] = __FILE__;
+const char moduleName[] = "Lock";
+}
+
+#include "SyDefault.h"
+#include "SyReinterpretCast.h"
+#include "SyInclude.h"
+
+#include "Lock/Config.h"
+#include "Lock/Count.h"
+#include "Lock/Manager.h"
+
+#include "Os/CriticalSection.h"
+
+_SYDNEY_USING
+_SYDNEY_LOCK_USING
+
+namespace
+{
+	// ロックモジュール内部のスレッド間排他制御用のラッチ
+	Os::CriticalSection		_latch;
+}
+
+//	FUNCTION public
+//	Lock::Manager::initialize -- ロックマネージャーの初期化を行う
+//
+//	NOTES
+//
+//	ARGUMENTS
+//		なし
+//
+//	RETURN
+//		なし
+//
+//	EXCEPTIONS
+
+// static
+void
+Manager::initialize()
+{
+	// ロック数関連の初期化を行う
+
+	Manager::Count::initialize();
+
+	// ロック要求関連の初期化を行う
+
+	Manager::Request::initialize();
+
+	// ロック要求元関連の初期化を行う
+
+	Manager::Client::initialize();
+
+	// ロック項目関連の初期化を行う
+
+	Manager::Item::initialize();
+}
+
+//	FUNCTION public
+//	Lock::Manager::terminate -- ロックマネージャーの後処理を行う
+//
+//	NOTES
+//
+//	ARGUMENTS
+//		なし
+//
+//	RETURN
+//		なし
+//
+//	EXCEPTIONS
+
+// static
+void
+Manager::terminate()
+{
+	// ロック項目関連の後処理を行う
+
+	Manager::Item::terminate();
+
+	// ロック要求元関連の後処理を行う
+
+	Manager::Client::terminate();
+
+	// ロック要求関連の後処理を行う
+
+	Manager::Request::terminate();
+
+	// ロック数関連の後処理を行う
+
+	Manager::Count::terminate();
+
+	// 設定をすべてリセットする
+
+	Config::reset();
+}
+
+//	FUNCTION private
+//	Lock::Manager::getLatch -- 
+//		ロックモジュール内部のスレッド間排他制御用のラッチを得る
+//
+//	NOTES
+//
+//	ARGUMENTS
+//		なし
+//
+//	RETURN
+//		得られたラッチ
+//
+//	EXCEPTIONS
+//		なし
+
+// static
+Os::CriticalSection&
+Manager::getLatch()
+{
+	return _latch;
+}
+
+//
+//	Copyright (c) 2000, 2001, 2002, 2005, 2023 Ricoh Company, Ltd.
+//	All rights reserved.
+//

@@ -1,0 +1,17 @@
+
+Begin;
+Initialize;
+BeginTimeSpan;
+InitializeSession "AreaTest";
+
+Command "verify database AreaTest cascade continue";
+
+Command "select * from T";
+
+Command "drop database AreaTest";
+NotExists "d:\\dm\\data\\AreaTest";
+TerminateSession;
+
+EndTimeSpan;
+Terminate;
+End;

@@ -1,0 +1,23 @@
+# 障害票 2029
+# verifyでエラーが発生時 assert に引っかからなければOK
+
+Begin;
+
+SetSystemParameter "Exception_FakeError" "Inverted::SimpleListManager::verify count=(3)";
+
+Initialize;
+InitializeSession "TEST";
+
+Command "create database TEST";
+Command "create table T (ID int, F nvarchar(256))";
+Command "create fulltext index T_F on T(F)";
+
+Command "insert into T values (1, 'リコーの環境への取り組み')";
+
+Command "verify database TEST value cascade continue";
+
+Command "drop database TEST";
+
+TerminateSession;
+Terminate;
+End;

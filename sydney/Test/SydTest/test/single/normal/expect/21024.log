@@ -1,0 +1,3343 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_2_0 (dec1 decimal(2,0))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_2_0 values (null), (0), (1), (-1), (21), (-21), (65), (-65)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_float_2_0 (float1 float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_float_2_0 values (null), (0E0), (1E0), (-1E0), (2.1E0), (-2.1E0), (6.5E0), (-6.5E0)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_2_0 where T_2_0.dec1 < T_float_2_0.float1
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-21,0E0}
+SydTest::Executor: [INFO] {-65,0E0}
+SydTest::Executor: [INFO] {0,1E0}
+SydTest::Executor: [INFO] {-1,1E0}
+SydTest::Executor: [INFO] {-21,1E0}
+SydTest::Executor: [INFO] {-65,1E0}
+SydTest::Executor: [INFO] {-21,-1E0}
+SydTest::Executor: [INFO] {-65,-1E0}
+SydTest::Executor: [INFO] {0,2.1E0}
+SydTest::Executor: [INFO] {1,2.1E0}
+SydTest::Executor: [INFO] {-1,2.1E0}
+SydTest::Executor: [INFO] {-21,2.1E0}
+SydTest::Executor: [INFO] {-65,2.1E0}
+SydTest::Executor: [INFO] {-21,-2.1E0}
+SydTest::Executor: [INFO] {-65,-2.1E0}
+SydTest::Executor: [INFO] {0,6.5E0}
+SydTest::Executor: [INFO] {1,6.5E0}
+SydTest::Executor: [INFO] {-1,6.5E0}
+SydTest::Executor: [INFO] {-21,6.5E0}
+SydTest::Executor: [INFO] {-65,6.5E0}
+SydTest::Executor: [INFO] {-21,-6.5E0}
+SydTest::Executor: [INFO] {-65,-6.5E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where dec1 < -2.1E0
+SydTest::Executor: [INFO] {-21}
+SydTest::Executor: [INFO] {-65}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_float_7_7 (float1 float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_float_7_7 values (null), (0E0), (1E7), (-1E7), (2.109876E7), (-2.109876E7), (6.543210E7), (-6.543210E7)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_7_7 where T_float_7_7.float1 > T_2_0.dec1
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-21,0E0}
+SydTest::Executor: [INFO] {-65,0E0}
+SydTest::Executor: [INFO] {0,1E7}
+SydTest::Executor: [INFO] {1,1E7}
+SydTest::Executor: [INFO] {-1,1E7}
+SydTest::Executor: [INFO] {21,1E7}
+SydTest::Executor: [INFO] {-21,1E7}
+SydTest::Executor: [INFO] {65,1E7}
+SydTest::Executor: [INFO] {-65,1E7}
+SydTest::Executor: [INFO] {0,2.109876E7}
+SydTest::Executor: [INFO] {1,2.109876E7}
+SydTest::Executor: [INFO] {-1,2.109876E7}
+SydTest::Executor: [INFO] {21,2.109876E7}
+SydTest::Executor: [INFO] {-21,2.109876E7}
+SydTest::Executor: [INFO] {65,2.109876E7}
+SydTest::Executor: [INFO] {-65,2.109876E7}
+SydTest::Executor: [INFO] {0,6.54321E7}
+SydTest::Executor: [INFO] {1,6.54321E7}
+SydTest::Executor: [INFO] {-1,6.54321E7}
+SydTest::Executor: [INFO] {21,6.54321E7}
+SydTest::Executor: [INFO] {-21,6.54321E7}
+SydTest::Executor: [INFO] {65,6.54321E7}
+SydTest::Executor: [INFO] {-65,6.54321E7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where -2.109876E7 > dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_18_9 (dec1 decimal(18,9))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_18_9 values (null), (0), (1), (-1), (210987654.321098765), (-210987654.321098765), (654321098.765432109), (-654321098.765432109)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9, T_float_2_0 where T_18_9.dec1 > T_float_2_0.float1
+SydTest::Executor: [INFO] {0.000000000,-1E0}
+SydTest::Executor: [INFO] {0.000000000,-2.1E0}
+SydTest::Executor: [INFO] {0.000000000,-6.5E0}
+SydTest::Executor: [INFO] {1.000000000,0E0}
+SydTest::Executor: [INFO] {1.000000000,-1E0}
+SydTest::Executor: [INFO] {1.000000000,-2.1E0}
+SydTest::Executor: [INFO] {1.000000000,-6.5E0}
+SydTest::Executor: [INFO] {-1.000000000,-2.1E0}
+SydTest::Executor: [INFO] {-1.000000000,-6.5E0}
+SydTest::Executor: [INFO] {210987654.321098765,0E0}
+SydTest::Executor: [INFO] {210987654.321098765,1E0}
+SydTest::Executor: [INFO] {210987654.321098765,-1E0}
+SydTest::Executor: [INFO] {210987654.321098765,2.1E0}
+SydTest::Executor: [INFO] {210987654.321098765,-2.1E0}
+SydTest::Executor: [INFO] {210987654.321098765,6.5E0}
+SydTest::Executor: [INFO] {210987654.321098765,-6.5E0}
+SydTest::Executor: [INFO] {654321098.765432109,0E0}
+SydTest::Executor: [INFO] {654321098.765432109,1E0}
+SydTest::Executor: [INFO] {654321098.765432109,-1E0}
+SydTest::Executor: [INFO] {654321098.765432109,2.1E0}
+SydTest::Executor: [INFO] {654321098.765432109,-2.1E0}
+SydTest::Executor: [INFO] {654321098.765432109,6.5E0}
+SydTest::Executor: [INFO] {654321098.765432109,-6.5E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9 where dec1 > -2.1E0
+SydTest::Executor: [INFO] {0.000000000}
+SydTest::Executor: [INFO] {1.000000000}
+SydTest::Executor: [INFO] {-1.000000000}
+SydTest::Executor: [INFO] {210987654.321098765}
+SydTest::Executor: [INFO] {654321098.765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9, T_float_7_7 where T_float_7_7.float1 < T_18_9.dec1
+SydTest::Executor: [INFO] {0.000000000,-1E7}
+SydTest::Executor: [INFO] {0.000000000,-2.109876E7}
+SydTest::Executor: [INFO] {0.000000000,-6.54321E7}
+SydTest::Executor: [INFO] {1.000000000,0E0}
+SydTest::Executor: [INFO] {1.000000000,-1E7}
+SydTest::Executor: [INFO] {1.000000000,-2.109876E7}
+SydTest::Executor: [INFO] {1.000000000,-6.54321E7}
+SydTest::Executor: [INFO] {-1.000000000,-1E7}
+SydTest::Executor: [INFO] {-1.000000000,-2.109876E7}
+SydTest::Executor: [INFO] {-1.000000000,-6.54321E7}
+SydTest::Executor: [INFO] {210987654.321098765,0E0}
+SydTest::Executor: [INFO] {210987654.321098765,1E7}
+SydTest::Executor: [INFO] {210987654.321098765,-1E7}
+SydTest::Executor: [INFO] {210987654.321098765,2.109876E7}
+SydTest::Executor: [INFO] {210987654.321098765,-2.109876E7}
+SydTest::Executor: [INFO] {210987654.321098765,6.54321E7}
+SydTest::Executor: [INFO] {210987654.321098765,-6.54321E7}
+SydTest::Executor: [INFO] {654321098.765432109,0E0}
+SydTest::Executor: [INFO] {654321098.765432109,1E7}
+SydTest::Executor: [INFO] {654321098.765432109,-1E7}
+SydTest::Executor: [INFO] {654321098.765432109,2.109876E7}
+SydTest::Executor: [INFO] {654321098.765432109,-2.109876E7}
+SydTest::Executor: [INFO] {654321098.765432109,6.54321E7}
+SydTest::Executor: [INFO] {654321098.765432109,-6.54321E7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9 where -2.109876E7 < dec1
+SydTest::Executor: [INFO] {0.000000000}
+SydTest::Executor: [INFO] {1.000000000}
+SydTest::Executor: [INFO] {-1.000000000}
+SydTest::Executor: [INFO] {210987654.321098765}
+SydTest::Executor: [INFO] {654321098.765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_36_36 (dec1 decimal(36,36))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_36_36 values (null), (0), (0.210987654321098765432109876543210987), (-0.210987654321098765432109876543210987), (0.654321098765432109876543210987654321), (-0.654321098765432109876543210987654321)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_2_0 where T_float_2_0.float1 <= T_36_36.dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-1E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-2.1E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-6.5E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-1E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-2.1E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-6.5E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-1E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-2.1E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-6.5E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-1E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-2.1E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-6.5E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-1E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-2.1E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-6.5E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where -2.1E0 <= dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_7_7 where T_36_36.dec1 >= T_float_7_7.float1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-1E7}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-2.109876E7}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-6.54321E7}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-1E7}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-2.109876E7}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-6.54321E7}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-1E7}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-2.109876E7}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-6.54321E7}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-1E7}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-2.109876E7}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-6.54321E7}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-1E7}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-2.109876E7}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-6.54321E7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where dec1 >= -2.109876E7
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_2_1 (dec1 decimal(2,1))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_2_1 values (null), (0), (1), (-1), (2.1), (-2.1), (6.5), (-6.5)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_float_2_2 (float1 float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_float_2_2 values (null), (0E0), (1E2), (-1E2), (2.1E2), (-2.1E2), (6.5E2), (-6.5E2)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_2_2 where T_2_1.dec1 <= T_float_2_2.float1
+SydTest::Executor: [INFO] {0.0,0E0}
+SydTest::Executor: [INFO] {-1.0,0E0}
+SydTest::Executor: [INFO] {-2.1,0E0}
+SydTest::Executor: [INFO] {-6.5,0E0}
+SydTest::Executor: [INFO] {0.0,1E2}
+SydTest::Executor: [INFO] {1.0,1E2}
+SydTest::Executor: [INFO] {-1.0,1E2}
+SydTest::Executor: [INFO] {2.1,1E2}
+SydTest::Executor: [INFO] {-2.1,1E2}
+SydTest::Executor: [INFO] {6.5,1E2}
+SydTest::Executor: [INFO] {-6.5,1E2}
+SydTest::Executor: [INFO] {0.0,2.1E2}
+SydTest::Executor: [INFO] {1.0,2.1E2}
+SydTest::Executor: [INFO] {-1.0,2.1E2}
+SydTest::Executor: [INFO] {2.1,2.1E2}
+SydTest::Executor: [INFO] {-2.1,2.1E2}
+SydTest::Executor: [INFO] {6.5,2.1E2}
+SydTest::Executor: [INFO] {-6.5,2.1E2}
+SydTest::Executor: [INFO] {0.0,6.5E2}
+SydTest::Executor: [INFO] {1.0,6.5E2}
+SydTest::Executor: [INFO] {-1.0,6.5E2}
+SydTest::Executor: [INFO] {2.1,6.5E2}
+SydTest::Executor: [INFO] {-2.1,6.5E2}
+SydTest::Executor: [INFO] {6.5,6.5E2}
+SydTest::Executor: [INFO] {-6.5,6.5E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where dec1 <= -6.5E2
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_float_7_0 (float1 float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_float_7_0 values (null), (0E0), (1E0), (-1E0), (2.109876E0), (-2.109876E0), (6.543210E0), (-6.543210E0)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_7_0 where T_float_7_0.float1 >= T_2_1.dec1
+SydTest::Executor: [INFO] {0.0,0E0}
+SydTest::Executor: [INFO] {-1.0,0E0}
+SydTest::Executor: [INFO] {-2.1,0E0}
+SydTest::Executor: [INFO] {-6.5,0E0}
+SydTest::Executor: [INFO] {0.0,1E0}
+SydTest::Executor: [INFO] {1.0,1E0}
+SydTest::Executor: [INFO] {-1.0,1E0}
+SydTest::Executor: [INFO] {-2.1,1E0}
+SydTest::Executor: [INFO] {-6.5,1E0}
+SydTest::Executor: [INFO] {-1.0,-1E0}
+SydTest::Executor: [INFO] {-2.1,-1E0}
+SydTest::Executor: [INFO] {-6.5,-1E0}
+SydTest::Executor: [INFO] {0.0,2.109876E0}
+SydTest::Executor: [INFO] {1.0,2.109876E0}
+SydTest::Executor: [INFO] {-1.0,2.109876E0}
+SydTest::Executor: [INFO] {2.1,2.109876E0}
+SydTest::Executor: [INFO] {-2.1,2.109876E0}
+SydTest::Executor: [INFO] {-6.5,2.109876E0}
+SydTest::Executor: [INFO] {-6.5,-2.109876E0}
+SydTest::Executor: [INFO] {0.0,6.54321E0}
+SydTest::Executor: [INFO] {1.0,6.54321E0}
+SydTest::Executor: [INFO] {-1.0,6.54321E0}
+SydTest::Executor: [INFO] {2.1,6.54321E0}
+SydTest::Executor: [INFO] {-2.1,6.54321E0}
+SydTest::Executor: [INFO] {6.5,6.54321E0}
+SydTest::Executor: [INFO] {-6.5,6.54321E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where -6.543210E0 >= dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_18_0 (dec1 decimal(18,0))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_18_0 values (null), (0), (1), (-1), (210987654321098765), (-210987654321098765), (654321098765432109), (-654321098765432109)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_2_2 where T_float_2_2.float1 = T_18_0.dec1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where -6.5E2 = dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_7_0 where T_18_0.dec1 != T_float_7_0.float1
+SydTest::Executor: [INFO] {0,1E0}
+SydTest::Executor: [INFO] {0,-1E0}
+SydTest::Executor: [INFO] {0,2.109876E0}
+SydTest::Executor: [INFO] {0,-2.109876E0}
+SydTest::Executor: [INFO] {0,6.54321E0}
+SydTest::Executor: [INFO] {0,-6.54321E0}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {1,-1E0}
+SydTest::Executor: [INFO] {1,2.109876E0}
+SydTest::Executor: [INFO] {1,-2.109876E0}
+SydTest::Executor: [INFO] {1,6.54321E0}
+SydTest::Executor: [INFO] {1,-6.54321E0}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-1,1E0}
+SydTest::Executor: [INFO] {-1,2.109876E0}
+SydTest::Executor: [INFO] {-1,-2.109876E0}
+SydTest::Executor: [INFO] {-1,6.54321E0}
+SydTest::Executor: [INFO] {-1,-6.54321E0}
+SydTest::Executor: [INFO] {210987654321098765,0E0}
+SydTest::Executor: [INFO] {210987654321098765,1E0}
+SydTest::Executor: [INFO] {210987654321098765,-1E0}
+SydTest::Executor: [INFO] {210987654321098765,2.109876E0}
+SydTest::Executor: [INFO] {210987654321098765,-2.109876E0}
+SydTest::Executor: [INFO] {210987654321098765,6.54321E0}
+SydTest::Executor: [INFO] {210987654321098765,-6.54321E0}
+SydTest::Executor: [INFO] {-210987654321098765,0E0}
+SydTest::Executor: [INFO] {-210987654321098765,1E0}
+SydTest::Executor: [INFO] {-210987654321098765,-1E0}
+SydTest::Executor: [INFO] {-210987654321098765,2.109876E0}
+SydTest::Executor: [INFO] {-210987654321098765,-2.109876E0}
+SydTest::Executor: [INFO] {-210987654321098765,6.54321E0}
+SydTest::Executor: [INFO] {-210987654321098765,-6.54321E0}
+SydTest::Executor: [INFO] {654321098765432109,0E0}
+SydTest::Executor: [INFO] {654321098765432109,1E0}
+SydTest::Executor: [INFO] {654321098765432109,-1E0}
+SydTest::Executor: [INFO] {654321098765432109,2.109876E0}
+SydTest::Executor: [INFO] {654321098765432109,-2.109876E0}
+SydTest::Executor: [INFO] {654321098765432109,6.54321E0}
+SydTest::Executor: [INFO] {654321098765432109,-6.54321E0}
+SydTest::Executor: [INFO] {-654321098765432109,0E0}
+SydTest::Executor: [INFO] {-654321098765432109,1E0}
+SydTest::Executor: [INFO] {-654321098765432109,-1E0}
+SydTest::Executor: [INFO] {-654321098765432109,2.109876E0}
+SydTest::Executor: [INFO] {-654321098765432109,-2.109876E0}
+SydTest::Executor: [INFO] {-654321098765432109,6.54321E0}
+SydTest::Executor: [INFO] {-654321098765432109,-6.54321E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where dec1 != -6.543210E0
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {210987654321098765}
+SydTest::Executor: [INFO] {-210987654321098765}
+SydTest::Executor: [INFO] {654321098765432109}
+SydTest::Executor: [INFO] {-654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_float_15__308 (float1 float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_float_15__308 values (null), (0E0), (6.54321098765432E-308), (-6.54321098765432E-308), (2.22507385850721E-308), (-2.22507385850721E-308)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_15__308 where T_18_0.dec1 = T_float_15__308.float1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where dec1 = -2.22507385850721E-308
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_float_15__15 (float1 float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_float_15__15 values (null), (0E0), (1E-15), (-1E-15), (2.10987654321098E-15), (-2.10987654321098E-15), (6.54321098765432E-15), (-6.54321098765432E-15)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_15__15 where T_float_15__15.float1 != T_18_0.dec1
+SydTest::Executor: [INFO] {0,1E-15}
+SydTest::Executor: [INFO] {0,-1E-15}
+SydTest::Executor: [INFO] {0,2.109876543210E-15}
+SydTest::Executor: [INFO] {0,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0,6.543210987654E-15}
+SydTest::Executor: [INFO] {0,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {1,1E-15}
+SydTest::Executor: [INFO] {1,-1E-15}
+SydTest::Executor: [INFO] {1,2.109876543210E-15}
+SydTest::Executor: [INFO] {1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {1,6.543210987654E-15}
+SydTest::Executor: [INFO] {1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-1,1E-15}
+SydTest::Executor: [INFO] {-1,-1E-15}
+SydTest::Executor: [INFO] {-1,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-1,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {210987654321098765,0E0}
+SydTest::Executor: [INFO] {210987654321098765,1E-15}
+SydTest::Executor: [INFO] {210987654321098765,-1E-15}
+SydTest::Executor: [INFO] {210987654321098765,2.109876543210E-15}
+SydTest::Executor: [INFO] {210987654321098765,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {210987654321098765,6.543210987654E-15}
+SydTest::Executor: [INFO] {210987654321098765,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-210987654321098765,0E0}
+SydTest::Executor: [INFO] {-210987654321098765,1E-15}
+SydTest::Executor: [INFO] {-210987654321098765,-1E-15}
+SydTest::Executor: [INFO] {-210987654321098765,2.109876543210E-15}
+SydTest::Executor: [INFO] {-210987654321098765,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-210987654321098765,6.543210987654E-15}
+SydTest::Executor: [INFO] {-210987654321098765,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {654321098765432109,0E0}
+SydTest::Executor: [INFO] {654321098765432109,1E-15}
+SydTest::Executor: [INFO] {654321098765432109,-1E-15}
+SydTest::Executor: [INFO] {654321098765432109,2.109876543210E-15}
+SydTest::Executor: [INFO] {654321098765432109,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {654321098765432109,6.543210987654E-15}
+SydTest::Executor: [INFO] {654321098765432109,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-654321098765432109,0E0}
+SydTest::Executor: [INFO] {-654321098765432109,1E-15}
+SydTest::Executor: [INFO] {-654321098765432109,-1E-15}
+SydTest::Executor: [INFO] {-654321098765432109,2.109876543210E-15}
+SydTest::Executor: [INFO] {-654321098765432109,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-654321098765432109,6.543210987654E-15}
+SydTest::Executor: [INFO] {-654321098765432109,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where -2.10987654321098E-15 != dec1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {210987654321098765}
+SydTest::Executor: [INFO] {-210987654321098765}
+SydTest::Executor: [INFO] {654321098765432109}
+SydTest::Executor: [INFO] {-654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_15__308 where T_float_15__308.float1 < T_36_36.dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,6.543210987654E-308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,2.225073858507E-308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,6.543210987654E-308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,2.225073858507E-308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where -2.22507385850721E-308 < dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_15__15 where T_36_36.dec1 > T_float_15__15.float1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-1E-15}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,1E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-1E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,6.543210987654E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,1E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-1E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,6.543210987654E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where dec1 > -2.10987654321098E-15
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_36_18 (dec1 decimal(36,18))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_36_18 values (null), (0), (1), (-1), (210987654321098765.432109876543210987), (-210987654321098765.432109876543210987), (654321098765432109.876543210987654321), (-654321098765432109.876543210987654321)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18, T_float_15__15 where T_36_18.dec1 < T_float_15__15.float1
+SydTest::Executor: [INFO] {0.000000000000000000,1E-15}
+SydTest::Executor: [INFO] {0.000000000000000000,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.000000000000000000,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,0E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,1E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,-1E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,0E0}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,1E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,-1E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,2.109876543210E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,6.543210987654E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,0E0}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,1E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,-1E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,2.109876543210E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,6.543210987654E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18 where dec1 < -6.54321098765432E-15
+SydTest::Executor: [INFO] {-1.000000000000000000}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_float_15_308 (float1 float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_float_15_308 values (null), (0E0), (1E308), (-1E308), (1.79769313486231E308), (-1.79769313486231E308)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18, T_float_15_308 where T_float_15_308.float1 > T_36_18.dec1
+SydTest::Executor: [INFO] {0.000000000000000000,1E308}
+SydTest::Executor: [INFO] {0.000000000000000000,1.797693134862E308}
+SydTest::Executor: [INFO] {1.000000000000000000,1E308}
+SydTest::Executor: [INFO] {1.000000000000000000,1.797693134862E308}
+SydTest::Executor: [INFO] {-1.000000000000000000,0E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,1E308}
+SydTest::Executor: [INFO] {-1.000000000000000000,1.797693134862E308}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,1E308}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,1.797693134862E308}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,0E0}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,1E308}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,1.797693134862E308}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,1E308}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,1.797693134862E308}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,0E0}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,1E308}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,1.797693134862E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18 where -1.79769313486231E308 > dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_18_18 (dec1 decimal(18,18))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_18_18 values (null), (0), (0.210987654321098765), (-0.210987654321098765), (0.654321098765432109), (-0.654321098765432109)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18, T_float_15__15 where T_float_15__15.float1 <= T_18_18.dec1
+SydTest::Executor: [INFO] {0.000000000000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000000000000,-1E-15}
+SydTest::Executor: [INFO] {0.000000000000000000,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.000000000000000000,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765,1E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,-1E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,6.543210987654E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109,1E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,-1E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,6.543210987654E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18 where -6.54321098765432E-15 <= dec1
+SydTest::Executor: [INFO] {0.000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765}
+SydTest::Executor: [INFO] {0.654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18, T_float_15_308 where T_18_18.dec1 >= T_float_15_308.float1
+SydTest::Executor: [INFO] {0.000000000000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000000000000,-1E308}
+SydTest::Executor: [INFO] {0.000000000000000000,-1.79769313486231E308}
+SydTest::Executor: [INFO] {0.210987654321098765,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765,-1E308}
+SydTest::Executor: [INFO] {0.210987654321098765,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-0.210987654321098765,-1E308}
+SydTest::Executor: [INFO] {-0.210987654321098765,-1.79769313486231E308}
+SydTest::Executor: [INFO] {0.654321098765432109,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109,-1E308}
+SydTest::Executor: [INFO] {0.654321098765432109,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-0.654321098765432109,-1E308}
+SydTest::Executor: [INFO] {-0.654321098765432109,-1.79769313486231E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18 where dec1 >= -1.79769313486231E308
+SydTest::Executor: [INFO] {0.000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765}
+SydTest::Executor: [INFO] {-0.210987654321098765}
+SydTest::Executor: [INFO] {0.654321098765432109}
+SydTest::Executor: [INFO] {-0.654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T_36_0 (dec1 decimal(36,0))
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T_36_0 values (null), (0), (1), (-1), (210987654321098765432109876543210987), (-210987654321098765432109876543210987), (654321098765432109876543210987654321), (-654321098765432109876543210987654321)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0, T_float_2_0 where T_float_2_0.float1 >= T_36_0.dec1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {0,1E0}
+SydTest::Executor: [INFO] {0,2.1E0}
+SydTest::Executor: [INFO] {0,6.5E0}
+SydTest::Executor: [INFO] {1,1E0}
+SydTest::Executor: [INFO] {1,2.1E0}
+SydTest::Executor: [INFO] {1,6.5E0}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-1,1E0}
+SydTest::Executor: [INFO] {-1,-1E0}
+SydTest::Executor: [INFO] {-1,2.1E0}
+SydTest::Executor: [INFO] {-1,6.5E0}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,1E0}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,-1E0}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,2.1E0}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,-2.1E0}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,6.5E0}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,-6.5E0}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,1E0}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,-1E0}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,2.1E0}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,-2.1E0}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,6.5E0}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,-6.5E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0 where -2.1E0 >= dec1
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0, T_float_7_7 where T_36_0.dec1 <= T_float_7_7.float1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {0,1E7}
+SydTest::Executor: [INFO] {0,2.109876E7}
+SydTest::Executor: [INFO] {0,6.54321E7}
+SydTest::Executor: [INFO] {1,1E7}
+SydTest::Executor: [INFO] {1,2.109876E7}
+SydTest::Executor: [INFO] {1,6.54321E7}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-1,1E7}
+SydTest::Executor: [INFO] {-1,2.109876E7}
+SydTest::Executor: [INFO] {-1,6.54321E7}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,1E7}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,-1E7}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,2.109876E7}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,-2.109876E7}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,6.54321E7}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,-6.54321E7}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,1E7}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,-1E7}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,2.109876E7}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,-2.109876E7}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,6.54321E7}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,-6.54321E7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0 where dec1 <= -2.109876E7
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_2_2 where T_2_1.dec1 != T_float_2_2.float1
+SydTest::Executor: [INFO] {1.0,0E0}
+SydTest::Executor: [INFO] {-1.0,0E0}
+SydTest::Executor: [INFO] {2.1,0E0}
+SydTest::Executor: [INFO] {-2.1,0E0}
+SydTest::Executor: [INFO] {6.5,0E0}
+SydTest::Executor: [INFO] {-6.5,0E0}
+SydTest::Executor: [INFO] {0.0,1E2}
+SydTest::Executor: [INFO] {1.0,1E2}
+SydTest::Executor: [INFO] {-1.0,1E2}
+SydTest::Executor: [INFO] {2.1,1E2}
+SydTest::Executor: [INFO] {-2.1,1E2}
+SydTest::Executor: [INFO] {6.5,1E2}
+SydTest::Executor: [INFO] {-6.5,1E2}
+SydTest::Executor: [INFO] {0.0,-1E2}
+SydTest::Executor: [INFO] {1.0,-1E2}
+SydTest::Executor: [INFO] {-1.0,-1E2}
+SydTest::Executor: [INFO] {2.1,-1E2}
+SydTest::Executor: [INFO] {-2.1,-1E2}
+SydTest::Executor: [INFO] {6.5,-1E2}
+SydTest::Executor: [INFO] {-6.5,-1E2}
+SydTest::Executor: [INFO] {0.0,2.1E2}
+SydTest::Executor: [INFO] {1.0,2.1E2}
+SydTest::Executor: [INFO] {-1.0,2.1E2}
+SydTest::Executor: [INFO] {2.1,2.1E2}
+SydTest::Executor: [INFO] {-2.1,2.1E2}
+SydTest::Executor: [INFO] {6.5,2.1E2}
+SydTest::Executor: [INFO] {-6.5,2.1E2}
+SydTest::Executor: [INFO] {0.0,-2.1E2}
+SydTest::Executor: [INFO] {1.0,-2.1E2}
+SydTest::Executor: [INFO] {-1.0,-2.1E2}
+SydTest::Executor: [INFO] {2.1,-2.1E2}
+SydTest::Executor: [INFO] {-2.1,-2.1E2}
+SydTest::Executor: [INFO] {6.5,-2.1E2}
+SydTest::Executor: [INFO] {-6.5,-2.1E2}
+SydTest::Executor: [INFO] {0.0,6.5E2}
+SydTest::Executor: [INFO] {1.0,6.5E2}
+SydTest::Executor: [INFO] {-1.0,6.5E2}
+SydTest::Executor: [INFO] {2.1,6.5E2}
+SydTest::Executor: [INFO] {-2.1,6.5E2}
+SydTest::Executor: [INFO] {6.5,6.5E2}
+SydTest::Executor: [INFO] {-6.5,6.5E2}
+SydTest::Executor: [INFO] {0.0,-6.5E2}
+SydTest::Executor: [INFO] {1.0,-6.5E2}
+SydTest::Executor: [INFO] {-1.0,-6.5E2}
+SydTest::Executor: [INFO] {2.1,-6.5E2}
+SydTest::Executor: [INFO] {-2.1,-6.5E2}
+SydTest::Executor: [INFO] {6.5,-6.5E2}
+SydTest::Executor: [INFO] {-6.5,-6.5E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where dec1 != -6.5E2
+SydTest::Executor: [INFO] {0.0}
+SydTest::Executor: [INFO] {1.0}
+SydTest::Executor: [INFO] {-1.0}
+SydTest::Executor: [INFO] {2.1}
+SydTest::Executor: [INFO] {-2.1}
+SydTest::Executor: [INFO] {6.5}
+SydTest::Executor: [INFO] {-6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_7_0 where T_float_7_0.float1 = T_2_1.dec1
+SydTest::Executor: [INFO] {0.0,0E0}
+SydTest::Executor: [INFO] {1.0,1E0}
+SydTest::Executor: [INFO] {-1.0,-1E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where -6.543210E0 = dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_2_2 where T_float_2_2.float1 < T_2_0.dec1
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {21,0E0}
+SydTest::Executor: [INFO] {65,0E0}
+SydTest::Executor: [INFO] {0,-1E2}
+SydTest::Executor: [INFO] {1,-1E2}
+SydTest::Executor: [INFO] {-1,-1E2}
+SydTest::Executor: [INFO] {21,-1E2}
+SydTest::Executor: [INFO] {-21,-1E2}
+SydTest::Executor: [INFO] {65,-1E2}
+SydTest::Executor: [INFO] {-65,-1E2}
+SydTest::Executor: [INFO] {0,-2.1E2}
+SydTest::Executor: [INFO] {1,-2.1E2}
+SydTest::Executor: [INFO] {-1,-2.1E2}
+SydTest::Executor: [INFO] {21,-2.1E2}
+SydTest::Executor: [INFO] {-21,-2.1E2}
+SydTest::Executor: [INFO] {65,-2.1E2}
+SydTest::Executor: [INFO] {-65,-2.1E2}
+SydTest::Executor: [INFO] {0,-6.5E2}
+SydTest::Executor: [INFO] {1,-6.5E2}
+SydTest::Executor: [INFO] {-1,-6.5E2}
+SydTest::Executor: [INFO] {21,-6.5E2}
+SydTest::Executor: [INFO] {-21,-6.5E2}
+SydTest::Executor: [INFO] {65,-6.5E2}
+SydTest::Executor: [INFO] {-65,-6.5E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where -6.5E2 < dec1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {21}
+SydTest::Executor: [INFO] {-21}
+SydTest::Executor: [INFO] {65}
+SydTest::Executor: [INFO] {-65}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_7_0 where T_2_0.dec1 > T_float_7_0.float1
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {21,0E0}
+SydTest::Executor: [INFO] {65,0E0}
+SydTest::Executor: [INFO] {21,1E0}
+SydTest::Executor: [INFO] {65,1E0}
+SydTest::Executor: [INFO] {0,-1E0}
+SydTest::Executor: [INFO] {1,-1E0}
+SydTest::Executor: [INFO] {21,-1E0}
+SydTest::Executor: [INFO] {65,-1E0}
+SydTest::Executor: [INFO] {21,2.109876E0}
+SydTest::Executor: [INFO] {65,2.109876E0}
+SydTest::Executor: [INFO] {0,-2.109876E0}
+SydTest::Executor: [INFO] {1,-2.109876E0}
+SydTest::Executor: [INFO] {-1,-2.109876E0}
+SydTest::Executor: [INFO] {21,-2.109876E0}
+SydTest::Executor: [INFO] {65,-2.109876E0}
+SydTest::Executor: [INFO] {21,6.54321E0}
+SydTest::Executor: [INFO] {65,6.54321E0}
+SydTest::Executor: [INFO] {0,-6.54321E0}
+SydTest::Executor: [INFO] {1,-6.54321E0}
+SydTest::Executor: [INFO] {-1,-6.54321E0}
+SydTest::Executor: [INFO] {21,-6.54321E0}
+SydTest::Executor: [INFO] {65,-6.54321E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where dec1 > -6.543210E0
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {21}
+SydTest::Executor: [INFO] {65}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_15__308 where T_float_15__308.float1 != T_2_0.dec1
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {21,0E0}
+SydTest::Executor: [INFO] {-21,0E0}
+SydTest::Executor: [INFO] {65,0E0}
+SydTest::Executor: [INFO] {-65,0E0}
+SydTest::Executor: [INFO] {0,6.543210987654E-308}
+SydTest::Executor: [INFO] {1,6.543210987654E-308}
+SydTest::Executor: [INFO] {-1,6.543210987654E-308}
+SydTest::Executor: [INFO] {21,6.543210987654E-308}
+SydTest::Executor: [INFO] {-21,6.543210987654E-308}
+SydTest::Executor: [INFO] {65,6.543210987654E-308}
+SydTest::Executor: [INFO] {-65,6.543210987654E-308}
+SydTest::Executor: [INFO] {0,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {1,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {-1,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {21,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {-21,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {65,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {-65,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0,2.225073858507E-308}
+SydTest::Executor: [INFO] {1,2.225073858507E-308}
+SydTest::Executor: [INFO] {-1,2.225073858507E-308}
+SydTest::Executor: [INFO] {21,2.225073858507E-308}
+SydTest::Executor: [INFO] {-21,2.225073858507E-308}
+SydTest::Executor: [INFO] {65,2.225073858507E-308}
+SydTest::Executor: [INFO] {-65,2.225073858507E-308}
+SydTest::Executor: [INFO] {0,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {1,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {-1,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {21,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {-21,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {65,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {-65,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where -2.22507385850721E-308 != dec1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {21}
+SydTest::Executor: [INFO] {-21}
+SydTest::Executor: [INFO] {65}
+SydTest::Executor: [INFO] {-65}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_15__15 where T_2_0.dec1 = T_float_15__15.float1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where dec1 = -2.10987654321098E-15
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9, T_float_15__308 where T_18_9.dec1 <= T_float_15__308.float1
+SydTest::Executor: [INFO] {0.000000000,0E0}
+SydTest::Executor: [INFO] {-1.000000000,0E0}
+SydTest::Executor: [INFO] {-210987654.321098765,0E0}
+SydTest::Executor: [INFO] {-654321098.765432109,0E0}
+SydTest::Executor: [INFO] {0.000000000,6.543210987654E-308}
+SydTest::Executor: [INFO] {-1.000000000,6.543210987654E-308}
+SydTest::Executor: [INFO] {-210987654.321098765,6.543210987654E-308}
+SydTest::Executor: [INFO] {-654321098.765432109,6.543210987654E-308}
+SydTest::Executor: [INFO] {-1.000000000,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {-210987654.321098765,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {-654321098.765432109,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.000000000,2.225073858507E-308}
+SydTest::Executor: [INFO] {-1.000000000,2.225073858507E-308}
+SydTest::Executor: [INFO] {-210987654.321098765,2.225073858507E-308}
+SydTest::Executor: [INFO] {-654321098.765432109,2.225073858507E-308}
+SydTest::Executor: [INFO] {-1.000000000,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {-210987654.321098765,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {-654321098.765432109,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9 where dec1 <= -2.22507385850721E-308
+SydTest::Executor: [INFO] {-1.000000000}
+SydTest::Executor: [INFO] {-210987654.321098765}
+SydTest::Executor: [INFO] {-654321098.765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9, T_float_15__15 where T_float_15__15.float1 >= T_18_9.dec1
+SydTest::Executor: [INFO] {0.000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000,1E-15}
+SydTest::Executor: [INFO] {0.000000000,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.000000000,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1.000000000,0E0}
+SydTest::Executor: [INFO] {-1.000000000,1E-15}
+SydTest::Executor: [INFO] {-1.000000000,-1E-15}
+SydTest::Executor: [INFO] {-1.000000000,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1.000000000,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-1.000000000,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1.000000000,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-210987654.321098765,0E0}
+SydTest::Executor: [INFO] {-210987654.321098765,1E-15}
+SydTest::Executor: [INFO] {-210987654.321098765,-1E-15}
+SydTest::Executor: [INFO] {-210987654.321098765,2.109876543210E-15}
+SydTest::Executor: [INFO] {-210987654.321098765,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-210987654.321098765,6.543210987654E-15}
+SydTest::Executor: [INFO] {-210987654.321098765,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-654321098.765432109,0E0}
+SydTest::Executor: [INFO] {-654321098.765432109,1E-15}
+SydTest::Executor: [INFO] {-654321098.765432109,-1E-15}
+SydTest::Executor: [INFO] {-654321098.765432109,2.109876543210E-15}
+SydTest::Executor: [INFO] {-654321098.765432109,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-654321098.765432109,6.543210987654E-15}
+SydTest::Executor: [INFO] {-654321098.765432109,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9 where -2.10987654321098E-15 >= dec1
+SydTest::Executor: [INFO] {-1.000000000}
+SydTest::Executor: [INFO] {-210987654.321098765}
+SydTest::Executor: [INFO] {-654321098.765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_15__15 where T_float_15__15.float1 > T_36_36.dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,1E-15}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,6.543210987654E-15}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,1E-15}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-1E-15}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,2.109876543210E-15}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,6.543210987654E-15}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,1E-15}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-1E-15}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,2.109876543210E-15}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,6.543210987654E-15}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where -6.54321098765432E-15 > dec1
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_15_308 where T_36_36.dec1 < T_float_15_308.float1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,1E308}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,1.797693134862E308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,1E308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,1.797693134862E308}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,1E308}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,1.797693134862E308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,1E308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,1.797693134862E308}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,1E308}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,1.797693134862E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where dec1 < -1.79769313486231E308
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_15__15 where T_2_1.dec1 = T_float_15__15.float1
+SydTest::Executor: [INFO] {0.0,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where dec1 = -6.54321098765432E-15
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_15_308 where T_float_15_308.float1 != T_2_1.dec1
+SydTest::Executor: [INFO] {1.0,0E0}
+SydTest::Executor: [INFO] {-1.0,0E0}
+SydTest::Executor: [INFO] {2.1,0E0}
+SydTest::Executor: [INFO] {-2.1,0E0}
+SydTest::Executor: [INFO] {6.5,0E0}
+SydTest::Executor: [INFO] {-6.5,0E0}
+SydTest::Executor: [INFO] {0.0,1E308}
+SydTest::Executor: [INFO] {1.0,1E308}
+SydTest::Executor: [INFO] {-1.0,1E308}
+SydTest::Executor: [INFO] {2.1,1E308}
+SydTest::Executor: [INFO] {-2.1,1E308}
+SydTest::Executor: [INFO] {6.5,1E308}
+SydTest::Executor: [INFO] {-6.5,1E308}
+SydTest::Executor: [INFO] {0.0,-1E308}
+SydTest::Executor: [INFO] {1.0,-1E308}
+SydTest::Executor: [INFO] {-1.0,-1E308}
+SydTest::Executor: [INFO] {2.1,-1E308}
+SydTest::Executor: [INFO] {-2.1,-1E308}
+SydTest::Executor: [INFO] {6.5,-1E308}
+SydTest::Executor: [INFO] {-6.5,-1E308}
+SydTest::Executor: [INFO] {0.0,1.797693134862E308}
+SydTest::Executor: [INFO] {1.0,1.797693134862E308}
+SydTest::Executor: [INFO] {-1.0,1.797693134862E308}
+SydTest::Executor: [INFO] {2.1,1.797693134862E308}
+SydTest::Executor: [INFO] {-2.1,1.797693134862E308}
+SydTest::Executor: [INFO] {6.5,1.797693134862E308}
+SydTest::Executor: [INFO] {-6.5,1.797693134862E308}
+SydTest::Executor: [INFO] {0.0,-1.79769313486231E308}
+SydTest::Executor: [INFO] {1.0,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-1.0,-1.79769313486231E308}
+SydTest::Executor: [INFO] {2.1,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-2.1,-1.79769313486231E308}
+SydTest::Executor: [INFO] {6.5,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-6.5,-1.79769313486231E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where -1.79769313486231E308 != dec1
+SydTest::Executor: [INFO] {0.0}
+SydTest::Executor: [INFO] {1.0}
+SydTest::Executor: [INFO] {-1.0}
+SydTest::Executor: [INFO] {2.1}
+SydTest::Executor: [INFO] {-2.1}
+SydTest::Executor: [INFO] {6.5}
+SydTest::Executor: [INFO] {-6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_2_0 where T_float_2_0.float1 <= T_18_0.dec1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {0,-1E0}
+SydTest::Executor: [INFO] {0,-2.1E0}
+SydTest::Executor: [INFO] {0,-6.5E0}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {1,1E0}
+SydTest::Executor: [INFO] {1,-1E0}
+SydTest::Executor: [INFO] {1,-2.1E0}
+SydTest::Executor: [INFO] {1,-6.5E0}
+SydTest::Executor: [INFO] {-1,-1E0}
+SydTest::Executor: [INFO] {-1,-2.1E0}
+SydTest::Executor: [INFO] {-1,-6.5E0}
+SydTest::Executor: [INFO] {210987654321098765,0E0}
+SydTest::Executor: [INFO] {210987654321098765,1E0}
+SydTest::Executor: [INFO] {210987654321098765,-1E0}
+SydTest::Executor: [INFO] {210987654321098765,2.1E0}
+SydTest::Executor: [INFO] {210987654321098765,-2.1E0}
+SydTest::Executor: [INFO] {210987654321098765,6.5E0}
+SydTest::Executor: [INFO] {210987654321098765,-6.5E0}
+SydTest::Executor: [INFO] {654321098765432109,0E0}
+SydTest::Executor: [INFO] {654321098765432109,1E0}
+SydTest::Executor: [INFO] {654321098765432109,-1E0}
+SydTest::Executor: [INFO] {654321098765432109,2.1E0}
+SydTest::Executor: [INFO] {654321098765432109,-2.1E0}
+SydTest::Executor: [INFO] {654321098765432109,6.5E0}
+SydTest::Executor: [INFO] {654321098765432109,-6.5E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where -2.1E0 <= dec1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {210987654321098765}
+SydTest::Executor: [INFO] {654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_7_7 where T_18_0.dec1 >= T_float_7_7.float1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {0,-1E7}
+SydTest::Executor: [INFO] {0,-2.109876E7}
+SydTest::Executor: [INFO] {0,-6.54321E7}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {1,-1E7}
+SydTest::Executor: [INFO] {1,-2.109876E7}
+SydTest::Executor: [INFO] {1,-6.54321E7}
+SydTest::Executor: [INFO] {-1,-1E7}
+SydTest::Executor: [INFO] {-1,-2.109876E7}
+SydTest::Executor: [INFO] {-1,-6.54321E7}
+SydTest::Executor: [INFO] {210987654321098765,0E0}
+SydTest::Executor: [INFO] {210987654321098765,1E7}
+SydTest::Executor: [INFO] {210987654321098765,-1E7}
+SydTest::Executor: [INFO] {210987654321098765,2.109876E7}
+SydTest::Executor: [INFO] {210987654321098765,-2.109876E7}
+SydTest::Executor: [INFO] {210987654321098765,6.54321E7}
+SydTest::Executor: [INFO] {210987654321098765,-6.54321E7}
+SydTest::Executor: [INFO] {654321098765432109,0E0}
+SydTest::Executor: [INFO] {654321098765432109,1E7}
+SydTest::Executor: [INFO] {654321098765432109,-1E7}
+SydTest::Executor: [INFO] {654321098765432109,2.109876E7}
+SydTest::Executor: [INFO] {654321098765432109,-2.109876E7}
+SydTest::Executor: [INFO] {654321098765432109,6.54321E7}
+SydTest::Executor: [INFO] {654321098765432109,-6.54321E7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where dec1 >= -2.109876E7
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {210987654321098765}
+SydTest::Executor: [INFO] {654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_2_0 where T_18_0.dec1 = T_float_2_0.float1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {1,1E0}
+SydTest::Executor: [INFO] {-1,-1E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where dec1 = -2.1E0
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_7_7 where T_float_7_7.float1 != T_18_0.dec1
+SydTest::Executor: [INFO] {0,1E7}
+SydTest::Executor: [INFO] {0,-1E7}
+SydTest::Executor: [INFO] {0,2.109876E7}
+SydTest::Executor: [INFO] {0,-2.109876E7}
+SydTest::Executor: [INFO] {0,6.54321E7}
+SydTest::Executor: [INFO] {0,-6.54321E7}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {1,1E7}
+SydTest::Executor: [INFO] {1,-1E7}
+SydTest::Executor: [INFO] {1,2.109876E7}
+SydTest::Executor: [INFO] {1,-2.109876E7}
+SydTest::Executor: [INFO] {1,6.54321E7}
+SydTest::Executor: [INFO] {1,-6.54321E7}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-1,1E7}
+SydTest::Executor: [INFO] {-1,-1E7}
+SydTest::Executor: [INFO] {-1,2.109876E7}
+SydTest::Executor: [INFO] {-1,-2.109876E7}
+SydTest::Executor: [INFO] {-1,6.54321E7}
+SydTest::Executor: [INFO] {-1,-6.54321E7}
+SydTest::Executor: [INFO] {210987654321098765,0E0}
+SydTest::Executor: [INFO] {210987654321098765,1E7}
+SydTest::Executor: [INFO] {210987654321098765,-1E7}
+SydTest::Executor: [INFO] {210987654321098765,2.109876E7}
+SydTest::Executor: [INFO] {210987654321098765,-2.109876E7}
+SydTest::Executor: [INFO] {210987654321098765,6.54321E7}
+SydTest::Executor: [INFO] {210987654321098765,-6.54321E7}
+SydTest::Executor: [INFO] {-210987654321098765,0E0}
+SydTest::Executor: [INFO] {-210987654321098765,1E7}
+SydTest::Executor: [INFO] {-210987654321098765,-1E7}
+SydTest::Executor: [INFO] {-210987654321098765,2.109876E7}
+SydTest::Executor: [INFO] {-210987654321098765,-2.109876E7}
+SydTest::Executor: [INFO] {-210987654321098765,6.54321E7}
+SydTest::Executor: [INFO] {-210987654321098765,-6.54321E7}
+SydTest::Executor: [INFO] {654321098765432109,0E0}
+SydTest::Executor: [INFO] {654321098765432109,1E7}
+SydTest::Executor: [INFO] {654321098765432109,-1E7}
+SydTest::Executor: [INFO] {654321098765432109,2.109876E7}
+SydTest::Executor: [INFO] {654321098765432109,-2.109876E7}
+SydTest::Executor: [INFO] {654321098765432109,6.54321E7}
+SydTest::Executor: [INFO] {654321098765432109,-6.54321E7}
+SydTest::Executor: [INFO] {-654321098765432109,0E0}
+SydTest::Executor: [INFO] {-654321098765432109,1E7}
+SydTest::Executor: [INFO] {-654321098765432109,-1E7}
+SydTest::Executor: [INFO] {-654321098765432109,2.109876E7}
+SydTest::Executor: [INFO] {-654321098765432109,-2.109876E7}
+SydTest::Executor: [INFO] {-654321098765432109,6.54321E7}
+SydTest::Executor: [INFO] {-654321098765432109,-6.54321E7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where -2.109876E7 != dec1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {210987654321098765}
+SydTest::Executor: [INFO] {-210987654321098765}
+SydTest::Executor: [INFO] {654321098765432109}
+SydTest::Executor: [INFO] {-654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_2_2 where T_36_36.dec1 >= T_float_2_2.float1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-1E2}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-2.1E2}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-6.5E2}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-1E2}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-2.1E2}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-6.5E2}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-1E2}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-2.1E2}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-6.5E2}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-1E2}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-2.1E2}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-6.5E2}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-1E2}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-2.1E2}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-6.5E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where dec1 >= -6.5E2
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_7_0 where T_float_7_0.float1 <= T_36_36.dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-1E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-2.109876E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-6.54321E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-1E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-2.109876E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-6.54321E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-1E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-2.109876E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-6.54321E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-1E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-2.109876E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-6.54321E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-1E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-2.109876E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-6.54321E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where -6.543210E0 <= dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18, T_float_2_2 where T_float_2_2.float1 = T_36_18.dec1
+SydTest::Executor: [INFO] {0.000000000000000000,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18 where -6.5E2 = dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18, T_float_7_0 where T_36_18.dec1 != T_float_7_0.float1
+SydTest::Executor: [INFO] {0.000000000000000000,1E0}
+SydTest::Executor: [INFO] {0.000000000000000000,-1E0}
+SydTest::Executor: [INFO] {0.000000000000000000,2.109876E0}
+SydTest::Executor: [INFO] {0.000000000000000000,-2.109876E0}
+SydTest::Executor: [INFO] {0.000000000000000000,6.54321E0}
+SydTest::Executor: [INFO] {0.000000000000000000,-6.54321E0}
+SydTest::Executor: [INFO] {1.000000000000000000,0E0}
+SydTest::Executor: [INFO] {1.000000000000000000,-1E0}
+SydTest::Executor: [INFO] {1.000000000000000000,2.109876E0}
+SydTest::Executor: [INFO] {1.000000000000000000,-2.109876E0}
+SydTest::Executor: [INFO] {1.000000000000000000,6.54321E0}
+SydTest::Executor: [INFO] {1.000000000000000000,-6.54321E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,0E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,1E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,2.109876E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,-2.109876E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,6.54321E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,-6.54321E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,0E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,1E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-1E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,2.109876E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-2.109876E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,6.54321E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-6.54321E0}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,0E0}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,1E0}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,-1E0}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,2.109876E0}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,-2.109876E0}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,6.54321E0}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,-6.54321E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,0E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,1E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-1E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,2.109876E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-2.109876E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,6.54321E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-6.54321E0}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,0E0}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,1E0}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,-1E0}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,2.109876E0}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,-2.109876E0}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,6.54321E0}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,-6.54321E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18 where dec1 != -6.543210E0
+SydTest::Executor: [INFO] {0.000000000000000000}
+SydTest::Executor: [INFO] {1.000000000000000000}
+SydTest::Executor: [INFO] {-1.000000000000000000}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18, T_float_15__308 where T_18_18.dec1 > T_float_15__308.float1
+SydTest::Executor: [INFO] {0.000000000000000000,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.000000000000000000,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {0.210987654321098765,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765,6.543210987654E-308}
+SydTest::Executor: [INFO] {0.210987654321098765,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.210987654321098765,2.225073858507E-308}
+SydTest::Executor: [INFO] {0.210987654321098765,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {0.654321098765432109,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109,6.543210987654E-308}
+SydTest::Executor: [INFO] {0.654321098765432109,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.654321098765432109,2.225073858507E-308}
+SydTest::Executor: [INFO] {0.654321098765432109,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18 where dec1 > -2.22507385850721E-308
+SydTest::Executor: [INFO] {0.000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765}
+SydTest::Executor: [INFO] {0.654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18, T_float_15__15 where T_float_15__15.float1 < T_18_18.dec1
+SydTest::Executor: [INFO] {0.000000000000000000,-1E-15}
+SydTest::Executor: [INFO] {0.000000000000000000,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.000000000000000000,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765,1E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,-1E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,6.543210987654E-15}
+SydTest::Executor: [INFO] {0.210987654321098765,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109,1E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,-1E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,6.543210987654E-15}
+SydTest::Executor: [INFO] {0.654321098765432109,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18 where -2.10987654321098E-15 < dec1
+SydTest::Executor: [INFO] {0.000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765}
+SydTest::Executor: [INFO] {0.654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0, T_float_15__308 where T_float_15__308.float1 < T_36_0.dec1
+SydTest::Executor: [INFO] {0,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {1,6.543210987654E-308}
+SydTest::Executor: [INFO] {1,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {1,2.225073858507E-308}
+SydTest::Executor: [INFO] {1,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,6.543210987654E-308}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,2.225073858507E-308}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,6.543210987654E-308}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,2.225073858507E-308}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0 where -2.22507385850721E-308 < dec1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0, T_float_15__15 where T_36_0.dec1 > T_float_15__15.float1
+SydTest::Executor: [INFO] {0,-1E-15}
+SydTest::Executor: [INFO] {0,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {1,1E-15}
+SydTest::Executor: [INFO] {1,-1E-15}
+SydTest::Executor: [INFO] {1,2.109876543210E-15}
+SydTest::Executor: [INFO] {1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {1,6.543210987654E-15}
+SydTest::Executor: [INFO] {1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,1E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-1E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,2.109876543210E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,6.543210987654E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,1E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-1E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,2.109876543210E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,6.543210987654E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0 where dec1 > -2.10987654321098E-15
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_15__15 where T_float_15__15.float1 >= T_2_1.dec1
+SydTest::Executor: [INFO] {0.0,0E0}
+SydTest::Executor: [INFO] {-1.0,0E0}
+SydTest::Executor: [INFO] {-2.1,0E0}
+SydTest::Executor: [INFO] {-6.5,0E0}
+SydTest::Executor: [INFO] {0.0,1E-15}
+SydTest::Executor: [INFO] {-1.0,1E-15}
+SydTest::Executor: [INFO] {-2.1,1E-15}
+SydTest::Executor: [INFO] {-6.5,1E-15}
+SydTest::Executor: [INFO] {-1.0,-1E-15}
+SydTest::Executor: [INFO] {-2.1,-1E-15}
+SydTest::Executor: [INFO] {-6.5,-1E-15}
+SydTest::Executor: [INFO] {0.0,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1.0,2.109876543210E-15}
+SydTest::Executor: [INFO] {-2.1,2.109876543210E-15}
+SydTest::Executor: [INFO] {-6.5,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1.0,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-2.1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-6.5,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.0,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1.0,6.543210987654E-15}
+SydTest::Executor: [INFO] {-2.1,6.543210987654E-15}
+SydTest::Executor: [INFO] {-6.5,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1.0,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-2.1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-6.5,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where -6.54321098765432E-15 >= dec1
+SydTest::Executor: [INFO] {-1.0}
+SydTest::Executor: [INFO] {-2.1}
+SydTest::Executor: [INFO] {-6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_15_308 where T_2_1.dec1 <= T_float_15_308.float1
+SydTest::Executor: [INFO] {0.0,0E0}
+SydTest::Executor: [INFO] {-1.0,0E0}
+SydTest::Executor: [INFO] {-2.1,0E0}
+SydTest::Executor: [INFO] {-6.5,0E0}
+SydTest::Executor: [INFO] {0.0,1E308}
+SydTest::Executor: [INFO] {1.0,1E308}
+SydTest::Executor: [INFO] {-1.0,1E308}
+SydTest::Executor: [INFO] {2.1,1E308}
+SydTest::Executor: [INFO] {-2.1,1E308}
+SydTest::Executor: [INFO] {6.5,1E308}
+SydTest::Executor: [INFO] {-6.5,1E308}
+SydTest::Executor: [INFO] {0.0,1.797693134862E308}
+SydTest::Executor: [INFO] {1.0,1.797693134862E308}
+SydTest::Executor: [INFO] {-1.0,1.797693134862E308}
+SydTest::Executor: [INFO] {2.1,1.797693134862E308}
+SydTest::Executor: [INFO] {-2.1,1.797693134862E308}
+SydTest::Executor: [INFO] {6.5,1.797693134862E308}
+SydTest::Executor: [INFO] {-6.5,1.797693134862E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where dec1 <= -1.79769313486231E308
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_15__15 where T_2_0.dec1 != T_float_15__15.float1
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {21,0E0}
+SydTest::Executor: [INFO] {-21,0E0}
+SydTest::Executor: [INFO] {65,0E0}
+SydTest::Executor: [INFO] {-65,0E0}
+SydTest::Executor: [INFO] {0,1E-15}
+SydTest::Executor: [INFO] {1,1E-15}
+SydTest::Executor: [INFO] {-1,1E-15}
+SydTest::Executor: [INFO] {21,1E-15}
+SydTest::Executor: [INFO] {-21,1E-15}
+SydTest::Executor: [INFO] {65,1E-15}
+SydTest::Executor: [INFO] {-65,1E-15}
+SydTest::Executor: [INFO] {0,-1E-15}
+SydTest::Executor: [INFO] {1,-1E-15}
+SydTest::Executor: [INFO] {-1,-1E-15}
+SydTest::Executor: [INFO] {21,-1E-15}
+SydTest::Executor: [INFO] {-21,-1E-15}
+SydTest::Executor: [INFO] {65,-1E-15}
+SydTest::Executor: [INFO] {-65,-1E-15}
+SydTest::Executor: [INFO] {0,2.109876543210E-15}
+SydTest::Executor: [INFO] {1,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1,2.109876543210E-15}
+SydTest::Executor: [INFO] {21,2.109876543210E-15}
+SydTest::Executor: [INFO] {-21,2.109876543210E-15}
+SydTest::Executor: [INFO] {65,2.109876543210E-15}
+SydTest::Executor: [INFO] {-65,2.109876543210E-15}
+SydTest::Executor: [INFO] {0,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {21,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-21,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {65,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-65,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0,6.543210987654E-15}
+SydTest::Executor: [INFO] {1,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1,6.543210987654E-15}
+SydTest::Executor: [INFO] {21,6.543210987654E-15}
+SydTest::Executor: [INFO] {-21,6.543210987654E-15}
+SydTest::Executor: [INFO] {65,6.543210987654E-15}
+SydTest::Executor: [INFO] {-65,6.543210987654E-15}
+SydTest::Executor: [INFO] {0,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {21,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-21,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {65,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-65,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where dec1 != -6.54321098765432E-15
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {21}
+SydTest::Executor: [INFO] {-21}
+SydTest::Executor: [INFO] {65}
+SydTest::Executor: [INFO] {-65}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_15_308 where T_float_15_308.float1 = T_2_0.dec1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where -1.79769313486231E308 = dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_2_2 where T_float_2_2.float1 > T_2_0.dec1
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-21,0E0}
+SydTest::Executor: [INFO] {-65,0E0}
+SydTest::Executor: [INFO] {0,1E2}
+SydTest::Executor: [INFO] {1,1E2}
+SydTest::Executor: [INFO] {-1,1E2}
+SydTest::Executor: [INFO] {21,1E2}
+SydTest::Executor: [INFO] {-21,1E2}
+SydTest::Executor: [INFO] {65,1E2}
+SydTest::Executor: [INFO] {-65,1E2}
+SydTest::Executor: [INFO] {0,2.1E2}
+SydTest::Executor: [INFO] {1,2.1E2}
+SydTest::Executor: [INFO] {-1,2.1E2}
+SydTest::Executor: [INFO] {21,2.1E2}
+SydTest::Executor: [INFO] {-21,2.1E2}
+SydTest::Executor: [INFO] {65,2.1E2}
+SydTest::Executor: [INFO] {-65,2.1E2}
+SydTest::Executor: [INFO] {0,6.5E2}
+SydTest::Executor: [INFO] {1,6.5E2}
+SydTest::Executor: [INFO] {-1,6.5E2}
+SydTest::Executor: [INFO] {21,6.5E2}
+SydTest::Executor: [INFO] {-21,6.5E2}
+SydTest::Executor: [INFO] {65,6.5E2}
+SydTest::Executor: [INFO] {-65,6.5E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where -6.5E2 > dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_7_0 where T_2_0.dec1 < T_float_7_0.float1
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-21,0E0}
+SydTest::Executor: [INFO] {-65,0E0}
+SydTest::Executor: [INFO] {0,1E0}
+SydTest::Executor: [INFO] {-1,1E0}
+SydTest::Executor: [INFO] {-21,1E0}
+SydTest::Executor: [INFO] {-65,1E0}
+SydTest::Executor: [INFO] {-21,-1E0}
+SydTest::Executor: [INFO] {-65,-1E0}
+SydTest::Executor: [INFO] {0,2.109876E0}
+SydTest::Executor: [INFO] {1,2.109876E0}
+SydTest::Executor: [INFO] {-1,2.109876E0}
+SydTest::Executor: [INFO] {-21,2.109876E0}
+SydTest::Executor: [INFO] {-65,2.109876E0}
+SydTest::Executor: [INFO] {-21,-2.109876E0}
+SydTest::Executor: [INFO] {-65,-2.109876E0}
+SydTest::Executor: [INFO] {0,6.54321E0}
+SydTest::Executor: [INFO] {1,6.54321E0}
+SydTest::Executor: [INFO] {-1,6.54321E0}
+SydTest::Executor: [INFO] {-21,6.54321E0}
+SydTest::Executor: [INFO] {-65,6.54321E0}
+SydTest::Executor: [INFO] {-21,-6.54321E0}
+SydTest::Executor: [INFO] {-65,-6.54321E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where dec1 < -6.543210E0
+SydTest::Executor: [INFO] {-21}
+SydTest::Executor: [INFO] {-65}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9, T_float_2_0 where T_18_9.dec1 != T_float_2_0.float1
+SydTest::Executor: [INFO] {0.000000000,1E0}
+SydTest::Executor: [INFO] {0.000000000,-1E0}
+SydTest::Executor: [INFO] {0.000000000,2.1E0}
+SydTest::Executor: [INFO] {0.000000000,-2.1E0}
+SydTest::Executor: [INFO] {0.000000000,6.5E0}
+SydTest::Executor: [INFO] {0.000000000,-6.5E0}
+SydTest::Executor: [INFO] {1.000000000,0E0}
+SydTest::Executor: [INFO] {1.000000000,-1E0}
+SydTest::Executor: [INFO] {1.000000000,2.1E0}
+SydTest::Executor: [INFO] {1.000000000,-2.1E0}
+SydTest::Executor: [INFO] {1.000000000,6.5E0}
+SydTest::Executor: [INFO] {1.000000000,-6.5E0}
+SydTest::Executor: [INFO] {-1.000000000,0E0}
+SydTest::Executor: [INFO] {-1.000000000,1E0}
+SydTest::Executor: [INFO] {-1.000000000,2.1E0}
+SydTest::Executor: [INFO] {-1.000000000,-2.1E0}
+SydTest::Executor: [INFO] {-1.000000000,6.5E0}
+SydTest::Executor: [INFO] {-1.000000000,-6.5E0}
+SydTest::Executor: [INFO] {210987654.321098765,0E0}
+SydTest::Executor: [INFO] {210987654.321098765,1E0}
+SydTest::Executor: [INFO] {210987654.321098765,-1E0}
+SydTest::Executor: [INFO] {210987654.321098765,2.1E0}
+SydTest::Executor: [INFO] {210987654.321098765,-2.1E0}
+SydTest::Executor: [INFO] {210987654.321098765,6.5E0}
+SydTest::Executor: [INFO] {210987654.321098765,-6.5E0}
+SydTest::Executor: [INFO] {-210987654.321098765,0E0}
+SydTest::Executor: [INFO] {-210987654.321098765,1E0}
+SydTest::Executor: [INFO] {-210987654.321098765,-1E0}
+SydTest::Executor: [INFO] {-210987654.321098765,2.1E0}
+SydTest::Executor: [INFO] {-210987654.321098765,-2.1E0}
+SydTest::Executor: [INFO] {-210987654.321098765,6.5E0}
+SydTest::Executor: [INFO] {-210987654.321098765,-6.5E0}
+SydTest::Executor: [INFO] {654321098.765432109,0E0}
+SydTest::Executor: [INFO] {654321098.765432109,1E0}
+SydTest::Executor: [INFO] {654321098.765432109,-1E0}
+SydTest::Executor: [INFO] {654321098.765432109,2.1E0}
+SydTest::Executor: [INFO] {654321098.765432109,-2.1E0}
+SydTest::Executor: [INFO] {654321098.765432109,6.5E0}
+SydTest::Executor: [INFO] {654321098.765432109,-6.5E0}
+SydTest::Executor: [INFO] {-654321098.765432109,0E0}
+SydTest::Executor: [INFO] {-654321098.765432109,1E0}
+SydTest::Executor: [INFO] {-654321098.765432109,-1E0}
+SydTest::Executor: [INFO] {-654321098.765432109,2.1E0}
+SydTest::Executor: [INFO] {-654321098.765432109,-2.1E0}
+SydTest::Executor: [INFO] {-654321098.765432109,6.5E0}
+SydTest::Executor: [INFO] {-654321098.765432109,-6.5E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9 where dec1 != -2.1E0
+SydTest::Executor: [INFO] {0.000000000}
+SydTest::Executor: [INFO] {1.000000000}
+SydTest::Executor: [INFO] {-1.000000000}
+SydTest::Executor: [INFO] {210987654.321098765}
+SydTest::Executor: [INFO] {-210987654.321098765}
+SydTest::Executor: [INFO] {654321098.765432109}
+SydTest::Executor: [INFO] {-654321098.765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9, T_float_7_7 where T_float_7_7.float1 = T_18_9.dec1
+SydTest::Executor: [INFO] {0.000000000,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9 where -2.109876E7 = dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_15__308 where T_36_36.dec1 >= T_float_15__308.float1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,6.543210987654E-308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,2.225073858507E-308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,6.543210987654E-308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,2.225073858507E-308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where dec1 >= -2.22507385850721E-308
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_15__15 where T_float_15__15.float1 <= T_36_36.dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-1E-15}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,1E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-1E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,6.543210987654E-15}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,1E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-1E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,6.543210987654E-15}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where -2.10987654321098E-15 <= dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_2_0 where T_float_2_0.float1 < T_2_1.dec1
+SydTest::Executor: [INFO] {1.0,0E0}
+SydTest::Executor: [INFO] {2.1,0E0}
+SydTest::Executor: [INFO] {6.5,0E0}
+SydTest::Executor: [INFO] {2.1,1E0}
+SydTest::Executor: [INFO] {6.5,1E0}
+SydTest::Executor: [INFO] {0.0,-1E0}
+SydTest::Executor: [INFO] {1.0,-1E0}
+SydTest::Executor: [INFO] {2.1,-1E0}
+SydTest::Executor: [INFO] {6.5,-1E0}
+SydTest::Executor: [INFO] {6.5,2.1E0}
+SydTest::Executor: [INFO] {0.0,-2.1E0}
+SydTest::Executor: [INFO] {1.0,-2.1E0}
+SydTest::Executor: [INFO] {-1.0,-2.1E0}
+SydTest::Executor: [INFO] {2.1,-2.1E0}
+SydTest::Executor: [INFO] {6.5,-2.1E0}
+SydTest::Executor: [INFO] {0.0,-6.5E0}
+SydTest::Executor: [INFO] {1.0,-6.5E0}
+SydTest::Executor: [INFO] {-1.0,-6.5E0}
+SydTest::Executor: [INFO] {2.1,-6.5E0}
+SydTest::Executor: [INFO] {-2.1,-6.5E0}
+SydTest::Executor: [INFO] {6.5,-6.5E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where -2.1E0 < dec1
+SydTest::Executor: [INFO] {0.0}
+SydTest::Executor: [INFO] {1.0}
+SydTest::Executor: [INFO] {-1.0}
+SydTest::Executor: [INFO] {2.1}
+SydTest::Executor: [INFO] {6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_7_7 where T_2_1.dec1 > T_float_7_7.float1
+SydTest::Executor: [INFO] {1.0,0E0}
+SydTest::Executor: [INFO] {2.1,0E0}
+SydTest::Executor: [INFO] {6.5,0E0}
+SydTest::Executor: [INFO] {0.0,-1E7}
+SydTest::Executor: [INFO] {1.0,-1E7}
+SydTest::Executor: [INFO] {-1.0,-1E7}
+SydTest::Executor: [INFO] {2.1,-1E7}
+SydTest::Executor: [INFO] {-2.1,-1E7}
+SydTest::Executor: [INFO] {6.5,-1E7}
+SydTest::Executor: [INFO] {-6.5,-1E7}
+SydTest::Executor: [INFO] {0.0,-2.109876E7}
+SydTest::Executor: [INFO] {1.0,-2.109876E7}
+SydTest::Executor: [INFO] {-1.0,-2.109876E7}
+SydTest::Executor: [INFO] {2.1,-2.109876E7}
+SydTest::Executor: [INFO] {-2.1,-2.109876E7}
+SydTest::Executor: [INFO] {6.5,-2.109876E7}
+SydTest::Executor: [INFO] {-6.5,-2.109876E7}
+SydTest::Executor: [INFO] {0.0,-6.54321E7}
+SydTest::Executor: [INFO] {1.0,-6.54321E7}
+SydTest::Executor: [INFO] {-1.0,-6.54321E7}
+SydTest::Executor: [INFO] {2.1,-6.54321E7}
+SydTest::Executor: [INFO] {-2.1,-6.54321E7}
+SydTest::Executor: [INFO] {6.5,-6.54321E7}
+SydTest::Executor: [INFO] {-6.5,-6.54321E7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where dec1 > -2.109876E7
+SydTest::Executor: [INFO] {0.0}
+SydTest::Executor: [INFO] {1.0}
+SydTest::Executor: [INFO] {-1.0}
+SydTest::Executor: [INFO] {2.1}
+SydTest::Executor: [INFO] {-2.1}
+SydTest::Executor: [INFO] {6.5}
+SydTest::Executor: [INFO] {-6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_15__308 where T_float_15__308.float1 > T_18_0.dec1
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-210987654321098765,0E0}
+SydTest::Executor: [INFO] {-654321098765432109,0E0}
+SydTest::Executor: [INFO] {0,6.543210987654E-308}
+SydTest::Executor: [INFO] {-1,6.543210987654E-308}
+SydTest::Executor: [INFO] {-210987654321098765,6.543210987654E-308}
+SydTest::Executor: [INFO] {-654321098765432109,6.543210987654E-308}
+SydTest::Executor: [INFO] {-1,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {-210987654321098765,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {-654321098765432109,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0,2.225073858507E-308}
+SydTest::Executor: [INFO] {-1,2.225073858507E-308}
+SydTest::Executor: [INFO] {-210987654321098765,2.225073858507E-308}
+SydTest::Executor: [INFO] {-654321098765432109,2.225073858507E-308}
+SydTest::Executor: [INFO] {-1,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {-210987654321098765,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {-654321098765432109,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where -2.22507385850721E-308 > dec1
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-210987654321098765}
+SydTest::Executor: [INFO] {-654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_15__15 where T_18_0.dec1 < T_float_15__15.float1
+SydTest::Executor: [INFO] {0,1E-15}
+SydTest::Executor: [INFO] {0,2.109876543210E-15}
+SydTest::Executor: [INFO] {0,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-1,1E-15}
+SydTest::Executor: [INFO] {-1,-1E-15}
+SydTest::Executor: [INFO] {-1,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-1,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-210987654321098765,0E0}
+SydTest::Executor: [INFO] {-210987654321098765,1E-15}
+SydTest::Executor: [INFO] {-210987654321098765,-1E-15}
+SydTest::Executor: [INFO] {-210987654321098765,2.109876543210E-15}
+SydTest::Executor: [INFO] {-210987654321098765,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-210987654321098765,6.543210987654E-15}
+SydTest::Executor: [INFO] {-210987654321098765,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-654321098765432109,0E0}
+SydTest::Executor: [INFO] {-654321098765432109,1E-15}
+SydTest::Executor: [INFO] {-654321098765432109,-1E-15}
+SydTest::Executor: [INFO] {-654321098765432109,2.109876543210E-15}
+SydTest::Executor: [INFO] {-654321098765432109,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-654321098765432109,6.543210987654E-15}
+SydTest::Executor: [INFO] {-654321098765432109,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where dec1 < -2.10987654321098E-15
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-210987654321098765}
+SydTest::Executor: [INFO] {-654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_2_2 where T_18_0.dec1 <= T_float_2_2.float1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {0,1E2}
+SydTest::Executor: [INFO] {0,2.1E2}
+SydTest::Executor: [INFO] {0,6.5E2}
+SydTest::Executor: [INFO] {1,1E2}
+SydTest::Executor: [INFO] {1,2.1E2}
+SydTest::Executor: [INFO] {1,6.5E2}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-1,1E2}
+SydTest::Executor: [INFO] {-1,2.1E2}
+SydTest::Executor: [INFO] {-1,6.5E2}
+SydTest::Executor: [INFO] {-210987654321098765,0E0}
+SydTest::Executor: [INFO] {-210987654321098765,1E2}
+SydTest::Executor: [INFO] {-210987654321098765,-1E2}
+SydTest::Executor: [INFO] {-210987654321098765,2.1E2}
+SydTest::Executor: [INFO] {-210987654321098765,-2.1E2}
+SydTest::Executor: [INFO] {-210987654321098765,6.5E2}
+SydTest::Executor: [INFO] {-210987654321098765,-6.5E2}
+SydTest::Executor: [INFO] {-654321098765432109,0E0}
+SydTest::Executor: [INFO] {-654321098765432109,1E2}
+SydTest::Executor: [INFO] {-654321098765432109,-1E2}
+SydTest::Executor: [INFO] {-654321098765432109,2.1E2}
+SydTest::Executor: [INFO] {-654321098765432109,-2.1E2}
+SydTest::Executor: [INFO] {-654321098765432109,6.5E2}
+SydTest::Executor: [INFO] {-654321098765432109,-6.5E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where dec1 <= -6.5E2
+SydTest::Executor: [INFO] {-210987654321098765}
+SydTest::Executor: [INFO] {-654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_7_0 where T_float_7_0.float1 >= T_18_0.dec1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {0,1E0}
+SydTest::Executor: [INFO] {0,2.109876E0}
+SydTest::Executor: [INFO] {0,6.54321E0}
+SydTest::Executor: [INFO] {1,1E0}
+SydTest::Executor: [INFO] {1,2.109876E0}
+SydTest::Executor: [INFO] {1,6.54321E0}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-1,1E0}
+SydTest::Executor: [INFO] {-1,-1E0}
+SydTest::Executor: [INFO] {-1,2.109876E0}
+SydTest::Executor: [INFO] {-1,6.54321E0}
+SydTest::Executor: [INFO] {-210987654321098765,0E0}
+SydTest::Executor: [INFO] {-210987654321098765,1E0}
+SydTest::Executor: [INFO] {-210987654321098765,-1E0}
+SydTest::Executor: [INFO] {-210987654321098765,2.109876E0}
+SydTest::Executor: [INFO] {-210987654321098765,-2.109876E0}
+SydTest::Executor: [INFO] {-210987654321098765,6.54321E0}
+SydTest::Executor: [INFO] {-210987654321098765,-6.54321E0}
+SydTest::Executor: [INFO] {-654321098765432109,0E0}
+SydTest::Executor: [INFO] {-654321098765432109,1E0}
+SydTest::Executor: [INFO] {-654321098765432109,-1E0}
+SydTest::Executor: [INFO] {-654321098765432109,2.109876E0}
+SydTest::Executor: [INFO] {-654321098765432109,-2.109876E0}
+SydTest::Executor: [INFO] {-654321098765432109,6.54321E0}
+SydTest::Executor: [INFO] {-654321098765432109,-6.54321E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where -6.543210E0 >= dec1
+SydTest::Executor: [INFO] {-210987654321098765}
+SydTest::Executor: [INFO] {-654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_15__15 where T_36_36.dec1 = T_float_15__15.float1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where dec1 = -6.54321098765432E-15
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_15_308 where T_float_15_308.float1 != T_36_36.dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,1E308}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-1E308}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,1.797693134862E308}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-1.79769313486231E308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,1E308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-1E308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,1.797693134862E308}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,1E308}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-1E308}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,1.797693134862E308}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-1.79769313486231E308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,1E308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-1E308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,1.797693134862E308}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,1E308}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-1E308}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,1.797693134862E308}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-1.79769313486231E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where -1.79769313486231E308 != dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18, T_float_2_0 where T_36_18.dec1 >= T_float_2_0.float1
+SydTest::Executor: [INFO] {0.000000000000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000000000000,-1E0}
+SydTest::Executor: [INFO] {0.000000000000000000,-2.1E0}
+SydTest::Executor: [INFO] {0.000000000000000000,-6.5E0}
+SydTest::Executor: [INFO] {1.000000000000000000,0E0}
+SydTest::Executor: [INFO] {1.000000000000000000,1E0}
+SydTest::Executor: [INFO] {1.000000000000000000,-1E0}
+SydTest::Executor: [INFO] {1.000000000000000000,-2.1E0}
+SydTest::Executor: [INFO] {1.000000000000000000,-6.5E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,-1E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,-2.1E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,-6.5E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,0E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,1E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-1E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,2.1E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-2.1E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,6.5E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-6.5E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,0E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,1E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-1E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,2.1E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-2.1E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,6.5E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-6.5E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18 where dec1 >= -2.1E0
+SydTest::Executor: [INFO] {0.000000000000000000}
+SydTest::Executor: [INFO] {1.000000000000000000}
+SydTest::Executor: [INFO] {-1.000000000000000000}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18, T_float_7_7 where T_float_7_7.float1 <= T_36_18.dec1
+SydTest::Executor: [INFO] {0.000000000000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000000000000,-1E7}
+SydTest::Executor: [INFO] {0.000000000000000000,-2.109876E7}
+SydTest::Executor: [INFO] {0.000000000000000000,-6.54321E7}
+SydTest::Executor: [INFO] {1.000000000000000000,0E0}
+SydTest::Executor: [INFO] {1.000000000000000000,-1E7}
+SydTest::Executor: [INFO] {1.000000000000000000,-2.109876E7}
+SydTest::Executor: [INFO] {1.000000000000000000,-6.54321E7}
+SydTest::Executor: [INFO] {-1.000000000000000000,-1E7}
+SydTest::Executor: [INFO] {-1.000000000000000000,-2.109876E7}
+SydTest::Executor: [INFO] {-1.000000000000000000,-6.54321E7}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,0E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,1E7}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-1E7}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,2.109876E7}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-2.109876E7}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,6.54321E7}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-6.54321E7}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,0E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,1E7}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-1E7}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,2.109876E7}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-2.109876E7}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,6.54321E7}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-6.54321E7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18 where -2.109876E7 <= dec1
+SydTest::Executor: [INFO] {0.000000000000000000}
+SydTest::Executor: [INFO] {1.000000000000000000}
+SydTest::Executor: [INFO] {-1.000000000000000000}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18, T_float_2_0 where T_float_2_0.float1 = T_18_18.dec1
+SydTest::Executor: [INFO] {0.000000000000000000,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18 where -2.1E0 = dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18, T_float_7_7 where T_18_18.dec1 != T_float_7_7.float1
+SydTest::Executor: [INFO] {0.000000000000000000,1E7}
+SydTest::Executor: [INFO] {0.000000000000000000,-1E7}
+SydTest::Executor: [INFO] {0.000000000000000000,2.109876E7}
+SydTest::Executor: [INFO] {0.000000000000000000,-2.109876E7}
+SydTest::Executor: [INFO] {0.000000000000000000,6.54321E7}
+SydTest::Executor: [INFO] {0.000000000000000000,-6.54321E7}
+SydTest::Executor: [INFO] {0.210987654321098765,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765,1E7}
+SydTest::Executor: [INFO] {0.210987654321098765,-1E7}
+SydTest::Executor: [INFO] {0.210987654321098765,2.109876E7}
+SydTest::Executor: [INFO] {0.210987654321098765,-2.109876E7}
+SydTest::Executor: [INFO] {0.210987654321098765,6.54321E7}
+SydTest::Executor: [INFO] {0.210987654321098765,-6.54321E7}
+SydTest::Executor: [INFO] {-0.210987654321098765,0E0}
+SydTest::Executor: [INFO] {-0.210987654321098765,1E7}
+SydTest::Executor: [INFO] {-0.210987654321098765,-1E7}
+SydTest::Executor: [INFO] {-0.210987654321098765,2.109876E7}
+SydTest::Executor: [INFO] {-0.210987654321098765,-2.109876E7}
+SydTest::Executor: [INFO] {-0.210987654321098765,6.54321E7}
+SydTest::Executor: [INFO] {-0.210987654321098765,-6.54321E7}
+SydTest::Executor: [INFO] {0.654321098765432109,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109,1E7}
+SydTest::Executor: [INFO] {0.654321098765432109,-1E7}
+SydTest::Executor: [INFO] {0.654321098765432109,2.109876E7}
+SydTest::Executor: [INFO] {0.654321098765432109,-2.109876E7}
+SydTest::Executor: [INFO] {0.654321098765432109,6.54321E7}
+SydTest::Executor: [INFO] {0.654321098765432109,-6.54321E7}
+SydTest::Executor: [INFO] {-0.654321098765432109,0E0}
+SydTest::Executor: [INFO] {-0.654321098765432109,1E7}
+SydTest::Executor: [INFO] {-0.654321098765432109,-1E7}
+SydTest::Executor: [INFO] {-0.654321098765432109,2.109876E7}
+SydTest::Executor: [INFO] {-0.654321098765432109,-2.109876E7}
+SydTest::Executor: [INFO] {-0.654321098765432109,6.54321E7}
+SydTest::Executor: [INFO] {-0.654321098765432109,-6.54321E7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18 where dec1 != -2.109876E7
+SydTest::Executor: [INFO] {0.000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765}
+SydTest::Executor: [INFO] {-0.210987654321098765}
+SydTest::Executor: [INFO] {0.654321098765432109}
+SydTest::Executor: [INFO] {-0.654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0, T_float_15__15 where T_float_15__15.float1 != T_36_0.dec1
+SydTest::Executor: [INFO] {0,1E-15}
+SydTest::Executor: [INFO] {0,-1E-15}
+SydTest::Executor: [INFO] {0,2.109876543210E-15}
+SydTest::Executor: [INFO] {0,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0,6.543210987654E-15}
+SydTest::Executor: [INFO] {0,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {1,1E-15}
+SydTest::Executor: [INFO] {1,-1E-15}
+SydTest::Executor: [INFO] {1,2.109876543210E-15}
+SydTest::Executor: [INFO] {1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {1,6.543210987654E-15}
+SydTest::Executor: [INFO] {1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-1,1E-15}
+SydTest::Executor: [INFO] {-1,-1E-15}
+SydTest::Executor: [INFO] {-1,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-1,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,1E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-1E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,2.109876543210E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,6.543210987654E-15}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,1E-15}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,-1E-15}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,2.109876543210E-15}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,6.543210987654E-15}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,1E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-1E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,2.109876543210E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,6.543210987654E-15}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,1E-15}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,-1E-15}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,2.109876543210E-15}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,6.543210987654E-15}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0 where -6.54321098765432E-15 != dec1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {-210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321}
+SydTest::Executor: [INFO] {-654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0, T_float_15_308 where T_36_0.dec1 = T_float_15_308.float1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0 where dec1 = -1.79769313486231E308
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_15__308 where T_2_1.dec1 < T_float_15__308.float1
+SydTest::Executor: [INFO] {-1.0,0E0}
+SydTest::Executor: [INFO] {-2.1,0E0}
+SydTest::Executor: [INFO] {-6.5,0E0}
+SydTest::Executor: [INFO] {0.0,6.543210987654E-308}
+SydTest::Executor: [INFO] {-1.0,6.543210987654E-308}
+SydTest::Executor: [INFO] {-2.1,6.543210987654E-308}
+SydTest::Executor: [INFO] {-6.5,6.543210987654E-308}
+SydTest::Executor: [INFO] {-1.0,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {-2.1,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {-6.5,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.0,2.225073858507E-308}
+SydTest::Executor: [INFO] {-1.0,2.225073858507E-308}
+SydTest::Executor: [INFO] {-2.1,2.225073858507E-308}
+SydTest::Executor: [INFO] {-6.5,2.225073858507E-308}
+SydTest::Executor: [INFO] {-1.0,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {-2.1,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {-6.5,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where dec1 < -2.22507385850721E-308
+SydTest::Executor: [INFO] {-1.0}
+SydTest::Executor: [INFO] {-2.1}
+SydTest::Executor: [INFO] {-6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_15__15 where T_float_15__15.float1 > T_2_1.dec1
+SydTest::Executor: [INFO] {-1.0,0E0}
+SydTest::Executor: [INFO] {-2.1,0E0}
+SydTest::Executor: [INFO] {-6.5,0E0}
+SydTest::Executor: [INFO] {0.0,1E-15}
+SydTest::Executor: [INFO] {-1.0,1E-15}
+SydTest::Executor: [INFO] {-2.1,1E-15}
+SydTest::Executor: [INFO] {-6.5,1E-15}
+SydTest::Executor: [INFO] {-1.0,-1E-15}
+SydTest::Executor: [INFO] {-2.1,-1E-15}
+SydTest::Executor: [INFO] {-6.5,-1E-15}
+SydTest::Executor: [INFO] {0.0,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1.0,2.109876543210E-15}
+SydTest::Executor: [INFO] {-2.1,2.109876543210E-15}
+SydTest::Executor: [INFO] {-6.5,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1.0,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-2.1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-6.5,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.0,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1.0,6.543210987654E-15}
+SydTest::Executor: [INFO] {-2.1,6.543210987654E-15}
+SydTest::Executor: [INFO] {-6.5,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1.0,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-2.1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-6.5,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where -2.10987654321098E-15 > dec1
+SydTest::Executor: [INFO] {-1.0}
+SydTest::Executor: [INFO] {-2.1}
+SydTest::Executor: [INFO] {-6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_15__308 where T_float_15__308.float1 <= T_2_0.dec1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {21,0E0}
+SydTest::Executor: [INFO] {65,0E0}
+SydTest::Executor: [INFO] {1,6.543210987654E-308}
+SydTest::Executor: [INFO] {21,6.543210987654E-308}
+SydTest::Executor: [INFO] {65,6.543210987654E-308}
+SydTest::Executor: [INFO] {0,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {1,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {21,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {65,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {1,2.225073858507E-308}
+SydTest::Executor: [INFO] {21,2.225073858507E-308}
+SydTest::Executor: [INFO] {65,2.225073858507E-308}
+SydTest::Executor: [INFO] {0,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {1,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {21,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {65,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where -2.22507385850721E-308 <= dec1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {21}
+SydTest::Executor: [INFO] {65}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_15__15 where T_2_0.dec1 >= T_float_15__15.float1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {21,0E0}
+SydTest::Executor: [INFO] {65,0E0}
+SydTest::Executor: [INFO] {1,1E-15}
+SydTest::Executor: [INFO] {21,1E-15}
+SydTest::Executor: [INFO] {65,1E-15}
+SydTest::Executor: [INFO] {0,-1E-15}
+SydTest::Executor: [INFO] {1,-1E-15}
+SydTest::Executor: [INFO] {21,-1E-15}
+SydTest::Executor: [INFO] {65,-1E-15}
+SydTest::Executor: [INFO] {1,2.109876543210E-15}
+SydTest::Executor: [INFO] {21,2.109876543210E-15}
+SydTest::Executor: [INFO] {65,2.109876543210E-15}
+SydTest::Executor: [INFO] {0,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {21,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {65,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {1,6.543210987654E-15}
+SydTest::Executor: [INFO] {21,6.543210987654E-15}
+SydTest::Executor: [INFO] {65,6.543210987654E-15}
+SydTest::Executor: [INFO] {0,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {21,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {65,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where dec1 >= -2.10987654321098E-15
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {21}
+SydTest::Executor: [INFO] {65}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_15__15 where T_2_0.dec1 <= T_float_15__15.float1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-21,0E0}
+SydTest::Executor: [INFO] {-65,0E0}
+SydTest::Executor: [INFO] {0,1E-15}
+SydTest::Executor: [INFO] {-1,1E-15}
+SydTest::Executor: [INFO] {-21,1E-15}
+SydTest::Executor: [INFO] {-65,1E-15}
+SydTest::Executor: [INFO] {-1,-1E-15}
+SydTest::Executor: [INFO] {-21,-1E-15}
+SydTest::Executor: [INFO] {-65,-1E-15}
+SydTest::Executor: [INFO] {0,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1,2.109876543210E-15}
+SydTest::Executor: [INFO] {-21,2.109876543210E-15}
+SydTest::Executor: [INFO] {-65,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-21,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-65,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1,6.543210987654E-15}
+SydTest::Executor: [INFO] {-21,6.543210987654E-15}
+SydTest::Executor: [INFO] {-65,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-21,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-65,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where dec1 <= -6.54321098765432E-15
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-21}
+SydTest::Executor: [INFO] {-65}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_15_308 where T_float_15_308.float1 >= T_2_0.dec1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-21,0E0}
+SydTest::Executor: [INFO] {-65,0E0}
+SydTest::Executor: [INFO] {0,1E308}
+SydTest::Executor: [INFO] {1,1E308}
+SydTest::Executor: [INFO] {-1,1E308}
+SydTest::Executor: [INFO] {21,1E308}
+SydTest::Executor: [INFO] {-21,1E308}
+SydTest::Executor: [INFO] {65,1E308}
+SydTest::Executor: [INFO] {-65,1E308}
+SydTest::Executor: [INFO] {0,1.797693134862E308}
+SydTest::Executor: [INFO] {1,1.797693134862E308}
+SydTest::Executor: [INFO] {-1,1.797693134862E308}
+SydTest::Executor: [INFO] {21,1.797693134862E308}
+SydTest::Executor: [INFO] {-21,1.797693134862E308}
+SydTest::Executor: [INFO] {65,1.797693134862E308}
+SydTest::Executor: [INFO] {-65,1.797693134862E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where -1.79769313486231E308 >= dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_2_2 where T_36_36.dec1 != T_float_2_2.float1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,1E2}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-1E2}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,2.1E2}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-2.1E2}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,6.5E2}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-6.5E2}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,1E2}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-1E2}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,2.1E2}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-2.1E2}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,6.5E2}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-6.5E2}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,1E2}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-1E2}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,2.1E2}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-2.1E2}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,6.5E2}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-6.5E2}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,1E2}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-1E2}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,2.1E2}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-2.1E2}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,6.5E2}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-6.5E2}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,1E2}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-1E2}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,2.1E2}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-2.1E2}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,6.5E2}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-6.5E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where dec1 != -6.5E2
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_7_0 where T_float_7_0.float1 = T_36_36.dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where -6.543210E0 = dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_15__15 where T_float_15__15.float1 < T_18_0.dec1
+SydTest::Executor: [INFO] {0,-1E-15}
+SydTest::Executor: [INFO] {0,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {1,1E-15}
+SydTest::Executor: [INFO] {1,-1E-15}
+SydTest::Executor: [INFO] {1,2.109876543210E-15}
+SydTest::Executor: [INFO] {1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {1,6.543210987654E-15}
+SydTest::Executor: [INFO] {1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {210987654321098765,0E0}
+SydTest::Executor: [INFO] {210987654321098765,1E-15}
+SydTest::Executor: [INFO] {210987654321098765,-1E-15}
+SydTest::Executor: [INFO] {210987654321098765,2.109876543210E-15}
+SydTest::Executor: [INFO] {210987654321098765,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {210987654321098765,6.543210987654E-15}
+SydTest::Executor: [INFO] {210987654321098765,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {654321098765432109,0E0}
+SydTest::Executor: [INFO] {654321098765432109,1E-15}
+SydTest::Executor: [INFO] {654321098765432109,-1E-15}
+SydTest::Executor: [INFO] {654321098765432109,2.109876543210E-15}
+SydTest::Executor: [INFO] {654321098765432109,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {654321098765432109,6.543210987654E-15}
+SydTest::Executor: [INFO] {654321098765432109,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where -6.54321098765432E-15 < dec1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {210987654321098765}
+SydTest::Executor: [INFO] {654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_15_308 where T_18_0.dec1 > T_float_15_308.float1
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {210987654321098765,0E0}
+SydTest::Executor: [INFO] {654321098765432109,0E0}
+SydTest::Executor: [INFO] {0,-1E308}
+SydTest::Executor: [INFO] {1,-1E308}
+SydTest::Executor: [INFO] {-1,-1E308}
+SydTest::Executor: [INFO] {210987654321098765,-1E308}
+SydTest::Executor: [INFO] {-210987654321098765,-1E308}
+SydTest::Executor: [INFO] {654321098765432109,-1E308}
+SydTest::Executor: [INFO] {-654321098765432109,-1E308}
+SydTest::Executor: [INFO] {0,-1.79769313486231E308}
+SydTest::Executor: [INFO] {1,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-1,-1.79769313486231E308}
+SydTest::Executor: [INFO] {210987654321098765,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-210987654321098765,-1.79769313486231E308}
+SydTest::Executor: [INFO] {654321098765432109,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-654321098765432109,-1.79769313486231E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where dec1 > -1.79769313486231E308
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {210987654321098765}
+SydTest::Executor: [INFO] {-210987654321098765}
+SydTest::Executor: [INFO] {654321098765432109}
+SydTest::Executor: [INFO] {-654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9, T_float_2_2 where T_float_2_2.float1 < T_18_9.dec1
+SydTest::Executor: [INFO] {0.000000000,-1E2}
+SydTest::Executor: [INFO] {0.000000000,-2.1E2}
+SydTest::Executor: [INFO] {0.000000000,-6.5E2}
+SydTest::Executor: [INFO] {1.000000000,0E0}
+SydTest::Executor: [INFO] {1.000000000,-1E2}
+SydTest::Executor: [INFO] {1.000000000,-2.1E2}
+SydTest::Executor: [INFO] {1.000000000,-6.5E2}
+SydTest::Executor: [INFO] {-1.000000000,-1E2}
+SydTest::Executor: [INFO] {-1.000000000,-2.1E2}
+SydTest::Executor: [INFO] {-1.000000000,-6.5E2}
+SydTest::Executor: [INFO] {210987654.321098765,0E0}
+SydTest::Executor: [INFO] {210987654.321098765,1E2}
+SydTest::Executor: [INFO] {210987654.321098765,-1E2}
+SydTest::Executor: [INFO] {210987654.321098765,2.1E2}
+SydTest::Executor: [INFO] {210987654.321098765,-2.1E2}
+SydTest::Executor: [INFO] {210987654.321098765,6.5E2}
+SydTest::Executor: [INFO] {210987654.321098765,-6.5E2}
+SydTest::Executor: [INFO] {654321098.765432109,0E0}
+SydTest::Executor: [INFO] {654321098.765432109,1E2}
+SydTest::Executor: [INFO] {654321098.765432109,-1E2}
+SydTest::Executor: [INFO] {654321098.765432109,2.1E2}
+SydTest::Executor: [INFO] {654321098.765432109,-2.1E2}
+SydTest::Executor: [INFO] {654321098.765432109,6.5E2}
+SydTest::Executor: [INFO] {654321098.765432109,-6.5E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9 where -6.5E2 < dec1
+SydTest::Executor: [INFO] {0.000000000}
+SydTest::Executor: [INFO] {1.000000000}
+SydTest::Executor: [INFO] {-1.000000000}
+SydTest::Executor: [INFO] {210987654.321098765}
+SydTest::Executor: [INFO] {654321098.765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9, T_float_7_0 where T_18_9.dec1 > T_float_7_0.float1
+SydTest::Executor: [INFO] {0.000000000,-1E0}
+SydTest::Executor: [INFO] {0.000000000,-2.109876E0}
+SydTest::Executor: [INFO] {0.000000000,-6.54321E0}
+SydTest::Executor: [INFO] {1.000000000,0E0}
+SydTest::Executor: [INFO] {1.000000000,-1E0}
+SydTest::Executor: [INFO] {1.000000000,-2.109876E0}
+SydTest::Executor: [INFO] {1.000000000,-6.54321E0}
+SydTest::Executor: [INFO] {-1.000000000,-2.109876E0}
+SydTest::Executor: [INFO] {-1.000000000,-6.54321E0}
+SydTest::Executor: [INFO] {210987654.321098765,0E0}
+SydTest::Executor: [INFO] {210987654.321098765,1E0}
+SydTest::Executor: [INFO] {210987654.321098765,-1E0}
+SydTest::Executor: [INFO] {210987654.321098765,2.109876E0}
+SydTest::Executor: [INFO] {210987654.321098765,-2.109876E0}
+SydTest::Executor: [INFO] {210987654.321098765,6.54321E0}
+SydTest::Executor: [INFO] {210987654.321098765,-6.54321E0}
+SydTest::Executor: [INFO] {654321098.765432109,0E0}
+SydTest::Executor: [INFO] {654321098.765432109,1E0}
+SydTest::Executor: [INFO] {654321098.765432109,-1E0}
+SydTest::Executor: [INFO] {654321098.765432109,2.109876E0}
+SydTest::Executor: [INFO] {654321098.765432109,-2.109876E0}
+SydTest::Executor: [INFO] {654321098.765432109,6.54321E0}
+SydTest::Executor: [INFO] {654321098.765432109,-6.54321E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9 where dec1 > -6.543210E0
+SydTest::Executor: [INFO] {0.000000000}
+SydTest::Executor: [INFO] {1.000000000}
+SydTest::Executor: [INFO] {-1.000000000}
+SydTest::Executor: [INFO] {210987654.321098765}
+SydTest::Executor: [INFO] {654321098.765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_15__308 where T_float_15__308.float1 >= T_2_1.dec1
+SydTest::Executor: [INFO] {0.0,0E0}
+SydTest::Executor: [INFO] {-1.0,0E0}
+SydTest::Executor: [INFO] {-2.1,0E0}
+SydTest::Executor: [INFO] {-6.5,0E0}
+SydTest::Executor: [INFO] {0.0,6.543210987654E-308}
+SydTest::Executor: [INFO] {-1.0,6.543210987654E-308}
+SydTest::Executor: [INFO] {-2.1,6.543210987654E-308}
+SydTest::Executor: [INFO] {-6.5,6.543210987654E-308}
+SydTest::Executor: [INFO] {-1.0,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {-2.1,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {-6.5,-6.54321098765432E-308}
+SydTest::Executor: [INFO] {0.0,2.225073858507E-308}
+SydTest::Executor: [INFO] {-1.0,2.225073858507E-308}
+SydTest::Executor: [INFO] {-2.1,2.225073858507E-308}
+SydTest::Executor: [INFO] {-6.5,2.225073858507E-308}
+SydTest::Executor: [INFO] {-1.0,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {-2.1,-2.22507385850721E-308}
+SydTest::Executor: [INFO] {-6.5,-2.22507385850721E-308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where -2.22507385850721E-308 >= dec1
+SydTest::Executor: [INFO] {-1.0}
+SydTest::Executor: [INFO] {-2.1}
+SydTest::Executor: [INFO] {-6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_15__15 where T_2_1.dec1 <= T_float_15__15.float1
+SydTest::Executor: [INFO] {0.0,0E0}
+SydTest::Executor: [INFO] {-1.0,0E0}
+SydTest::Executor: [INFO] {-2.1,0E0}
+SydTest::Executor: [INFO] {-6.5,0E0}
+SydTest::Executor: [INFO] {0.0,1E-15}
+SydTest::Executor: [INFO] {-1.0,1E-15}
+SydTest::Executor: [INFO] {-2.1,1E-15}
+SydTest::Executor: [INFO] {-6.5,1E-15}
+SydTest::Executor: [INFO] {-1.0,-1E-15}
+SydTest::Executor: [INFO] {-2.1,-1E-15}
+SydTest::Executor: [INFO] {-6.5,-1E-15}
+SydTest::Executor: [INFO] {0.0,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1.0,2.109876543210E-15}
+SydTest::Executor: [INFO] {-2.1,2.109876543210E-15}
+SydTest::Executor: [INFO] {-6.5,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1.0,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-2.1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-6.5,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.0,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1.0,6.543210987654E-15}
+SydTest::Executor: [INFO] {-2.1,6.543210987654E-15}
+SydTest::Executor: [INFO] {-6.5,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1.0,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-2.1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-6.5,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where dec1 <= -2.10987654321098E-15
+SydTest::Executor: [INFO] {-1.0}
+SydTest::Executor: [INFO] {-2.1}
+SydTest::Executor: [INFO] {-6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_15__15 where T_float_15__15.float1 > T_18_0.dec1
+SydTest::Executor: [INFO] {0,1E-15}
+SydTest::Executor: [INFO] {0,2.109876543210E-15}
+SydTest::Executor: [INFO] {0,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-1,1E-15}
+SydTest::Executor: [INFO] {-1,-1E-15}
+SydTest::Executor: [INFO] {-1,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-1,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-210987654321098765,0E0}
+SydTest::Executor: [INFO] {-210987654321098765,1E-15}
+SydTest::Executor: [INFO] {-210987654321098765,-1E-15}
+SydTest::Executor: [INFO] {-210987654321098765,2.109876543210E-15}
+SydTest::Executor: [INFO] {-210987654321098765,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-210987654321098765,6.543210987654E-15}
+SydTest::Executor: [INFO] {-210987654321098765,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-654321098765432109,0E0}
+SydTest::Executor: [INFO] {-654321098765432109,1E-15}
+SydTest::Executor: [INFO] {-654321098765432109,-1E-15}
+SydTest::Executor: [INFO] {-654321098765432109,2.109876543210E-15}
+SydTest::Executor: [INFO] {-654321098765432109,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-654321098765432109,6.543210987654E-15}
+SydTest::Executor: [INFO] {-654321098765432109,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where -6.54321098765432E-15 > dec1
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {-210987654321098765}
+SydTest::Executor: [INFO] {-654321098765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0, T_float_15_308 where T_18_0.dec1 < T_float_15_308.float1
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-210987654321098765,0E0}
+SydTest::Executor: [INFO] {-654321098765432109,0E0}
+SydTest::Executor: [INFO] {0,1E308}
+SydTest::Executor: [INFO] {1,1E308}
+SydTest::Executor: [INFO] {-1,1E308}
+SydTest::Executor: [INFO] {210987654321098765,1E308}
+SydTest::Executor: [INFO] {-210987654321098765,1E308}
+SydTest::Executor: [INFO] {654321098765432109,1E308}
+SydTest::Executor: [INFO] {-654321098765432109,1E308}
+SydTest::Executor: [INFO] {0,1.797693134862E308}
+SydTest::Executor: [INFO] {1,1.797693134862E308}
+SydTest::Executor: [INFO] {-1,1.797693134862E308}
+SydTest::Executor: [INFO] {210987654321098765,1.797693134862E308}
+SydTest::Executor: [INFO] {-210987654321098765,1.797693134862E308}
+SydTest::Executor: [INFO] {654321098765432109,1.797693134862E308}
+SydTest::Executor: [INFO] {-654321098765432109,1.797693134862E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_0 where dec1 < -1.79769313486231E308
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_2_0 where T_float_2_0.float1 != T_36_36.dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,1E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-1E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,2.1E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-2.1E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,6.5E0}
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,-6.5E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,1E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-1E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,2.1E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-2.1E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,6.5E0}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987,-6.5E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,1E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-1E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,2.1E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-2.1E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,6.5E0}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987,-6.5E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,1E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-1E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,2.1E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-2.1E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,6.5E0}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321,-6.5E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,1E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-1E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,2.1E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-2.1E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,6.5E0}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321,-6.5E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where -2.1E0 != dec1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000}
+SydTest::Executor: [INFO] {0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {-0.210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] {-0.654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36, T_float_7_7 where T_36_36.dec1 = T_float_7_7.float1
+SydTest::Executor: [INFO] {0.000000000000000000000000000000000000,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_36 where dec1 = -2.109876E7
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18, T_float_15__308 where T_36_18.dec1 = T_float_15__308.float1
+SydTest::Executor: [INFO] {0.000000000000000000,0E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18 where dec1 = -2.22507385850721E-308
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18, T_float_15__15 where T_float_15__15.float1 != T_36_18.dec1
+SydTest::Executor: [INFO] {0.000000000000000000,1E-15}
+SydTest::Executor: [INFO] {0.000000000000000000,-1E-15}
+SydTest::Executor: [INFO] {0.000000000000000000,2.109876543210E-15}
+SydTest::Executor: [INFO] {0.000000000000000000,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.000000000000000000,6.543210987654E-15}
+SydTest::Executor: [INFO] {0.000000000000000000,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {1.000000000000000000,0E0}
+SydTest::Executor: [INFO] {1.000000000000000000,1E-15}
+SydTest::Executor: [INFO] {1.000000000000000000,-1E-15}
+SydTest::Executor: [INFO] {1.000000000000000000,2.109876543210E-15}
+SydTest::Executor: [INFO] {1.000000000000000000,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {1.000000000000000000,6.543210987654E-15}
+SydTest::Executor: [INFO] {1.000000000000000000,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,0E0}
+SydTest::Executor: [INFO] {-1.000000000000000000,1E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,-1E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,2.109876543210E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,6.543210987654E-15}
+SydTest::Executor: [INFO] {-1.000000000000000000,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,0E0}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,1E-15}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-1E-15}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,2.109876543210E-15}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,6.543210987654E-15}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,0E0}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,1E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,-1E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,2.109876543210E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,6.543210987654E-15}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,0E0}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,1E-15}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-1E-15}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,2.109876543210E-15}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,6.543210987654E-15}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,0E0}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,1E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,-1E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,2.109876543210E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,6.543210987654E-15}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_18 where -2.10987654321098E-15 != dec1
+SydTest::Executor: [INFO] {0.000000000000000000}
+SydTest::Executor: [INFO] {1.000000000000000000}
+SydTest::Executor: [INFO] {-1.000000000000000000}
+SydTest::Executor: [INFO] {210987654321098765.432109876543210987}
+SydTest::Executor: [INFO] {-210987654321098765.432109876543210987}
+SydTest::Executor: [INFO] {654321098765432109.876543210987654321}
+SydTest::Executor: [INFO] {-654321098765432109.876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18, T_float_2_2 where T_float_2_2.float1 > T_18_18.dec1
+SydTest::Executor: [INFO] {0.000000000000000000,1E2}
+SydTest::Executor: [INFO] {0.000000000000000000,2.1E2}
+SydTest::Executor: [INFO] {0.000000000000000000,6.5E2}
+SydTest::Executor: [INFO] {0.210987654321098765,1E2}
+SydTest::Executor: [INFO] {0.210987654321098765,2.1E2}
+SydTest::Executor: [INFO] {0.210987654321098765,6.5E2}
+SydTest::Executor: [INFO] {-0.210987654321098765,0E0}
+SydTest::Executor: [INFO] {-0.210987654321098765,1E2}
+SydTest::Executor: [INFO] {-0.210987654321098765,2.1E2}
+SydTest::Executor: [INFO] {-0.210987654321098765,6.5E2}
+SydTest::Executor: [INFO] {0.654321098765432109,1E2}
+SydTest::Executor: [INFO] {0.654321098765432109,2.1E2}
+SydTest::Executor: [INFO] {0.654321098765432109,6.5E2}
+SydTest::Executor: [INFO] {-0.654321098765432109,0E0}
+SydTest::Executor: [INFO] {-0.654321098765432109,1E2}
+SydTest::Executor: [INFO] {-0.654321098765432109,2.1E2}
+SydTest::Executor: [INFO] {-0.654321098765432109,6.5E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18 where -6.5E2 > dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18, T_float_7_0 where T_18_18.dec1 < T_float_7_0.float1
+SydTest::Executor: [INFO] {0.000000000000000000,1E0}
+SydTest::Executor: [INFO] {0.000000000000000000,2.109876E0}
+SydTest::Executor: [INFO] {0.000000000000000000,6.54321E0}
+SydTest::Executor: [INFO] {0.210987654321098765,1E0}
+SydTest::Executor: [INFO] {0.210987654321098765,2.109876E0}
+SydTest::Executor: [INFO] {0.210987654321098765,6.54321E0}
+SydTest::Executor: [INFO] {-0.210987654321098765,0E0}
+SydTest::Executor: [INFO] {-0.210987654321098765,1E0}
+SydTest::Executor: [INFO] {-0.210987654321098765,2.109876E0}
+SydTest::Executor: [INFO] {-0.210987654321098765,6.54321E0}
+SydTest::Executor: [INFO] {0.654321098765432109,1E0}
+SydTest::Executor: [INFO] {0.654321098765432109,2.109876E0}
+SydTest::Executor: [INFO] {0.654321098765432109,6.54321E0}
+SydTest::Executor: [INFO] {-0.654321098765432109,0E0}
+SydTest::Executor: [INFO] {-0.654321098765432109,1E0}
+SydTest::Executor: [INFO] {-0.654321098765432109,2.109876E0}
+SydTest::Executor: [INFO] {-0.654321098765432109,6.54321E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_18 where dec1 < -6.543210E0
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0, T_float_2_2 where T_36_0.dec1 >= T_float_2_2.float1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {0,-1E2}
+SydTest::Executor: [INFO] {0,-2.1E2}
+SydTest::Executor: [INFO] {0,-6.5E2}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {1,-1E2}
+SydTest::Executor: [INFO] {1,-2.1E2}
+SydTest::Executor: [INFO] {1,-6.5E2}
+SydTest::Executor: [INFO] {-1,-1E2}
+SydTest::Executor: [INFO] {-1,-2.1E2}
+SydTest::Executor: [INFO] {-1,-6.5E2}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,1E2}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-1E2}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,2.1E2}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-2.1E2}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,6.5E2}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-6.5E2}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,1E2}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-1E2}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,2.1E2}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-2.1E2}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,6.5E2}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-6.5E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0 where dec1 >= -6.5E2
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0, T_float_7_0 where T_float_7_0.float1 <= T_36_0.dec1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {0,-1E0}
+SydTest::Executor: [INFO] {0,-2.109876E0}
+SydTest::Executor: [INFO] {0,-6.54321E0}
+SydTest::Executor: [INFO] {1,0E0}
+SydTest::Executor: [INFO] {1,1E0}
+SydTest::Executor: [INFO] {1,-1E0}
+SydTest::Executor: [INFO] {1,-2.109876E0}
+SydTest::Executor: [INFO] {1,-6.54321E0}
+SydTest::Executor: [INFO] {-1,-1E0}
+SydTest::Executor: [INFO] {-1,-2.109876E0}
+SydTest::Executor: [INFO] {-1,-6.54321E0}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,0E0}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,1E0}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-1E0}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,2.109876E0}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-2.109876E0}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,6.54321E0}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987,-6.54321E0}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,0E0}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,1E0}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-1E0}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,2.109876E0}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-2.109876E0}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,6.54321E0}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321,-6.54321E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_36_0 where -6.543210E0 <= dec1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] {1}
+SydTest::Executor: [INFO] {-1}
+SydTest::Executor: [INFO] {210987654321098765432109876543210987}
+SydTest::Executor: [INFO] {654321098765432109876543210987654321}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_2_0 where T_2_1.dec1 > T_float_2_0.float1
+SydTest::Executor: [INFO] {1.0,0E0}
+SydTest::Executor: [INFO] {2.1,0E0}
+SydTest::Executor: [INFO] {6.5,0E0}
+SydTest::Executor: [INFO] {2.1,1E0}
+SydTest::Executor: [INFO] {6.5,1E0}
+SydTest::Executor: [INFO] {0.0,-1E0}
+SydTest::Executor: [INFO] {1.0,-1E0}
+SydTest::Executor: [INFO] {2.1,-1E0}
+SydTest::Executor: [INFO] {6.5,-1E0}
+SydTest::Executor: [INFO] {6.5,2.1E0}
+SydTest::Executor: [INFO] {0.0,-2.1E0}
+SydTest::Executor: [INFO] {1.0,-2.1E0}
+SydTest::Executor: [INFO] {-1.0,-2.1E0}
+SydTest::Executor: [INFO] {2.1,-2.1E0}
+SydTest::Executor: [INFO] {6.5,-2.1E0}
+SydTest::Executor: [INFO] {0.0,-6.5E0}
+SydTest::Executor: [INFO] {1.0,-6.5E0}
+SydTest::Executor: [INFO] {-1.0,-6.5E0}
+SydTest::Executor: [INFO] {2.1,-6.5E0}
+SydTest::Executor: [INFO] {-2.1,-6.5E0}
+SydTest::Executor: [INFO] {6.5,-6.5E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where dec1 > -2.1E0
+SydTest::Executor: [INFO] {0.0}
+SydTest::Executor: [INFO] {1.0}
+SydTest::Executor: [INFO] {-1.0}
+SydTest::Executor: [INFO] {2.1}
+SydTest::Executor: [INFO] {6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1, T_float_7_7 where T_float_7_7.float1 < T_2_1.dec1
+SydTest::Executor: [INFO] {1.0,0E0}
+SydTest::Executor: [INFO] {2.1,0E0}
+SydTest::Executor: [INFO] {6.5,0E0}
+SydTest::Executor: [INFO] {0.0,-1E7}
+SydTest::Executor: [INFO] {1.0,-1E7}
+SydTest::Executor: [INFO] {-1.0,-1E7}
+SydTest::Executor: [INFO] {2.1,-1E7}
+SydTest::Executor: [INFO] {-2.1,-1E7}
+SydTest::Executor: [INFO] {6.5,-1E7}
+SydTest::Executor: [INFO] {-6.5,-1E7}
+SydTest::Executor: [INFO] {0.0,-2.109876E7}
+SydTest::Executor: [INFO] {1.0,-2.109876E7}
+SydTest::Executor: [INFO] {-1.0,-2.109876E7}
+SydTest::Executor: [INFO] {2.1,-2.109876E7}
+SydTest::Executor: [INFO] {-2.1,-2.109876E7}
+SydTest::Executor: [INFO] {6.5,-2.109876E7}
+SydTest::Executor: [INFO] {-6.5,-2.109876E7}
+SydTest::Executor: [INFO] {0.0,-6.54321E7}
+SydTest::Executor: [INFO] {1.0,-6.54321E7}
+SydTest::Executor: [INFO] {-1.0,-6.54321E7}
+SydTest::Executor: [INFO] {2.1,-6.54321E7}
+SydTest::Executor: [INFO] {-2.1,-6.54321E7}
+SydTest::Executor: [INFO] {6.5,-6.54321E7}
+SydTest::Executor: [INFO] {-6.5,-6.54321E7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_1 where -2.109876E7 < dec1
+SydTest::Executor: [INFO] {0.0}
+SydTest::Executor: [INFO] {1.0}
+SydTest::Executor: [INFO] {-1.0}
+SydTest::Executor: [INFO] {2.1}
+SydTest::Executor: [INFO] {-2.1}
+SydTest::Executor: [INFO] {6.5}
+SydTest::Executor: [INFO] {-6.5}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_2_0 where T_2_0.dec1 <= T_float_2_0.float1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-21,0E0}
+SydTest::Executor: [INFO] {-65,0E0}
+SydTest::Executor: [INFO] {0,1E0}
+SydTest::Executor: [INFO] {1,1E0}
+SydTest::Executor: [INFO] {-1,1E0}
+SydTest::Executor: [INFO] {-21,1E0}
+SydTest::Executor: [INFO] {-65,1E0}
+SydTest::Executor: [INFO] {-1,-1E0}
+SydTest::Executor: [INFO] {-21,-1E0}
+SydTest::Executor: [INFO] {-65,-1E0}
+SydTest::Executor: [INFO] {0,2.1E0}
+SydTest::Executor: [INFO] {1,2.1E0}
+SydTest::Executor: [INFO] {-1,2.1E0}
+SydTest::Executor: [INFO] {-21,2.1E0}
+SydTest::Executor: [INFO] {-65,2.1E0}
+SydTest::Executor: [INFO] {-21,-2.1E0}
+SydTest::Executor: [INFO] {-65,-2.1E0}
+SydTest::Executor: [INFO] {0,6.5E0}
+SydTest::Executor: [INFO] {1,6.5E0}
+SydTest::Executor: [INFO] {-1,6.5E0}
+SydTest::Executor: [INFO] {-21,6.5E0}
+SydTest::Executor: [INFO] {-65,6.5E0}
+SydTest::Executor: [INFO] {-21,-6.5E0}
+SydTest::Executor: [INFO] {-65,-6.5E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where dec1 <= -2.1E0
+SydTest::Executor: [INFO] {-21}
+SydTest::Executor: [INFO] {-65}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0, T_float_7_7 where T_float_7_7.float1 >= T_2_0.dec1
+SydTest::Executor: [INFO] {0,0E0}
+SydTest::Executor: [INFO] {-1,0E0}
+SydTest::Executor: [INFO] {-21,0E0}
+SydTest::Executor: [INFO] {-65,0E0}
+SydTest::Executor: [INFO] {0,1E7}
+SydTest::Executor: [INFO] {1,1E7}
+SydTest::Executor: [INFO] {-1,1E7}
+SydTest::Executor: [INFO] {21,1E7}
+SydTest::Executor: [INFO] {-21,1E7}
+SydTest::Executor: [INFO] {65,1E7}
+SydTest::Executor: [INFO] {-65,1E7}
+SydTest::Executor: [INFO] {0,2.109876E7}
+SydTest::Executor: [INFO] {1,2.109876E7}
+SydTest::Executor: [INFO] {-1,2.109876E7}
+SydTest::Executor: [INFO] {21,2.109876E7}
+SydTest::Executor: [INFO] {-21,2.109876E7}
+SydTest::Executor: [INFO] {65,2.109876E7}
+SydTest::Executor: [INFO] {-65,2.109876E7}
+SydTest::Executor: [INFO] {0,6.54321E7}
+SydTest::Executor: [INFO] {1,6.54321E7}
+SydTest::Executor: [INFO] {-1,6.54321E7}
+SydTest::Executor: [INFO] {21,6.54321E7}
+SydTest::Executor: [INFO] {-21,6.54321E7}
+SydTest::Executor: [INFO] {65,6.54321E7}
+SydTest::Executor: [INFO] {-65,6.54321E7}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_2_0 where -2.109876E7 >= dec1
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9, T_float_15__15 where T_18_9.dec1 >= T_float_15__15.float1
+SydTest::Executor: [INFO] {0.000000000,0E0}
+SydTest::Executor: [INFO] {0.000000000,-1E-15}
+SydTest::Executor: [INFO] {0.000000000,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {0.000000000,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {1.000000000,0E0}
+SydTest::Executor: [INFO] {1.000000000,1E-15}
+SydTest::Executor: [INFO] {1.000000000,-1E-15}
+SydTest::Executor: [INFO] {1.000000000,2.109876543210E-15}
+SydTest::Executor: [INFO] {1.000000000,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {1.000000000,6.543210987654E-15}
+SydTest::Executor: [INFO] {1.000000000,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {210987654.321098765,0E0}
+SydTest::Executor: [INFO] {210987654.321098765,1E-15}
+SydTest::Executor: [INFO] {210987654.321098765,-1E-15}
+SydTest::Executor: [INFO] {210987654.321098765,2.109876543210E-15}
+SydTest::Executor: [INFO] {210987654.321098765,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {210987654.321098765,6.543210987654E-15}
+SydTest::Executor: [INFO] {210987654.321098765,-6.54321098765432E-15}
+SydTest::Executor: [INFO] {654321098.765432109,0E0}
+SydTest::Executor: [INFO] {654321098.765432109,1E-15}
+SydTest::Executor: [INFO] {654321098.765432109,-1E-15}
+SydTest::Executor: [INFO] {654321098.765432109,2.109876543210E-15}
+SydTest::Executor: [INFO] {654321098.765432109,-2.10987654321098E-15}
+SydTest::Executor: [INFO] {654321098.765432109,6.543210987654E-15}
+SydTest::Executor: [INFO] {654321098.765432109,-6.54321098765432E-15}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9 where dec1 >= -6.54321098765432E-15
+SydTest::Executor: [INFO] {0.000000000}
+SydTest::Executor: [INFO] {1.000000000}
+SydTest::Executor: [INFO] {210987654.321098765}
+SydTest::Executor: [INFO] {654321098.765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9, T_float_15_308 where T_float_15_308.float1 <= T_18_9.dec1
+SydTest::Executor: [INFO] {0.000000000,0E0}
+SydTest::Executor: [INFO] {1.000000000,0E0}
+SydTest::Executor: [INFO] {210987654.321098765,0E0}
+SydTest::Executor: [INFO] {654321098.765432109,0E0}
+SydTest::Executor: [INFO] {0.000000000,-1E308}
+SydTest::Executor: [INFO] {1.000000000,-1E308}
+SydTest::Executor: [INFO] {-1.000000000,-1E308}
+SydTest::Executor: [INFO] {210987654.321098765,-1E308}
+SydTest::Executor: [INFO] {-210987654.321098765,-1E308}
+SydTest::Executor: [INFO] {654321098.765432109,-1E308}
+SydTest::Executor: [INFO] {-654321098.765432109,-1E308}
+SydTest::Executor: [INFO] {0.000000000,-1.79769313486231E308}
+SydTest::Executor: [INFO] {1.000000000,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-1.000000000,-1.79769313486231E308}
+SydTest::Executor: [INFO] {210987654.321098765,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-210987654.321098765,-1.79769313486231E308}
+SydTest::Executor: [INFO] {654321098.765432109,-1.79769313486231E308}
+SydTest::Executor: [INFO] {-654321098.765432109,-1.79769313486231E308}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T_18_9 where -1.79769313486231E308 <= dec1
+SydTest::Executor: [INFO] {0.000000000}
+SydTest::Executor: [INFO] {1.000000000}
+SydTest::Executor: [INFO] {-1.000000000}
+SydTest::Executor: [INFO] {210987654.321098765}
+SydTest::Executor: [INFO] {-210987654.321098765}
+SydTest::Executor: [INFO] {654321098.765432109}
+SydTest::Executor: [INFO] {-654321098.765432109}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_18_0
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_36_36
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_float_15_308
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_float_7_0
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_float_2_2
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_float_15__15
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_18_18
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_float_2_0
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_2_1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_36_0
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_2_0
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_36_18
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_18_9
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_float_15__308
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T_float_7_7
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

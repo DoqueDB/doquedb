@@ -1,0 +1,1125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<!--
+  Copyright (c) 2023, 2024 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the License);
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<html>
+
+<head>
+  <!-- Google Tag Manager -->
+  <script type="text/javascript">(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-KRXS4RS');</script>
+  <!-- End Google Tag Manager -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="css/default.css">
+  <title>使ってみよう</title>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRXS4RS" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <h1>使ってみよう</h1>
+  <div class="right"><a href="index.html">[トップページに戻る]</a></div>
+  <div class="contents">
+    <dl>
+      <dt>
+        <a href="#sec1">1. はじめに</a>
+      </dt>
+      <dt>
+        <a href="#sec2">2. インストール</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec21">2.1 パッケージを展開する</a>
+          </dt>
+          <dt>
+            <a href="#sec22">2.2 インストールする</a>
+          </dt>
+          <dt>
+            <a href="#sec23">2.3 インストールファイルを確認する</a>
+          </dt>
+          <dt>
+            <a href="#sec24">2.4 アンインストールするには</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec3">3. サンプルコードとデータ</a>
+      </dt>
+      <dt>
+        <a href="#sec4">4. SQLでサンプルを実行する</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec41">4.1 データベースとテーブルを作る</a>
+          </dt>
+          <dt>
+            <a href="#sec42">4.2 データを登録する</a>
+          </dt>
+          <dt>
+            <a href="#sec43">4.3 全文索引を作る</a>
+          </dt>
+          <dt>
+            <a href="#sec44">4.4 likeで部分一致検索する</a>
+          </dt>
+          <dt>
+            <a href="#sec45">4.5 ランキング検索を試してみる</a>
+          </dt>
+          <dt>
+            <a href="#sec46">4.6 自然文検索を試してみる</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec5">5. Javaでサンプルを実行する</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec51">5.1 URL</a>
+          </dt>
+          <dt>
+            <a href="#sec52">5.2 データベースを準備する</a>
+          </dt>
+          <dt>
+            <a href="#sec53">5.3 検索を実行する</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec6">6. データベースを削除する</a>
+      </dt>
+      <dt>
+        <a href="#sec7">7. うまく動かないとき</a>
+      </dt>
+      <dt>
+        <a href="#sec8">8. 青空文庫の全データで検索する</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec81">8.1 青空文庫の作品データを取得する</a>
+          </dt>
+          <dt>
+            <a href="#sec82">8.2 青空文庫の書誌情報を取得する</a>
+          </dt>
+          <dt>
+            <a href="#sec83">8.3 データを加工する</a>
+          </dt>
+          <dt>
+            <a href="#sec84">8.4 データを登録する</a>
+          </dt>
+        </dl>
+      </dd>
+    </dl>
+  </div>
+
+  <h2><a id="sec1">1. はじめに</a></h2>
+  <p>
+    DoqueDBをお試しいただき、まことにありがとうございます。<br>
+    この文書では、DoqueDBのインストールからさまざまな検索の実行方法までを、
+    青空文庫のデータを使いながら、順を追って駆け足で解説していきます。
+    DoqueDBの検索機能について、おおまかな感触をつかんでいただければ幸いです。<br>
+    途中で処理に失敗するときは <a href="#sec7">7. うまく動かないとき</a> をご覧ください。
+  </p>
+  <p>
+    DoqueDBに収録されている青空文庫のデータはごく一部ですが、
+    青空文庫からご自身でデータを取得することにより、
+    そのデータを対象に検索をお試しいただくことが可能です。
+    詳細については <a href="#sec8">8. 青空文庫の全データで検索する</a> をご覧ください。
+  </p>
+
+  <h2><a id="sec2">2. インストール</a></h2>
+  <p>
+    インストール作業はroot権限のあるユーザーで行う必要があります。
+    rootでログインするか、sudo su -でrootユーザーになってください。
+    これ以降、rootユーザーで実行することをプロンプト「#」で示します。
+  </p>
+  <pre>
+$ sudo su -
+#
+</pre>
+
+  <h3><a id="sec21">2.1 パッケージを展開する</a></h3>
+  <p>
+    DoqueDBのインストールパッケージはdoquedb-&lt;バージョン&gt;.tar.gzです。
+    任意の作業ディレクトリで、以下のように展開してください。
+  </p>
+  <pre>
+# tar xvf doquedb-&lt;バージョン&gt;.tar.gz
+</pre>
+  <p>
+    作業ディレクトリにサブディレクトリdoquedb-&lt;バージョン&gt;/が作られ、
+    その中にいくつかのディレクトリとファイルが作られます。
+  </p>
+  <p>
+    conf.shにはDoqueDBのプログラムや設定ファイルが置かれるインストールディレクトリのパス、
+    データベース本体が置かれるパス、
+    クライアントがDoqueDBと通信するポート番号などが書かれています。
+    必要に応じて編集してください。
+    インストールディレクトリやポート番号を変更した場合は、
+    以降の章をそれに応じて読み替えてください。
+  </p>
+  <pre>
+# cd doquedb-&lt;バージョン&gt;
+# vi conf.sh
+...
+installpath=/var/lib/DoqueDB
+databasepath=/var/lib/DoqueDB/db
+portnumber=54321
+</pre>
+  <p>
+    ユーザーズマニュアルを含む各種HTML文書は以下のURLにあります。<br>
+	<a href="https://doquedb.github.io/doquedb/index.html">https://doquedb.github.io/doquedb/index.html</a>
+  </p>
+
+  <h3><a id="sec22">2.2 インストールする</a></h3>
+  <p>
+    展開したパッケージをインストールし、サービスを開始します。
+  </p>
+  <ol>
+    <li>install.shを実行します。<br>
+      必要なファイルがインストールディレクトリにインストールされます。
+      <pre>
+# ./install.sh
+Install Objects
+</pre>
+    </li>
+    <li>setup.shを実行します。<br>
+      データベースが初期化されます。
+      <pre>
+# ./setup.sh
+Install Mod Parameter
+Install Default Parameter
+Install System Parameter
+Initialize Database
+</pre>
+    </li>
+    <li>サービスを開始します。<br>
+      &lt;インストールディレクトリ&gt;/binに移動し、
+      doquedbスクリプトに引数startを指定して実行します。
+      <pre>
+# cd /var/lib/DoqueDB/bin
+# ./doquedb start
+SydServer starting (root) ... done.
+</pre>
+    </li>
+  </ol>
+
+  <h3><a id="sec23">2.3 インストールファイルを確認する</a></h3>
+  <p>
+    インストールディレクトリの下には以下のようなディレクトリがあります。
+  </p>
+  <ul>
+    <li>bin - 各種実行ファイルがあります。
+      <pre>
+doquedb                 サービス起動・停止
+sqli                    SQLクライアント
+userpassword            パスワード変更
+useradd                 新規ユーザー作成
+userdel                 ユーザー削除
+...
+</pre>
+    </li>
+    <li>lib - DoqueDBの実行に必要な各種ライブラリーファイルがあります。
+    </li>
+    <li>etc - DoqueDBの設定が書かれたパラメーターファイルがあります。
+      <pre>
+default.conf            標準のパラメーターファイル
+...
+</pre>
+    </li>
+    <li>log - 各種ログファイルがあります。
+      <pre>
+doquedb.log             ログファイル
+doquedb.pid             サービスのプロセスID(サービス開始時に作成されます。)
+</pre>
+    </li>
+    <li>sample - 実行サンプルです。
+      <a href="#sec3">3. サンプルコードとデータ</a>で詳しく説明します。
+    </li>
+  </ul>
+
+  <h3><a id="sec24">2.4 アンインストールするには</a></h3>
+  <p>
+    DoqueDBをアンインストールするには、以下の手順を実行します。
+  </p>
+  <ol>
+    <li>サービスを停止します。
+      <pre>
+# cd /var/lib/DoqueDB/bin
+# ./doquedb stop
+</pre>
+    </li>
+    <li>インストールされたファイルをすべて削除します。<br>
+      パッケージを展開したディレクトリがある場合は、
+      その中でunsetup.shとuninstall.shをその順に実行します。
+      <pre>
+# cd &lt;パッケージを展開したディレクトリ&gt;
+# ./unsetup.sh
+Uninstall Database
+# ./uninstall.sh
+Uninstall Objects
+</pre>
+      アンインストール後にディレクトリやいくつかファイルが残ることがあります。
+      必要であれば、以下のように手動で削除してください。
+      <pre>
+# rm -fr /var/lib/DoqueDB
+</pre>
+    </li>
+  </ol>
+
+  <h2><a id="sec3">3. サンプルコードとデータ</a></h2>
+  <p>
+    DoqueDBの検索機能をお試しいただくため、青空文庫の一部のデータをパッケージに収録しています。
+    青空文庫は、主に著作権の切れた文学作品を電子化して公開しているサイトです。
+    詳細については以下のページをご覧ください。
+  </p>
+  <ul class="none">
+    <li>青空文庫：<a href="https://www.aozora.gr.jp/">https://www.aozora.gr.jp/</a></li>
+    <li>収録ファイルの取り扱い規準：<a
+        href="https://www.aozora.gr.jp/guide/kijyunn.html">https://www.aozora.gr.jp/guide/kijyunn.html</a></li>
+  </ul>
+  <p>
+    サンプルコードとデータはインストールディレクトリ下のdoc/sample/に置かれています。
+    内容は以下のとおりです。
+  </p>
+  <pre>
+doc/sample/
+  README.txt            サンプルディレクトリの説明文書
+  data/
+    insert.csv          青空文庫サンプルデータの書誌事項
+    OUTPUT/*.txt        青空文庫サンプルデータの本文
+    DATA/*.zip          OUTPUT/*.txtの加工前データ
+  sqli/
+    setup.sh            SQLでデータベースを準備するスクリプト
+    likeSearch.sh       SQLでlike検索を実行するスクリプト
+    rankSearch.sh       SQLでランキング検索を実行するスクリプト
+    sentenceSearch.sh   SQLで自然文検索を実行するスクリプト
+  Java/
+    Setup.Java          JDBCでデータベースを準備するプログラム
+    SentenceSearch.Java JDBCで自然文検索を実行するプログラム
+</pre>
+  <p>
+    以降の章ではSQLインタプリターあるいはJavaプログラムで
+    データベースと全文索引を作成し、さまざまな検索を実行します。
+    説明を簡単にするため、データベース操作はすべて管理者ユーザーの
+    rootで実行していることをご承知ください。
+  </p>
+
+  <h2><a id="sec4">4. SQLでサンプルを実行する</a></h2>
+  <p>
+    SQLインタプリターを使ってサンプルデータをデータベースに登録し、
+    いくつかの検索方法で検索を実行します。<br>
+    以降ではLinuxの一般ユーザー権限で実行するため、
+    doc/sample/以下を適当なディレクトリにまるごとコピーします。
+    (一般ユーザーで実行することをプロンプト「$」で示します。)
+  </p>
+  <pre>
+$ mkdir ~/doquedb
+$ cp -rp /var/lib/DoqueDB/doc/sample ~/doquedb
+$ cd ~/doquedb/sample/sqli
+</pre>
+
+  <h3><a id="sec41">4.1 データベースとテーブルを作る</a></h3>
+  <p>
+    以下の手順でデータベースを準備します。
+  </p>
+  <ul class="none">
+    <li>1. データベースを作る (create database)</li>
+    <li>2. テーブルを作る (create table)</li>
+    <li>3. データを登録する (insert)</li>
+    <li>4. 全文索引を作る (create fulltext index)</li>
+  </ul>
+  <p>
+    最初にデータベースsampleSqliを作り、その中にテーブルAozoraBunkoを作ります。
+    カラムは作品ID(docId), 作品名(title), 作者の姓(lastName)および名(firstName),
+    青空文庫のXHTML/HTMLファイルURL(url), 本文データ(content)で、
+    作品IDをプライマリキーとします。
+  </p>
+  <pre>
+$ sqli_cmd="/var/lib/DoqueDB/bin/sqli -remote localhost 54321
+    -user root -password doqadmin -code utf-8"
+$ $sqli_cmd -sql "create database sampleSqli"
+$ query="create table
+    AozoraBunko (
+        docId int,
+        title nvarchar(256),
+        lastName nvarchar(128),
+        firstName nvarchar(128),
+        url varchar(128),
+        content ntext,
+        primary key(docId)
+    )"
+$ $sqli_cmd -database sampleSqli -sql "$query"
+</pre>
+
+  <h3><a id="sec42">4.2 データを登録する</a></h3>
+  <p>
+    次に、<a href="k_batchinsert.html">バッチインサート</a>でデータを登録します。
+    データの書誌事項はinsert.csvから読み込まれます。
+    このファイルは青空文庫の
+    <a href="https://www.aozora.gr.jp/index_pages/list_person_all_extended.zip">「公開中　作家別作品一覧拡充版：全て(CSV形式、zip圧縮）」</a>
+    を加工したもので、各行は次のような形をしています。
+  </p>
+  <pre style="white-space:pre-wrap">
+000040,"歯車","はぐるま","はくるま","","","","「文藝春秋」1927（昭和2）年10月","NDC 913","新字旧仮名","なし",1998-04-27,2014-09-17,"https://www.aozora.gr.jp/cards/000879/card40.html","000879","芥川","竜之介","あくたがわ","りゅうのすけ","あくたかわ","りゆうのすけ","Akutagawa","Ryunosuke","著者","1892-03-01","1927-07-24","なし","現代日本文学大系　43　芥川龍之介集","筑摩書房","1968（昭和43）年8月25日","1968（昭和43）年8月25日初版第1刷","","","","","","","","","","","","","j.utiyama","かとうかおり","https://www.aozora.gr.jp/cards/000879/files/40_ruby_310.zip","2004-03-14","ShiftJIS","JIS X 0208","2","https://www.aozora.gr.jp/cards/000879/files/40_15151.html","2004-03-14","ShiftJIS","JIS X 0208","0","000879_000040.txt",FILE OUTPUT/000879_000040.txt
+</pre>
+  <p>
+    バッチインサートを行うinsert文を以下に示します。
+    insert.csvはフルパスで指定する必要があります。
+    カラム57は本文データで、"FILE "で始まっているため、
+    1件ごとにOUTPUTフォルダ内のファイルから個別に読み込まれます。
+  </p>
+  <pre>
+$ query="insert into AozoraBunko
+    input from path '&lt;insert.csvのフルパス&gt;'
+    hint 'code=\"utf-8\" InputField=(1,2,16,17,51,57)'"
+$ $sqli_cmd -database sampleSqli -sql "$query"
+</pre>
+
+  <h3><a id="sec43">4.3 全文索引を作る</a></h3>
+  <p>
+    その後、本文データのカラムcontentに全文索引を作ります。
+  </p>
+  <pre>
+$ query="create fulltext index INDEX1 on AozoraBunko(content)
+    hint 'kwic,
+    delayed,
+    inverted=(normalized=(stemming=false, deletespace=false),
+    indexing=dual,
+    tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'"
+$ $sqli_cmd -database sampleSqli -sql "$query"
+</pre>
+  <p>
+    hint以降はヒント句で、全文索引の挙動を決めるために指定しています。
+    ここで指定している値は以下のものですが、詳細についてはユーザーズマニュアルの
+    <a href="users.html#sec50505">5.5.5 ヒント句</a>と
+    <a href="users.html#secapph1">H.1 全文索引のスキーマ定義</a>をご覧ください。
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th colspan="2">ヒントオプション</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="2">kwic</td>
+        <td>検索結果からkwic関数で検索語を含む部分文字列を取得できるように、<br>
+          必要な情報を作成して索引に格納します。kwic関数を使うと、<br>
+          長いテキストのどこに索引語が出現したかを見やすく示すことができます。<br>
+          kwic関数で参照するカラムはcontains述語の対象でなければなりません。</td>
+      </tr>
+      <tr>
+        <td colspan="2">delayed</td>
+        <td>全文索引の作成には時間がかかるので、遅延更新でまとめて更新します。</td>
+      </tr>
+      <tr>
+        <td rowspan="4">inverted=</td>
+        <td></td>
+        <td>全文索引は転置索引という仕組みを使って実装されています。<br>
+          invertedは転置索引に関するヒントを指定します。</td>
+      </tr>
+      <tr>
+        <td>normalized=<br>
+          (stemming=false,<br>
+          deletespace=false)</td>
+        <td>normalizedは索引語を正規化するかどうかを決めるヒントです。<br>
+          ここではステミング(※)とスペース削除を行わない設定としています。</td>
+      </tr>
+      <tr>
+        <td>indexing=dual</td>
+        <td>indexingでは索引タイプを指定します。<br>
+          dualは英字列についてはWORD(単語単位)で、日本語文字列については<br>
+          NGRAM(文字列単位)で索引語を生成します。</td>
+      </tr>
+      <tr>
+        <td>tokenizer=<br>
+          DUAL:JAP:ALL:1<br>
+          @NORMRSCID:1<br>
+          @UNARSCID:1</td>
+        <td>tokenizerではトークナイズパラメーターを指定します。<br>
+          JAP:ALL:1は日本語を対象とし、全文字種を1文字ごとに切り出します。<br>
+          テキスト量が比較的少ない(1GB以下)ときに向いています。<br>
+          @NORMRSCIDと@UNARSCIDは正規化および形態素解析に用いる<br>
+          辞書を指定します。現在はID:1の標準リソースのみが使用可能です。</td>
+      </tr>
+    </tbody>
+  </table>
+  <ul class="none">
+    <li>※ ステミング：語形が変化する語の語幹を取り出すこと。(e.g. moves, moving → move)</li>
+  </ul>
+  <p>
+    サンプルのsqliディレクトリにあるsetup.shを実行すると、
+    ここまでの処理を行うことができます。
+  </p>
+
+  <h3><a id="sec44">4.4 likeで部分一致検索する</a></h3>
+  <p>
+    本文データ(content)からlike述語で部分一致検索を実行してみます。
+  </p>
+  <pre style="white-space:pre-wrap">
+$ query="select docId, title, lastName, firstName, substring(content from 0 for 150)
+    from AozoraBunko
+    where content like '%難破船%' escape '!'
+       or content like '%無人島%' escape '!'
+       or content like '%太平洋%' escape '!'
+       or content like '%漂流%'   escape '!'
+    limit 5"
+$ $sqli_cmd -database sampleSqli -sql "$query"
+docId title lastName firstName substring(content from 0 for 150)
+
+863 海に生くる人々 葉山 嘉樹 海に生くる人々 葉山嘉樹 　　　　　一 　室蘭港が奥深く入り込んだ、その太平洋への湾口に、大黒島が栓をしている。雪は、北海道の全土をおおうて地面から、雲までの厚さで横に降りまくった。 　汽船万寿丸は、その腹の中へ三 千トンの石炭を詰め込んで、風雪の中を横浜へと進んだ。船は今大黒島をかわろうとして
+
+1323 海島冒険奇譚　海底軍艦 押川 春浪 海島冐檢奇譚　海底軍艦 押川春浪 　　　　　　　　はしがき 一。太平洋の波に浮べる、この船にも似たる我日本の國人は、今や徒ら に、富士山の明麗なる風光にのみ恍惚たるべき時にはあらざるべし。 光譽ある桂の冠と 、富と權力との優勝旗は、すでに陸を離れて、世界の海上に移されたり。 この冠を戴き 、この優勝旗
+
+1743 光と風と夢 中島 敦 光と風と夢 中島敦 一 　一八八四年五月の或夜遅く、三十五 歳のロバァト・ルゥイス・スティヴンスンは、南仏イエールの客舎で、突然、ひどい喀血に襲われた。駈付けた妻に向って、彼は紙切に鉛筆で斯う書いて見せた。「恐れることはない。之が死なら、楽なものだ。」血が口中を塞いで、口が利けなかったのである。
+
+1813 新版　放浪記 林 芙美子 新版　放浪記 林芙美子 　　　　　第一部 　　　　　放 浪記以前 　私は北九州の或る小学校で、こんな歌を習った事があった。 更けゆく秋の夜　旅の空の 侘しき思いに　一人なやむ 恋いしや古里　なつかし父母 　私は宿命的に放 浪者である。私は古里を持たない。父は四国の伊予の人間で、太物の行商人で
+
+2012 道標 宮本 百合子 道標 宮本百合子 道標　第一部 第一章 一 　からだの下で、列 車がゴットンと鈍く大きくゆりかえしながら止った。その拍子に眼がさめた。伸子は、そんな気がして眼をあけた。だが、伸子の眼の前のすぐそばには緑と白のゴバン縞のテーブルかけをかけた四角いテーブルが立っている。そのテーブルの上に伸子のハ
+</pre>
+  <p>
+    本文に「難破船」「無人島」「太平洋」「漂流」のいずれかが含まれる作品の書誌事項と、
+    本文の先頭から150文字の内容が出力されました。
+    サンプルデータにはこの条件に該当する作品がいくつか含まれています。
+  </p>
+  <p>
+    like述語は標準SQLの機能ですが、全文索引が付与されたカラムに対しては、
+    標準SQLのカラム値に対する文字列検索でなく、全文索引を用いた検索が行われます。
+    たとえば索引タイプがdualのとき、like '%text%'はfulltextにヒットしません。
+    また、後述するランキング検索と同様、score関数で検索条件との適合度を取得できます。
+  </p>
+  <p>
+    サンプルのsqliディレクトリにあるlikeSearch.shを実行すると、
+    上記の例を含む、いくつかのlike検索を行うことができます。
+  </p>
+
+  <h3><a id="sec45">4.5 ランキング検索を試してみる</a></h3>
+  <p>
+    contains述語を用いて、指定したキーワードを含む本文データをランキング検索してみます。
+    ランキング検索はDoqueDBで拡張された機能です。
+    score(content)は検索条件との適合度で、ここではスコアの降順に結果を出力します。
+    詳細についてはユーザーズマニュアルの
+    <a href="users.html#secapph4">H.4 全文索引のランキング検索</a>をご覧ください。
+  </p>
+  <pre style="white-space:pre-wrap">
+$ query="select docId, score(content), title, lastName, firstName, kwic(content for 150)
+    from AozoraBunko
+    where content contains('難破船'|'無人島'|'太平洋'|'漂流')
+    order by score(content) desc limit 5"
+$ $sqli_cmd -database sampleSqli -sql "$query"
+docId score(content) title lastName firstName kwic(content for 150)
+
+1323 7.75436602113091E-1 海島冒険奇譚　海底軍艦 押川 春浪 海島冐檢奇譚　海底軍艦 押川春浪 　　　　　　　　はしがき 一。太平洋の波に浮べる、この船にも似たる我日 本の國人は、今や徒らに、富士山の明麗なる風光にのみ恍惚たるべき時にはあらざるべし。 光譽ある桂の冠と、富と權力との優勝旗は、すでに陸を離れて、世界の海上に移され たり。 この冠を戴き、この優勝旗を
+
+42294 7.72043825689451E-1 怪奇人造島 寺島 柾史 なおもピストルを、僕の胸に擬した ままだ。 「ね、君！　この船は、機関の故障で航海が続けられないのだぜ。つまり、漂 流船だ。この先、何十日、何百日、海洋を流されるかしれないじゃないか。僕等まで射殺して、たった一人で、太平洋を漂流するなンか、心細いだろう」 　豹のような水夫は、 肯いて、僕等の麻縄を解きはじめた。 　　
+
+42767 7.37552322585715E-1 無人島に生きる十六人 須川 邦彦 てから、中川船長は、練 習船琴ノ緒丸の、一等運転士となり、私たち海の青年に、猛訓練をあたえていられたのである。 　私は、中川教官に、龍睡丸が遭難して、太平洋のまんなかの無人島に漂着した ときの話をしていただきたいと、たびたびお願いをしていたが、それが、今やっとかなったのであった。 　日はもう海にしずんで、館山湾
+
+54331 6.35019183719995E-1 海上の道 柳田 国男 考えのうちに入れて見て行かねばなら ない。今度集めた論文の中には空想を遥かに遠く、青森県の北端まで持っていったものもある。今までの日本人論をみると、太平洋の交通を考慮に入れることが少し不十分であった。つまり伊勢とか、もう少し東に寄って駿河とか遠江とかいうくらいまでのところが、区切りになっているような気
+
+2718 6.03568144316093E-1 恐竜島 海野 十三 電球であった。 「こんなところに電球が ある」 　彼はそれを拾いあげた。べつにかわったところもないふつうの電球だ。しかし およそこの無人島には、にあわぬものだった。 「漂流して、この島へ流れついたんだよ 。やっぱりモンパパ号の遺物なんだろう」 　電球なんかこの島に用がないと思ったけれ ど彼は、それを拾って手
+</pre>
+  <p>
+    like検索と同様、本文に「難破船」「無人島」「太平洋」「漂流」の
+    いずれかが含まれる作品の書誌事項と本文の一部が出力されました。
+    ランキング検索のメリットは、検索条件との適合度が高い結果が上位に出力されることです。
+    たとえば4つのキーワードがすべて含まれる本文は、適合度がより高いと判断されます。
+    また、kwic関数により、本文のうち検索キーワードを含む150文字が取り出されています。
+  </p>
+  <p>
+    この例ではcontainsオペランドを'|'(OR演算子)でつないでいますが、
+    そのほかに'&amp;'(AND演算子)、'-'(ANDNOT演算子)が指定できます。
+    また、ここでは指定していませんが、contains述語にスコア計算機(calculator)を指定すると、
+    スコア計算の重み付けを細かく調整することができます。
+  </p>
+  <p>
+    サンプルのsqliディレクトリにあるrankSearch.shを実行すると、
+    上記の例を含む、いくつかのランキング検索を行うことができます。
+  </p>
+
+  <h3><a id="sec46">4.6 自然文検索を試してみる</a></h3>
+  <p>
+    contains述語にfreetextを指定すると、自然文検索が行われます。
+    自然文検索では、まず検索条件に指定した自然文が形態素解析され、検索語が自動的に抽出されます。
+    その後検索語に対して重み付けが施され、OR演算子でランキング検索が実行されます。
+    詳細についてはユーザーズマニュアルの
+    <a href="users.html#secapph5">H.5 全文索引の自然文検索</a>をご覧ください。
+  </p>
+  <pre style="white-space:pre-wrap">
+$ query="select docId, score(content), title, lastName, firstName, kwic(content for 150)
+    from AozoraBunko
+    where content contains freetext(
+        '小人と暮らすお姫さまが悪いおばあさんに毒リンゴを食べさせられる話')
+    order by score(content) desc limit 15"
+$ $sqli_cmd -database sampleSqli -sql "$query"
+docId score(content) title lastName firstName kwic(content for 150)
+
+42308 5.3557889623954E-1 白雪姫 菊池 寛 は、どうして、わたしたちの家にはいってきたのかね。」と、小人たちはききました。そこで、お姫さまは、まま母が、じぶんをころそうとしたのを、かりうどが、そっと助けてくれたので、一日じゅう、かけずりまわって、やっと、この家を見つけたことを、小人たちに話しました。その話をきいて、小人たちは、 「もしも、おまえ
+
+58052 5.12426102699047E-1 ニールスのふしぎな旅 矢崎 源九郎 も台所からのあかりに 照らしだされていました。おばあさんがしばらく見ていますと、やがて、ちっぽけな小僧が足音をそっとしのばせて、この門からはいってきました。せの高さはほんの十センチぐらいのものでしょう。革ズボンに木靴といった、労働者のようなかっこうです。おばあさんは、すぐに小人だなと気がつきましたので
+
+59411 4.97246063966408E-1 旅の仲間 アンデルセン ハンス・クリスチャン と思ったの です。宿屋の主人は、ふたりにむかって、こんな話をしました。 「この国の王さまは、 たいへんおやさしい、よい方で、どんな人をも苦しめるようなことはなさいません。それなのに、お嬢さまといったら、ほんとになさけない話ですが、それはひどいお姫さまなんですよ。おきれいなことは、たしかに、おきれいです。
+
+33188 4.46023442077327E-1 獄中への手紙 宮本 百合子 ました。あなたはよく、あの懐 しい懐しい物語［自注２］をおぼえていらしたこと。小さな泉とそこの活溌な住人雄々しいきれいな小人のはなしは、いつになっても、どのような話しかたで話されても、本来の愛らしさ、献身、よろこばしさの失われることのない物語です。私は沢山のヴァリエーション、かえ話を知って居ます。覚え
+
+59838 4.3203101123098E-1 三本の金の髪の毛をもっている鬼 グリム ヤーコプ・ルート ヴィッヒ・カール この女があるときひとりの男の子を生みましたが、その子は頭に〈（ １）福の皮〉をかぶって生まれてきました。それで、この子は十四になったら、王さまのお姫さまをおよめさんにもらうだろう、という予言をしたものがありました。 　それか らまもなくのこと、王さまがこの村にやってきました。けれども、それが王さまだとは
+
+33192 4.30263702785913E-1 獄中への手紙 宮本 百合子 静かな処を探し出さなければな りません。そして野菜の食べられる処をね。スエ子はろくに青い葉っぱを食べられなかったのよ。 　弘文堂から原著者は判りませんが除村吉太郎訳で『ロシア年代記』と云う中 世の歴史が出るらしく、あなたも興味がおありになったら買いましょうか。世界の中世史として高く評価されるものだと云う広告です。 　今年
+
+2282 4.17825501266632E-1 津軽 太宰 治 、その手紙にも、「なんにも、おかまひ下さるな。あなたは、知らん振りをしてゐて下さい。お出迎へなどは、決して、しないで下さい。でも、リンゴ酒と、それから蟹だけは。」といふやうな事を書いてやつた筈で、食べものには淡泊なれ、といふ私の自戒も、蟹だけには除外例を認めてゐたわけである。私は蟹が好きなのである。どうしてだか
+
+57856 4.10832243328572E-1 二十四の瞳 壺井 栄 うち、ごつげな音がして、おばあさん にかじりついて寝たん。朝おきたら、はねつるべの棹が折れとったんで。水がめがわれてしもたん」 　今朝きいたことをマスノはくりかえして母に語っていた。ふんふんといち いちうなずいていたマスノの母親は、半分は先生にむかって、 「岬じゃあ船がながされ たり、屋根がつぶれたり、ごっそり
+
+2012 3.97834343708277E-1 道標 宮本 百合子 、たべる――伸子は支那料理が非常にすきだったから、店の人々の間にある、一種の空気を押しきって、それを食べるということを、よけい動物的に感じるのだった。 　しかしフランシーヌはもうその計画を話されてい るらしくて、 「ジャックがそろそろ帰る時間ですわ、ちょっと失礼いたします」 　着がえするらしく、二階の
+
+54870 3.92057127555272E-1 ロザリオの鎖 永井 隆 あなた方青年はいま神から特別に祝 福されているのです。それを感謝しなければなりません。そうして神の思し召しにそうように霊魂も肉身も潔く保ってくださいね。 丸ぼうろ 　多比良町の婦人会に私は話をしに行った。ひと月まえに長崎市で開かれた県主催の講習会で顔見知りの幹部のおばあさん方が駅に迎えに出ていて、先日の
+
+655 3.84825815447557E-1 小熊秀雄全集-14 小熊 秀雄 ひました。 　そこで王様はまん まと城外に追ひ出され、馬鹿な詩人のトムさんが、王様と早変りをしてしまひました、城の兵士たちも、王様のわがままを憎んでをりましたので、誰もみな喜んだくらゐです。  　不思議なお嫁さんは、いつかトムさんが空を仰いでながめた白鳥のお姫さまでした。（大14・４愛国婦人） たばこの好き
+
+24370 3.6020608012537E-1 お父さん 林 芙美子 といっていました。金井君のおとうさんはマニラで戦死をされたのです。金井君は、とてもいいひとです。人のいやがることを何でもします。お家がまずしいので上の学校には行かないのだそうですけれど、とても頭がよくて、先生も、大変ほめていらっしゃいました。英語の会話なんかとてもうまくなっていて、もうれつに勉強します
+
+59744 3.55953772485405E-1 白ヘビ グリム ヤーコプ・ルートヴィッヒ・カール はてま でとんでいき、そのリンゴをとってきたのです。」 　若者は、よろこびいさんでかえり ました。美しいお姫さまのところへ金のリンゴをもっていきますと、さすがのお姫さまも、こんどばかりはいいのがれることができなくなってしまいました。 　ふたりはその命 のリンゴをふたつにわけて、いっしょに食べました。すると、お
+
+49258 3.52891975346525E-1 其中日記 種田 山頭火 十数尾を持参してくれたのだつた、 さつそく料理して、うまい夕飯を食べた。 暮れて樹明君来庵、ほろ酔機嫌でニコ／＼し てゐる、今日の私の行動をもうチヤンと知つてゐる、明後日の緑平老歓迎のことを話しあつて、めでたくさよなら。 Ｙ夫人の急死を聞かされたとき、私の身心はドキンとした、 手当は十分行き届いたのだらう
+
+59635 3.42362872986366E-1 十二人兄弟 グリム ヤーコプ・ルートヴィッヒ・カール く れておいで。にいさんたちがかえってきたら、ぼくがうまく話をするからね。」 　お姫 さまはいわれたとおりにしました。やがて、夜になりますと、ほかのにいさんたちが狩りからかえってきました。食事のしたくは、ちゃんとできていました。みんながテーブルについて、食べているとき、にいさんたちがベンジャミンにたずねまし
+</pre>
+  <p>
+    自然文検索を利用すれば、検索語の取捨選択や重み付けをシステムに任せることができます。
+    selectで取得される値式にword(content)を指定すれば、
+    自然文検索でどんな検索語が使われたかを知ることもできます。
+    (word()の取得は単独で行う必要があります。
+    検索結果の取得と同時にword()を指定することはできません。)
+  </p>
+  <pre style="white-space:pre-wrap">
+$ query="select word(content) from AozoraBunko
+    where content contains freetext(
+        '小人と暮らすお姫さまが悪いおばあさんに毒リンゴを食べさせられる話')"
+$ $sqli_cmd -database sampleSqli -sql "$query"
+{word(content)}
+{'小人' language '' category 'Helpful' scale 0.67 df 25}
+{'お 姫' language '' category 'Helpful' scale 0.20 df 18}
+{'姫' language '' category 'Helpful' scale 0.67 df 44}
+{'姫 さま' language '' category 'Helpful' scale 0.20 df 15}
+{'おばあさん' language '' category 'Helpful' scale 0.67 df 32}
+{'毒' language '' category 'Helpful' scale 0.67 df 92}
+{'毒 リンゴ' language '' category 'Helpful' scale 0.20 df 0}
+{'リンゴ' language '' category 'Helpful' scale 0.67 df 30}
+{'食べ' language '' category 'Helpful' scale 0.67 df 77}
+{'話' language '' category 'Helpful' scale 0.67 df 152}
+</pre>
+  <p>
+    kwic関数にenclose withを指定すると、検索結果に出現する検索語がタグで囲まれます。
+  </p>
+  <pre style="white-space:pre-wrap">
+$ query="select docId, score(content), title, lastName, firstName,
+    kwic(content for 150 enclose with '&lt;BEGIN&gt;' and '&lt;END&gt;')
+    from AozoraBunko
+    where content contains freetext(
+        '小人と暮らすお姫さまが悪いおばあさんに毒リンゴを食べさせられる話')
+    order by score(content) desc limit 15"
+$ $sqli_cmd -database sampleSqli -sql "$query"
+docId score(content) title lastName firstName kwic(content for 150 enclose with '&lt;BEGIN&gt;' and '&lt;END&gt;')
+
+42308 6.89818731482802E-1 白雪姫 菊池 寛 は、どうして、わたしたちの家にはいってきたのかね。」と、&lt;BEGIN&gt;小人&lt;END&gt;たちはききました。そこで、&lt;BEGIN&gt;お姫さま&lt;END&gt;は、まま母が、じぶんをころそうとしたのを、かりうどが、そっと助けてくれたので、一日じゅう、かけずりまわって、やっと、この家を見つけたことを、&lt;BEGIN&gt;小人&lt;END&gt;たちに&lt;BEGIN&gt;話&lt;END&gt;しました。その&lt;BEGIN&gt;話&lt;END&gt;をきいて、&lt;BEGIN&gt;小人&lt;END&gt;たちは、 「もしも、おまえ
+...
+  </pre>
+  <p>
+    ここでは指定していませんが、contains述語にextractorを指定すると、
+    検索語の抽出に使われる辞書リソースを明示的に指定することもできます。
+  </p>
+  <p>
+    サンプルのsqliディレクトリにあるsentenceSearch.shを実行すると、
+    上記の例を含む、いくつかの自然文検索を行うことができます。
+  </p>
+
+  <h2><a id="sec5">5. Javaでサンプルを実行する</a></h2>
+  <p>
+    JDBCドライバーを用いて、Javaアプリケーションからデータベースを操作できます。
+    JDBCドライバーの詳細については
+    <a href="../doquedb-javadoc/javadoc/index.html">DoqueDB JDBC Driver</a>を参照してください。
+  </p>
+  <ul>
+    <li>本章のサンプルを実行するためには、Java実行環境がインストールされている必要があります。</li>
+  </ul>
+
+  <h3><a id="sec51">5.1 URL</a></h3>
+  <p>
+    JDBCのURLは以下のとおりです。
+  </p>
+  <pre>
+jdbc:ricoh:doquedb://&lt;ホスト名&gt;:&lt;ポート番号&gt;/&lt;データベース名&gt;
+</pre>
+  <ul>
+    <li>
+      注意<br>
+      &lt;データベース名&gt;には接続先のデータベース名を指定します。<br>
+      create databaseを実行するときは、組み込みデータベースDefaultDBに接続してください。<br>
+      &lt;データベース名&gt;を省略するとDefaultDBを指定したことになります。
+    </li>
+  </ul>
+
+  <h3><a id="sec52">5.2 データベースを準備する</a></h3>
+  <p>
+    以下の手順でデータベースを準備します。
+    データベース名がsampleSqliからsampleJavaに変わったことを除いて、
+    前章の<a href="#sec41">4.1</a>～<a href="#sec43">4.3</a>と同じ内容を実施しています。
+  </p>
+  <ul class="none">
+    <li>1. データベースを作る (create database)</li>
+    <li>2. テーブルを作る (create table)</li>
+    <li>3. データを登録する (insert)</li>
+    <li>4. 全文索引を作る (create fulltext index)</li>
+  </ul>
+  <p>
+    この処理を行うプログラムがJavaディレクトリのSetup.javaです。
+    以下のように実行してください。
+  </p>
+  <pre>
+$ mkdir ~/doquedb
+$ cp -rp /var/lib/DoqueDB/doc/sample ~/doquedb
+$ cd ~/doquedb/sample/Java
+$ javac Setup.java
+$ java -classpath .:/var/lib/DoqueDB/bin/java/doquedb.jar Setup
+データベースの作成を開始
+テーブルの作成を開始
+バッチインサートを開始
+全文索引の作成を開始
+</pre>
+  <p>
+    Setup.javaの内容は以下のようになっています。
+  </p>
+  <pre>
+import java.sql.*;
+
+public class Setup {
+    public static void main (String[] args) {
+        // Driverクラスのインポート
+        try {
+            Class.forName("jp.co.ricoh.doquedb.jdbc.Driver");
+        } catch (ClassNotFoundException cne) {
+            System.err.println("error" + ": " + cne);
+            return;
+        };
+
+        // データベースの設定
+        String url = "jdbc:ricoh:doquedb://localhost:54321/";
+        String user = "root";
+        String password = "doqadmin";
+        Connection conn = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        // カレントディレクトリの取得
+        String dir = System.getProperty("user.dir");
+        
+        // データベースの作成
+        try {
+            System.out.println("データベースの作成を開始");
+            conn = DriverManager.getConnection(url, user, password);
+            statement = conn.createStatement();
+            String query = "create database sampleJava";
+            resultSet = statement.executeQuery(query);
+        } catch (Exception e) {
+            System.err.println("error" + ": " + e);
+            return;
+        } finally {
+            try {
+                if (resultSet!=null) resultSet.close();
+                if (statement!=null) statement.close();
+                if (conn!=null) conn.close();
+            } catch (Exception e) {};
+        };
+
+        // 立ち上げた DB に再接続
+        url = "jdbc:ricoh:doquedb://localhost:54321/sampleJava";
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+        } catch (Exception e) {
+            System.err.println("error" + ": " + e);
+            return;
+        };
+
+        // テーブルの作成
+        try {
+            System.out.println("テーブルの作成を開始");
+            statement = conn.createStatement();
+            String query = "create table "
+                + "AozoraBunko ("
+                    + "docId int, "
+                    + "title nvarchar(256), "
+                    + "lastName nvarchar(128), "
+                    + "firstName nvarchar(128), "
+                    + "url varchar(128), "
+                    + "content ntext, "
+                    + "primary key(docId))";
+            resultSet = statement.executeQuery(query);
+        } catch (Exception e) {
+            System.err.println("error" + ": " + e);
+            return;
+        } finally {
+            try {
+                if (resultSet!=null) resultSet.close();
+                if (statement!=null) statement.close();
+            } catch (Exception e) {};
+        };
+
+        // バッチインサートの実施
+        try {
+            System.out.println("バッチインサートを開始");
+            statement = conn.createStatement();
+            String query = String.format(
+                "insert into AozoraBunko "
+                + "input from path '%s/../data/insert.csv' "
+                + "hint 'code=\"utf-8\" InputField=(1,2,16,17,51,57)'"
+                , dir);
+            resultSet = statement.executeQuery(query);
+        } catch (Exception e) {
+            System.err.println("error" + ": " + e);
+            return;
+        } finally {
+            try {
+                if (resultSet!=null) resultSet.close();
+                if (statement!=null) statement.close();
+            } catch (Exception e) {};
+        };
+
+        // 全文索引の作成
+        try {
+            System.out.println("全文索引の作成を開始");
+            statement = conn.createStatement();
+            String query =  "create fulltext index INDEX1 on AozoraBunko(content) "
+                + "hint 'kwic, "
+                    + "delayed, "
+                    + "inverted=(normalized=(stemming=false, deletespace=false), "
+                    + "indexing=dual, "
+                    + "tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'";
+            resultSet = statement.executeQuery(query);
+        } catch (Exception e) {
+            System.err.println("error" + ": " + e);
+            return;
+        } finally {
+            try {
+                if (resultSet!=null) resultSet.close();
+                if (statement!=null) statement.close();
+            } catch(Exception e) {};
+        };
+
+        try {
+            if (conn!=null) conn.close();
+        } catch (Exception e) {};
+    };
+}
+</pre>
+
+  <h3><a id="sec53">5.3 検索を実行する</a></h3>
+  <p>
+    検索を実行し、結果を表示するJavaプログラム、SentenceSearch.javaを示します。<br>
+    ここでは自然文検索を行っています。
+  </p>
+  <pre style="white-space:pre-wrap">
+import java.sql.*;
+
+public class SentenceSearch {
+    public static void main (String[] args) {
+        // Driverクラスのインポート
+        try {
+            Class.forName("jp.co.ricoh.doquedb.jdbc.Driver");
+        } catch (ClassNotFoundException cnf) {
+            System.err.println("error" + ": " + cnf);
+            return;
+        };
+
+        // データベースの設定
+        String url = "jdbc:ricoh:doquedb://localhost:54321/sampleJava";
+        String user = "root";
+        String password = "doqadmin";
+        Connection conn = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        ResultSetMetaData metaData = null;
+
+        // DB に接続
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+        } catch (Exception e) {
+            System.err.println("error" + ": " + e);
+            return;
+        };
+
+        String searchWord = "";
+        String query = "";
+
+        // 白雪姫を検索
+        searchWord = "小人と暮らすお姫さまが悪いおばあさんに毒リンゴを食べさせられる話";
+        query = "select docId, score(content), title, lastName, firstName, kwic(content for 150) "
+            + "from AozoraBunko "
+            + "where content contains freetext('" + searchWord + "') "
+            + "order by score(content) "
+            + "desc limit 5";
+        try {
+            System.out.println("自然文検索の実施");
+            System.out.println("検索文：" + searchWord + "\n");
+            statement = conn.createStatement();
+
+            resultSet = statement.executeQuery(query);
+            // メタデータを取得し、カラム名を表示する
+            metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            for (int i = 1; i &lt;= columnCount; i++) {
+                System.out.print(metaData.getColumnName(i) + ",");
+            };
+            System.out.println("\n");
+
+            // クエリの実行結果を取得し、表示する
+            while (resultSet.next()) {
+                int docId = resultSet.getInt(1);
+                double score = resultSet.getDouble(2);
+                String title = resultSet.getString(3);
+                String lastName = resultSet.getString(4);
+                String firstName = resultSet.getString(5);
+                String content = resultSet.getString(6);
+                String output = String.join(
+                    ",",
+                    String.valueOf(docId),
+                    String.valueOf(score),
+                    title,
+                    lastName,
+                    firstName);
+                System.out.println(output);
+                System.out.println(content);
+                System.out.print("\n");
+            };
+        } catch (Exception e) {
+            System.err.println("error" + ": " + e);
+            return;
+        } finally {
+            try {
+                if (resultSet!=null) resultSet.close();
+                if (statement!=null) statement.close();
+            } catch (Exception e) {};
+        };
+
+        try {
+            if (conn!=null) conn.close();
+        } catch (Exception e) {};
+    };
+}
+</pre>
+
+  <p>
+    SentenceSearch.javaを実行した結果を以下に示します。
+  </p>
+  <pre style="white-space:pre-wrap">
+$ javac SentenceSearch.java
+$ java -classpath .:/var/lib/DoqueDB/bin/java/doquedb.jar SentenceSearch
+自然文検索の実施
+検索文：小人と暮らすお姫さまが悪いおばあさんに毒リンゴを食べさせられる話
+
+docId,score(content),title,lastName,firstName,kwic(content for 150),
+
+42308,0.5355788957430164,白雪姫,菊池,寛
+は、どうして、わたしたちの家にはいってきたのかね。」と、小人たちはききました。そこで、お姫さまは、まま母が、じぶんをころそうとしたのを、かりうどが、そっと助けてくれたので、一日じゅう、かけずりまわって、やっと、この家を見つけたことを、小人たちに話しました。その話をきいて、小人たちは、
+「もしも、おまえ
+
+58052,0.5124260938479301,ニールスのふしぎな旅,矢崎,源九郎
+も台所からのあかりに照らしだされていました。おばあさんがしばらく見ていますと、やがて、ちっぽけな小僧が足音をそっとしのばせて、この門からはいってきました。せの高さはほんの十センチぐらいのものでしょう。革ズボンに木靴といった、労働者のようなかっこうです。おばあさんは、すぐに小人だなと気がつきましたので
+
+59411,0.4972460628457043,旅の仲間,アンデルセン,ハンス・クリスチャン
+と思ったのです。宿屋の主人は、ふたりにむかって、こんな話をしました。
+「この国の王さまは、たいへんおやさしい、よい方で、どんな人をも苦しめるようなことはなさいません。それなのに、お嬢さまといったら、ほんとになさけない話ですが、それはひどいお姫さまなんですよ。おきれいなことは、たしかに、おきれいです。
+
+33188,0.4460234280553054,獄中への手紙,宮本,百合子
+ました。あなたはよく、あの懐しい懐しい物語［自注２］をおぼえていらしたこと。小さな泉とそこの活溌な住人雄々しいきれいな小人のはなしは、いつになっても、どのような話しかたで話されても、本来の愛らしさ、献身、よろこばしさの失われることのない物語です。私は沢山のヴァリエーション、かえ話を知って居ます。覚え
+
+59838,0.4320310104986243,三本の金の髪の毛をもっている鬼,グリム,ヤーコプ・ルートヴィッヒ・カール
+この女があるときひとりの男の子を生みましたが、その子は頭に〈（１）福の皮〉をかぶって生まれてきました。それで、この子は十四になったら、王さまのお姫さまをおよめさんにもらうだろう、という予言をしたものがありました。
+　それからまもなくのこと、王さまがこの村にやってきました。けれども、それが王さまだとは
+</pre>
+
+  <h2><a id="sec6">6. データベースを削除する</a></h2>
+  <p>
+    一度実行したサンプルコードをもう一度実行するには、
+    作成したデータベースが削除された状態に戻す必要があります。
+    データベースを削除するには、以下のコマンドを実行してください。
+  </p>
+  <pre>
+$ sqli_cmd="/var/lib/DoqueDB/bin/sqli -remote localhost 54321
+    -user root -password doqadmin -code utf-8"
+$ $sqli_cmd -sql "drop database sampleSqli"
+$ $sqli_cmd -sql "drop database sampleJava"
+</pre>
+
+  <p>
+    以上、sqliおよびJavaによるいくつかの検索サンプルをお試しいただきました。<br>
+    DoqueDBにはほかにもさまざまな機能があります。
+    それらの機能をご確認いただくためにも、
+    上記サンプルを加工するなどして、さらにお役立ていただければ幸いです。
+  </p>
+
+  <h2><a id="sec7">7. うまく動かないとき</a></h2>
+  <p>
+    サンプルコードの実行手順については十分確認しておりますが、
+    処理に失敗するなどうまく動かないときは以下の点をご確認ください。
+  </p>
+  <dl>
+    <dt class="bold">バッチインサートで権限がないと表示される</dt>
+    <dd>参照されるファイルにrootのアクセス権があるか確認してください。</dd>
+    <dt class="bold">ファイルがないと表示される</dt>
+    <dd>DoqueDBサービスのプロセスから見える場所にファイルがあるか確認してください。</dd>
+  </dl>
+
+  <h2><a id="sec8">8. 青空文庫の全データで検索する</a></h2>
+  <p>
+    ここまで青空文庫のサンプルデータで検索をお試しいただきましたが、
+    ご自身でデータを取得して登録することにより、
+    青空文庫の全データを対象として検索を行うことができます。
+    ここではデータの取得から加工、登録までの手順について説明します。
+  </p>
+
+  <h3><a id="sec81">8.1 青空文庫の作品データを取得する</a></h3>
+  <p>
+    青空文庫の作品データはGitHubのリポジトリaozorahackにあり、
+    ZIP書庫としてダウンロードできます。
+    ブラウザで以下のURLにアクセスしてください。
+  </p>
+  <ul class="none">
+    <li>https://github.com/aozorahack/aozorabunko_text/archive/master.zip</li>
+  </ul>
+  <p>
+    ダウンロードされたデータは以下の名前で保存されます。
+  </p>
+  <ul class="none">
+    <li>aozorabunko_text-master.zip</li>
+  </ul>
+  <p>
+    サイズはZIP書庫で250MB、展開して550MB、件数は17000件ほどです。
+    ディレクトリ構造は以下のとおりです。
+  </p>
+  <ul class="none">
+    <li>aozorabunko_text-master/cards/{人物ID(ゼロ埋め6桁)}/files/{作品識別名}/{作品識別名}.txt</li>
+  </ul>
+  <p>
+    作品識別名は以下の構造です。
+  </p>
+  <ul class="none">
+    <li>{作品ID(ゼロ埋めなし)}_(ruby|txt)_{ファイル通し番号}</li>
+  </ul>
+  <p>
+    作品IDは全作品で一意、rubyはルビ情報あり、txtはルビ情報なし、
+    ファイル通し番号は全ファイルで一意ですが、随時振り直されます。
+    著作権なしのテキストデータについては文字コードはすべてShiftJISです。
+  </p>
+
+  <h3><a id="sec82">8.2 青空文庫の書誌情報を取得する</a></h3>
+  <p>
+    青空文庫の書誌情報は「公開中 作家別作品一覧拡充版」として以下に置かれています。
+    これを取得してください。
+  </p>
+  <ul class="none">
+    <li>https://www.aozora.gr.jp/index_pages/list_person_all_extended.zip</li>
+  </ul>
+  <p>
+    内容はShiftJISのCSVファイルで、以下の名前です。
+  </p>
+  <ul class="none">
+    <li>list_person_all_extended.csv</li>
+  </ul>
+  <p>
+    参照するカラムは以下のとおりです。
+  </p>
+  <ul class="none">
+    <li>第0列：作品ID(ゼロ埋め6桁)</li>
+    <li>第9列：文字遣い種別(新字新仮名, 旧字旧仮名)</li>
+    <li>第10列：作品著作権フラグ(あり, なし)</li>
+    <li>第14列：人物ID(ゼロ埋め6桁)</li>
+    <li>第45列：テキストファイルURL</li>
+    <li>第47列：テキストファイル符号化方式(ShiftJIS, UTF-8)</li>
+  </ul>
+  <p>
+    テキストファイルURLの形式は以下のとおりです。
+  </p>
+  <ul class="none">
+    <li>https://www.aozora.gr.jp/cards/{人物ID(ゼロ埋め6桁)}/files/{作品識別名}.zip</li>
+  </ul>
+
+  <h3><a id="sec83">8.3 データを加工する</a></h3>
+  <p>
+    作品データと書誌情報を加工し、データベースに登録します。
+    Perlの実行環境とunzipが必要です。
+  </p>
+  <ol>
+    <li>当サイトから、以下の加工ツールを取得します。ブラウザで右クリックし、「名前を付けてリンク先を保存」してください。
+      <ul class="none">
+        <li><a href="process-aozora-data.pl">process_aozora_data.pl</a></li>
+      </ul>
+    </li>
+    <li>aozorabunko_text-master.zipとlist_person_all_extended.zipを展開します。
+      <pre>
+$ unzip aozorabunko_text-master.zip
+$ unzip list_person_all_extended.zip
+</pre>
+    </li>
+    <li>そのディレクトリでprocess-aozora-data.plを実行します。
+      <pre>
+$ perl process-aozora-data.pl
+</pre>
+    </li>
+  </ol>
+  <p>
+    以上により、OUTPUTフォルダが作られ、その下に加工済みテキストデータが書き出されます。
+    またinsert.csvに加工済みテキストデータに対する書誌情報が出力されます。
+    insert.csvには加工済みテキストデータのファイル名列が追加されています。
+  </p>
+  <p>
+    登録用データには、著作権の切れた作品のみが出力されます。
+    データがどのように加工されるかについては、加工ツールのコメントをご覧ください。
+  </p>
+
+  <h3><a id="sec84">8.4 データを登録する</a></h3>
+  <p>
+    insert.csvとOUTPUT/*.txtが用意できたら、<a href="#sec4">4. SQLでサンプルを実行する</a>
+    に従ってデータベースを作成します。
+    データの格納には800MB程度の領域が必要です。
+    また、作業には数分の時間がかかります。
+  </p>
+  <p>
+    すでにサンプルデータを登録済みのデータベースが存在する場合は、あらかじめ
+    <a href="#sec6">6. データベースを削除する</a> の手順でデータベースを削除しておいてください。
+  </p>
+  <p>
+    以上でデータの登録は終わりです。
+    サンプルデータと同様に、さまざまな検索をお試しください。
+  </p>
+  <p class="center">Copyright (c) 2023, 2024 Ricoh Company, Ltd. All rights reserved.</p>
+
+</body>
+
+</html>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+  MessageDefinition.xml : メッセージ定義ファイル
+
+  Copyright (c) 2001, 2003, 2006, 2024 Ricoh Company, Ltd.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE MessageDefine [
+  <!ELEMENT MessageDefine (Message)*>
+
+  <!ELEMENT Message (Name, Number, Format, Argument*)>
+  <!ELEMENT Name (#PCDATA)>
+  <!ELEMENT Number (#PCDATA)>
+
+  <!ELEMENT Format (English, Japanese)>
+  <!ELEMENT Argument (#PCDATA)>
+
+  <!ELEMENT English (#PCDATA)>
+  <!ELEMENT Japanese (#PCDATA)>
+]>
+
+<!--
+★メッセージ定義に関する注意★
+
+	【メッセージ定義ファイル自体について】
+		・ファイルの文字コードを SJIS から変更してはいけない
+
+	【メッセージ作成の方針について】
+
+	【メッセージ番号について】
+		・Number は16 進8 桁で定義し、
+
+		  上位 2 桁は 0x01
+		  次の 2 桁は モジュールを識別する値
+		  下位 4 桁は モジュール内でのメッセージを一意に識別する値
+		
+		  にすること
+		・決して、Exception/ErrorDefinition.xml の
+		  エラー番号と重なってはならない
+
+	【フォーマットについて】
+		・日本語メッセージは「ですます」調で統一すること
+		・Format に %1 などで挿入されるものが文字列である場合、
+		  できる限り言語に左右されない文字列
+		  (SQL 文、表名、数値など)にすること
+-->
+
+<MessageDefine>
+
+  <Message>
+    <Name>MasterDataFileNotFound</Name>
+    <Number>0x01190001</Number>
+    <Format>
+      <English>Master data file is not found.</English>
+      <Japanese>バージョンファイルを構成するマスタデータファイルが存在しません。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>VersionLogFileNotFound</Name>
+    <Number>0x01190002</Number>
+    <Format>
+      <English>Version log file is not found.</English>
+      <Japanese>バージョンファイルを構成するバージョンログファイルが存在しません。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>SyncLogFileFound</Name>
+    <Number>0x01190003</Number>
+    <Format>
+      <English>Version log file is found.</English>
+      <Japanese>同期中でないにもかかわらず、バージョンファイルを構成する同期ログファイルが存在します。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>BlockCountInconsistent</Name>
+    <Number>0x01190004</Number>
+    <Format>
+      <English>Block count is inconsistent.</English>
+      <Japanese>バージョンログファイルヘッダー中の総ブロック数が矛盾しています。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>VersionPageCountInconsistent</Name>
+    <Number>0x01190005</Number>
+    <Format>
+      <English>Version page count is inconsistent.</English>
+      <Japanese>バージョンログファイルヘッダー中の総バージョンページ数が矛盾しています。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>OlderNotIdentical</Name>
+    <Number>0x01190006</Number>
+    <Format>
+      <English>Older version logs are not identical.</English>
+      <Japanese>同じバージョンログに対する物理ログでありません。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>AllocationBitInconsistent</Name>
+    <Number>0x01190007</Number>
+    <Format>
+      <English>allocation bit is inconsistent.</English>
+      <Japanese>アロケーションテーブル中のビットマップに矛盾があります。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>OldestTimeStampInconsistent</Name>
+    <Number>0x01190008</Number>
+    <Format>
+      <English>oldest timestamp is inconsistent.</English>
+      <Japanese>PBCT リーフ中の最古のバージョンログの最終更新時タイムスタンプ値が矛盾しています。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>OlderTimeStampInconsistent</Name>
+    <Number>0x01190009</Number>
+    <Format>
+      <English>older timestamp is inconsistent.</English>
+      <Japanese>バージョンログ中のひとつ前のバージョンログの最終更新時タイムスタンプ値が矛盾しています。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>LatestCountInconsistent</Name>
+    <Number>0x01190010</Number>
+    <Format>
+      <English>latest count is inconsistent.</English>
+      <Japanese>PBCT リーフ中の記録されている最新版の数が矛盾しています。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>ChildCountInconsistent</Name>
+    <Number>0x01190011</Number>
+    <Format>
+      <English>child count is inconsistent.</English>
+      <Japanese>PBCT ノード中の記録されている子ノードの数が矛盾しています。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>VersionLogIDInconsistent</Name>
+    <Number>0x01190012</Number>
+    <Format>
+      <English>next version log's block ID is inconsistent.</English>
+      <Japanese>直前のバージョンログ中の次のバージョンログのブロック識別子は既出です。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>PhysicalLogIDInconsistent</Name>
+    <Number>0x01190013</Number>
+    <Format>
+      <English>next physical log's block ID is inconsistent.</English>
+      <Japanese>直前の物理ログ中の次の物理ログのブロック識別子は既出です。</Japanese>
+    </Format>
+  </Message>
+
+  <Message>
+    <Name>PreservedDifferentPage</Name>
+    <Number>0x01190014</Number>
+    <Format>
+      <English>a different version page is preserved.(searchid=%1, savedid=%2) </English>
+      <Japanese>違うバージョンページが保持されています。(searchid=%1, savedid=%2)</Japanese>
+    </Format>
+    <Argument>%d</Argument>
+    <Argument>%d</Argument>
+  </Message>
+
+</MessageDefine>
+
+<!--
+  Copyright (c) 2001, 2003, 2006, 2024 Ricoh Company, Ltd.
+  All rights reserved.
+-->

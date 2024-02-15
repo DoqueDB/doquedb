@@ -1,0 +1,63 @@
+#
+# conf/linux/g --
+#	RedHat Linux 用コンパイル環境設定ファイル(デバッグ)
+# 
+# Copyright (c) 2022, 2023 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+#########################################
+#	  共通のオプション指定		#
+#########################################
+-UNDEBUG -DDEBUG 
+-UMOD_NDIST -DMOD_DIST
+# MOD 自身をコンパイルする
+-DMOD_KERNEL
+# UNAのバージョン
+-DUNA_V1_0
+# インストールライブラリーパス
+-DTAPELIB=lib48_debug
+# デバッグ用の機能を有効にする
+-DMOD_DEBUG
+# MODのバージョン
+-DV1_0
+# マルチスレッド非対応ライブラリーを生成する
+#-DMOD_NO_THREAD
+# 共有ライブラリーまたはダイナミックリンクライブラリーを生成する
+-DMOD_DLL
+# 64ビット
+-DMOD64
+# purify 用のオブジェクトを生成する
+#-DPURIFY
+# quantify 用のオブジェクトを生成する
+#-DQUANTIFY
+# ソースコードのエンコーディング
+-DSOURCE_ENCODING_UTF8
+# Unicodeのサロゲートペアに部分的に対応する
+-DPARTIAL_SURROGATE_PAIR_SUPPORT
+#########################################
+#    LINUX 環境用のオプション指定	#
+#########################################
+# CPU は INTEL アーキテクチャーである
+-DMCH_INTEL
+# OS は RedHat Linux 6.2
+-DOS_RHLINUX6_0
+# G++ コンパイラーを使用する
+-DCC_GCC
+-DCC_GCC4_8
+# デバッグ情報を埋め込んだオブジェクトを生成する
+-g
+# 共有ライブラリー用に位置独立のオブジェクトを生成する
+-fPIC
+# 厳しい検査を緩くする
+-fpermissive

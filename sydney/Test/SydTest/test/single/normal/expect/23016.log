@@ -1,0 +1,126 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f int, g int generated always as identity (get max), h int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(f, h) values (1, 10), (2, 20), (3, 30)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(f, h) values (4, 40), (5, 50), (6, 60)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T
+SydTest::Executor: [INFO] {1,0,10}
+SydTest::Executor: [INFO] {2,1,20}
+SydTest::Executor: [INFO] {3,2,30}
+SydTest::Executor: [INFO] {4,3,40}
+SydTest::Executor: [INFO] {5,4,50}
+SydTest::Executor: [INFO] {6,5,60}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (40, 4, 400)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Column 'g' cannot be specified for insert or update.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(f, h) values (100, 1000), (200, 2000), (300, 3000)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(f, h) values (400, 4000), (500, 5000), (600, 6000)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f >= 100
+SydTest::Executor: [INFO] {100,6,1000}
+SydTest::Executor: [INFO] {200,7,2000}
+SydTest::Executor: [INFO] {300,8,3000}
+SydTest::Executor: [INFO] {400,9,4000}
+SydTest::Executor: [INFO] {500,10,5000}
+SydTest::Executor: [INFO] {600,11,6000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T (f int, g int generated always as identity (get max), h int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T values (40, 4, 400)
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Column 'g' cannot be specified for insert or update.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(f, h) values (100, 1000), (200, 2000), (300, 3000)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(f, h) values (400, 4000), (500, 5000), (600, 6000)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f >= 100
+SydTest::Executor: [INFO] {100,0,1000}
+SydTest::Executor: [INFO] {200,1,2000}
+SydTest::Executor: [INFO] {300,2,3000}
+SydTest::Executor: [INFO] {400,3,4000}
+SydTest::Executor: [INFO] {500,4,5000}
+SydTest::Executor: [INFO] {600,5,6000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set h = h + 1 where f between 100 and 300
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set h = h * 2 where f between 400 and 600
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f >= 100
+SydTest::Executor: [INFO] {100,0,1001}
+SydTest::Executor: [INFO] {200,1,2001}
+SydTest::Executor: [INFO] {300,2,3001}
+SydTest::Executor: [INFO] {400,3,8000}
+SydTest::Executor: [INFO] {500,4,10000}
+SydTest::Executor: [INFO] {600,5,12000}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] update T set g = g + 100 where f between 100 and 300
+Executor: [ERR] (SydTest) Object No=xxx (XXX::XXX::XXX) SQL syntax error - Column 'g' cannot be specified for insert or update.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(f, h) values (1, 10), (2, 20), (3, 30)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert T(f, h) values (4, 40), (5, 50), (6, 60)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T where f < 10
+SydTest::Executor: [INFO] {1,6,10}
+SydTest::Executor: [INFO] {2,7,20}
+SydTest::Executor: [INFO] {3,8,30}
+SydTest::Executor: [INFO] {4,9,40}
+SydTest::Executor: [INFO] {5,10,50}
+SydTest::Executor: [INFO] {6,11,60}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

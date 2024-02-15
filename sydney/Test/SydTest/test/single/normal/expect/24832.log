@@ -1,0 +1,148 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL1(f varchar(5), g char(5), h nvarchar(5), i nchar(5), j int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values ('abc', 'bcd', 'あいう', 'いろは', 123)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL1 values ('abcde', 'bcdef', 'あいうえお', 'いろはにほ', 456)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table TBL2(x varchar(10), y char(10), z nvarchar(10), w nchar(10), u float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values ('abcde', 'bcdef', 'あいうえお', 'いろはにほ', 456)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values ('abcdef', 'bcdefg', 'あいうえおかきくけこ', 'いろはにほへと', 123E45)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values ('xyz', 'yzw', 'abc', 'bcd', 123)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert TBL2 values ('xyz', 'yzw', '123', '456', 456)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where f = x
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,abcde,bcdef     ,あいうえお,いろはにほ     ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where g = y
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,abcde,bcdef     ,あいうえお,いろはにほ     ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where h = z
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,abcde,bcdef     ,あいうえお,いろはにほ     ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where i = w
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,abcde,bcdef     ,あいうえお,いろはにほ     ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where j = u
+SydTest::Executor: [INFO] {abc,bcd  ,あいう,いろは  ,123,xyz,yzw       ,abc,bcd       ,1.23E2}
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,abcde,bcdef     ,あいうえお,いろはにほ     ,4.56E2}
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,xyz,yzw       ,123,456       ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where f = z
+SydTest::Executor: [INFO] {abc,bcd  ,あいう,いろは  ,123,xyz,yzw       ,abc,bcd       ,1.23E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where g = w
+SydTest::Executor: [INFO] {abc,bcd  ,あいう,いろは  ,123,xyz,yzw       ,abc,bcd       ,1.23E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where j = z
+SydTest::Executor: [INFO] {abc,bcd  ,あいう,いろは  ,123,xyz,yzw       ,123,456       ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where j = w
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,xyz,yzw       ,123,456       ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX1_f on TBL1(f)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX1_g on TBL1(g)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX1_h on TBL1(h)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX1_i on TBL1(i)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index IDX1_j on TBL1(j)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where f = x
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,abcde,bcdef     ,あいうえお,いろはにほ     ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where g = y
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,abcde,bcdef     ,あいうえお,いろはにほ     ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where h = z
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,abcde,bcdef     ,あいうえお,いろはにほ     ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where i = w
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,abcde,bcdef     ,あいうえお,いろはにほ     ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where j = u
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,abcde,bcdef     ,あいうえお,いろはにほ     ,4.56E2}
+SydTest::Executor: [INFO] {abc,bcd  ,あいう,いろは  ,123,xyz,yzw       ,abc,bcd       ,1.23E2}
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,xyz,yzw       ,123,456       ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where f = z
+SydTest::Executor: [INFO] {abc,bcd  ,あいう,いろは  ,123,xyz,yzw       ,abc,bcd       ,1.23E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where g = w
+SydTest::Executor: [INFO] {abc,bcd  ,あいう,いろは  ,123,xyz,yzw       ,abc,bcd       ,1.23E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where j = z
+SydTest::Executor: [INFO] {abc,bcd  ,あいう,いろは  ,123,xyz,yzw       ,123,456       ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from TBL1, TBL2 where j = w
+SydTest::Executor: [INFO] {abcde,bcdef,あいうえお,いろはにほ,456,xyz,yzw       ,123,456       ,4.56E2}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

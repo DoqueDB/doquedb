@@ -1,0 +1,37 @@
+# 障害票 1100
+# DataArrayDataの比較
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command  "CREATE TABLE T
+(
+	FaxReceiveActionSortID	uniqueidentifier,
+	FaxReceiveActionSortLine	varchar(16) array[10],
+	FaxReceiveActionSortCsiRtiName nvarchar(24),
+	primary key(FaxReceiveActionSortID)
+)";
+
+#２．データを追加します。
+Command  "INSERT INTO T VALUES('6e0ebd6a-2740-0bae-f389-6e2600090015',array['G3-1','G3-3'],'')";
+Command  "INSERT INTO T VALUES('6e0ebd6a-2740-0bae-f389-6f2600090015',array['G3-2'],'')";
+
+#３．検索します。
+Command  "select * from T order by FaxReceiveActionSortLine ASC";
+Command  "select * from T order by FaxReceiveActionSortLine DESC";
+
+Command  "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

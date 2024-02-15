@@ -1,0 +1,60 @@
+
+
+Begin;
+Initialize;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+Command "create table T(C ntext)";
+
+Command "create fulltext index I on T(C)  hint 'inverted=(normalized=true, indexing=dual, tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1,clustered=(feature=10))'";
+
+Command "insert into T (C) values ('東京は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('京都は仕事をするには良い場所ですが、ロハスな生活をするには適しないと思います。')";
+Command "insert into T (C) values ('北海道はロハスな生活をするには悪い場所ですが、ロハスな生活をするには適していると思います。')";
+Command "insert into T (C) values (?)" [textsjisfile "..\\..\\doc\\zero"];
+
+
+Command "select rowid,cluster(C).id from T where C contains '仕事' CLUSTERED LIMIT 0.98";
+Command "select rowid,score(C),cluster(C).id from T where C contains '仕事' CLUSTERED LIMIT 0.73";
+
+Command "select rowid,cluster(C).id from T where C contains 'する' CLUSTERED LIMIT 0.98";
+Command "select rowid,score(C),cluster(C).id from T where C contains 'する' CLUSTERED LIMIT 0.73";
+
+Command "select rowid,cluster(C).id from T where C contains 'には' CLUSTERED LIMIT 0.98";
+Command "select rowid,score(C),cluster(C).id from T where C contains 'には' CLUSTERED LIMIT 0.73";
+
+Command "select rowid,cluster(C).id from T where C contains '場所' CLUSTERED LIMIT 0.98";
+Command "select rowid,score(C),cluster(C).id from T where C contains '場所' CLUSTERED LIMIT 0.73";
+
+Command "select rowid,cluster(C).id from T where C contains 'ですが' CLUSTERED LIMIT 0.98";
+Command "select rowid,score(C),cluster(C).id from T where C contains 'ですが' CLUSTERED LIMIT 0.73";
+
+Command "select rowid,cluster(C).id from T where C contains 'ロハス' CLUSTERED LIMIT 0.98";
+Command "select rowid,score(C),cluster(C).id from T where C contains 'ロハス' CLUSTERED LIMIT 0.73";
+
+Command "select rowid,cluster(C).id from T where C contains '生活' CLUSTERED LIMIT 0.98";
+Command "select rowid,score(C),cluster(C).id from T where C contains '生活' CLUSTERED LIMIT 0.73";
+
+Command "select rowid,cluster(C).id from T where C contains '適し' CLUSTERED LIMIT 0.98";
+Command "select rowid,score(C),cluster(C).id from T where C contains '適し' CLUSTERED LIMIT 0.73";
+
+Command "select rowid,cluster(C).id from T where C contains 'ない' CLUSTERED LIMIT 0.98";
+Command "select rowid,score(C),cluster(C).id from T where C contains 'ない' CLUSTERED LIMIT 0.73";
+
+Command "select rowid,cluster(C).id from T where C contains '思い' CLUSTERED LIMIT 0.98";
+Command "select rowid,score(C),cluster(C).id from T where C contains '思い' CLUSTERED LIMIT 0.73";
+
+Command "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

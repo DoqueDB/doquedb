@@ -1,0 +1,44 @@
+# Bug report 2383
+# テーブルに別名を付けて存在しないテーブルを参照
+
+Begin;
+Initialize;
+InitializeSession "";
+Command "drop database TESTDB if exists";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+Command "create table T(C int)";
+
+Command "select T.* from T A";
+Command "select T.C from T A";
+Command "select X.* from T A";
+Command "select X.C from T A";
+Command "select T.C1 from T A";
+Command "select A.C1 from T";
+Command "select A.* from T";
+
+
+Command "insert into T (C) values (1)";
+Command "insert into T (C) values (2)";
+Command "insert into T (C) values (3)";
+
+Command "select * from T";
+Command "select * from T A";
+Command "select T.C from T";
+Command "select A.* from T A";
+
+
+Command "select T.* from T A";
+
+Command "select T.C from T A";
+Command "select X.* from T A";
+Command "select X.C from T A";
+Command "select T.C1 from T A";
+Command "select A.C1 from T";
+Command "select A.* from T";
+
+TerminateSession;
+Terminate;
+End;

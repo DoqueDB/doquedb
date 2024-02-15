@@ -1,0 +1,388 @@
+SydTest::Executor: [INFO] Main Start.
+SydTest::Executor: [INFO] [Main] SetSystemParameter
+SydTest::Executor: [INFO] [SydTest Parameter] Execution_OverflowNull
+SydTest::Executor: [INFO] [SydTest Parameter and Value] Execution_OverflowNull, false
+SydTest::Executor: [INFO] [Main] Initialize
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] TESTDB
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 int, C2 int, C3 int, C4 int, C5 int, C6 int, C7 int)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1 on T1(C1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4, C5, C6) values (48752, 56874, 6453, 75415326, 3554625, null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4, C5, C6) values (4852, 527, 612, 729, 5, null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4, C5, C6) values (444, 55555555, 6666, 777777, 88888888, null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {48752,56874,6453,75415326,3554625,(null),(null)}
+SydTest::Executor: [INFO] {4852,527,612,729,5,(null),(null)}
+SydTest::Executor: [INFO] {444,55555555,6666,777777,88888888,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AVG(C1), AVG(C2), AVG(C3), AVG(C4), AVG(C5), AVG(C6) from T1
+SydTest::Executor: [INFO] {18016,18537652,4577,25397944,30814506,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select SUM(C1), SUM(C2), SUM(C3), SUM(C4), SUM(C5), AVG(C6) from T1
+SydTest::Executor: [INFO] {54048,55612956,13731,76193832,92443518,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select MAX(C1), MAX(C2), MAX(C3), MAX(C4), MAX(C5), MAX(C6) from T1
+SydTest::Executor: [INFO] {48752,55555555,6666,75415326,88888888,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select MIN(C1), MIN(C2), MIN(C3), MIN(C4), MIN(C5), MIN(C6) from T1
+SydTest::Executor: [INFO] {444,527,612,729,5,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C3 , (C1 + C3) from T1
+SydTest::Executor: [INFO] {48752,6453,55205}
+SydTest::Executor: [INFO] {4852,612,5464}
+SydTest::Executor: [INFO] {444,6666,7110}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C2, C3 , (C2 - C3) from T1
+SydTest::Executor: [INFO] {56874,6453,50421}
+SydTest::Executor: [INFO] {527,612,-85}
+SydTest::Executor: [INFO] {55555555,6666,55548889}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C3 , (C1 * C3) from T1
+SydTest::Executor: [INFO] {48752,6453,314596656}
+SydTest::Executor: [INFO] {4852,612,2969424}
+SydTest::Executor: [INFO] {444,6666,2959704}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C2, C5 , (C2 / C5) from T1
+SydTest::Executor: [INFO] {56874,3554625,0}
+SydTest::Executor: [INFO] {527,5,105}
+SydTest::Executor: [INFO] {55555555,88888888,0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 + C6) from T1
+SydTest::Executor: [INFO] {48752,(null),(null)}
+SydTest::Executor: [INFO] {4852,(null),(null)}
+SydTest::Executor: [INFO] {444,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 - C6) from T1
+SydTest::Executor: [INFO] {48752,(null),(null)}
+SydTest::Executor: [INFO] {4852,(null),(null)}
+SydTest::Executor: [INFO] {444,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 * C6) from T1
+SydTest::Executor: [INFO] {48752,(null),(null)}
+SydTest::Executor: [INFO] {4852,(null),(null)}
+SydTest::Executor: [INFO] {444,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 / C6) from T1
+SydTest::Executor: [INFO] {48752,(null),(null)}
+SydTest::Executor: [INFO] {4852,(null),(null)}
+SydTest::Executor: [INFO] {444,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) FROM T1
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(C1) FROM T1
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(C7) FROM T1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {48752,56874,6453,75415326,3554625,(null),(null)}
+SydTest::Executor: [INFO] {4852,527,612,729,5,(null),(null)}
+SydTest::Executor: [INFO] {444,55555555,6666,777777,88888888,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 bigint, C2 bigint, C3 bigint, C4 bigint, C5 bigint, C6 bigint, C7 bigint)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1 on T1(C1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4, C5, C6) values (847865160, 767589432, 639365455, 547845123, 421546872, null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4, C5, C6) values (123456789, 123456789, 123456789, 123456789, 123456789, null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4, C5, C6) values (888888888, 777777777, 666666666, 555555555, 444444444, null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {847865160,767589432,639365455,547845123,421546872,(null),(null)}
+SydTest::Executor: [INFO] {123456789,123456789,123456789,123456789,123456789,(null),(null)}
+SydTest::Executor: [INFO] {888888888,777777777,666666666,555555555,444444444,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AVG(C1), AVG(C2), AVG(C3), AVG(C4), AVG(C5), AVG(C6) from T1
+SydTest::Executor: [INFO] {620070279,556274666,476496303,408952489,329816035,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select SUM(C1), SUM(C2), SUM(C3), SUM(C4), SUM(C5), AVG(C6) from T1
+SydTest::Executor: [INFO] {1860210837,1668823998,1429488910,1226857467,989448105,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select MAX(C1), MAX(C2), MAX(C3), MAX(C4), MAX(C5), MAX(C6) from T1
+SydTest::Executor: [INFO] {888888888,777777777,666666666,555555555,444444444,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select MIN(C1), MIN(C2), MIN(C3), MIN(C4), MIN(C5), MIN(C6) from T1
+SydTest::Executor: [INFO] {123456789,123456789,123456789,123456789,123456789,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C3 , (C1 + C3) from T1
+SydTest::Executor: [INFO] {847865160,639365455,1487230615}
+SydTest::Executor: [INFO] {123456789,123456789,246913578}
+SydTest::Executor: [INFO] {888888888,666666666,1555555554}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C2, C3 , (C2 - C3) from T1
+SydTest::Executor: [INFO] {767589432,639365455,128223977}
+SydTest::Executor: [INFO] {123456789,123456789,0}
+SydTest::Executor: [INFO] {777777777,666666666,111111111}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C3 , (C1 * C3) from T1
+SydTest::Executor: [INFO] {847865160,639365455,542095693802047800}
+SydTest::Executor: [INFO] {123456789,123456789,15241578750190521}
+SydTest::Executor: [INFO] {888888888,666666666,592592591407407408}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C2, C5 , (C2 / C5) from T1
+SydTest::Executor: [INFO] {767589432,421546872,1}
+SydTest::Executor: [INFO] {123456789,123456789,1}
+SydTest::Executor: [INFO] {777777777,444444444,1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 + C6) from T1
+SydTest::Executor: [INFO] {847865160,(null),(null)}
+SydTest::Executor: [INFO] {123456789,(null),(null)}
+SydTest::Executor: [INFO] {888888888,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 - C6) from T1
+SydTest::Executor: [INFO] {847865160,(null),(null)}
+SydTest::Executor: [INFO] {123456789,(null),(null)}
+SydTest::Executor: [INFO] {888888888,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 * C6) from T1
+SydTest::Executor: [INFO] {847865160,(null),(null)}
+SydTest::Executor: [INFO] {123456789,(null),(null)}
+SydTest::Executor: [INFO] {888888888,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 / C6) from T1
+SydTest::Executor: [INFO] {847865160,(null),(null)}
+SydTest::Executor: [INFO] {123456789,(null),(null)}
+SydTest::Executor: [INFO] {888888888,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) FROM T1
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(C1) FROM T1
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(C6) FROM T1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(C7) FROM T1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create table T1(C1 float, C2 float, C3 float, C4 float, C5 float, C6 float, C7 float)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] create index I1 on T1(C1)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4, C5, C6) values (3.141592, 2.718281, 1.414213, 4.351257, 5.132648, null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4, C5, C6) values (3.475621, 2.156378, 1.568723, 4.125676, 5.451327, null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] insert into T1 (C1, C2, C3, C4, C5, C6) values (3.121354, 2.485766, 1.236759, 4.721534, 5.457868, null)
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select * from T1
+SydTest::Executor: [INFO] {3.141592E0,2.718281E0,1.414213E0,4.351257E0,5.132648E0,(null),(null)}
+SydTest::Executor: [INFO] {3.475621E0,2.156378E0,1.568723E0,4.125676E0,5.451327E0,(null),(null)}
+SydTest::Executor: [INFO] {3.121354E0,2.485766E0,1.236759E0,4.721534E0,5.457868E0,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select AVG(C1), AVG(C2), AVG(C3), AVG(C4), AVG(C5), AVG(C6) from T1
+SydTest::Executor: [INFO] {3.246189E0,2.453475E0,1.406565E0,4.399489E0,5.347281E0,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select SUM(C1), SUM(C2), SUM(C3), SUM(C4), SUM(C5), AVG(C6) from T1
+SydTest::Executor: [INFO] {9.738567E0,7.360425E0,4.219695E0,1.3198467E1,1.6041843E1,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select MAX(C1), MAX(C2), MAX(C3), MAX(C4), MAX(C5), MAX(C6) from T1
+SydTest::Executor: [INFO] {3.475621E0,2.718281E0,1.568723E0,4.721534E0,5.457868E0,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select MIN(C1), MIN(C2), MIN(C3), MIN(C4), MIN(C5), MIN(C6) from T1
+SydTest::Executor: [INFO] {3.121354E0,2.156378E0,1.236759E0,4.125676E0,5.132648E0,(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C3 , (C1 + C3) from T1
+SydTest::Executor: [INFO] {3.141592E0,1.414213E0,4.555805E0}
+SydTest::Executor: [INFO] {3.475621E0,1.568723E0,5.044344E0}
+SydTest::Executor: [INFO] {3.121354E0,1.236759E0,4.358113E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C2, C3 , (C2 - C3) from T1
+SydTest::Executor: [INFO] {2.718281E0,1.414213E0,1.304068E0}
+SydTest::Executor: [INFO] {2.156378E0,1.568723E0,5.87655E-1}
+SydTest::Executor: [INFO] {2.485766E0,1.236759E0,1.249007E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C3 , (C1 * C3) from T1
+SydTest::Executor: [INFO] {3.141592E0,1.414213E0,4.442880247096E0}
+SydTest::Executor: [INFO] {3.475621E0,1.568723E0,5.452286601983E0}
+SydTest::Executor: [INFO] {3.121354E0,1.236759E0,3.860362651686E0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C2, C5 , (C2 / C5) from T1
+SydTest::Executor: [INFO] {2.718281E0,5.132648E0,5.296059655756E-1}
+SydTest::Executor: [INFO] {2.156378E0,5.451327E0,3.955693723748E-1}
+SydTest::Executor: [INFO] {2.485766E0,5.457868E0,4.554463391199E-1}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 + C6) from T1
+SydTest::Executor: [INFO] {3.141592E0,(null),(null)}
+SydTest::Executor: [INFO] {3.475621E0,(null),(null)}
+SydTest::Executor: [INFO] {3.121354E0,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 - C6) from T1
+SydTest::Executor: [INFO] {3.141592E0,(null),(null)}
+SydTest::Executor: [INFO] {3.475621E0,(null),(null)}
+SydTest::Executor: [INFO] {3.121354E0,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 * C6) from T1
+SydTest::Executor: [INFO] {3.141592E0,(null),(null)}
+SydTest::Executor: [INFO] {3.475621E0,(null),(null)}
+SydTest::Executor: [INFO] {3.121354E0,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select C1, C6 , (C1 / C6) from T1
+SydTest::Executor: [INFO] {3.141592E0,(null),(null)}
+SydTest::Executor: [INFO] {3.475621E0,(null),(null)}
+SydTest::Executor: [INFO] {3.121354E0,(null),(null)}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(*) FROM T1
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(C1) FROM T1
+SydTest::Executor: [INFO] {3}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(C6) FROM T1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] select count(C7) FROM T1
+SydTest::Executor: [INFO] {0}
+SydTest::Executor: [INFO] End Of Data.
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop table T1
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] InitializeSession
+SydTest::Executor: [INFO] [SydTest Option] 
+SydTest::Executor: [INFO] Session Initialize : 0
+SydTest::Executor: [INFO] [Main] Command
+SydTest::Executor: [INFO] [[SQL Query]] drop database TESTDB
+SydTest::Executor: [INFO] Success.
+SydTest::Executor: [INFO] [Main] TerminateSession
+SydTest::Executor: [INFO] Session Terminate : 0
+SydTest::Executor: [INFO] [Main] Terminate
+SydTest::Executor: [INFO] Main End.

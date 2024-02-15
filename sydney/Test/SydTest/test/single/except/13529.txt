@@ -1,0 +1,37 @@
+# このスクリプトのファイルアクセス
+# (新たに生成されるページ、ファイルのインスタンス)は
+# 以下のようになっている。
+#
+#				ページ		ファイル
+# 初期化
+#	論理ログ		1		1
+# create database
+#	スキーマ情報		39		111
+# create table
+#	スキーマ情報		209		96
+# 最初のinsert文
+#	ROWID			4		0
+#	レコード		13		6
+#	ベクター		7		3
+#	B木			7		3
+# 2番目のinsert文
+#	ROWID			4		0
+#	レコード		9		0
+#	ベクター		5		0
+#	B木			5		0
+
+Begin;
+SetSystemParameter "Exception_FakeError" "Buffer::Page::attach count=(143)";
+
+Initialize;
+InitializeSession "TEST";
+Command "create database TEST";
+Command "create table TT (A int, B ntext, primary key(A))";
+Command "insert into TT values (1, 'abc')";
+Command "insert into TT values (2, 'ABC')";
+Command "verify database TEST cascade continue";
+TerminateSession;
+Terminate;
+
+SetSystemParameter "Exception_FakeError" "";
+End;

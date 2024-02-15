@@ -1,0 +1,72 @@
+# 2734: 同じパスへの移動
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+
+#セッションで使用するエリアの定義
+
+InitializeSession "";
+
+#areaの用意
+Command "create area area1 'd:\\dm\\area\\1'";
+Command "create area IndexArea 'd:\\dm\\area\\index'";
+
+#Table
+Command "create table T (f1 int)";
+Command "insert into T values (1)";
+Command "alter table T set area area1";
+Command "alter table T set area area1";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T (f1 int) area area1";
+Command "insert into T values (1)";
+Command "alter table T set area area1";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T (f1 int)";
+Command "insert into T values (1)";
+Command "alter table T drop area default";
+Command "select * from T";
+Command "drop table T";
+
+#Index
+Command "create table T (f1 int)";
+Command "create index T_f1 on T(f1)";
+Command "insert into T values (1)";
+Command "alter index T_f1 set area IndexArea";
+Command "alter index T_f1 set area IndexArea";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T (f1 int)";
+Command "create index T_f1 on T(f1) area IndexArea";
+Command "insert into T values (1)";
+Command "alter index T_f1 set area IndexArea";
+Command "select * from T";
+Command "drop table T";
+
+Command "create table T (f1 int)";
+Command "create index T_f1 on T(f1)";
+Command "insert into T values (1)";
+Command "alter index T_f1 drop area default";
+Command "select * from T";
+Command "drop table T";
+
+#使用したエリアの後始末
+Command "drop area area1";
+Command "drop area IndexArea";
+
+Command "create table T (f1 int)";
+Command "insert into T values (1)";
+
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+# 2回繰り返してみる
+Command "alter database DefaultDB set path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+Command "alter database DefaultDB drop path 'd:\\dm\\area\\path' logicallog 'd:\\dm\\area\\log' system 'd:\\dm\\area\\system'";
+TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

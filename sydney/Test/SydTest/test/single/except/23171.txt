@@ -1,0 +1,48 @@
+Begin;
+Initialize;
+InitializeSession "TESTDB";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+#
+# XA PREPARE -- コミット準備完了しようとしたトランザクションブランチの状態ごとのテスト
+#
+
+# 『存在しない』
+Command "xa prepare X'00'";
+
+# 『データ操作中』
+Command "xa start X'00'";
+Command "xa prepare X'00'";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 『コミット準備完了』
+Command "xa start X'00'";
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+Command "xa prepare X'00'";
+Command "xa commit X'00'";
+
+# 『ヒューリスティックな解決済』
+Command "create table T(I int)";
+Command "xa start X'00'";
+Command "insert into T(I) values (?)" [1];
+Command "xa end X'00'";
+Command "xa prepare X'00'";
+TerminateSession;
+Terminate;
+Initialize;
+InitializeSession "TESTDB";
+Command "xa recover";
+Command "xa prepare X'00'";
+Command "xa forget X'00'";
+Command "drop table T";
+
+TerminateSession;
+InitializeSession "TESTDB";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

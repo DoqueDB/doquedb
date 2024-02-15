@@ -1,0 +1,27 @@
+# blobファイルのテスト: 0バイトの入力
+
+Begin;
+Initialize;
+
+
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+Command "create table T1(C1 blob)";
+Command "select C1 from T1";
+Command "insert into T1 (C1) values (?)" [binaryfile "..\\..\\doc\\zero"];
+Command "select * from T1";
+Command  "drop table T1";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+
+Terminate;
+End;
+

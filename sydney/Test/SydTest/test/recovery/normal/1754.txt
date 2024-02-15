@@ -1,0 +1,43 @@
+# score_search /fulltext(sectionized)
+# 各種全文ファイルへのスコア検索を試すスクリプトを生成する
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+# テスト用のDBを作る
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+# 列が配列型であるtableのテスト
+# Tableを準備する
+Command  "create table T1(C1 int, C2 ntext array [no limit])";
+Command  "create fulltext index I1_2 on T1(C2) hint 'sectionized'";
+# 検索対象となるタプルを準備する
+Command  "insert into T1 (C1, C2) values (?, ?)" [1, ["ほげ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [2, [null, "ほげほげ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [3, ["ほげほげ", null]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [4, [null, "ああああ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [5, ["ああああ", null]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [6, ["ほ", "げ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [7, ["ほげ", null, "ほげ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [8, ["ああ", null, "ほげ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [9, ["ほげ", null, "ああ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [10, ["ほ", null, "げ"]];
+Command  "insert into T1 (C1, C2) values (?, ?)" [11, [null, "ほげ", null]];
+# sectionized検索を行う
+Command  "select C1, sectionized(C2) from T1 where C2 like ?" ["%ほげ%"];
+# tableの後始末
+#Command  "drop table T1";
+
+Command  "select * from T1";
+
+TerminateSession;
+# DBの後始末
+#InitializeSession "";
+#Command "drop database TESTDB";
+#TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;

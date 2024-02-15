@@ -1,0 +1,273 @@
+# select * from T where〈 列リスト1個 〉(not) between〈 定数 〉
+# 
+# between 定数 and 定数によるテスト
+# 索引
+# --索引き無し
+#
+#オペランドにNULLが入ったとき
+# --not between
+#		NOT BETWEEN null and 20
+#			… 20より大きいものだけヒット
+#		NOT BETWEEN 10 and null
+#			… 10より小さいものだけヒット
+#		NOT BETWEEN null and null
+#			… 1件もヒットしない
+#
+#追加 2006.04.13
+Begin;
+Initialize;
+
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+
+InitializeSession "TESTDB";
+
+
+# int型
+# メインテーブル
+Command  "create table T(C1 int)";
+Command  "create index I_1 on T(C1)";
+Command  "insert into T (C1) values (?)" [111 ];
+Command  "insert into T (C1) values (?)" [222 ];
+Command  "insert into T (C1) values (?)" [222 ];
+Command  "insert into T (C1) values (?)" [222 ];
+Command  "insert into T (C1) values (?)" [null];
+Command  "insert into T (C1) values (?)" [333 ];
+Command  "insert into T (C1) values (?)" [333 ];
+Command  "insert into T (C1) values (?)" [333 ];
+Command  "insert into T (C1) values (?)" [444 ];
+Command  "insert into T (C1) values (?)" [null];
+Command  "insert into T (C1) values (?)" [null];
+
+
+#オペランドにNULLが入ったときにいずれも1件もヒットしない
+Command  "select * from T where C1 between (?) and (?)" [null, 333];
+Command  "select * from T where C1 between (?) and (?)" [222, null];
+Command  "select * from T where C1 between (?) and (?)" [null, null];
+
+
+# --not between
+#
+Command  "select * from T where C1 not between (?) and (?)" [null, 333];
+Command  "select * from T where C1 not between (?) and (?)" [222, null];
+Command  "select * from T where C1 not between (?) and (?)" [null, null];
+
+
+Command  "drop table T";
+
+
+# varchar型
+# メインテーブル
+Command  "create table T(C1 varchar(8))";
+Command  "create index I_1 on T(C1)";
+Command  "insert into T (C1) values (?)" ["1111"];
+Command  "insert into T (C1) values (?)" ["2222"];
+Command  "insert into T (C1) values (?)" ["3333"];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" ["4444"];
+Command  "insert into T (C1) values (?)" ["2222"];
+Command  "insert into T (C1) values (?)" ["4444"];
+Command  "insert into T (C1) values (?)" ["3333"];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" ["5555"];
+Command  "insert into T (C1) values (?)" [ null ];
+
+
+#
+#オペランドにNULLが入ったときにいずれも1件もヒットしない
+Command  "select * from T where C1 between (?) and (?)" [null,"2222"];
+Command  "select * from T where C1 between (?) and (?)" ["4444", null];
+Command  "select * from T where C1 between (?) and (?)" [null, null];
+
+# --not between
+Command  "select * from T where C1 not between (?) and (?)" [null,"2222"];
+Command  "select * from T where C1 not between (?) and (?)" ["4444", null];
+Command  "select * from T where C1 not between (?) and (?)" [null, null];
+
+
+Command  "drop table T";
+
+
+# nvarchar型
+# メインテーブル
+Command  "create table T(C1 nvarchar(8))";
+Command  "create index I_1 on T(C1)";
+Command  "insert into T (C1) values (?)" ["1111"];
+Command  "insert into T (C1) values (?)" ["2222"];
+Command  "insert into T (C1) values (?)" ["3333"];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" ["4444"];
+Command  "insert into T (C1) values (?)" ["2222"];
+Command  "insert into T (C1) values (?)" ["4444"];
+Command  "insert into T (C1) values (?)" ["3333"];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" ["5555"];
+Command  "insert into T (C1) values (?)" [ null ];
+
+
+#
+#オペランドにNULLが入ったときにいずれも1件もヒットしない
+Command  "select * from T where C1 between (?) and (?)" [null,"3333"];
+Command  "select * from T where C1 between (?) and (?)" ["4444", null];
+Command  "select * from T where C1 between (?) and (?)" [null, null];
+
+
+# --not between
+#
+Command  "select * from T where C1 not between (?) and (?)" [null,"3333"];
+Command  "select * from T where C1 not between (?) and (?)" ["4444", null];
+Command  "select * from T where C1 not between (?) and (?)" [null, null];
+
+
+
+Command  "drop table T";
+
+#--------------------------------------------------------
+#追加　0510
+
+
+# char型
+# メインテーブル
+Command  "create table T(C1 char(10))";
+Command  "create index I_1 on T(C1)";
+Command  "insert into T (C1) values (?)" ["piyo"];
+Command  "insert into T (C1) values (?)" ["puu"];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" ["hoge"];
+Command  "insert into T (C1) values (?)" ["PIYO"];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" ["HOGE"];
+Command  "insert into T (C1) values (?)" [ null ];
+
+#
+#オペランドにNULLが入ったときにいずれも1件もヒットしない
+Command  "select * from T where C1 between (?) and (?)" [null,"piyo"];
+Command  "select * from T where C1 between (?) and (?)" ["HOGE", null];
+Command  "select * from T where C1 between (?) and (?)" [null, null];
+
+# --not between
+#
+Command  "select * from T where C1 not between (?) and (?)" [null,"piyo"];
+Command  "select * from T where C1 not between (?) and (?)" ["HOGE", null];
+Command  "select * from T where C1 not between (?) and (?)" [null, null];
+Command  "drop table T";
+
+
+# nchar型
+# メインテーブル
+Command  "create table T(C1 nchar(20))";
+Command  "create index I_1 on T(C1)";
+Command  "insert into T (C1) values (?)" ["abcd"];
+Command  "insert into T (C1) values (?)" ["XYXYX"];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" ["あいうえお"];
+Command  "insert into T (C1) values (?)" ["たちつてと"];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" ["らりるれろ"];
+Command  "insert into T (C1) values (?)" [ null ];
+
+#
+#オペランドにNULLが入ったときにいずれも1件もヒットしない
+Command  "select * from T where C1 between (?) and (?)" [null,"たちつてと"];
+Command  "select * from T where C1 between (?) and (?)" ["abcd", null];
+Command  "select * from T where C1 between (?) and (?)" [null, null];
+
+# --not between
+#
+Command  "select * from T where C1 not between (?) and (?)" [null,"たちつてと"];
+Command  "select * from T where C1 not between (?) and (?)" ["abcd", null];
+Command  "select * from T where C1 not between (?) and (?)" [null, null];
+
+Command  "drop table T";
+
+
+# bigint型
+# メインテーブル
+Command  "create table T(C1 bigint)";
+Command  "create index I_1 on T(C1)";
+Command  "insert into T (C1) values (?)" [847865165];
+Command  "insert into T (C1) values (?)" [847555555];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" [99999999];
+Command  "insert into T (C1) values (?)" [23456789];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" [120];
+Command  "insert into T (C1) values (?)" [ null ];
+
+#
+#オペランドにNULLが入ったときにいずれも1件もヒットしない
+Command  "select * from T where C1 between (?) and (?)" [null,9999999];
+Command  "select * from T where C1 between (?) and (?)" [23456789, null];
+Command  "select * from T where C1 between (?) and (?)" [null, null];
+
+# --not between
+#
+Command  "select * from T where C1 not between (?) and (?)" [null,9999999];
+Command  "select * from T where C1 not between (?) and (?)" [23456789, null];
+Command  "select * from T where C1 not between (?) and (?)" [null, null];
+
+
+Command  "drop table T";
+
+# datetime型
+# メインテーブル
+Command  "create table T(C1 datetime)";
+Command  "create index I_1 on T(C1)";
+Command  "insert into T (C1) values (?)" [time "2001-07-07 12:34:56.789"];
+Command  "insert into T (C1) values (?)" [time "2001-09-09 00:00:00.000"];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" [time "1999-07-21 13:20:00.600"];
+Command  "insert into T (C1) values (?)" [time "1850-10-01 17:34:51.000"];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" [time "2002-10-11 17:34:51.000"];
+Command  "insert into T (C1) values (?)" [ null ];
+
+#
+#オペランドにNULLが入ったときにいずれも1件もヒットしない
+Command  "select * from T where C1 between (?) and (?)" [null,time "2001-09-09"];
+Command  "select * from T where C1 between (?) and (?)" [time "1999-07-21 13:20:00.600", null];
+Command  "select * from T where C1 between (?) and (?)" [null, null];
+
+# --not between
+#
+Command  "select * from T where C1 not between (?) and (?)" [null,time "2001-09-09"];
+Command  "select * from T where C1 not between (?) and (?)" [time "2001-09-09 00:00:00.000", null];
+Command  "select * from T where C1 not between (?) and (?)" [null, null];
+
+Command  "drop table T";
+
+# float型
+# メインテーブル
+Command  "create table T(C1 float)";
+Command  "create index I_1 on T(C1)";
+Command  "insert into T (C1) values (?)" [3.141592];
+Command  "insert into T (C1) values (?)" [99999999];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" [-0.789878];
+Command  "insert into T (C1) values (?)" [23456789];
+Command  "insert into T (C1) values (?)" [ null ];
+Command  "insert into T (C1) values (?)" [777];
+Command  "insert into T (C1) values (?)" [ null ];
+
+#
+#オペランドにNULLが入ったときにいずれも1件もヒットしない
+Command  "select * from T where C1 between (?) and (?)" [null,777];
+Command  "select * from T where C1 between (?) and (?)" [3.141592, null];
+Command  "select * from T where C1 between (?) and (?)" [null, null];
+
+# --not between
+#
+Command  "select * from T where C1 not between (?) and (?)" [null,777];
+Command  "select * from T where C1 not between (?) and (?)" [3.141592, null];
+Command  "select * from T where C1 not between (?) and (?)" [null, null];
+
+Command  "drop table T";
+
+TerminateSession;
+# DBの後始末
+InitializeSession "";
+Command  "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;

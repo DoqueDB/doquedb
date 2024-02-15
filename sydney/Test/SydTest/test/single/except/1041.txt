@@ -1,0 +1,23 @@
+# 一時表テスト(異常系1)
+Begin;
+Initialize;
+InitializeSession "";
+Command "create database TESTDB";
+TerminateSession;
+InitializeSession "TESTDB";
+
+# primary keyをつけることができないことを確認する
+Command "create table #1 (C1 ntext array [no limit], C2 int, primary key(C1))";
+
+# heapをつけることは可能
+#Command "create table #1 (C1 ntext array [no limit] hint heap, C2 int)";
+
+Command "drop table #1";
+
+TerminateSession;
+InitializeSession "";
+Command "drop database TESTDB";
+TerminateSession;
+Terminate;
+End;
+

@@ -1,0 +1,19 @@
+#unmount/mount(1)
+#unmountしたのち、単純にmountする
+
+Begin;
+BeginTimeSpan;
+Initialize;
+EndTimeSpan;
+InitializeSession "";
+
+Command "unmount DefaultDB";
+Command "mount DefaultDB path 'd:\\dm\\data\\DefaultDB' using snapshot";
+Command "start transaction read write";
+Command "verify database DefaultDB cascade continue";
+Command "commit";
+
+TerminateSession;
+# (障害回復を試すためTerminateしない)
+End;
+
