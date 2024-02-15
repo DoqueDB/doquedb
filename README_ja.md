@@ -90,7 +90,7 @@ $ ./sentenceSearch.sh
 
 ご連絡や不具合報告についてはGitHubのIssuesおよびPull Requestをご利用ください。  
 Pull Requestを用いてコードをコントリビュートしていただくにあたっては、  
-コントリビューターライセンス契約(個人用:[INDIV\_CLA.txt](https://github.com/doquedb/doquedb/INDIV_CLA.txt), 法人用:[CORP\_CLA.txt](https://github.com/doquedb/doquedb/CORP_CLA.txt))に  
+コントリビューターライセンス契約(個人用:[INDIV\_CLA.txt](./INDIV_CLA.txt), 法人用:[CORP\_CLA.txt](./CORP_CLA.txt))に  
 同意していただく必要があります。  
 必要事項を記入して、記載のアドレスまでご送付ください。
 

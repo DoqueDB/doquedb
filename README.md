@@ -90,7 +90,7 @@ At this time, only Japanese-language documents are available.
 Use GitHub Issues and Pull Request for any requests and bug reports.  
 If you want to contribute code with Pull Request,  
 you'll need to agree to the Contributor License Agreement  
-(for individuals: [INDIV\_CLA.txt](https://github.com/doquedb/doquedb/INDIV_CLA.txt), for corporations: [CORP\_CLA.txt](https://github.com/doquedb/doquedb/CORP_CLA.txt)).  
+(for individuals: [INDIV\_CLA.txt](./INDIV_CLA.txt), for corporations: [CORP\_CLA.txt](./CORP_CLA.txt)).  
 Please fill out the form and send it to the address listed.
 
 ## Licenses
