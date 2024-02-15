@@ -104,3 +104,26 @@ $ make package
 # ./setup.sh
 # ./dump.sh
 ```
+
+### 再ビルド
+
+make buildallで生成されたファイルは、make clean-rで削除できます。  
+各モジュールを再ビルドするには、make clean-rを実行してから  
+make buildallをもう一度実行してください。
+
+```
+$ cd c.O48-64
+$ make clean-r
+$ make buildall
+...
+```
+
+./conf以下の設定ファイルを変更した場合はmake reconf-rも必要です。
+
+```
+$ cd c.O48-64
+$ make clean-r
+$ make reconf-r
+$ make buildall
+...
+```

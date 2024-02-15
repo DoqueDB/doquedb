@@ -20,16 +20,16 @@ DoqueDBは以下の環境でご利用いただけます。
 
 ## 使ってみる
 
-Releasesよりバイナリパッケージを取得してください。  
-バイナリパッケージのファイル名はdoquedb-\<バージョン\>.tar.gzです。
+Releasesよりバイナリパッケージを取得してください。バイナリパッケージの  
+ファイル名はdoquedb-\<バージョン\>.\<アーキテクチャ\>.tar.gzです。
 
 ### インストールとサーバーの起動
 
 インストールはroot権限のあるユーザーで行う必要があります。  
 これ以降、rootユーザーで実行することをプロンプト「#」で示します。
 ```
-# tar xvf doquedb-<バージョン>.tar.gz
-# cd doquedb-<バージョン>
+# tar xvf doquedb-<バージョン>.<アーキテクチャ>.tar.gz
+# cd doquedb-<バージョン>.<アーキテクチャ>
 # ./install.sh
 # ./setup.sh
 # cd /var/lib/DoqueDB/bin
@@ -80,17 +80,17 @@ $ ./sentenceSearch.sh
 
 以下のドキュメントをご覧いただけます。  
 現時点では日本語のドキュメントのみ用意されています。
-* [使ってみよう](https://github.com/doquedb/doquedb/tree/master/docs/howtouse.html)
-* [ユーザーズマニュアル](https://github.com/doquedb/doquedb/tree/master/docs/users.html)
-* [ナレッジ](https://github.com/doquedb/doquedb/tree/master/docs/knowledge.html)
-* [JDBC Driver](https://github.com/doquedb/doquedb/tree/master/docs/javadoc/index.html)
-* [Hibernate Dialect](https://github.com/doquedb/doquedb/tree/master/docs/dialect/index.html)
+* [使ってみよう(How to use)](https://doquedb.github.io/doquedb/howtouse.html)
+* [ユーザーズマニュアル(Users Manual)](https://doquedb.github.io/doquedb/users.html)
+* [ナレッジ(Knowledge)](https://doquedb.github.io/doquedb/knowledge.html)
+* [JDBC Driver](https://doquedb.github.io/doquedb-javadoc/javadoc/index.html)
+* [Hibernate Dialect](https://doquedb.github.io/doquedb-javadoc/dialect/index.html)
 
 ## コミュニティ
 
 ご連絡や不具合報告についてはGitHubのIssuesおよびPull Requestをご利用ください。  
 Pull Requestを用いてコードをコントリビュートしていただくにあたっては、  
-コントリビューターライセンス契約(個人用:INDIV\_CLA.txt, 法人用:CORP\_CLA.txt)に  
+コントリビューターライセンス契約(個人用:[INDIV\_CLA.txt](https://github.com/doquedb/doquedb/INDIV_CLA.txt), 法人用:[CORP\_CLA.txt](https://github.com/doquedb/doquedb/CORP_CLA.txt))に  
 同意していただく必要があります。  
 必要事項を記入して、記載のアドレスまでご送付ください。
 

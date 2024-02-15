@@ -21,15 +21,15 @@ DoqueDB can be used in the following environments:
 ## Quick start
 
 Please obtain the binary package from Releases.  
-The name of the binary package is doquedb-\<version\>.tar.gz.
+The name of the binary package is doquedb-\<version\>.\<architecture\>.tar.gz.
 
 ### Install and start server
 
 Installation must be performed by the root user.  
 Execution as the root user is indicated by the prompt "#".
 ```
-# tar xvf doquedb-<version>.tar.gz
-# cd doquedb-<version>
+# tar xvf doquedb-<version>.<architecture>.tar.gz
+# cd doquedb-<version>.<architecture>
 # ./install.sh
 # ./setup.sh
 # cd /var/lib/DoqueDB/bin
@@ -79,18 +79,18 @@ See [BUILDING_PROCEDURE.md](./BUILDING_PROCEDURE.md).
 
 The following documents are available.  
 At this time, only Japanese-language documents are available.
-* [使ってみよう(How to use)](https://github.com/doquedb/doquedb/tree/master/docs/howtouse.html)
-* [ユーザーズマニュアル(Users Manual)](https://github.com/doquedb/doquedb/tree/master/docs/users.html)
-* [ナレッジ(Knowledge)](https://github.com/doquedb/doquedb/tree/master/docs/knowledge.html)
-* [JDBC Driver](https://github.com/doquedb/doquedb/tree/master/docs/javadoc/index.html)
-* [Hibernate Dialect](https://github.com/doquedb/doquedb/tree/master/docs/dialect/index.html)
+* [使ってみよう(How to use)](https://doquedb.github.io/doquedb/howtouse.html)
+* [ユーザーズマニュアル(Users Manual)](https://doquedb.github.io/doquedb/users.html)
+* [ナレッジ(Knowledge)](https://doquedb.github.io/doquedb/knowledge.html)
+* [JDBC Driver](https://doquedb.github.io/doquedb-javadoc/javadoc/index.html)
+* [Hibernate Dialect](https://doquedb.github.io/doquedb-javadoc/dialect/index.html)
 
 ## Community and supports
 
 Use GitHub Issues and Pull Request for any requests and bug reports.  
 If you want to contribute code with Pull Request,  
 you'll need to agree to the Contributor License Agreement  
-(for individuals: INDIV\_CLA.txt, for corporations: CORP\_CLA.txt).  
+(for individuals: [INDIV\_CLA.txt](https://github.com/doquedb/doquedb/INDIV_CLA.txt), for corporations: [CORP\_CLA.txt](https://github.com/doquedb/doquedb/CORP_CLA.txt)).  
 Please fill out the form and send it to the address listed.
 
 ## Licenses
