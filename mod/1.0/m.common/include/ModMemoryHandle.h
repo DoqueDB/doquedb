@@ -3,7 +3,7 @@
 //
 // ModMemoryHandle.h -- メモリーハンドル関連のクラス定義
 // 
-// Copyright (c) 1997, 2009, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 2009, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 #include "ModCommonDLL.h"
 #include "ModLinkedList.h"
 #include "ModMemoryPool.h"
+#include "ModCommonException.h"
 
 //
 // モジュールはメモリモジュールに属する。
@@ -56,12 +57,21 @@ class ModCommonDLL ModNegotiatingThread
 public:
 	// 本来はnew/deleteをspecialに定義すべきかも。
 	ModNegotiatingThread();
+#ifdef STD_CPP11
+	virtual ~ModNegotiatingThread() noexcept(false);
+#else
 	virtual ~ModNegotiatingThread();
+#endif
 	ModThreadId getThreadId() const {return this->threadId; }
 	ModSize getUsingMemory() const { return this->usingMemory; }
 
 	void* operator new(size_t size, size_t dummy = 0);	// special
+#ifdef STD_CPP11
+	void  operator delete(void* address, size_t size) noexcept(false);	// special
+	void  operator delete(void* address) noexcept(false);	// ダミー
+#else
 	void  operator delete(void* address, size_t size);		// special
+#endif
 private:
 	ModThreadId threadId;
 	ModSize usingMemory;
@@ -89,7 +99,11 @@ public:
     ~ModMemoryDebugCell();
 
 	void* operator new(size_t size, size_t dummy = 0);	// special
+#ifdef STD_CPP11
+	void  operator delete(void* address, size_t size) noexcept(false);	// special
+#else
 	void  operator delete(void* address, size_t size);		// special
+#endif
 
     void print() const;
 private:
@@ -147,7 +161,12 @@ public:
 	};
 
 	void* operator new(size_t size, size_t dummy = 0);	// special
+#ifdef STD_CPP11
+	void  operator delete(void* address, size_t size) noexcept(false);	// special
+	void  operator delete(void* address) noexcept(false);	// ダミー
+#else
 	void  operator delete(void* address, size_t size);		// special
+#endif
 
     // コンストラクタ、デストラクタ
 	ModCommonDLL
@@ -155,7 +174,11 @@ public:
 	ModCommonDLL
 	ModMemoryHandle(ModSize limitSize_);
 	ModCommonDLL
+#ifdef STD_CPP11
+	virtual ~ModMemoryHandle() noexcept(false);
+#else
 	virtual ~ModMemoryHandle();
+#endif
 
     // メモリの獲得、解放
     // メモリハンドルごとのサイズの計算、メモリプールに対する操作
@@ -328,12 +351,47 @@ ModMemoryHandle::operator new(size_t size, size_t dummy)
 //
 inline void
 ModMemoryHandle::operator delete(void* address, size_t size)
+#ifdef STD_CPP11
+noexcept(false)
+#endif
 {
 	// 自分自身のロックはデストラクタで行われる。
 	// 初期化チェックはModMemoryPoolで。
 	// C++の定義により、引数はsize_tであったが、ここで変換
 	ModMemoryPool::freeMemory(address, (ModSize)size);
 };
+
+#ifdef STD_CPP11
+//
+// FUNCTION
+// ModMemoryHandle::operator delete -- メモリハンドルのdelete
+//
+// NOTES
+// placement newであるnew(size_t, size_t)に対してdelete(void*, size_t)に
+// placement deleteの意味を持たせるには、対応するusual deleteとして
+// delete(void*)を定義しておく必要がある。
+// そのためにこのdelete演算子を定義するが、呼ばれることはないはずである。
+// 呼ばれたときは常に例外を送出する。
+//
+// ARGUMENTS
+// void* address
+//		解放するメモリの先頭アドレス
+//
+// RETURN
+// なし
+//
+// EXCEPTIONS
+//	ModMemoryErrorWrongDeleteCalled
+//		誤ったdelete演算子が呼ばれた
+//
+inline void
+ModMemoryHandle::operator delete(void* address) noexcept(false)
+{
+	// 無条件に例外を送出する
+	ModThrow(ModModuleMemory,
+			 ModMemoryErrorWrongDeleteCalled, ModErrorLevelError);
+}
+#endif
 
 //	FUNCTION public
 //	ModMemoryHandle::setAllocateCheck --
@@ -472,6 +530,6 @@ ModMemoryHandle::freePoolMemory(void* address, ModSize size)
 #endif	// __ModMemoryHandle_H__
 
 //
-// Copyright (c) 1997, 2009, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 2009, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

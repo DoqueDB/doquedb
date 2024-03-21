@@ -3,7 +3,7 @@
 //
 // Scalar/Impl/AggregationImpl.cpp --
 // 
-// Copyright (c) 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -108,7 +108,11 @@ convertFunction(Opt::Environment& cEnvironment_,
 			}
 		default:
 			{
+#ifdef SYD_C_GCC11_4
+				return reinterpret_cast<IScalar *>(false);
+#else
 				return false;
+#endif
 			}
 		}
 		return m_pConverted = pOperand->convertFunction(cEnvironment_,
@@ -547,6 +551,6 @@ _SYDNEY_PLAN_END
 _SYDNEY_END
 
 //
-// Copyright (c) 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

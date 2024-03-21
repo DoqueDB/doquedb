@@ -3,7 +3,7 @@
 //
 // Scalar/Impl/ArithmeticImpl.h --
 // 
-// Copyright (c) 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -105,6 +105,13 @@ namespace ArithmeticImpl
 			}
 		}
 
+		using Super::getType;
+		using Super::getOperandi;
+		using Super::setDataType;
+		using Super::isAll;
+		using Super::mapOperand;
+
+
 	protected:
 	////////////////////////
 	// Scalar::Function::
@@ -199,6 +206,6 @@ _SYDNEY_END
 #endif // __SYDNEY_PLAN_SCALAR_ARITHMETICIMPL_H
 
 //
-//	Copyright (c) 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

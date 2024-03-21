@@ -3,7 +3,7 @@
 //
 // TRRestrictions.java -- 
 // 
-// Copyright (c) 2007, 2010, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2007, 2010, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,8 +37,8 @@ public class TRRestrictions
 	 * @param propertyName
 	 *			プロパティ名
 	 * @param value
-	 *			検索条件。前方一致の場合は<t>'hoge%'</t>、
-	 *			部分一致の場合は<t>'%hoge%'</t>などとします。
+	 *			検索条件。前方一致の場合は<tt>'hoge%'</tt>、
+	 *			部分一致の場合は<tt>'%hoge%'</tt>などとします。
 	 * @return LikeExpression
 	 */
 	public static LikeExpression likeWithEscape(String propertyName,
@@ -80,10 +80,10 @@ public class TRRestrictions
 	/**
 	 * "contains" 条件を作成します。
 	 *
-	 * @param propetyName
+	 * @param propertyName
 	 *			プロパティ名
 	 * @param value
-	 *			<t>ContainsExpression</t>のstaticメソッドで作成したContainsValue
+	 *			<tt>ContainsExpression</tt>のstaticメソッドで作成したContainsValue
 	 * @return ContainsExpression
 	 */
 	public static ContainsExpression contains(String propertyName,
@@ -95,7 +95,7 @@ public class TRRestrictions
 	/**
 	 * "contains" 条件を作成します。
 	 *
-	 * @param propetyName
+	 * @param propertyName
 	 *			プロパティ名
 	 * @param freeText
 	 *			自然文文字列
@@ -269,6 +269,6 @@ public class TRRestrictions
 }
 
 //
-// Copyright (c) 2007, 2010, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2007, 2010, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

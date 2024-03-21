@@ -1,7 +1,7 @@
 /*
  * Makefile.c --- Kernel/c
  * 
- * Copyright (c) 1999, 2023 Ricoh Company, Ltd.
+ * Copyright (c) 1999, 2023, 2024 Ricoh Company, Ltd.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ KERNEL_BASE = SyKernel
 #if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
 CLIENT_BASE = TRMeister
 #else
-CLIENT_BASE = Trmeister
+CLIENT_BASE = DoqueDB
 #endif
 
 TOP_INSTALL_DIR = ../../c.CONF
@@ -207,6 +207,6 @@ ObjectListTargetMerge($(KERNEL_OBJECTLIST), $(KERNEL_OL), .)
 #include "Makefile.h"
 
 /*
-  Copyright (c) 1999, 2023 Ricoh Company, Ltd.
+  Copyright (c) 1999, 2023 ,2024 Ricoh Company, Ltd.
   All rights reserved.
 */

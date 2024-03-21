@@ -3,7 +3,7 @@
 //
 // Predicate/Impl/Base.h --
 // 
-// Copyright (c) 2008, 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2008, 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -126,6 +126,10 @@ namespace Impl
 			return isAny(boost::bind(&Operand::hasParameter,
 									 _1));
 		}
+
+		using Handle_::foreachOperand;
+		using Handle_::isAny;
+		using Handle_::isAll;
 
 	protected:
 		// constructor
@@ -319,6 +323,6 @@ _SYDNEY_END
 #endif // __SYDNEY_PLAN_PREDICATE_IMPL_BASE_H
 
 //
-//	Copyright (c) 2008, 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2008, 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

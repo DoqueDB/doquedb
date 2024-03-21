@@ -3,7 +3,7 @@
 //
 // Scalar/Impl/FullTextImpl.h --
 // 
-// Copyright (c) 2011, 2012, 2013, 2014, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2011, 2012, 2013, 2014, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -142,7 +142,7 @@ namespace FullTextImpl
 					Common::WordData::Category::Value c
 						= Common::WordData::toCategory(p->getValue());
 					if (c == Common::WordData::Category::Undefined)
-						return false;
+						return reinterpret_cast<const Common::Data *>(false);
 					else if (c == Common::WordData::Category::Essential)
 						_SYDNEY_THROW0(Exception::NotSupported);
 
@@ -214,6 +214,17 @@ namespace FullTextImpl
 			return 0;
 		}
 
+		using Super::getType;
+		using Super::getOperandAt;
+		using Super::getOptionSize;
+		using Super::getOptionAt;
+		using Super::getFunctionType;
+		using Super::getOperandSize;
+		using Super::getArgument;
+		using Super::getOperandi;
+		using Super::isAll;
+		using Super::foreachOperand_i;
+
 	protected:
 	private:
 		mutable Common::ObjectPointer<Common::Data> m_pData;
@@ -266,6 +277,6 @@ _SYDNEY_END
 #endif // __SYDNEY_PLAN_SCALAR_FULLTEXTIMPL_H
 
 //
-//	Copyright (c) 2011, 2012, 2013, 2014, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2011, 2012, 2013, 2014, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

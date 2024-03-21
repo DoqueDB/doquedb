@@ -3,7 +3,7 @@
 //
 // RWLock.cpp -- RW ロック関連の関数定義
 // 
-// Copyright (c) 2000, 2001, 2002, 2004, 2006, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2000, 2001, 2002, 2004, 2006, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -92,6 +92,15 @@ namespace _RWLock
 void
 RWLock::lock(Mode::Value mode)
 {
+#ifdef SYD_C_GCC11_4
+	const _RWLock::_LockPointer table[RWLock::Mode::ValueNum + 1] =
+	{
+		&RWLock::lockBadArgument,
+		&RWLock::lockRead,
+		&RWLock::lockWrite,
+		&RWLock::lockBadArgument
+	};
+#else
 	static const _RWLock::_LockPointer table[RWLock::Mode::ValueNum + 1] =
 	{
 		&RWLock::lockBadArgument,
@@ -99,6 +108,7 @@ RWLock::lock(Mode::Value mode)
 		&RWLock::lockWrite,
 		&RWLock::lockBadArgument
 	};
+#endif
 
 	// 指定されたモードでロックする
 
@@ -250,6 +260,15 @@ RWLock::lockBadArgument()
 bool
 RWLock::trylock(Mode::Value mode)
 {
+#ifdef SYD_C_GCC11_4
+	const _RWLock::_TryLockPointer table[RWLock::Mode::ValueNum + 1] =
+	{
+		&RWLock::trylockBadArgument,
+		&RWLock::trylockRead,
+		&RWLock::trylockWrite,
+		&RWLock::trylockBadArgument
+	};
+#else
 	static const _RWLock::_TryLockPointer table[RWLock::Mode::ValueNum + 1] =
 	{
 		&RWLock::trylockBadArgument,
@@ -257,6 +276,7 @@ RWLock::trylock(Mode::Value mode)
 		&RWLock::trylockWrite,
 		&RWLock::trylockBadArgument
 	};
+#endif
 
 	// 指定されたモードでロックを試みる
 
@@ -411,6 +431,15 @@ RWLock::unlock(Mode::Value mode)
 
 	(void) ::pthread_rwlock_unlock(&_rwlock);
 #else
+#ifdef SYD_C_GCC11_4
+	const _RWLock::_UnlockPointer table[RWLock::Mode::ValueNum + 1] =
+	{
+		&RWLock::unlockBadArgument,
+		&RWLock::unlockRead,
+		&RWLock::unlockWrite,
+		&RWLock::unlockBadArgument
+	};
+#else
 	static const _RWLock::_UnlockPointer table[RWLock::Mode::ValueNum + 1] =
 	{
 		&RWLock::unlockBadArgument,
@@ -418,6 +447,7 @@ RWLock::unlock(Mode::Value mode)
 		&RWLock::unlockWrite,
 		&RWLock::unlockBadArgument
 	};
+#endif
 
 	// 指定されたモードでアンロックする
 
@@ -527,6 +557,6 @@ RWLock::unlockBadArgument()
 }
 
 //
-// Copyright (c) 2000, 2001, 2002, 2004, 2006, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2000, 2001, 2002, 2004, 2006, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

@@ -3,7 +3,7 @@
 //
 // Table.cpp -- 表関連の関数定義
 // 
-// Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -1128,7 +1128,7 @@ create(Trans::Transaction& cTrans_)
 
             ModSize n = files.getSize();
 
-            vecpFile.assign(n, false);
+            vecpFile.assign(n, reinterpret_cast<File *>(false));
 
             eStatus = FileCreating;
 
@@ -10068,6 +10068,6 @@ unpackMetaField(const Common::Data* pData_, int iMemberID_)
 }
 
 //
-// Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

@@ -52,7 +52,11 @@ class ModOsMutex
 public:
 	ModOsMutex();								// コンストラクター
 	ModCommonDLL
+#ifdef STD_CPP11
+	~ModOsMutex() noexcept(false);				// デストラクター
+#else
 	~ModOsMutex();								// デストラクター
+#endif
 
 	ModCommonDLL
 	int						lock(unsigned int times = 1);

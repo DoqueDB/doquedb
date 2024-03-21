@@ -44,7 +44,6 @@
 //
 //【注意】
 //	public 関数ごとに ModCommonDLL を付けると Win版でうまく動かない
-//			BUG NO 0328
 
 class ModCommonDLL ModLanguageSet
 	: public ModSerializer,

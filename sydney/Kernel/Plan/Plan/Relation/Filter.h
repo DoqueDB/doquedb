@@ -3,7 +3,7 @@
 //
 // Relation/Filter.h --
 // 
-// Copyright (c) 2008, 2010, 2011, 2012, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2008, 2010, 2011, 2012, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -71,6 +71,9 @@ public:
 
 	virtual Sql::Query* generateSQL(Opt::Environment& cEnvironment_)
 	{return getOperand()->generateSQL(cEnvironment_);}
+
+	using Super::getOperand;
+	using Super::getDegree;
 	
 protected:
 	// costructor
@@ -139,6 +142,6 @@ _SYDNEY_END
 #endif // __SYDNEY_PLAN_RELATION_FILTER_H
 
 //
-//	Copyright (c) 2008, 2010, 2011, 2012, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2008, 2010, 2011, 2012, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //
