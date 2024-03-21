@@ -1,9 +1,9 @@
 // -*-Mode: C++; tab-width: 4; c-basic-offmap: 4;-*-
-// vi:map ts=4 sw=4:
+// vi:set ts=4 sw=4:
 //
 // AreaMap.h -- スキーマオブジェクトのマップを表すクラス定義、関数宣言
 // 
-// Copyright (c) 2002, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2002, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,6 +40,11 @@ public:
 
 	// AreaMapのIterationからオブジェクトを除外するのに使用する比較関数
 	static bool omitByID(Area* pArea_, Object::ID::Value iID_);
+
+  using ObjectMap::getValue;
+  using ObjectMap::writeObject;
+  using ObjectMap::erase;
+
 };
 
 //	FUNCTION public
@@ -72,6 +77,6 @@ _SYDNEY_END
 #endif // __SYDNEY_SCHEMA_AREA_MAP_H
 
 //
-// Copyright (c) 2002, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2002, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

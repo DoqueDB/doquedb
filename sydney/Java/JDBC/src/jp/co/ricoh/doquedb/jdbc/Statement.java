@@ -3,7 +3,7 @@
 //
 // Statement.java -- JDBC のステートメントクラス
 //
-// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023, 2024 Ricoh Company, Ltd.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -247,7 +247,7 @@ public class Statement implements java.sql.Statement
 	 *			バイト単位の新しい列サイズの制限値。ゼロは無制限を意味する。
 	 * @throws	java.sql.SQLException
 	 *			データベースアクセスエラーが発生した場合、
-	 *			または条件 <code>max_ >= 0</code> が満たされない場合。
+	 *			または条件 <code>max_ &gt;= 0</code> が満たされない場合。
 	 * @see		#getMaxFieldSize()
 	 */
 	public void setMaxFieldSize(int	max_) throws java.sql.SQLException
@@ -291,7 +291,7 @@ public class Statement implements java.sql.Statement
 	 *			新しい最大行数の制限値。ゼロは無制限を意味する。
 	 * @throws	java.sql.SQLException
 	 *			データベースアクセスエラーが発生した場合、
-	 *			または条件 <code>max_ >= 0</code> が満たされない場合。
+	 *			または条件 <code>max_ &gt;= 0</code> が満たされない場合。
 	 * @see		#getMaxRows()
 	 */
 	public void setMaxRows(int	max_) throws java.sql.SQLException
@@ -367,7 +367,7 @@ public class Statement implements java.sql.Statement
 	 *			ゼロは無制限を意味する。
 	 * @throws	java.sql.SQLException
 	 *			データベースアクセスエラーが発生した場合、
-	 *			または条件 <code>seconds_ >= 0</code> が満たされない場合。
+	 *			または条件 <code>seconds_ &gt;= 0</code> が満たされない場合。
 	 * @see		#getQueryTimeout()
 	 */
 	public void setQueryTimeout(int	seconds_) throws java.sql.SQLException
@@ -645,7 +645,7 @@ public class Statement implements java.sql.Statement
 	 * @throws	java.sql.SQLException
 	 *			データベースアクセスエラーが発生した場合、
 	 *			または条件
-	 *			<code>0 <= rows_ <= this.getMaxRows()</code>
+	 *			<code>0 &lt;= rows_ &lt;= this.getMaxRows()</code>
 	 *			が満たされない場合。
 	 * @see		#getFetchSize()
 	 */
@@ -1351,6 +1351,6 @@ public class Statement implements java.sql.Statement
 	}
 }
 //
-// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

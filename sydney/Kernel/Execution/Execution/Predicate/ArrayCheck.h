@@ -3,7 +3,7 @@
 //
 // Execution/Predicate/ArrayCheck.h --
 // 
-// Copyright (c) 2011, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2011, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -138,6 +138,10 @@ public:
 	// destructor
 	virtual ~AnyElement() {}
 
+	using Super::isUnknown;
+	using Super::getArray;
+	using Super::checkByData;
+
 protected:
 	// constructor
 	AnyElement() : Super() {}
@@ -199,6 +203,10 @@ public:
 	// destructor
 	virtual ~AllElement() {}
 
+	using Super::isUnknown;
+	using Super::getArray;
+	using Super::checkByData;
+
 protected:
 	// constructor
 	AllElement() : Super() {}
@@ -248,6 +256,6 @@ _SYDNEY_END
 #endif // __SYDNEY_EXECUTION_PREDICATE_ARRAYCHECK_H
 
 //
-//	Copyright (c) 2011, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2011, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

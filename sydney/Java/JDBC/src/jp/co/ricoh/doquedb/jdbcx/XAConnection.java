@@ -3,7 +3,7 @@
 //
 // XAConnection.java -- JDBCX の XAConnectionクラス
 //
-// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2023, 2024 Ricoh Company, Ltd.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -808,14 +808,14 @@ public class XAConnection implements javax.sql.XAConnection, javax.transaction.x
 	 * トランザクションブランチ識別子で識別されるトランザクションブランチを開始する。
 	 *
 	 * トランザクションブランチの開始 ::= XA START トランザクションブランチ識別子
-	 * 		[ { <トランザクションモード>
-	 * 			[ { <カンマ> <トランザクションモード> } ... ] } | JOIN | RESUME ]
+	 * 		[ { &lt;トランザクションモード&gt;
+	 * 			[ { &lt;カンマ&gt; &lt;トランザクションモード&gt; } ... ] } | JOIN | RESUME ]
 	 *
 	 * ただし、JOIN句およびRESUME句は現在、サポートしない。
 	 *
 	 * @param	xid_
 	 *			グローバルトランザクション識別子
-	 * @param	flags_
+	 * @param	flg_
 	 *			JOIN句の指定等
 	 * @throws	XA_DuplicateIdentifier
 	 * 			『データ操作中』・『中断中』・『待機中』のトランザクションブランチに対し、
@@ -1032,6 +1032,6 @@ public class XAConnection implements javax.sql.XAConnection, javax.transaction.x
 
 
 //
-// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

@@ -1,7 +1,7 @@
 /*
  * Makefile.c --- 
  * 
- * Copyright (c) 2001, 2023 Ricoh Company, Ltd.
+ * Copyright (c) 2001, 2023, 2024 Ricoh Company, Ltd.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -252,7 +252,7 @@ copyobj-client:
 #ifdef SYD_OS_WINNT4_0
 	@$(INSTALL) $(INSTALLBINFLAGS) $(SYD_DIR)$(S)TRMeister$(CLIENTSUFFIX)$(D) $(OBJ_LIB_DIR)
 #else
-	@$(INSTALL) $(INSTALLBINFLAGS) $(SYD_DIR)$(S)$(P)Trmeister$(CLIENTSUFFIX)$(D) $(OBJ_LIB_DIR)
+	@$(INSTALL) $(INSTALLBINFLAGS) $(SYD_DIR)$(S)$(P)DoqueDB$(CLIENTSUFFIX)$(D) $(OBJ_LIB_DIR)
 #endif
 #endif
 #ifdef SYD_OS_WINNT4_0
@@ -546,7 +546,7 @@ KERNEL_BASE = SyKernel
 #if defined(OS_WINDOWSNT4_0) || defined(OS_WINDOWS98)
 CLIENT_BASE = TRMeister$(CLIENTSUFFIX)
 #else
-CLIENT_BASE = Trmeister$(CLIENTSUFFIX)
+CLIENT_BASE = DoqueDB$(CLIENTSUFFIX)
 #endif
 TOP_INSTALL_DIR = .
 
@@ -639,6 +639,6 @@ CleanTarget($(CLIENT_TARGET) $(CLIENT_DLLTARGET))
 MAKEFILE_H =
 
 /*
-  Copyright (c) 2001, 2023 Ricoh Company, Ltd.
+  Copyright (c) 2001, 2023, 2024 Ricoh Company, Ltd.
   All rights reserved.
 */

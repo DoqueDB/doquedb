@@ -3,7 +3,7 @@
 //
 // ModSyncBase.h -- 同期オブジェクト基底クラス関連のクラス定義
 // 
-// Copyright (c) 1998, 1999, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1998, 1999, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,7 +46,11 @@ class ModSyncBase
 public:
 	ModSyncBase(ModBoolean unlockKilled = ModFalse);
 												// コンストラクター
+#ifdef STD_CPP11
+	virtual ~ModSyncBase() noexcept(false);		// デストラクター
+#else
 	virtual ~ModSyncBase();						// デストラクター
+#endif
 
 	ModCommonDLL
 	int						lock(unsigned int times = 1);
@@ -142,6 +146,9 @@ ModSyncBase::ModSyncBase(ModBoolean unlockKilled)
 
 inline
 ModSyncBase::~ModSyncBase()
+#ifdef STD_CPP11
+noexcept(false)
+#endif
 {
 	if (_count)
 
@@ -201,6 +208,6 @@ ModSyncBase::isSelfLocked() const
 #endif	// __ModSyncBase_H__
 
 //
-// Copyright (c) 1998, 1999, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1998, 1999, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

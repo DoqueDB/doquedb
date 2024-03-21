@@ -3,7 +3,7 @@
 //
 //	ModCommonException.h --- 汎用ライブラリー関連の例外定義
 // 
-// Copyright (c) 1997, 2001, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 2001, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,7 +46,8 @@ enum ModMemoryErrorNumber
 	ModMemoryErrorNotFreeEmergencyArea = 1011,	// メモリー削減交渉関数内で
 												// 獲得したメモリーを
 												// 関数内で破棄していない
-	ModMemoryErrorEmergencyAreaUsed	= 1012		// 非常用メモリーを使用中
+	ModMemoryErrorEmergencyAreaUsed	= 1012,		// 非常用メモリーを使用中
+	ModMemoryErrorWrongDeleteCalled = 1013		// 誤った(1引数の)deleteが呼ばれた
 };
 
 //	ENUM
@@ -168,6 +169,6 @@ enum ModOsErrorNumber
 #endif	// __ModCommonException_H__
 
 //
-// Copyright (c) 1997, 2001, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 2001, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

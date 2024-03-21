@@ -3,7 +3,7 @@
 //
 // CriticalSectionManager.cpp -- クリティカルセクションマネージャ
 // 
-// Copyright (c) 2018, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2018, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -439,7 +439,7 @@ CriticalSectionManager::printOut(const ModUnicodeString& cPath, const ModCharStr
 {
 	// 日本語のファイルパスは UTF-8 前提
 	
-	std::ofstream logfile(cPath.getString(), std::ios_base::app);
+	std::ofstream logfile(const_cast<ModUnicodeString &>(cPath).getString(), std::ios_base::app);
 
 	if(!logfile) {
 
@@ -464,7 +464,7 @@ CriticalSectionManager::printOut(const ModUnicodeString& cPath, const ModCharStr
 
 		; _SYDNEY_ASSERT(pCriticalSection);
 
-		int ownerID = pCriticalSection->getOwnerID();
+		int ownerID = const_cast<CriticalSection *>(pCriticalSection)->getOwnerID();
 		
 		if(!ownerID) {
 
@@ -498,6 +498,6 @@ CriticalSectionManager::printOut(const ModUnicodeString& cPath, const ModCharStr
 }
 
 //
-// Copyright (c) 2018, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2018, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

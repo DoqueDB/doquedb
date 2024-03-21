@@ -1,7 +1,7 @@
 /*
  * Makefile.c --- Kernel/DExecution/Action/c
  * 
- * Copyright (c) 1999, 2023 Ricoh Company, Ltd.
+ * Copyright (c) 1999, 2023, 2024 Ricoh Company, Ltd.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,6 +75,7 @@ EXTRAPURIFYFLAGS =
 EXTRAQUANTIFYFLAGS =
 EXTRAPURECOVFLAGS =
 EXTRALOCALCFLAGS =		\
+	-Wno-address-of-temporary	\
 	-I../..				\
 	-I../../../Execution
 
@@ -104,6 +105,6 @@ CleanTarget($(OBJS))
 #include "Makefile.h"
 
 /*
-  Copyright (c) 1999, 2023 Ricoh Company, Ltd.
+  Copyright (c) 1999, 2023, 2024 Ricoh Company, Ltd.
   All rights reserved.
 */

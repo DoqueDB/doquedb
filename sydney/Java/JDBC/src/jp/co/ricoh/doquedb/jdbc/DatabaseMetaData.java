@@ -3,7 +3,7 @@
 //
 // DatabaseMetaData.java -- JDBC のデータベースメタデータクラス
 //
-// Copyright (c) 2003, 2004, 2005, 2006, 2007, 2016, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2003, 2004, 2005, 2006, 2007, 2016, 2023, 2024 Ricoh Company, Ltd.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -2101,33 +2101,33 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 	 * <P>
 	 * 各テーブルの記述には次の列があります。
 	 *	<OL>
-	 *	<LI><B>TABLE_CAT</B> String =>
+	 *	<LI><B>TABLE_CAT</B> String =&gt;
 	 *		テーブルカタログ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>TABLE_SCHEM</B> String =>
+	 *	<LI><B>TABLE_SCHEM</B> String =&gt;
 	 *		テーブルスキーマ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>TABLE_NAME</B> String =>
+	 *	<LI><B>TABLE_NAME</B> String =&gt;
 	 *		テーブル名
-	 *	<LI><B>TABLE_TYPE</B> String =>
+	 *	<LI><B>TABLE_TYPE</B> String =&gt;
 	 *		テーブルの型
 	 *		(現在のバージョンでは常に <code>"TABLE"</code> である)
-	 *	<LI><B>REMARKS</B> String =>
+	 *	<LI><B>REMARKS</B> String =&gt;
 	 *		テーブルに関する説明
 	 *		(現在のバージョンでは常に空文字列である)
-	 *	<LI><B>TYPE_CAT</B> String =>
+	 *	<LI><B>TYPE_CAT</B> String =&gt;
 	 *		型のカタログ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>TYPE_SCHEM</B> String =>
+	 *	<LI><B>TYPE_SCHEM</B> String =&gt;
 	 *		型のスキーマ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>TYPE_NAME</B> String =>
+	 *	<LI><B>TYPE_NAME</B> String =&gt;
 	 *		型名
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>SELF_REFERENCING_COL_NAME</B> String =>
+	 *	<LI><B>SELF_REFERENCING_COL_NAME</B> String =&gt;
 	 *		型付きテーブルの指定された「識別子」列の名前
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>REF_GENERATION</B> String =>
+	 *	<LI><B>REF_GENERATION</B> String =&gt;
 	 *		SELF_REFERENCING_COL_NAME の値の作成方法を指定する。
 	 *		値は、 "SYSTEM" 、 "USER" 、 "DERIVED"
 	 *		(現在のバージョンでは常に <code>null</code> である)
@@ -2271,7 +2271,7 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 	 * <P>
 	 * テーブルの型は次のようになります。
 	 *	<OL>
-	 *	<LI><B>TABLE_TYPE</B> String =>
+	 *	<LI><B>TABLE_TYPE</B> String =&gt;
 	 *		テーブルの型。典型的な型は、 "TABLE" 、 "VIEW" 、
 	 *		"SYSTEM TABLE" 、 "GLOBAL TEMPORARY" 、 "LOCAL TEMPORARY" 、
 	 *		"ALIAS" 、 "SYNONYM" である
@@ -2295,34 +2295,34 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 	 * <P>
 	 * 各列の説明を次にします。
 	 *	<OL>
-	 *	<LI><B>TABLE_CAT</B> String =>
+	 *	<LI><B>TABLE_CAT</B> String =&gt;
 	 *		テーブルカタログ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>TABLE_SCHEM</B> String =>
+	 *	<LI><B>TABLE_SCHEM</B> String =&gt;
 	 *		テーブルスキーマ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>TABLE_NAME</B> String =>
+	 *	<LI><B>TABLE_NAME</B> String =&gt;
 	 *		テーブル名
-	 *	<LI><B>COLUMN_NAME</B> String =>
+	 *	<LI><B>COLUMN_NAME</B> String =&gt;
 	 *		列名
-	 *	<LI><B>DATA_TYPE</B> short =>
+	 *	<LI><B>DATA_TYPE</B> short =&gt;
 	 *		<code>java.sql.Types</code> からの SQL の型。
 	 *		配列型の列の場合には要素の型ではなく <code>java.sql.Types.ARRAY</code> となる
-	 *	<LI><B>TYPE_NAME</B> String =>
+	 *	<LI><B>TYPE_NAME</B> String =&gt;
 	 *		データソース依存の型名。 UDT の場合、型名は完全指定。
 	 *		配列型の列の場合には要素の型名 ＋ <code>" array"</code> となる
-	 *	<LI><B>COLUMN_SIZE</B> int =>
+	 *	<LI><B>COLUMN_SIZE</B> int =&gt;
 	 *		列サイズ。 <code>char</code> や <code>date</code> の型については
 	 *		最大文字数、<code>numeric</code> や <code>decimal</code> の
 	 *		型については精度。
 	 *		最大文字数が無制限の場合は <code>-1</code>
-	 *	<LI><B>BUFFER_LENGTH</B> int =>
+	 *	<LI><B>BUFFER_LENGTH</B> int =&gt;
 	 *		未使用
-	 *	<LI><B>DECIMAL_DIGITS</B> int =>
+	 *	<LI><B>DECIMAL_DIGITS</B> int =&gt;
 	 *		小数点以下の桁数
-	 *	<LI><B>NUM_PREC_RADIX</B> int =>
+	 *	<LI><B>NUM_PREC_RADIX</B> int =&gt;
 	 *		基数
-	 *	<LI><B>NULLABLE</B> int =>
+	 *	<LI><B>NULLABLE</B> int =&gt;
 	 *		<code>NULL</code> は許されるか
 	 *		<UL>
 	 *		<LI>columnNoNulls -
@@ -2335,37 +2335,37 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 	 *	<LI><B>REMARKS</B> String =>
 	 *		コメント記述列
 	 *		列へのヒント。ヒントがなければ <code>null</code>
-	 *	<LI><B>COLUMN_DEF</B> String =>
+	 *	<LI><B>COLUMN_DEF</B> String =&gt;
 	 *		デフォルト値
-	 *	<LI><B>SQL_DATA_TYPE</B> int =>
+	 *	<LI><B>SQL_DATA_TYPE</B> int =&gt;
 	 *		未使用
-	 *	<LI><B>SQL_DATETIME_SUB</B> int =>
+	 *	<LI><B>SQL_DATETIME_SUB</B> int =&gt;
 	 *		未使用
-	 *	<LI><B>CHAR_OCTET_LENGTH</B> int =>
+	 *	<LI><B>CHAR_OCTET_LENGTH</B> int =&gt;
 	 *		<code>char</code> の型については列の最大バイト数。
 	 *		無制限の場合は <code>-1</code>
-	 *	<LI><B>ORDINAL_POSITION</B> int =>
+	 *	<LI><B>ORDINAL_POSITION</B> int =&gt;
 	 *		テーブル中の列のインデックス ( 1 から始まる)
-	 *	<LI><B>IS_NULLABLE</B> String =>
+	 *	<LI><B>IS_NULLABLE</B> String =&gt;
 	 *		"NO" は、列は決して <code>NULL</code> 値を許さないことを意味する。
 	 *		"YES" は <code>NULL</code> 値を許す可能性があることを意味する。
 	 *		空の文字列は不明であることを意味する
-	 *	<LI><B>SCOPE_CATLOG</B> String =>
+	 *	<LI><B>SCOPE_CATLOG</B> String =&gt;
 	 *		参照属性のスコープであるテーブルのカタログ
 	 *		(DATA_TYPE が <code>java.sql.Types.REF</code> でない場合は
 	 *		<code>null</code> )
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>SCOPE_SCHEMA</B> String =>
+	 *	<LI><B>SCOPE_SCHEMA</B> String =&gt;
 	 *		参照属性のスコープであるテーブルのスキーマ
 	 *		(DATA_TYPE が <code>java.sql.Types.REF</code> でない場合は
 	 *		<code>null</code> )
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>SCOPE_TABLE</B> String =>
+	 *	<LI><B>SCOPE_TABLE</B> String =&gt;
 	 *		参照属性のスコープであるテーブル名
 	 *		(DATA_TYPE が <code>java.sql.Types.REF</code> でない場合は
 	 *		<code>null</code> )
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>SOURCE_DATA_TYPE</B> short =>
+	 *	<LI><B>SOURCE_DATA_TYPE</B> short =&gt;
 	 *		個別の型またはユーザ生成 <code>Ref</code> 型、
 	 *		<code>java.sql.Types</code> の SQL 型のソースの型
 	 *		(DATA_TYPE が <code>java.sql.Types.DISTINCT</code>
@@ -2598,26 +2598,26 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 	 * <P>
 	 * 各列の説明を次にします。
 	 *	<OL>
-	 *	<LI><B>SCOPE</B> short =>
+	 *	<LI><B>SCOPE</B> short =&gt;
 	 *		結果の実際のスケール
 	 *		<UL>
 	 *		<LI>bestRowTemporary - 行は一時的に使用中
 	 *		<LI>bestRowTransaction - 現在のトランザクションの残りの部分に有効
 	 *		<LI>bestRowSession - 現在のセッションの残りの部分に有効
 	 *		</UL>
-	 *	<LI><B>COLUMN_NAME</B> String =>
+	 *	<LI><B>COLUMN_NAME</B> String =&gt;
 	 *		列名
-	 *	<LI><B>DATA_TYPE</B> short =>
+	 *	<LI><B>DATA_TYPE</B> short =&gt;
 	 *		<code>java.sql.Types</code> からの SQL データの型
-	 *	<LI><B>TYPE_NAME</B> String =>
+	 *	<LI><B>TYPE_NAME</B> String =&gt;
 	 *		データソース依存の型名。 UDT の場合、型名は完全指定
-	 *	<LI><B>COLUMN_SIZE</B> int =>
+	 *	<LI><B>COLUMN_SIZE</B> int =&gt;
 	 *		精度
-	 *	<LI><B>BUFFER_LENGTH</B> int =>
+	 *	<LI><B>BUFFER_LENGTH</B> int =&gt;
 	 *		未使用
-	 *	<LI><B>DECIMAL_DIGITS</B> short =>
+	 *	<LI><B>DECIMAL_DIGITS</B> short =&gt;
 	 *		スケール
-	 *	<LI><B>PSEUDO_COLUMN</B> short =>
+	 *	<LI><B>PSEUDO_COLUMN</B> short =&gt;
 	 *		Oracle ROWID のような疑似列
 	 *		<UL>
 	 *		<LI>bestRowUnknown - 疑似列であるか、またはそうでない可能性がある
@@ -2708,21 +2708,21 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 	 * <P>
 	 * 各列の説明を次にします。
 	 *	<OL>
-	 *	<LI><B>SCOPE</B> short =>
+	 *	<LI><B>SCOPE</B> short =&gt;
 	 *		未使用
-	 *	<LI><B>COLUMN_NAME</B> String =>
+	 *	<LI><B>COLUMN_NAME</B> String =&gt;
 	 *		列名
-	 *	<LI><B>DATA_TYPE</B> short =>
+	 *	<LI><B>DATA_TYPE</B> short =&gt;
 	 *		<code>java.sql.Types</code> からの SQL データの型
-	 *	<LI><B>TYPE_NAME</B> String =>
+	 *	<LI><B>TYPE_NAME</B> String =&gt;
 	 *		データソース依存の型名
-	 *	<LI><B>COLUMN_SIZE</B> int =>
+	 *	<LI><B>COLUMN_SIZE</B> int =&gt;
 	 *		精度
-	 *	<LI><B>BUFFER_LENGTH</B> int =>
+	 *	<LI><B>BUFFER_LENGTH</B> int =&gt;
 	 *		列値のバイト長
-	 *	<LI><B>DECIMAL_DIGITS</B> short =>
+	 *	<LI><B>DECIMAL_DIGITS</B> short =&gt;
 	 *		スケール
-	 *	<LI><B>PSEUDO_COLUMN</B> short =>
+	 *	<LI><B>PSEUDO_COLUMN</B> short =&gt;
 	 *		Oracle ROWID のような疑似列
 	 *		<UL>
 	 *		<LI>versionColumnUnknown -
@@ -2765,19 +2765,19 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 	 * <P>
 	 * 各主キー列の記述には、次の列があります。
 	 *	<OL>
-	 *	<LI><B>TABLE_CAT</B> String =>
+	 *	<LI><B>TABLE_CAT</B> String =&gt;
 	 *		テーブルカタログ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>TABLE_SCHEM</B> String =>
+	 *	<LI><B>TABLE_SCHEM</B> String =&gt;
 	 *		テーブルスキーマ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>TABLE_NAME</B> String =>
+	 *	<LI><B>TABLE_NAME</B> String =&gt;
 	 *		テーブル名
-	 *	<LI><B>COLUMN_NAME</B> String =>
+	 *	<LI><B>COLUMN_NAME</B> String =&gt;
 	 *		列名
-	 *	<LI><B>KEY_SEQ</B> short =>
+	 *	<LI><B>KEY_SEQ</B> short =&gt;
 	 *		主キー中の連番
-	 *	<LI><B>PK_NAME</B> String =>
+	 *	<LI><B>PK_NAME</B> String =&gt;
 	 *		主キー名
 	 *	</OL>
 	 *
@@ -3097,23 +3097,23 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 	 * <P>
 	 * 各型の記述には次の列があります。
 	 *	<OL>
-	 *	<LI><B>TYPE_NAME</B> String =>
+	 *	<LI><B>TYPE_NAME</B> String =&gt;
 	 *		型名
-	 *	<LI><B>DATA_TYPE</B> short =>
+	 *	<LI><B>DATA_TYPE</B> short =&gt;
 	 *		<code>java.sql.Types</code> からの SQL データの型
-	 *	<LI><B>PRECISION</B> int =>
+	 *	<LI><B>PRECISION</B> int =&gt;
 	 *		最大の精度
 	 *		(現在のバージョンでは常に <code>0</code> である)
-	 *	<LI><B>LITERAL_PREFIX</B> String =>
+	 *	<LI><B>LITERAL_PREFIX</B> String =&gt;
 	 *		リテラルを引用するのに使用する接頭辞
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>LITERAL_SUFFIX</B> String =>
+	 *	<LI><B>LITERAL_SUFFIX</B> String =&gt;
 	 *		リテラルを引用するのに使用する接尾辞
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>CREATE_PARAMS</B> String =>
+	 *	<LI><B>CREATE_PARAMS</B> String =&gt;
 	 *		型の作成に使用するパラメータ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>NULLABLE</B> short =>
+	 *	<LI><B>NULLABLE</B> short =&gt;
 	 *		この型に <code>NULL</code> を使用できるか
 	 *		<UL>
 	 *		<LI>typeNoNulls - <code>NULL</code> 値を許さない
@@ -3121,10 +3121,10 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 	 *		<LI>typeNullableUnknown - <code>NULL</code> 値を許すかどうかは不明
 	 *		</UL>
 	 *		(現在のバージョンでは常に <code>typeNullableUnknown</code> である)
-	 *	<LI><B>CASE_SENSITIVE</B> boolean=>
+	 *	<LI><B>CASE_SENSITIVE</B> boolean=&gt;
 	 *		大文字小文字を区別するか
 	 *		(常に <code>false</code> である)
-	 *	<LI><B>SEARCHABLE</B> short =>
+	 *	<LI><B>SEARCHABLE</B> short =&gt;
 	 *		この型に基づき、<code>"WHERE"</code> を使用できるかどうかを示す値。
 	 *		以下のいずれか。
 	 *		<UL>
@@ -3135,27 +3135,27 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 	 *		<LI>typeSearchable -
 	 *			すべての <code>WHERE ..</code> でサポートされる
 	 *		</UL>
-	 *	<LI><B>UNSIGNED_ATTRIBUTE</B> boolean =>
+	 *	<LI><B>UNSIGNED_ATTRIBUTE</B> boolean =&gt;
 	 *		符号なしか
-	 *	<LI><B>FIXED_PREC_SCALE</B> boolean =>
+	 *	<LI><B>FIXED_PREC_SCALE</B> boolean =&gt;
 	 *		通貨の値になれるか
-	 *	<LI><B>AUTO_INCREMENT</B> boolean =>
+	 *	<LI><B>AUTO_INCREMENT</B> boolean =&gt;
 	 *		自動インクリメントの値に使用できるか
 	 *		(現在のバージョンでは常に <code>false</code> である)
-	 *	<LI><B>LOCAL_TYPE_NAME</B> String =>
+	 *	<LI><B>LOCAL_TYPE_NAME</B> String =&gt;
 	 *		型名の地域対応されたバージョン
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>MINIMUM_SCALE</B> short =>
+	 *	<LI><B>MINIMUM_SCALE</B> short =&gt;
 	 *		サポートされる最小スケール
 	 *		(現在のバージョンでは常に <code>0</code> である)
-	 *	<LI><B>MAXIMUM_SCALE</B> short =>
+	 *	<LI><B>MAXIMUM_SCALE</B> short =&gt;
 	 *		サポートされる最大スケール
 	 *		(現在のバージョンでは常に <code>0</code> である)
-	 *	<LI><B>SQL_DATA_TYPE</B> int =>
+	 *	<LI><B>SQL_DATA_TYPE</B> int =&gt;
 	 *		未使用
-	 *	<LI><B>SQL_DATETIME_SUB</B> int =>
+	 *	<LI><B>SQL_DATETIME_SUB</B> int =&gt;
 	 *		未使用
-	 *	<LI><B>NUM_PREC_RADIX</B> int =>
+	 *	<LI><B>NUM_PREC_RADIX</B> int =&gt;
 	 *		通常は、2 または 10
 	 *	</OL>
 	 *
@@ -3250,42 +3250,42 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 	 * <P>
 	 * 各インデックス列の記述には次の列があります。
 	 *	<OL>
-	 *	<LI><B>TABLE_CAT</B> String =>
+	 *	<LI><B>TABLE_CAT</B> String =&gt;
 	 *		テーブルカタログ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>TABLE_SCHEM</B> String =>
+	 *	<LI><B>TABLE_SCHEM</B> String =&gt;
 	 *		テーブルスキーマ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>TABLE_NAME</B> String =>
+	 *	<LI><B>TABLE_NAME</B> String =&gt;
 	 *		テーブル名
-	 *	<LI><B>NON_UNIQUE</B> boolean =>
+	 *	<LI><B>NON_UNIQUE</B> boolean =&gt;
 	 *		インデックス値は一意でない値にできるか
-	 *	<LI><B>INDEX_QUALIFIER</B> String =>
+	 *	<LI><B>INDEX_QUALIFIER</B> String =&gt;
 	 *		インデックスカタログ
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>INDEX_NAME</B> String =>
+	 *	<LI><B>INDEX_NAME</B> String =&gt;
 	 *		インデックス名
-	 *	<LI><B>TYPE</B> short =>
+	 *	<LI><B>TYPE</B> short =&gt;
 	 *		インデックスの型
 	 *		(現在のバージョンでは常に
 	 *		 <code>java.sql.DatabaseMetaData.tableIndexOther</code> である)
-	 *	<LI><B>ORDINAL_POSITION</B> short =>
+	 *	<LI><B>ORDINAL_POSITION</B> short =&gt;
 	 *		インデックス中の列シーケンス ( 1 から始まる)
-	 *	<LI><B>COLUMN_NAME</B> String =>
+	 *	<LI><B>COLUMN_NAME</B> String =&gt;
 	 *		列名
-	 *	<LI><B>ASC_OR_DESC</B> String =>
-	 *		列ソートシーケンス、"A" => 昇順、"D" => 降順、
+	 *	<LI><B>ASC_OR_DESC</B> String =&gt;
+	 *		列ソートシーケンス、"A" =&gt; 昇順、"D" =&gt; 降順、
 	 *		ソートシーケンスがサポートされていない場合は、
 	 *		<code>null</code> の可能性がある
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>CARDINALITY</B> int =>
+	 *	<LI><B>CARDINALITY</B> int =&gt;
 	 *		TYPE が tableIndexStatistic の場合、テーブル中の列数。
 	 *		そうでない場合は、インデックス中の一意の値の数
-	 *	<LI><B>PAGES</B> int =>
+	 *	<LI><B>PAGES</B> int =&gt;
 	 *		TYPE が tableIndexStatistic の場合、テーブルで使用されるページ数。
 	 *		そうでない場合は、現在のインデックスで使用されるページ数
 	 *		(現在のバージョンでは常に <code>null</code> である)
-	 *	<LI><B>FILTER_CONDITION</B> String =>
+	 *	<LI><B>FILTER_CONDITION</B> String =&gt;
 	 *		フィルタ条件
 	 *		(現在のバージョンでは常に <code>null</code> である)
 	 *	</OL>
@@ -4952,6 +4952,6 @@ public class DatabaseMetaData implements java.sql.DatabaseMetaData
 }
 
 //
-// Copyright (c) 2003, 2004, 2005, 2006, 2007, 2016, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2003, 2004, 2005, 2006, 2007, 2016, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

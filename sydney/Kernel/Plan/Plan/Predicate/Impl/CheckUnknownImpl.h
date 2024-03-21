@@ -3,7 +3,7 @@
 //
 // Predicate/Impl/CheckUnknownImpl.h --
 // 
-// Copyright (c) 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -85,6 +85,8 @@ namespace CheckUnknownImpl
 			_SYDNEY_THROW0(Exception::NotSupported);
 		}
 			
+		using Handle_::joinOperand;
+
 
 	/////////////////////////////
 	// Tree::Node::Interface::
@@ -177,6 +179,6 @@ _SYDNEY_END
 #endif // __SYDNEY_PLAN_PREDICATE_IMPL_CHECKUNKNOWNIMPL_H
 
 //
-//	Copyright (c) 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

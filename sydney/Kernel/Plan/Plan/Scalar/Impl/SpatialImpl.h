@@ -3,7 +3,7 @@
 //
 // Scalar/Impl/SpatialImpl.h --
 // 
-// Copyright (c) 2013, 2014, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2013, 2014, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -143,6 +143,13 @@ namespace SpatialImpl
 			return 0;
 		}
 
+		using Super::getFunctionType;
+		using Super::getOperandi;
+		using Super::isAll;
+		using Super::foreachOperand_i;
+
+
+
 	protected:
 	private:
 	////////////////////////
@@ -194,6 +201,6 @@ _SYDNEY_END
 #endif // __SYDNEY_PLAN_SCALAR_SPATIALIMPL_H
 
 //
-//	Copyright (c) 2013, 2014, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2013, 2014, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //
