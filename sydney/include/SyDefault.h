@@ -3,7 +3,7 @@
 //
 // SyDefault.h -- 
 // 
-// Copyright (c) 1999, 2000, 2003, 2004, 2005, 2006, 2007, 2009, 2010, 2011, 2012, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1999, 2000, 2003, 2004, 2005, 2006, 2007, 2009, 2010, 2011, 2012, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -118,6 +118,9 @@
 #define SYD_C_SC4_0
 #endif
 
+#ifdef SYD_C_GCC11_4
+#define SYD_C_GCC4_8
+#endif
 #ifdef SYD_C_GCC4_8
 #define SYD_C_GCC4_4
 #endif
@@ -203,6 +206,10 @@
 
 // TODO: remove old versioning V10-V15
 #ifdef SYD_USE_UNA_1_0
+#define SYD_USE_UNA_V16_1
+#endif
+
+#ifdef SYD_USE_UNA_V16_1
 #define SYD_USE_UNA_V15
 #endif
 
@@ -231,6 +238,6 @@
 #endif
 
 //
-//	Copyright (c) 1999, 2000, 2003, 2004, 2005, 2006, 2007, 2009, 2010, 2011, 2012, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 1999, 2000, 2003, 2004, 2005, 2006, 2007, 2009, 2010, 2011, 2012, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

@@ -143,7 +143,7 @@ private:
 	virtual void	writeOverFlow(void* address_, ModSize size_);
 	virtual void	readOverFlow(void* address_, ModSize size_);
 
-	// 以下の2データメンバを protected に変更 (BUG NO.5443)
+	// 以下の2データメンバを protected に変更
 //	HouseMode houseMode;		// メモリサイズ不足動作モード
 //  ModSize totalSize;			// メモリ全体のサイズ
     void* headAddress;			// メモリの先頭へのポインタ

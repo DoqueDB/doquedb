@@ -3,7 +3,7 @@
 //
 // ModMemoryHandle.cpp -- ModMemoryHandle のメンバ定義
 // 
-// Copyright (c) 1997, 2011, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 2011, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-
 
 #include "ModMemoryPool.h"
 #include "ModMemoryHandle.h"
@@ -158,6 +157,9 @@ ModNegotiatingThread::ModNegotiatingThread()
 //	なし
 //
 ModNegotiatingThread::~ModNegotiatingThread()
+#if STD_CPP11
+noexcept(false)
+#endif
 {
 	if (this->usingMemory > 0) {
 		ModDebugMessage << 
@@ -241,12 +243,32 @@ ModNegotiatingThread::operator new(size_t size, size_t dummy)
 
 void
 ModNegotiatingThread::operator delete(void* address, size_t size)
+#ifdef STD_CPP11
+noexcept(false)
+#endif
 {
 	if (ModMemoryPool::isEmergencyMemory(address))
 		ModMemoryPool::freeEmergencyMemory(address, (ModSize)size);
 	else
 		ModMemoryPool::freeMemory(address, (ModSize)size);
 }
+
+#ifdef STD_CPP11
+//
+// FUNCTION
+// ModNegotiatingThread::operator delete -- メモリハンドルのdelete
+//
+// NOTES
+// ModMemoryHandle::operator delete(void*)を参照のこと。
+//
+void
+ModNegotiatingThread::operator delete(void* address) noexcept(false)
+{
+	// 無条件に例外を送出する
+	ModThrow(ModModuleMemory,
+			 ModMemoryErrorWrongDeleteCalled, ModErrorLevelError);
+}
+#endif
 
 //
 // FUNCTION private
@@ -476,6 +498,9 @@ ModMemoryHandle::ModMemoryHandle()
 //		ModOsDriver::Mutex::lock, unlockの例外参照
 //
 ModMemoryHandle::~ModMemoryHandle()
+#ifdef STD_CPP11
+noexcept(false)
+#endif
 {
     // 自分をさがして、リストから削除する
 	try {
@@ -1650,6 +1675,9 @@ ModMemoryDebugCell::operator new(size_t size, size_t dummy)
 
 void
 ModMemoryDebugCell::operator delete(void* address, size_t size)
+#ifdef STD_CPP11
+noexcept(false)
+#endif
 {
 	ModMemoryPool::freeMemory(address, (ModSize)size);
 }
@@ -1687,6 +1715,6 @@ ModMemoryDebugCell::print() const
 #endif	// DEBUG
 
 //
-// Copyright (c) 1997, 2011, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 2011, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

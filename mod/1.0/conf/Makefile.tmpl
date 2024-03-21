@@ -1,7 +1,7 @@
 /*
  * Makefile.tmpl -- Makefileのテンプレート
  * 
- * Copyright (c) 1996, 2011, 2023 Ricoh Company, Ltd.
+ * Copyright (c) 1996, 2011, 2023, 2024 Ricoh Company, Ltd.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ P	= lib
 /* コンパイラの指定 */
 
 #ifdef OS_RHLINUX6_0
-#if defined(CC_GCC4_8)
+#if defined(CC_GCC4_8) || defined(CC_GCC11_4)
 #ifdef CC_GCC_COV
 CC = /usr/bin/g++ -coverage
 #else
@@ -142,7 +142,11 @@ LD = $(CC)
 
 #ifdef OS_RHLINUX6_0
 #ifdef CC_GCC
+#ifdef CC_GCC11_4
+STDLIB = -lpthread -lz
+#else
 STDLIB = -lnsl -lpthread -lz
+#endif
 #endif
 #endif
 

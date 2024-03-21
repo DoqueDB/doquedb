@@ -3,7 +3,7 @@
 //
 // Scalar/Impl/FunctionImpl.h --
 // 
-// Copyright (c) 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -470,6 +470,17 @@ namespace FunctionImpl
 	//						 Execution::Interface::IIterator* pIterator_,
 	//						 Candidate::AdoptArgument& cArgument_);
 
+		using Super::getOperandi;
+		using Super::getType;
+		using Super::getSize;
+		using Super::toSQLStatement;
+		//		using Super::setDataType;
+		using Super::getDataType;
+		using Super::mapOperand;
+		using Super::foreachOperand;
+		using Super::isAll;
+		using Super::isAny;
+
 	protected:
 		// generate
 		virtual int generateThis(Opt::Environment& cEnvironment_,
@@ -495,6 +506,10 @@ namespace FunctionImpl
 											iDataID_),
 									   cArgument_.m_eTarget);
 			return iDataID_;
+		}
+
+		void setDataType(const Scalar::DataType& cType_) {
+			Super::setDataType(cType_);
 		}
 
 	private:
@@ -1010,6 +1025,22 @@ namespace FunctionImpl
 	//						 Execution::Interface::IIterator* pIterator_,
 	//						 Candidate::AdoptArgument& cArgument_);
 
+		using Super::getType;
+		using Super::getSize;
+		using Super::getOptioni;
+		using Super::getOperandi;
+		using Super::foreachOption;
+		using Super::getOptionSize;
+		using Super::getOperandSize;
+		using Super::toSQLStatement;
+		using Super::foreachOperand;
+		using Super::isAll;
+		using Super::isAllOption;
+		using Super::isAny;
+		using Super::isAnyOption;
+		using Super::mapOperand;
+		using Super::mapOption;
+
 	protected:
 		// generate
 		virtual int generateThis(Opt::Environment& cEnvironment_,
@@ -1119,6 +1150,6 @@ _SYDNEY_END
 #endif // __SYDNEY_PLAN_SCALAR_FUNCTIONIMPL_H
 
 //
-//	Copyright (c) 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

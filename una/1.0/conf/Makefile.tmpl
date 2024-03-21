@@ -1,7 +1,7 @@
 /*
  * Makefile.tmpl -- Makefileのテンプレート
  * 
- * Copyright (c) 1996, 1999, 2002, 2003, 2004, 2005, 2006, 2023 Ricoh Company, Ltd.
+ * Copyright (c) 1996, 1999, 2002, 2003, 2004, 2005, 2006, 2023, 2024 Ricoh Company, Ltd.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -158,7 +158,11 @@ LD = $(CC)
 
 #ifdef OS_RHLINUX6_0
 #ifdef CC_GCC
+#ifdef CC_GCC11_4
+STDLIB = -lpthread -ldl
+#else
 STDLIB = -lnsl -lpthread -ldl
+#endif
 #endif
 #endif
 

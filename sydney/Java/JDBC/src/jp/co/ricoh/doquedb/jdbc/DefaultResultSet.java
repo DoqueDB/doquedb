@@ -3,7 +3,7 @@
 //
 // DefaultResultSet.java -- 結果セットの基本クラス
 //
-// Copyright (c) 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023, 2024 Ricoh Company, Ltd.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -2134,7 +2134,7 @@ class DefaultResultSet implements java.sql.ResultSet
 	 * @throws	java.sql.SQLException
 	 *			データベースアクセスエラーが発生した場合、
 	 *			または条件
-	 *			<code>0 <= rows <= this.getMaxRows()</code>
+	 *			<code>0 &lt;= rows &lt;= this.getMaxRows()</code>
 	 *			が満たされない場合。
 	 * @see		#getFetchSize()
 	 */
@@ -3511,7 +3511,7 @@ class DefaultResultSet implements java.sql.ResultSet
 	 * (列の SQL 名を指定する getter メソッド) は、
 	 * サブクラスである {@link ResultSet} クラスで実装されています。
 	 *
-	 * @param	columnName_
+	 * @param	columnLabel
 	 *			列の SQL 名。
 	 * @param	type
 	 *			指定された列の変換後のJavaデータ型を表すクラス
@@ -3692,7 +3692,7 @@ class DefaultResultSet implements java.sql.ResultSet
 	 * (列の SQL 名を指定する getter メソッド) は、
 	 * サブクラスである {@link ResultSet} クラスで実装されています。
 	 *
-	 * @param	columnName_
+	 * @param	columnLabel
 	 *			列の SQL 名。
 	 * @param	type
 	 *			指定された列の変換後のJavaデータ型を表すクラス
@@ -5007,6 +5007,6 @@ class DefaultResultSet implements java.sql.ResultSet
 }
 
 //
-// Copyright (c) 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

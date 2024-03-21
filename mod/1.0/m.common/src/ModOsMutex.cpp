@@ -3,7 +3,7 @@
 //
 // ModOsMutex.cpp -- 簡易版ミューテックス関連のメソッド定義
 // 
-// Copyright (c) 1997, 1999, 2005, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 1999, 2005, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,6 +39,9 @@
 //			ロックされたままである
 
 ModOsMutex::~ModOsMutex()
+#ifdef STD_CPP11
+noexcept(false)
+#endif
 {
 #if 0 // (2005/12/08)
 	  // ModCommonMutexでも使用されており、終了時に例外が投げられると
@@ -226,6 +229,6 @@ ModOsMutex::unlockAll()
 }
 
 //
-// Copyright (c) 1997, 1999, 2005, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 1999, 2005, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

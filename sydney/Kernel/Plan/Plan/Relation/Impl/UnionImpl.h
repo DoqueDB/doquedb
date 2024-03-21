@@ -3,7 +3,7 @@
 //
 // Relation/UnionImpl.h --
 // 
-// Copyright (c) 2010, 2011, 2012, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2010, 2011, 2012, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -78,6 +78,11 @@ namespace UnionImpl
 		virtual bool isAll() {return UnionImpl::Type::All == m_eType;}
 		virtual bool isDistinct() {return UnionImpl::Type::Distinct == m_eType;}
 		virtual bool isDistinctByKey() {return UnionImpl::Type::Distinct == m_eType;}
+
+		using Super::getOperandi;
+		using Super::getDegree;
+		using Super::getScalarName;
+
 
 	protected:
 		// constructor
@@ -449,6 +454,6 @@ _SYDNEY_END
 #endif // __SYDNEY_PLAN_RELATION_UNIONIMPL_H
 
 //
-//	Copyright (c) 2010, 2011, 2012, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2010, 2011, 2012, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

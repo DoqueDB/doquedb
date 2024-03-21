@@ -4,7 +4,7 @@
 //
 //	RuleParser.tab.cpp -- Implement file of RuleParser.tab
 // 
-// Copyright (c) 2004-2005, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2004-2005, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
+
+#ifdef STD_CPP11
+// registerストレージクラスはC++11で非推奨、C++17で禁止された
+#define register
+#endif
 
 // #T2#
 /* A Bison parser, made by GNU Bison 1.875b.  */
@@ -1649,7 +1654,7 @@ _UNA_END
 
 // #T151#
 //
-//	Copyright (c) 2004-2005, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2004-2005, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //
 

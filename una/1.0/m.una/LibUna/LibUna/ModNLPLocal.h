@@ -3,7 +3,7 @@
 //
 // ModNLPLocal.h -- Hedaer file of the base class of local analyzers and resources
 // 
-// Copyright (c) 2005, 2008-2010, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2005, 2008-2010, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -55,7 +55,11 @@ protected:
 public:
 
 	ModNlpLocalResource():m_ulResType(0){m_stemmer = defaultStemmer;}
+#ifdef STD_CPP11
+	virtual ~ModNlpLocalResource() noexcept(false){}
+#else
 	virtual ~ModNlpLocalResource(){}
+#endif
 	virtual ModUnicodeString getResourcePath() {  return m_resourcePath;}
 
 	virtual ModSize getResourceType() { return m_ulResType;}
@@ -775,6 +779,6 @@ private:
 #endif//__UNA_MODNLPLOCAL_H
 
 //
-// Copyright (c) 2005, 2008-2010, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2005, 2008-2010, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

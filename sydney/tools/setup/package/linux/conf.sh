@@ -1,9 +1,9 @@
 #
-#         TRMeister configuration file
+#         DoqueDB configuration file
 #
 # ==================================================================
 #   NOTE:
-#    When more than one TRMeisters are installed in one server,
+#    When more than one DoqueDBs are installed in one server,
 #    following variables have to have different values each other.
 #       * installpath
 #       * databasepath
@@ -32,7 +32,7 @@ user=root
 
 # -----------------------------
 # Buffer maximum size
-#   -- TRMeister module will consume process size almost same as this size + 10-40 MB.
+#   -- DoqueDB module will consume process size almost same as this size + 10-40 MB.
 #   -- (see user's manual ``Parameter'')
 #   -- A character denoting unit (ex. M or G) can be attached.
 #   -- The default value is '20M'
@@ -80,7 +80,7 @@ user=root
 # Set normalize to 1 if you want the 'like' predicate not to distinguish
 # capital/small letters, half/full width letters and hiragana/katakana.
 # If a character string column has an index, some special hint should be specified.
-# Call us (Ricoh 'TRMeister' team) for detail.
+# Call us (Ricoh 'DoqueDB' team) for detail.
 # -----------------------------
 normalize=0
 

@@ -3,7 +3,7 @@
 //
 // MessageStreamBuffer.cpp -- メッセージストリームバッファ
 // 
-// Copyright (c) 2000, 2001, 2003, 2005, 2007, 2009, 2013, 2014, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2000, 2001, 2003, 2005, 2007, 2009, 2013, 2014, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,25 +40,6 @@ _TRMEISTER_USING
 _TRMEISTER_COMMON_USING
 
 namespace {
-	
-	//
-	// VARIABLE
-	// _$$::_ByteUTF8 -- utf8の先頭１バイトで何バイトになるか
-	//
-	// NOTES
-	// 0のところはUCS2の範囲のutf8の先頭バイトには現れない数字
-	//
-	char _ByteUTF8[256] = {
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
-		3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	};
 }
 
 //
@@ -323,7 +304,7 @@ MessageStreamBuffer::putString(const char* pszStr_,
 		// 何バイトで1文字が構成されているかチェックし、
 		// 文字の途中で改行しないようにする
 
-		int size = getCharSize(*p, code_);
+		int size = ModKanjiCode::getCharacterSize(static_cast<const unsigned char>(*p), code_);
 
 		// 最後の null と次のバッファのための改行も加えて書けるかチェック
 
@@ -821,65 +802,6 @@ MessageStreamBuffer::getDataFromPool()
 }
 
 //
-//	FUNCTION static private
-//	Common::MessageStreamBuffer::getCharSize
-//
-//	NOTES
-//	char に続くバイト列が1文字で何バイトを構成するかを返す
-//
-//	ARGUMENTS
-//	const char ch_
-//		チェック対象 char 文字
-//	ModKanjiCode::KanjiCodeType code_
-//		漢字コード
-//
-//	RETURN
-//	int
-//		バイト数
-//
-//	EXCEPTIONS
-//	なし
-//
-int
-MessageStreamBuffer::getCharSize(const char ch_,
-								 ModKanjiCode::KanjiCodeType code_)
-{
-	int ret = 1;
-	
-	//【注意】 	想定しているのは sjis, euc, utf8 の
-	//			各文字を構成する先頭の１バイト
-	
-	const unsigned char ch = static_cast<unsigned char>(ch_);
-
-	switch (code_)
-	{
-	case ModKanjiCode::euc:
-		if (ch == 0x8f)
-			ret = 3;	// SS3
-		else if (ch & 0x80)
-			ret = 2;
-		else
-			ret = 1;
-		break;
-		
-	case ModKanjiCode::shiftJis:
-		ret =  ((0x81 <= ch && ch <= 0x9f) ||
-				(0xe0 <= ch && ch <= 0xfc)) ? 2 : 1;
-		break;
-
-	case ModKanjiCode::utf8:
-		ret = _ByteUTF8[ch];
-		break;
-
-	default:
-		break;
-		
-	}
-
-	return ret;
-}
-
-//
-//	Copyright (c) 2000, 2001, 2003, 2005, 2007, 2009, 2013, 2014, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2000, 2001, 2003, 2005, 2007, 2009, 2013, 2014, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

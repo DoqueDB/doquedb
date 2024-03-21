@@ -3,7 +3,7 @@
 //
 // Scalar/Impl/ArrayImpl.h --
 // 
-// Copyright (c) 2010, 2011, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2010, 2011, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -117,6 +117,16 @@ namespace ArrayImpl
 			{}
 			// destructor
 			virtual ~Generic() {}
+
+			using Super::getSize;
+			using Super::isAll;
+			using Super::setDataType;
+			using Super::foreachOperand;
+
+
+		protected:
+
+		protected:
 
 		protected:
 		private:
@@ -317,6 +327,6 @@ _SYDNEY_END
 #endif // __SYDNEY_PLAN_SCALAR_ARRAYIMPL_H
 
 //
-//	Copyright (c) 2010, 2011, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2010, 2011, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

@@ -5,7 +5,7 @@
 //					管理するためのハッシュ表関連の
 //					テンプレートクラス定義、関数宣言
 // 
-// Copyright (c) 2000, 2010, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2000, 2010, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,6 +53,9 @@ public:
 	HashTable(unsigned int size, T* T::* prev, T* T::* next);
 	// デストラクター
 	~HashTable();
+
+	using Common::HashTable<List<T>, T>::getLength;
+	using Common::HashTable<List<T>, T>::getBucket;
 
 private:
 	// バケットを排他するためラッチ
@@ -144,6 +147,6 @@ _SYDNEY_END
 #endif	// __SYDNEY_BUFFER_HASHTABLE_H
 
 //
-// Copyright (c) 2000, 2010, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2000, 2010, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

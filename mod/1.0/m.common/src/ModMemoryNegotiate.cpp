@@ -3,7 +3,7 @@
 //
 // ModMemoryNegotiate.cpp -- ModMemoryNegotiate のメンバ定義
 // 
-// Copyright (c) 1997, 2009, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 2009, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -500,14 +500,32 @@ ModMemoryNegotiate::operator new(size_t size, size_t dummy)
 //
 void
 ModMemoryNegotiate::operator delete(void* address, size_t size)
+#ifdef STD_CPP11
+noexcept(false)
+#endif
 {
 	// C++の定義により、引数はsize_tであったが、ここで変換
 	ModMemoryPool::freeMemory(address, (ModSize)size);
 };
 
+#ifdef STD_CPP11
 //
-// Copyright (c) 1997, 2009, 2023 Ricoh Company, Ltd.
+// FUNCTION
+// ModMemoryNegotiate::operator delete -- メモリハンドルのdelete
+//
+// NOTES
+// ModMemoryHandle::operator delete(void*)を参照のこと。
+//
+inline void
+ModMemoryNegotiate::operator delete(void* address) noexcept(false)
+{
+	// 無条件に例外を送出する
+	ModThrow(ModModuleMemory,
+			 ModMemoryErrorWrongDeleteCalled, ModErrorLevelError);
+}
+#endif
+
+//
+// Copyright (c) 1997, 2009, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //
-
-

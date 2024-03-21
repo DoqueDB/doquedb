@@ -1,7 +1,7 @@
 /*
  * Makefile.tmpl -- Makefileのテンプレート
  * 
- * Copyright (c) 1996, 2017, 2023 Ricoh Company, Ltd.
+ * Copyright (c) 1996, 2017, 2023, 2024 Ricoh Company, Ltd.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@
 /** パッケージ名 */
 PACKAGE = doquedb
 
-#if defined(SYD_C_GCC4_8)
+#if defined(SYD_C_GCC4_8) || defined(SYD_C_GCC11_4)
 COMMON_VERSION_SUFFIX = e
 #elif defined(SYD_C_MS10_0)
 COMMON_VERSION_SUFFIX = d
@@ -55,7 +55,12 @@ ZLIBVERSION = ZLIBVER
 BOOSTVERSION = BOOSTVER
 
 /* SUFFIX used for SydneyXX.dll, SyMesEngXX.dll and SyMesJpnXX.dll */
+#if 0
 CLIENTSUFFIX=33$(COMMON_VERSION_SUFFIX)
+#else
+CLIENTSUFFIX=
+#endif
+
 
 #if defined(V1_13)
 MODSUFFIX=09$(COMMON_VERSION_SUFFIX)
@@ -330,7 +335,10 @@ STDLIB = -lnsl -lpthread -ldl -lrt -luuid -limf -lsvml -lirng -lintlc
 STDLIB = -lnsl -lpthread -ldl -lrt -luuid -limf -lirc -lcxaguard -lsvml -lintlc
 #endif
 #elif defined(SYD_C_GCC)
-STDLIB = -lnsl -lpthread -ldl -lrt -luuid
+#elif defined(SYD_C_GCC11_4)
+STDLIB = -lpthread -ldl -lrt -luuid -lstdc++
+#else
+STDLIB = -lnsl -lpthread -ldl -lrt -luuid -lstdc++
 #endif
 
 #elif defined(SYD_OS_WINDOWS)
@@ -371,7 +379,11 @@ ICCLIB =
 #endif
 LIBRARIES = $(LIB0) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5) $(LPATHOP)$(UNATOP)$(S)UNALIBPATH $(LPATHOP)$(MODTOP)$(S)MODLIBPATH $(ICCLIB) $(LPATHOP)$(BOOSTTOP)$(S)lib
 LOCALLDFLAGS =
-LOCALDLLFLAGS =
+#ifdef SYD_C_GCC11_4
+LOCALDLLFLAGS = -lstdc++ -luuid -lpthread
+#else
+LOCALDLLFLAGS = -lnsl -lpthread -ldl -lrt -luuid
+#endif
 
 #elif defined(SYD_OS_WINDOWS)
 
@@ -732,6 +744,6 @@ ClientObjectListRTarget()		/* make clientobjectlist-r */
 TapeRTarget()				/* make tape-r */
 
 /*
- * Copyright (c) 1996, 2017, 2023 Ricoh Company, Ltd.
+ * Copyright (c) 1996, 2017, 2023, 2024 Ricoh Company, Ltd.
  * All rights reserved.
  */

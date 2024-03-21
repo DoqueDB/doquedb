@@ -23,9 +23,9 @@ modparam () {
 	echo "" >> $regfile
 }
 
-trmeisterparam () {
+doquedbparam () {
 	echo "#########################################" > $regfile
-	echo "# for TRMeister" >> $regfile
+	echo "# for DoqueDB" >> $regfile
 	echo "Schema_DefaultAreaPath		\"$databasepath/data\"" >> $regfile
 	echo "Schema_SystemAreaPath		\"$databasepath/system\"" >> $regfile
 	echo "Trans_TimeStampPath		\"$databasepath/system\"" >> $regfile
@@ -71,7 +71,7 @@ if [ ! -f $installpath/etc/$regfile ]; then
 fi
 
 regfile=default.conf
-trmeisterparam
+doquedbparam
 sydserverparam
 
 if [ ! -f $installpath/etc/$regfile ]; then
@@ -112,6 +112,6 @@ if [ ! -d $databasepath/system ]; then
 fi
 
 #
-# Copyright (c) 2023 Ricoh Company, Ltd.
+# Copyright (c) 2023, 2024 Ricoh Company, Ltd.
 # All rights reserverd.
 #
