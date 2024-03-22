@@ -1,0 +1,10 @@
+#! /bin/sh
+
+cwd=`dirname $0`
+toolsdir=$cwd/../../../../common/tools/build
+
+if [ "x$*" != "x" ]; then
+    make -f $cwd/makefile_all.unix MAKEFLAGS= TOOLSDIR=$toolsdir TARGETS="$*" RECONF_TARGET="$1" all
+else
+    make -f $cwd/makefile_all.unix MAKEFLAGS= TOOLSDIR=$toolsdir all
+fi
