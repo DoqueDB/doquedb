@@ -12,8 +12,9 @@ DoqueDB can be used in the following environments:
   - Disk space: 1 GB or more \*3
 
 \*1 Operation has been verified under:
-  - RedHat Enterprise Linux 7
-  - CentOS 7
+  - RedHat Enterprise Linux 7 (gcc 4.8 version)
+  - CentOS 7 (gcc 4.8 version)
+  - CentOS Stream 9 (gcc 11.4 version)
 
 \*2 Required memory varies depending on data size.  
 \*3 Required disk space varies depending on the size of database and logs.
@@ -29,7 +30,7 @@ Installation must be performed by the root user.
 Execution as the root user is indicated by the prompt "#".
 ```
 # tar xvf doquedb-<version>.<architecture>.tar.gz
-# cd doquedb-<version>.<architecture>
+# cd doquedb
 # ./install.sh
 # ./setup.sh
 # cd /var/lib/DoqueDB/bin

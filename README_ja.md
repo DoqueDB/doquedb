@@ -12,8 +12,9 @@ DoqueDBは以下の環境でご利用いただけます。
   - ディスク容量: 1GB以上 \*3
 
 \*1 動作確認は以下の環境で行っています。
-  - RedHat Enterprise Linux 7
-  - CentOS 7
+  - RedHat Enterprise Linux 7 (gcc 4.8版)
+  - CentOS 7 (gcc 4.8版)
+  - CentOS Stream 9 (gcc 11.4版)
 
 \*2 データサイズに応じて必要なメモリは変化します。  
 \*3 データベースやログのサイズに応じて必要なディスク容量は変化します。
@@ -29,7 +30,7 @@ Releasesよりバイナリパッケージを取得してください。バイナ
 これ以降、rootユーザーで実行することをプロンプト「#」で示します。
 ```
 # tar xvf doquedb-<バージョン>.<アーキテクチャ>.tar.gz
-# cd doquedb-<バージョン>.<アーキテクチャ>
+# cd doquedb
 # ./install.sh
 # ./setup.sh
 # cd /var/lib/DoqueDB/bin
