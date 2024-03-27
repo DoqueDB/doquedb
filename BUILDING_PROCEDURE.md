@@ -5,14 +5,16 @@ This document describes the building procedure of DoqueDB from source code.
 ## Requirements
 
 We assume that you are building DoqueDB on CentOS Stream 9 using gcc 11.4.  
-(If you build using gcc 4.8, specify O48-64 instead of O114-64.)  
+If you build using gcc 4.8, specify O48-64 instead of O114-64.  
 In addition, the following development tools are required in the process.  
-zlib-devel may be libz-dev, depending on the environment.
+zlib-devel may be libz-dev, depending on the environment.  
+perl-open is not required on CentOS 7.
 * JDK 8 or later
 * ant
 * libuuid
 * libuuid-devel
 * zlib-devel
+* perl-open
 
 To install the above develepment tools, do the following steps.
 ```
@@ -22,6 +24,7 @@ $ sudo yum install ant
 $ export ANT_HOME=<directory where you installed ant>
 $ sudo yum install libuuid libuuid-devel
 $ sudo yum install zlib-devel
+$ sudo yum install perl-open.noarch
 ```
 Also you need some Unicode data files to build MOD libary and UNA library.  
 Get the files from Unicode.org as follows.
