@@ -3,7 +3,7 @@
 //
 // ModOsMutex.h -- 簡易版ミューテックス関連のクラス定義
 // 
-// Copyright (c) 1997, 1999, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 1999, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,7 +52,11 @@ class ModOsMutex
 public:
 	ModOsMutex();								// コンストラクター
 	ModCommonDLL
+#ifdef STD_CPP11
+	~ModOsMutex() noexcept(false);				// デストラクター
+#else
 	~ModOsMutex();								// デストラクター
+#endif
 
 	ModCommonDLL
 	int						lock(unsigned int times = 1);
@@ -150,6 +154,6 @@ ModOsMutex::isSelfLocked() const
 #endif	// __ModOsMutex_H__
 
 //
-// Copyright (c) 1997, 1999, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 1999, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

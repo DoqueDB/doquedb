@@ -3,7 +3,7 @@
 //
 // Scalar/Impl/FieldImpl.h --
 // 
-// Copyright (c) 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2016, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2016, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -823,6 +823,9 @@ namespace FieldImpl
 			}
 		}
 
+		using Super::getOption;
+		using Super::setDelayable;
+
 	protected:
 	private:
 		Scalar::Field* m_pColumn;
@@ -889,6 +892,6 @@ _SYDNEY_END
 #endif // __SYDNEY_PLAN_SCALAR_FIELDIMPL_H
 
 //
-//	Copyright (c) 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2016, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2016, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

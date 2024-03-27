@@ -1,0 +1,25 @@
+MKCONFDIR=$(TOOLSDIR)\mkconfdir.bat
+MAKE = nmake /$(MAKEFLAGS)
+
+TARGETS = \
+	O \
+	g \
+	g-purify \
+	O-quantify
+
+RECONF_TARGET = O
+
+all: reconf
+	@for %%d in ($(TARGETS)) do ( \
+		$(MKCONFDIR) %%d && \
+		cd c.%%d && \
+		$(MAKE) conf-r buildall package && \
+		cd .. \
+	)
+
+reconf:
+	$(MKCONFDIR) $(RECONF_TARGET) && \
+	cd c.$(RECONF_TARGET) && \
+	$(MAKE) conf-r installh-r && \
+	$(MAKE) reconf-r && \
+	cd ..

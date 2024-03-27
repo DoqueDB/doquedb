@@ -1,7 +1,7 @@
 /*
  * Makefile.c --- m.library/m.common/c
  * 
- * Copyright (c) 1998, 2022, 2023 Ricoh Company, Ltd.
+ * Copyright (c) 1998, 2022, 2023, 2024 Ricoh Company, Ltd.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -218,6 +218,7 @@ OBJS = \
 	$(VERRES) \
 	$(MOD_INLINEDLL)
 
+GENERATED_FILES = ModCommonExceptionMessage.h ModUnicodeCharTrait.tbl
 
 RX_DIR = ..$(S)..$(S)m.rx
 RX_HDRDIR = $(RX_DIR)$(S)include$(SUFFIX)
@@ -302,6 +303,7 @@ InstallHeaderTarget2($(EXPORT_HDRS_1), $(EXPORT_HDRS_2), $(MODTAPEINCLDIR))
  */
 CleanTarget($(ALLTARGETS))
 CleanTarget($(OBJS))
+CleanTarget($(GENERATED_FILES))
 
 UNICODE_DATA = $(UNICODETOOL_DIR)$(S)..$(S)src$(S)UnicodeData-1.1.5.txt
 SL = /

@@ -3,7 +3,7 @@
 //
 // Execution/Iterator/Monadic.h --
 // 
-// Copyright (c) 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -93,6 +93,15 @@ public:
 ///////////////////////////////
 // ModSerializer
 	void serialize(ModArchive& archiver_);
+
+	using Base_::explainBase;
+	using Base_::explainThis;
+	using Base_::explainAction;
+	using Base_::initializeBase;
+	using Base_::terminateBase;
+	using Base_::startUpBase;
+	using Base_::finishBase;
+	using Base_::serializeBase;
 
 protected:
 ///////////////////////////
@@ -491,6 +500,6 @@ _SYDNEY_END
 #endif // __SYDNEY_EXECUTION_ITERATOR_MONADIC_H
 
 //
-//	Copyright (c) 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

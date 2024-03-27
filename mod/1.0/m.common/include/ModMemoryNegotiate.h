@@ -3,7 +3,7 @@
 //
 // ModMemoryNegotiate.h -- ネゴシエーション関数登録 クラス定義(非公開)
 // 
-// Copyright (c) 1997, 2009, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 2009, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -116,8 +116,15 @@ public:
 
 	ModCommonDLL
 	void* operator new(size_t size, size_t dummy = 0);	// special
+#ifdef STD_CPP11
+	ModCommonDLL
+	void  operator delete(void* address, size_t size) noexcept(false);	// special
+	ModCommonDLL
+	void  operator delete(void* address) noexcept(false);	// ダミー
+#else
 	ModCommonDLL
 	void  operator delete(void* address, size_t size);		// special
+#endif
 
 private:
 	// リストの初期化、後処理
@@ -191,6 +198,6 @@ ModMemoryNegotiate::getPriority() const
 #endif	// __ModMemoryNegotiate_H__
 
 //
-// Copyright (c) 1997, 2009, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 2009, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

@@ -1,7 +1,7 @@
 /*
  * Makefile.c --- Utility/TRBackup/c
  * 
- * Copyright (c) 2023 Ricoh Company, Ltd.
+ * Copyright (c) 2016, 2023, 2024 Ricoh Company, Ltd.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ KERNEL_LIBS = \
 	TRMeister$(CLIENTSUFFIX)$L
 #else
 KERNEL_LIBS = \
-	Trmeister$(CLIENTSUFFIX)$L
+	DoqueDB$(CLIENTSUFFIX)$L
 #endif
 
 LDLIBS = \

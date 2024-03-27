@@ -3,7 +3,7 @@
 //
 // Connection.java -- JDBC のコネクションクラス
 //
-// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023, 2024 Ricoh Company, Ltd.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -1616,12 +1616,6 @@ public class Connection implements java.sql.Connection
 	 * @throws	java.sql.SQLException
 	 *			データベースアクセスエラーが発生した場合。
 	 */
-	public void dropUser(String userName_)
-		throws java.sql.SQLException
-	{
-		dropUser(userName_, jp.co.ricoh.doquedb.port.DropBehavior.IGNORE);
-	}
-
 	public void dropUser(String userName_, int dropBehavior_)
 		throws java.sql.SQLException
 	{
@@ -1646,6 +1640,11 @@ public class Connection implements java.sql.Connection
 		}
 	}
 
+	public void dropUser(String userName_)
+		throws java.sql.SQLException
+	{
+		dropUser(userName_, jp.co.ricoh.doquedb.port.DropBehavior.IGNORE);
+	}
 
 	/**
 	 * <B>[独自拡張]</B>
@@ -2261,6 +2260,6 @@ public class Connection implements java.sql.Connection
 }
 
 //
-// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2015, 2016, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

@@ -3,7 +3,7 @@
 //
 // ModObject.h -- ModObject のクラス定義
 // 
-// Copyright (c) 1997, 2009, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 2009, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,12 +50,16 @@ public:
 	void* operator new(size_t size, size_t dummy = 0);
 
 	void* operator new(size_t size, void* address);
-	void  operator delete(void* address, size_t size);
 	void  operator delete(void* pointer, void* address);
+#ifdef STD_CPP11
+	void  operator delete(void* address, size_t size) noexcept(false);
+	void  operator delete(void* pointer) noexcept(false); // ダミー
+#else
+	void  operator delete(void* address, size_t size);
+#endif
 #endif
 #endif
 };
-
 
 //
 // **TEMPLATE CLASS
@@ -205,6 +209,9 @@ template <class _Manager>
 inline
 void
 ModObject<_Manager>::operator delete(void* address, size_t size)
+#ifdef STD_CPP11
+noexcept(false)
+#endif
 {
 	// 初期化チェックは_Managerにまかせる
 
@@ -238,12 +245,31 @@ operator delete(void* pointer, void* address)
 	// 何もしない
 }
 
+#ifdef STD_CPP11
+//
+// FUNCTION
+// ModObject<_Manager>::operator delete -- メモリハンドルのdelete
+//
+// NOTES
+// ModMemoryHandle::operator delete(void*)を参照のこと。
+//
+template <class _Manager>
+inline
+void
+ModObject<_Manager>::operator delete(void* address) noexcept(false)
+{
+	// 無条件に例外を送出する
+	ModThrow(ModModuleMemory,
+			 ModMemoryErrorWrongDeleteCalled, ModErrorLevelError);
+}
+#endif
+
 #endif	// MOD_CONF_MEMORY_MANAGEMENT != 3
 #endif	// !MOD_SELF_MEMORY_MANAGEMENT_OFF
 
 #endif // __ModObject_H__
 
 //
-// Copyright (c) 1997, 2009, 2023 Ricoh Company, Ltd.
+// Copyright (c) 1997, 2009, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

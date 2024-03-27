@@ -3,7 +3,7 @@
 //
 // Order/CheckedSpecification.cpp --
 // 
-// Copyright (c) 2008, 2009, 2010, 2011, 2012, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2008, 2009, 2010, 2011, 2012, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -105,6 +105,18 @@ namespace Impl
 			return pKey && pKey->getScalar()->isRefering(pRelation_);
 		}
 
+		using Handle_::getSize;
+		using Handle_::getOperandi;
+		using Handle_::isAny;
+		using Handle_::isBitSetSort;
+		using Handle_::getFile;
+		using Handle_::hasAlternativeValue;
+		using Handle_::getSpecification;
+		using Handle_::getPartitionKey;
+		using Handle_::require;
+		using Handle_::isGroupBy;
+		using Handle_::isAll;
+		
 	protected:
 		// constructor
 		GenericCheckedSpecificationImpl(Specification* pSpecification_,
@@ -952,6 +964,6 @@ _SYDNEY_PLAN_END
 _SYDNEY_END
 
 //
-// Copyright (c) 2008, 2009, 2010, 2011, 2012, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2008, 2009, 2010, 2011, 2012, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

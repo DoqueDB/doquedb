@@ -3,7 +3,7 @@
 //
 // Predicate/Impl/CombinatorImpl.h --
 // 
-// Copyright (c) 2008, 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2008, 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -186,7 +186,13 @@ namespace Impl
 				cOperator = explainOperator();
 			}
 		}
-		
+
+		using Super::getSize;
+		using Super::isAll;
+		using Super::getType;
+		using Super::getOperandi;
+		using Super::joinOperand;
+		using Super::isAny;
 
 	protected:
 		// constructor
@@ -285,6 +291,15 @@ namespace Impl
 							 Execution::Interface::IIterator* pIterator_,
 							 Candidate::AdoptArgument& cArgument_);
 
+		using Super::foreachOperand;
+		using Super::getType;
+		using Super::isAll;
+		using Super::getMinOperand;
+		using Super::getNodeVariable;
+		using Super::setNodeVariable;
+		using Super::mapOperand;
+		using Super::isAny;
+
 	protected:
 	private:
 	///////////////////////////////
@@ -338,6 +353,15 @@ namespace Impl
 							 Execution::Interface::IProgram& cProgram_,
 							 Execution::Interface::IIterator* pIterator_,
 							 Candidate::AdoptArgument& cArgument_);
+
+		using Super::foreachOperand;
+		using Super::getType;
+		using Super::getOperandSize;
+		using Super::isAll;
+		using Super::getMaxOperand;
+		using Super::getNodeVariable;
+		using Super::setNodeVariable;
+		using Super::mapOperand;
 
 	protected:
 	private:
@@ -459,6 +483,10 @@ namespace Impl
 							 Execution::Interface::IProgram& cProgram_,
 							 Execution::Interface::IIterator* pIterator_,
 							 Candidate::AdoptArgument& cArgument_);
+
+		using Super::foreachOperand;
+		using Super::getType;
+		using Super::getOperandi;
 
 	protected:
 	private:
@@ -1719,6 +1747,6 @@ _SYDNEY_END
 #endif // __SYDNEY_PLAN_PREDICATE_IMPL_COMBINATORIMPL_H
 
 //
-//	Copyright (c) 2008, 2010, 2011, 2012, 2013, 2023 Ricoh Company, Ltd.
+//	Copyright (c) 2008, 2010, 2011, 2012, 2013, 2023, 2024 Ricoh Company, Ltd.
 //	All rights reserved.
 //

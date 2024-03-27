@@ -3,7 +3,7 @@
 //
 // ModNlpResourceUnaJp.cpp --
 // 
-// Copyright (c) 2005, 2009, 2010, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2005, 2009, 2010, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -2395,6 +2395,9 @@ ModNlpResourceUnaJp::ModNlpResourceUnaJp()
 }
 
 ModNlpResourceUnaJp::~ModNlpResourceUnaJp()
+#ifdef STD_CPP11
+noexcept(false)
+#endif
 {
 	DEBUGPRINT("ModNlpResourceUnaJp::~ModNlpResourceUnaJp\n",0);  
 	this->unload();
@@ -2454,6 +2457,6 @@ ModNlpResourceUnaJp::getResourceX()
 	return _cResourceX;
 }
 //
-// Copyright (c) 2005, 2009, 2010, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2005, 2009, 2010, 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

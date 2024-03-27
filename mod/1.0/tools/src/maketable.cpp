@@ -2,7 +2,7 @@
 //
 // 文字に関する情報クラス
 // 
-// Copyright (c) 2000, 2023 Ricoh Company, Ltd.
+// Copyright (c) 2000, 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,6 +68,61 @@ const unsigned short g_FullWidthLatinCapitalA	= 0xff21;
 const unsigned short g_FullWidthLatinCapitalF	= 0xff26;
 const unsigned short g_FullWidthLatinSmallA		= 0xff41;
 const unsigned short g_FullWidthLatinSmallF		= 0xff46;
+
+#define	PRIVATE_HANDLING_OF_UNICODE_DATA
+//
+// 以前取得したUnicodeData-1.1.5.txtでは4E00～FAFFまでのデータは
+// 以下のようになっていた
+// UnicodeData-1.1.5.txt (旧):
+//   4DFE;HANGUL SYLLABLE MIEUM WEO RIEUL-SIOS;Lo;0;L;1106 116F 11B3;;;;N;;;;;
+//   4DFF;HANGUL SYLLABLE MIEUM WEO RIEUL-THIEUTH;Lo;0;L;1106 116F 11B4;;;;N;;;;;
+//   4E00;<CJK Ideograph, First>;Lo;0;L;;;;;N;;;;;
+//   9FFF;<CJK Ideograph, Last>;Lo;0;L;;;;;N;;;;;
+//   E000;<Private Use, First>;Co;0;L;;;;;N;;;;;
+//   F8FF;<Private Use, Last>;Co;0;L;;;;;N;;;;;
+//   F900;<CJK Compatibility Ideograph, First>;Lo;0;L;;;;;N;;;;;
+//   FAFF;<CJK Compatibility Ideograph, Last>;Lo;0;L;;;;;N;;;;;
+//   FB00;LATIN SMALL LIGATURE FF;Ll;0;L;0066 0066;;;;N;;;;;
+//   FB01;LATIN SMALL LIGATURE FI;Ll;0;L;0066 0069;;;;N;;;;;
+//
+// しかし、現在同じファイルを取得すると以下のようになっている
+// UnicodeData-1.1.5.txt (新):
+//   4DFE;HANGUL SYLLABLE MIEUM WEO RIEUL-SIOS;Lo;0;L;1106 116F 11B3;;;;N;;;;;
+//   4DFF;HANGUL SYLLABLE MIEUM WEO RIEUL-THIEUTH;Lo;0;L;1106 116F 11B4;;;;N;;;;;
+//   4E00;<CJK IDEOGRAPH REPRESENTATIVE>;Lo;0;L;;;;;N;;;;;
+//   FB00;LATIN SMALL LIGATURE FF;Ll;0;L;0066 0066;;;;N;;;;;
+//   FB01;LATIN SMALL LIGATURE FI;Ll;0;L;0066 0069;;;;N;;;;;
+//
+// この問題に対応するため、4E00～FAFFのコード範囲については
+// 従来と同じModUnicodeCharTrait.tblが生成されるように独自処理を行う
+//
+// なお、現在でもUnicodeData.txtのより新しいバージョンでは
+// First, Lastが復活している
+// 文字種別が増えているため、ModUnicodeCharTrait.tblはいずれ見直して
+// 修正する必要がある
+// UnicodeData-2.0.14.txt:
+//   33FD;IDEOGRAPHIC TELEGRAPH SYMBOL FOR DAY THIRTY;So;0;L;<compat> 0033 0030 65E5;;;;N;;;;;
+//   33FE;IDEOGRAPHIC TELEGRAPH SYMBOL FOR DAY THIRTY-ONE;So;0;L;<compat> 0033 0031 65E5;;;;N;;;;;
+//   4E00;<CJK Ideograph, First>;Lo;0;L;;;;;N;;;;;
+//   9FA5;<CJK Ideograph, Last>;Lo;0;L;;;;;N;;;;;
+//   AC00;<Hangul Syllable, First>;Lo;0;L;;;;;N;;;;;
+//   D7A3;<Hangul Syllable, Last>;Lo;0;L;;;;;N;;;;;
+//   D800;<Unassigned High Surrogate, First>;Cs;0;L;;;;;N;;;;;
+//   DB7F;<Unassigned High Surrogate, Last>;Cs;0;L;;;;;N;;;;;
+//   DB80;<Private Use High Surrogate, First>;Cs;0;L;;;;;N;;;;;
+//   DBFF;<Private Use High Surrogate, Last>;Cs;0;L;;;;;N;;;;;
+//   DC00;<Low Surrogate, First>;Cs;0;L;;;;;N;;;;;
+//   DFFF;<Low Surrogate, Last>;Cs;0;L;;;;;N;;;;;
+//   E000;<Private Use, First>;Co;0;L;;;;;N;;;;;
+//   F8FF;<Private Use, Last>;Co;0;L;;;;;N;;;;;
+//   F900;<CJK Compatibility Ideograph, First>;Lo;0;L;;;;;N;;;;;
+//   FA2D;<CJK Compatibility Ideograph, Last>;Lo;0;L;;;;;N;;;;;
+//   FB00;LATIN SMALL LIGATURE FF;Ll;0;L;<compat> 0066 0066;;;;N;;;;;
+//   FB01;LATIN SMALL LIGATURE FI;Ll;0;L;<compat> 0066 0069;;;;N;;;;;
+//
+#ifdef PRIVATE_HANDLING_OF_UNICODE_DATA
+int do_private = 0; // 独自処理を行うコード範囲内
+#endif
 
 //
 // 動作確認のための関数
@@ -354,6 +409,39 @@ createCharacterType(const unsigned short				code,
 					const UnicodeDataRowUnicodeData*	row)
 {
 	UnicodeCharacterType	charType;
+
+#ifdef PRIVATE_HANDLING_OF_UNICODE_DATA
+	// コード4E00の行が以下の形式で＊ない＊場合、
+	//   4E00;<CJK Ideograph, First>;Lo;0;L;;;;;N;;;;;
+	// コード範囲4E00～FAFFについては独自にcharTypeを設定する
+	if (!do_private && code == 0x4e00 && row != 0 && 
+		strcmp(row->getName(), "<CJK Ideograph, First>") != 0) {
+		do_private = 1;
+	}
+	if (do_private) {
+		//   4E00;<CJK Ideograph, First>;Lo;0;L;;;;;N;;;;;
+		//   9FFF;<CJK Ideograph, Last>;Lo;0;L;;;;;N;;;;;
+		//   E000;<Private Use, First>;Co;0;L;;;;;N;;;;;
+		//   F8FF;<Private Use, Last>;Co;0;L;;;;;N;;;;;
+		//   F900;<CJK Compatibility Ideograph, First>;Lo;0;L;;;;;N;;;;;
+		//   FAFF;<CJK Compatibility Ideograph, Last>;Lo;0;L;;;;;N;;;;;
+		charType.clear();
+		if (code >= 0x4e00 && code <= 0x9fff) {
+			charType.addKanji();
+			charType.addLetterOther();
+		} else if (code >= 0xa000 && code <= 0xdfff) {
+			charType.addNotused();
+		} else if (code >= 0xe000 && code <= 0xf8ff) {
+			charType.addGaiji();
+		} else if (code >= 0xf900 && code <= 0xfaff) {
+			charType.addLetterOther();
+			if (code == 0xfaff) {
+				do_private = 0;
+			}
+		}
+		return charType;
+	}
+#endif
 
 	//
 	// 文字名フィールドに「ブロックの先頭、末尾」という特殊な情報が
