@@ -1039,7 +1039,7 @@ SQL&gt; select title from T where (title, abstract, body) contains 'システム
 
   <h3><a id="sec201">2.1 パッケージ</a></h3>
 
-  <p class="first">DoqueDBのインストールパッケージはdoquedb-&lt;バージョン&gt;.tar.gzです。
+  <p class="first">DoqueDBのインストールパッケージはdoquedb-&lt;バージョン&gt;.&lt;アーキテクチャー&gt;.tar.gzです。
     パッケージには以下のファイルとディレクトリが含まれています。
 
   <table>
@@ -1157,12 +1157,12 @@ SQL&gt; select title from T where (title, abstract, body) contains 'システム
   </ul>
 
   <ol>
-    <li>doquedb-&lt;バージョン&gt;.tar.gzを展開し、ディレクトリdoquedb-&lt;バージョン&gt;に移動します。
+    <li>doquedb-&lt;バージョン&gt;.&lt;アーキテクチャー&gt;.tar.gzを展開し、ディレクトリdoquedbに移動します。
       <pre>
 $ sudo su -
-# tar xvf doquedb-&lt;バージョン&gt;.tar.gz
+# tar xvf doquedb-&lt;バージョン&gt;.&lt;アーキテクチャー&gt;.tar.gz
 ...
-# cd doquedb-&lt;バージョン&gt;
+# cd doquedb
 </pre>
     </li>
 
@@ -1234,16 +1234,16 @@ SydServer starting (root) ... done.
   <pre class="example">
 &lt;インストールディレクトリ&gt;/
  ├ bin/
- ｜  └ java/
+ │  └ java/
  ├ data/
  ├ db/
  ├ doc/
- ｜  └ sample/
+ │  └ sample/
  ├ etc/
  ├ lib/
  ├ log/
  ├ LICENSE/
- ｜  └ NOTICE.txt
+ │  └ NOTICE.txt
  ├ README.txt
  └ README_ja.txt
 </pre>
@@ -1386,8 +1386,8 @@ SydServer starting (root) ... done.
             </td>
           </tr>
           <tr>
-            <td>libSyMesEng33e.so<br>
-              libSyMesJpn33e.so</td>
+            <td>libSyMesEng.so<br>
+              libSyMesJpn.so</td>
             <td>メッセージライブラリー<br>
               <ul>
                 <li>英語</li>
@@ -1396,7 +1396,7 @@ SydServer starting (root) ... done.
             </td>
           </tr>
           <tr>
-            <td>libTrmeister33e.so</td>
+            <td>libDoqueDB.so</td>
             <td>DoqueDBクライアントライブラリー</td>
           </tr>
           <tr>
@@ -1417,8 +1417,8 @@ SydServer starting (root) ... done.
             <td>C++共通ライブラリー</td>
           </tr>
           <tr>
-            <td>libboost_system.so.1.55.0<br>
-              libboost_filesystem.so.1.55.0</td>
+            <td>libboost_system.so.&lt;バージョン&gt;<br>
+              libboost_filesystem.so.&lt;バージョン&gt;</td>
             <td>Boost C++ライブラリー<br>
               (NOTICE.txtをご覧ください)</td>
           </tr>
@@ -1520,12 +1520,12 @@ SydServer stopping (root) .... done.
 </pre>
     </li>
 
-    <li>doquedb-&lt;バージョン&gt;.tar.gzを展開します。
+    <li>doquedb-&lt;バージョン&gt;.&lt;アーキテクチャー&gt;.tar.gzを展開します。
       インストール時に展開したものがある場合は不要です。
       <pre>
-# tar xvf doquedb-&lt;バージョン&gt;.tar.gz
+# tar xvf doquedb-&lt;バージョン&gt;.&lt;アーキテクチャー&gt;.tar.gz
 ...
-# cd doquedb-&lt;バージョン&gt;
+# cd doquedb
 </pre>
     </li>
 
@@ -3579,9 +3579,9 @@ SQL&gt; mount database TEST path '...' logicallog '...' system '...' recovery fu
  └ LOGICALLOGDIR/
      ├ LOGFILE1.SYD
      ├ LOGFILE2.SYD
-     ｜  ・
-     ｜  ・
-     ｜  ・
+     │  ・
+     │  ・
+     │  ・
      └ LOGFILEM.SYD
 </pre>
 

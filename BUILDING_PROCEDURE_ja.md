@@ -4,14 +4,17 @@
 
 ## 必要条件
 
-ここではCentOS7上でgcc 4.8を使ってビルドすることを想定しています。  
+ここではCentOS Stream 9上でgcc 11.4を使ってビルドすることを想定しています。  
+gcc 4.8を使ってビルドする場合は、O114-64をO48-64と読み替えてください。  
 作業には、それに加えて以下の開発ツールが必要です。  
-zlib-develは、環境によってはlibz-devのこともあります。
+zlib-develは、環境によってはlibz-devのこともあります。  
+CentOS 7ではperl-openをインストールする必要はありません。
 * JDK 8 以降
 * ant
 * libuuid
 * libuuid-devel
 * zlib-devel
+* perl-open
 
 上記開発ツールをインストールするため、以下の手順を実行してください。
 ```
@@ -21,6 +24,7 @@ $ sudo yum install ant
 $ export ANT_HOME=<directory where you installed ant>
 $ sudo yum install libuuid libuuid-devel
 $ sudo yum install zlib-devel
+$ sudo yum install perl-open.noarch
 ```
 さらに、MODライブラリ、UNAライブラリをビルドするためには  
 いくつかのUnicodeデータファイルが必要です。  
@@ -46,12 +50,13 @@ DoqueDBをその順にビルドする必要があります。
 ```
 $ export OSTYPE=linux
 $ cd mod/1.0
-$ ../../common/tools/build/mkconfdir O48-64
-$ cd c.O48-64
+$ ../../common/tools/build/mkconfdir O114-64
+$ cd c.O114-64
 $ make conf-r
 $ make buildall
 $ make install-r
 $ make package
+$ make installh-r
 $ cd ../../..
 ```
 
@@ -59,12 +64,13 @@ $ cd ../../..
 
 ```
 $ cd una/1.0
-$ ../../common/tools/build/mkconfdir O48-64
-$ cd c.O48-64
+$ ../../common/tools/build/mkconfdir O114-64
+$ cd c.O114-64
 $ make conf-r
 $ make buildall
 $ make install-r
 $ make package
+$ make installh-r
 $ cd ../../..
 ```
 
@@ -87,8 +93,8 @@ $ cd ../../../..
 
 ```
 $ cd sydney
-$ ../common/tools/build/mkconfdir O48-64
-$ cd c.O48-64
+$ ../common/tools/build/mkconfdir O114-64
+$ cd c.O114-64
 $ make conf-r
 $ make buildall
 $ make package
@@ -112,7 +118,7 @@ make buildallで生成されたファイルは、make clean-rで削除できま�
 make buildallをもう一度実行してください。
 
 ```
-$ cd c.O48-64
+$ cd c.O114-64
 $ make clean-r
 $ make buildall
 ...
@@ -121,7 +127,7 @@ $ make buildall
 ./conf以下の設定ファイルを変更した場合はmake reconf-rも必要です。
 
 ```
-$ cd c.O48-64
+$ cd c.O114-64
 $ make clean-r
 $ make reconf-r
 $ make buildall
