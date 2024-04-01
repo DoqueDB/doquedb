@@ -26,7 +26,7 @@
 //
 // MODバージョン定義
 //
-#define MOD_VERSION	"1.0.0+001"
+#define MOD_VERSION	"1.1.0+001"
 
 //
 // CLASS
