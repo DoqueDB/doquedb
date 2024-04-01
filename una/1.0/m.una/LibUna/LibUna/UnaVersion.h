@@ -3,7 +3,7 @@
 //
 // UnaVersion.h -- UNAバージョン定義
 // 
-// Copyright (c) 2023 Ricoh Company, Ltd.
+// Copyright (c) 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,6 +29,6 @@
 #endif //__UNA_VERSION_H
 
 //
-// Copyright (c) 2023 Ricoh Company, Ltd.
+// Copyright (c) 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //

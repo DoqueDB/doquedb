@@ -3,7 +3,7 @@
 //
 // ModVersion.h -- ModVersionのクラス定義
 // 
-// Copyright (c) 2023 Ricoh Company, Ltd.
+// Copyright (c) 2023, 2024 Ricoh Company, Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,6 +68,6 @@ ModVersion::getVersion()
 #endif	// __ModVersion_H__
 
 //
-// Copyright (c) 2023 Ricoh Company, Ltd.
+// Copyright (c) 2023, 2024 Ricoh Company, Ltd.
 // All rights reserved.
 //
