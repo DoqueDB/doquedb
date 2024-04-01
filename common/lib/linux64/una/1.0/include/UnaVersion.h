@@ -24,7 +24,7 @@
 //
 // UNAバージョン定義
 //
-#define UNA_VERSION	"1.0.0+001"
+#define UNA_VERSION	"1.1.0+001"
 
 #endif //__UNA_VERSION_H
 
