@@ -96,5 +96,5 @@ Please fill out the form and send it to the address listed.
 
 ## Licenses
 
-The source code of DooqueDB is released under the Apache License 2.0.  
+The source code of DoqueDB is released under the Apache License 2.0.  
 Please see LICENSE/NOTICE.txt for third-party software licenses.
