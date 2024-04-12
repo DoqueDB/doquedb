@@ -86,6 +86,7 @@ $ ./sentenceSearch.sh
 * [ナレッジ(Knowledge)](https://doquedb.github.io/doquedb/knowledge.html)
 * [JDBC Driver](https://doquedb.github.io/doquedb-javadoc/javadoc/index.html)
 * [Hibernate Dialect](https://doquedb.github.io/doquedb-javadoc/dialect/index.html)
+* [Python Driver](https://doquedb.github.io/doquedb-pythondoc/pythondoc/index.html)
 
 ## コミュニティ
 
