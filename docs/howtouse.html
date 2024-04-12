@@ -103,27 +103,40 @@
         </dl>
       </dd>
       <dt>
-        <a href="#sec6">6. データベースを削除する</a>
-      </dt>
-      <dt>
-        <a href="#sec7">7. うまく動かないとき</a>
-      </dt>
-      <dt>
-        <a href="#sec8">8. 青空文庫の全データで検索する</a>
+        <a href="#sec6">6. Pythonでサンプルを実行する</a>
       </dt>
       <dd>
         <dl>
           <dt>
-            <a href="#sec81">8.1 青空文庫の作品データを取得する</a>
+            <a href="#sec61">6.1 データベースを準備する</a>
           </dt>
           <dt>
-            <a href="#sec82">8.2 青空文庫の書誌情報を取得する</a>
+            <a href="#sec61">6.1 検索を実行する</a>
+          </dt>
+        </dl>
+      </dd>
+      <dt>
+        <a href="#sec7">7. データベースを削除する</a>
+      </dt>
+      <dt>
+        <a href="#sec8">8. うまく動かないとき</a>
+      </dt>
+      <dt>
+        <a href="#sec9">9. 青空文庫の全データで検索する</a>
+      </dt>
+      <dd>
+        <dl>
+          <dt>
+            <a href="#sec91">9.1 青空文庫の作品データを取得する</a>
           </dt>
           <dt>
-            <a href="#sec83">8.3 データを加工する</a>
+            <a href="#sec92">9.2 青空文庫の書誌情報を取得する</a>
           </dt>
           <dt>
-            <a href="#sec84">8.4 データを登録する</a>
+            <a href="#sec93">9.3 データを加工する</a>
+          </dt>
+          <dt>
+            <a href="#sec94">9.4 データを登録する</a>
           </dt>
         </dl>
       </dd>
@@ -136,13 +149,13 @@
     この文書では、DoqueDBのインストールからさまざまな検索の実行方法までを、
     青空文庫のデータを使いながら、順を追って駆け足で解説していきます。
     DoqueDBの検索機能について、おおまかな感触をつかんでいただければ幸いです。<br>
-    途中で処理に失敗するときは <a href="#sec7">7. うまく動かないとき</a> をご覧ください。
+    途中で処理に失敗するときは <a href="#sec8">8. うまく動かないとき</a> をご覧ください。
   </p>
   <p>
     DoqueDBに収録されている青空文庫のデータはごく一部ですが、
     青空文庫からご自身でデータを取得することにより、
     そのデータを対象に検索をお試しいただくことが可能です。
-    詳細については <a href="#sec8">8. 青空文庫の全データで検索する</a> をご覧ください。
+    詳細については <a href="#sec9">9. 青空文庫の全データで検索する</a> をご覧ください。
   </p>
 
   <h2><a id="sec2">2. インストール</a></h2>
@@ -186,7 +199,7 @@ portnumber=54321
 </pre>
   <p>
     ユーザーズマニュアルを含む各種HTML文書は以下のURLにあります。<br>
-	<a href="https://doquedb.github.io/doquedb/index.html">https://doquedb.github.io/doquedb/index.html</a>
+    <a href="https://doquedb.github.io/doquedb/index.html">https://doquedb.github.io/doquedb/index.html</a>
   </p>
 
   <h3><a id="sec22">2.2 インストールする</a></h3>
@@ -315,9 +328,12 @@ doc/sample/
   Java/
     Setup.Java          JDBCでデータベースを準備するプログラム
     SentenceSearch.Java JDBCで自然文検索を実行するプログラム
+  Python/
+    setup.py            Pythonでデータベースを準備するプログラム
+    sentenc_search.py   Pythonで自然文検索を実行するプログラム
 </pre>
   <p>
-    以降の章ではSQLインタプリターあるいはJavaプログラムで
+    以降の章ではSQLインタプリター、Javaプログラム、Pythonプログラムで
     データベースと全文索引を作成し、さまざまな検索を実行します。
     説明を簡単にするため、データベース操作はすべて管理者ユーザーの
     rootで実行していることをご承知ください。
@@ -643,7 +659,7 @@ docId score(content) title lastName firstName kwic(content for 150 enclose with 
 
 42308 6.89818731482802E-1 白雪姫 菊池 寛 は、どうして、わたしたちの家にはいってきたのかね。」と、&lt;BEGIN&gt;小人&lt;END&gt;たちはききました。そこで、&lt;BEGIN&gt;お姫さま&lt;END&gt;は、まま母が、じぶんをころそうとしたのを、かりうどが、そっと助けてくれたので、一日じゅう、かけずりまわって、やっと、この家を見つけたことを、&lt;BEGIN&gt;小人&lt;END&gt;たちに&lt;BEGIN&gt;話&lt;END&gt;しました。その&lt;BEGIN&gt;話&lt;END&gt;をきいて、&lt;BEGIN&gt;小人&lt;END&gt;たちは、 「もしも、おまえ
 ...
-  </pre>
+</pre>
   <p>
     ここでは指定していませんが、contains述語にextractorを指定すると、
     検索語の抽出に使われる辞書リソースを明示的に指定することもできます。
@@ -957,7 +973,227 @@ docId,score(content),title,lastName,firstName,kwic(content for 150),
 　それからまもなくのこと、王さまがこの村にやってきました。けれども、それが王さまだとは
 </pre>
 
-  <h2><a id="sec6">6. データベースを削除する</a></h2>
+  <h2><a id="sec6">6. Pythonでサンプルを実行する</a></h2>
+  <p>
+    Pythonクライアントライブラリを用いることで、Pythonプログラムからデータベースを操作できます。
+    ライブラリの詳細については<a href="../doquedb-pythondoc/pythondoc/index.html">Python Driver</a>を参照してください。
+  </p>
+  <p>
+    本章のサンプルを実行するためには、以下の条件を満たす必要があります。
+  </p>
+  <ul>
+    <li>Python 3がインストールされていること。</li>
+    <li>py-doquedbがインストールされていること。<br/>
+        手順についてはpy-doquedbの<a href="https://github.com/DoqueDB/doquedb/tree/master/sydney/Python/README.md">README.md</a>を参照してください。「開発環境構築とテスト」の項は実施不要です。</li>
+  </ul>
+
+  <h3><a id="sec61">6.1 データベースを準備する</a></h3>
+  <p>
+    以下の手順でデータベースを準備します。
+    create databaseを実行するときは、connect()の引数dbnameに
+    組み込みデータベースDefaultDBを指定してください。
+    データベース名がsampleSqliからsamplePythonに変わったことを除いて、
+    第4章の<a href="#sec41">4.1</a>～<a href="#sec43">4.3</a>と同じ内容を実施しています。
+  </p>
+  <ul class="none">
+    <li>1. データベースを作る (create database)</li>
+    <li>2. テーブルを作る (create table)</li>
+    <li>3. データを登録する (insert)</li>
+    <li>4. 全文索引を作る (create fulltext index)</li>
+  </ul>
+  <p>
+    この処理を行うプログラムがPythonディレクトリのsetup.pyです。
+    以下のように実行してください。
+  </p>
+  <pre>
+$ mkdir ~/doquedb
+$ cp -rp /var/lib/DoqueDB/doc/sample ~/doquedb
+$ cd ~/doquedb/sample/Python
+$ python3 setup.py
+データベースの作成を開始
+None
+テーブルの作成を開始
+None
+バッチインサートを開始
+[(None, None, 0), (None, None, 1), ..., (None, None, 155)]
+全文索引の作成を開始
+None
+</pre>
+  <p>
+    setup.pyの内容は以下のようになっています。
+  </p>
+  <pre>
+import os
+import doquedb as dq
+
+# カレントディレクトリの取得
+path = os.getcwd()
+
+# 1. サンプルコード実行用のデータベースを作成する
+# 接続情報を与え、データベースに接続する
+try:
+    conn = dq.connect(host='localhost',
+                      port=54321,
+                      dbname='DefaultDB',
+                      user='root',
+                      password='doqadmin',
+                      autocommit=True)  # スキーマ操作のため明示的なトランザクションは利用できない
+    # データベース操作のためのCursorオブジェクトを作り、データベースを作成する
+    print("データベースの作成を開始")
+    cur = conn.cursor()
+    cur.execute("create database samplePython")
+    rows = cur.fetchall()
+    print(rows)
+except dq.Error as e:
+    print("error: " + e)
+finally:
+    cur.close()
+    conn.close()
+
+# 2. 作成したデータベースに再度アクセスしテーブルを作成
+try:
+    conn = dq.connect(host='localhost',
+                      port=54321,
+                      dbname='samplePython',
+                      user='root',
+                      password='doqadmin',
+                      autocommit=True)  # スキーマ操作のため明示的なトランザクションは利用できない
+    cur = conn.cursor()
+    # テーブルを作成
+    print("テーブルの作成を開始")
+    rs = cur.execute("""
+                CREATE TABLE AozoraBunko (
+                docId int,
+                title nvarchar(256),
+                lastName nvarchar(128),
+                firstName nvarchar(128),
+                url varchar(128),
+                content ntext,
+                primary key(docId))
+                """)
+    rows = cur.fetchall()
+    print(rows)
+except dq.Error as e:
+    print("error:" + e)
+finally:
+    cur.close()
+    conn.close()
+
+# 3. トランザクション処理のため再度データベースに接続しデータを登録する
+try:
+    conn = dq.connect(host='localhost',
+                      port=54321,
+                      dbname='samplePython',
+                      user='root',
+                      password='doqadmin',
+                      autocommit=False)  # オートコミットを切る
+    # トランザクションを開始
+    conn.begin_transaction()
+    cur = conn.cursor()
+    # バッチインサートを実行
+    print("バッチインサートを開始")
+    statement = f"""
+    insert into AozoraBunko
+    input from path '{path}/../data/insert.csv'
+    hint 'code="utf-8" InputField=(1,2,16,17,51,57)'
+    """
+    cur.execute(statement)
+    rows = cur.fetchall()
+    print(rows)
+    conn.commit()
+except dq.Error as e:
+    print("error: " + e)
+    conn.rollback()
+    cur.close()
+    conn.close()
+
+# 4. 全文索引の作成のため再度データベースに接続し、索引を登録する
+try:
+    conn = dq.connect(host='localhost',
+                      port=54321,
+                      dbname='samplePython',
+                      user='root',
+                      password='doqadmin',
+                      autocommit=True)  # スキーマ操作のため明示的なトランザクションは利用できない
+    cur = conn.cursor()
+    # 全文索引の作成
+    print("全文索引の作成を開始")
+    statement = """
+    create fulltext index INDEX1 on AozoraBunko(content)
+    hint 'kwic,
+          delayed,
+          inverted=(normalized=(stemming=false, deletespace=false),
+          indexing=dual,
+          tokenizer=DUAL:JAP:ALL:1 @NORMRSCID:1 @UNARSCID:1)'
+    """
+    cur.execute(statement)
+    rows = cur.fetchall()
+    print(rows)
+except dq.Error as e:
+    print("error: " + e)
+    cur.close()
+    conn.close()
+
+# 終了処理
+dq.close()
+</pre>
+
+  <h3><a id="sec62">6.2 検索を実行する</a></h3>
+  <p>
+    検索を実行し、結果を表示するPythonプログラム、sentence_search.pyを示します。<br>
+    ここでは自然文検索を行っています。
+  </p>
+  <pre style="white-space:pre-wrap">
+import doquedb as dq
+
+# 白雪姫を検索する
+try:
+    conn = dq.connect(host='localhost',
+                      port=54321,
+                      dbname='samplePython',
+                      user='root',
+                      password='doqadmin',
+                      autocommit=True)
+    cur = conn.cursor()
+    searchword = "小人と暮らすお姫さまが悪いおばあさんに毒リンゴを食べさせられる話"
+    cur.execute(f"""
+                select docId,
+                       score(content),
+                       title,
+                       lastName,
+                       firstName,
+                       kwic(content for 150)
+                from AozoraBunko where content contains
+                    freetext('{searchword}')
+                order by score(content)
+                desc limit 5
+                """)
+    # 検索結果を取得してprintする
+    rows = cur.fetchall()
+    assert rows
+    print(*rows, sep='\n')
+except dq.Error as e:
+    print("error:" + e)
+finally:
+    cur.close()
+    conn.close()
+
+dq.close()
+</pre>
+
+  <p>
+    sentence_search.pyを実行した結果を以下に示します。
+  </p>
+  <pre style="white-space:pre-wrap">
+$ python3 sentence_search.py
+(42308, 0.6898187314828024, '白雪姫', '菊池', '寛', 'は、どうして、わたしたちの家にはいってきたのかね。」と、小人たちはききました。そこで、お姫さまは、まま母が、じぶんをころそうとしたのを、かりうどが、そっと助けてくれたので、一日じゅう、かけずりまわって、やっと、この家を見つけたことを、小人たちに話しました。その話をきいて、小人たちは、\n「もしも、おまえ')
+(59411, 0.6124133539876164, '旅の仲間', 'アンデルセン', 'ハンス・クリスチャン', 'と思ったのです。宿屋の主人は、ふたりにむかって、こんな話をしました。\n「この国の王さまは、たいへんおやさしい、よい方で、どんな人をも苦しめるようなことはなさいません。それなのに、お嬢さまといったら、ほんとになさけない話ですが、それはひどいお姫さまなんですよ。おきれいなことは、たしかに、おきれいです。')
+(58052, 0.535589643758629, 'ニールスのふしぎな旅', '矢崎', '源九郎', 'あかりに照らしだされていました。おばあさんがしばらく見ていますと、やがて、ちっぽけな小僧が足音をそっとしのばせて、この門からはいってきました。せの高さはほんの十センチぐらいのものでしょう。革ズボンに木靴といった、労働者のようなかっこうです。おばあさんは、すぐに小人だなと気がつきましたので、すこしもこわく')
+(33188, 0.5113688616088571, '獄中への手紙', '宮本', '百合子', 'お餅をたべたいのに食べられないと残念がったりしていたのをよく御承知ですから、手術したことをびっくりなさりながら、やっぱり、後がさっぱりして却って安心と云って下さいました。後がさっぱりのうれしさは、今にもうすこしして平気に歩くようになったとき俄然真価を発揮すると思います。\n\u3000私はリンゴぜめよ。誰彼が見舞')
+(2282, 0.5063893225844849, '津軽', '太宰', '治', '、その手紙にも、「なんにも、おかまひ下さるな。あなたは、知らん振りをしてゐて下さい。お出迎へなどは、決して、しないで下さい。でも、リンゴ酒と、それから蟹だけは。」といふやうな事を書いてやつた筈で、食べものには淡泊なれ、といふ私の自戒も、蟹だけには除外例を認めてゐたわけである。私は蟹が好きなのである。どうしてだか')
+</pre>
+
+  <h2><a id="sec7">7. データベースを削除する</a></h2>
   <p>
     一度実行したサンプルコードをもう一度実行するには、
     作成したデータベースが削除された状態に戻す必要があります。
@@ -968,6 +1204,7 @@ $ sqli_cmd="/var/lib/DoqueDB/bin/sqli -remote localhost 54321
     -user root -password doqadmin -code utf-8"
 $ $sqli_cmd -sql "drop database sampleSqli"
 $ $sqli_cmd -sql "drop database sampleJava"
+$ $sqli_cmd -sql "drop database samplePython"
 </pre>
 
   <p>
@@ -977,7 +1214,7 @@ $ $sqli_cmd -sql "drop database sampleJava"
     上記サンプルを加工するなどして、さらにお役立ていただければ幸いです。
   </p>
 
-  <h2><a id="sec7">7. うまく動かないとき</a></h2>
+  <h2><a id="sec8">8. うまく動かないとき</a></h2>
   <p>
     サンプルコードの実行手順については十分確認しておりますが、
     処理に失敗するなどうまく動かないときは以下の点をご確認ください。
@@ -989,7 +1226,7 @@ $ $sqli_cmd -sql "drop database sampleJava"
     <dd>DoqueDBサービスのプロセスから見える場所にファイルがあるか確認してください。</dd>
   </dl>
 
-  <h2><a id="sec8">8. 青空文庫の全データで検索する</a></h2>
+  <h2><a id="sec9">9. 青空文庫の全データで検索する</a></h2>
   <p>
     ここまで青空文庫のサンプルデータで検索をお試しいただきましたが、
     ご自身でデータを取得して登録することにより、
@@ -997,7 +1234,7 @@ $ $sqli_cmd -sql "drop database sampleJava"
     ここではデータの取得から加工、登録までの手順について説明します。
   </p>
 
-  <h3><a id="sec81">8.1 青空文庫の作品データを取得する</a></h3>
+  <h3><a id="sec91">9.1 青空文庫の作品データを取得する</a></h3>
   <p>
     青空文庫の作品データはGitHubのリポジトリaozorahackにあり、
     ZIP書庫としてダウンロードできます。
@@ -1031,7 +1268,7 @@ $ $sqli_cmd -sql "drop database sampleJava"
     著作権なしのテキストデータについては文字コードはすべてShiftJISです。
   </p>
 
-  <h3><a id="sec82">8.2 青空文庫の書誌情報を取得する</a></h3>
+  <h3><a id="sec92">9.2 青空文庫の書誌情報を取得する</a></h3>
   <p>
     青空文庫の書誌情報は「公開中 作家別作品一覧拡充版」として以下に置かれています。
     これを取得してください。
@@ -1063,7 +1300,7 @@ $ $sqli_cmd -sql "drop database sampleJava"
     <li>https://www.aozora.gr.jp/cards/{人物ID(ゼロ埋め6桁)}/files/{作品識別名}.zip</li>
   </ul>
 
-  <h3><a id="sec83">8.3 データを加工する</a></h3>
+  <h3><a id="sec93">9.3 データを加工する</a></h3>
   <p>
     作品データと書誌情報を加工し、データベースに登録します。
     Perlの実行環境とunzipが必要です。
@@ -1096,7 +1333,7 @@ $ perl process-aozora-data.pl
     データがどのように加工されるかについては、加工ツールのコメントをご覧ください。
   </p>
 
-  <h3><a id="sec84">8.4 データを登録する</a></h3>
+  <h3><a id="sec94">9.4 データを登録する</a></h3>
   <p>
     insert.csvとOUTPUT/*.txtが用意できたら、<a href="#sec4">4. SQLでサンプルを実行する</a>
     に従ってデータベースを作成します。
@@ -1105,7 +1342,7 @@ $ perl process-aozora-data.pl
   </p>
   <p>
     すでにサンプルデータを登録済みのデータベースが存在する場合は、あらかじめ
-    <a href="#sec6">6. データベースを削除する</a> の手順でデータベースを削除しておいてください。
+    <a href="#sec7">7. データベースを削除する</a> の手順でデータベースを削除しておいてください。
   </p>
   <p>
     以上でデータの登録は終わりです。
