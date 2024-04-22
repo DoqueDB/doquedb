@@ -37,7 +37,7 @@ def create_db():
     # クラス単位のセットアップ作業
     # 外部コマンドでsqliを実行し、テストに使用するテーブルを作成する
     if platform.system() == 'Linux':
-        create_table = "sqli -remote localhost 54321 -database DefaultDB \
+        create_table = "/var/lib/DoqueDB/bin/sqli -remote localhost 54321 -database DefaultDB \
             -user root -password doqadmin \
             -sql 'DROP TABLE Test_Cursor IF EXISTS;\
             CREATE TABLE Test_Cursor (\
@@ -53,7 +53,7 @@ def create_db():
 
     # クラス単位のティアダウン作業
     # 外部コマンドでsqliを実行し、テーブルを削除する
-    delete_table = "sqli /remote localhost 54321 /database DefaultDB \
+    delete_table = "/var/lib/DoqueDB/bin/sqli /remote localhost 54321 /database DefaultDB \
         /user root /password doqadmin \
         /sql DROP TABLE Test_Cursor IF EXISTS;"
     subprocess.run(delete_table, shell=True)
@@ -101,7 +101,7 @@ class TestCursor():
         # ティアダウン
         # 外部コマンドでsqliを実行し、テーブルの中身を削除する
         if platform.system() == 'Linux':
-            delete_table = "sqli -remote localhost 54321 -database DefaultDB\
+            delete_table = "/var/lib/DoqueDB/bin/sqli -remote localhost 54321 -database DefaultDB\
                 -user root -password doqadmin\
                 -sql 'DELETE FROM Test_Cursor'"
             subprocess.run(delete_table, shell=True)
@@ -548,7 +548,7 @@ class TestCursorPrepared():
         # ティアダウン
         # 外部コマンドでsqliを実行し、テーブルの中身を削除する
         if platform.system() == 'Linux':
-            delete_table = "sqli -remote localhost 54321 -database DefaultDB\
+            delete_table = "/var/lib/DoqueDB/bin/sqli -remote localhost 54321 -database DefaultDB\
                 -user root -password doqadmin\
                 -sql 'DELETE FROM Test_Cursor'"
             subprocess.run(delete_table, shell=True)

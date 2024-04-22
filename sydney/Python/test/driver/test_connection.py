@@ -36,7 +36,7 @@ def create_table():
     # モジュール単位のセットアップ作業
     # 外部コマンドでsqliを実行し、テストに使用するテーブルを作成する
     if platform.system() == 'Linux':
-        create_table = "sqli -remote localhost 54321 -database DefaultDB \
+        create_table = "/var/lib/DoqueDB/bin/sqli -remote localhost 54321 -database DefaultDB \
             -user root -password doqadmin -sql\
             'CREATE TABLE Test_ReadOnly (\
             id INT,\
@@ -58,7 +58,7 @@ def create_table():
 
     # モジュール単位のティアダウン作業
     # 外部コマンドでsqliを実行し、テーブルを削除する
-    drop_table = "sqli -remote localhost 54321 -database DefaultDB \
+    drop_table = "/var/lib/DoqueDB/bin/sqli -remote localhost 54321 -database DefaultDB \
         -user root -password doqadmin -sql \
         'DROP TABLE Test_ReadOnly IF EXISTS; \
         DROP TABLE Test_Commit IF EXISTS; \
@@ -295,7 +295,7 @@ class TestConnection:
 
         # 後処理
         # 外部コマンドでsqliを実行し、テーブルを削除する
-        delete_table = "sqli /remote localhost 54321 /database DefaultDB \
+        delete_table = "/var/lib/DoqueDB/bin/sqli /remote localhost 54321 /database DefaultDB \
             /user root /password doqadmin \
             /sql 'DELETE FROM Test_Commit;'"
         subprocess.run(delete_table, shell=True)

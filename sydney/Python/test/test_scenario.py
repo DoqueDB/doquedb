@@ -43,7 +43,7 @@ def create_db():
     # クラス単位のセットアップ作業
     # 外部コマンドでsqliを実行し、テストに使用するテーブルを作成する
     if platform.system() == 'Linux':
-        create_table = "sqli -remote localhost 54321 -database DefaultDB \
+        create_table = "/var/lib/DoqueDB/bin/sqli -remote localhost 54321 -database DefaultDB \
             -user root -password doqadmin -sql \
             'CREATE TABLE Test_Scenario (\
             test_int INT,\
@@ -74,7 +74,7 @@ def create_db():
 
     # クラス単位のティアダウン作業
     # 外部コマンドでsqliを実行し、テーブルを削除する
-    delete_table = "sqli -remote localhost 54321 -database DefaultDB \
+    delete_table = "/var/lib/DoqueDB/bin/sqli -remote localhost 54321 -database DefaultDB \
         -user root -password doqadmin -sql \
         'DROP TABLE Test_Scenario IF EXISTS;\
         DROP TABLE Test_CreateTable IF EXISTS;\
@@ -102,7 +102,7 @@ class TestScenario:
 
         # 外部コマンドでsqliを実行し、テーブルの中身を削除する
         if platform.system() == 'Linux':
-            delete_table = "sqli -remote localhost 54321 -database DefaultDB\
+            delete_table = "/var/lib/DoqueDB/bin/sqli -remote localhost 54321 -database DefaultDB\
                 -user root -password doqadmin\
                 -sql 'DELETE FROM Test_Scenario'"
             subprocess.run(delete_table, shell=True)
