@@ -147,4 +147,4 @@ $ sphinx-build -b html docs/source docs/build # generate HTML under build
 
 # Document
 
-- [Python Driver](https://doquedb.github.io/doquedb-pythondoc/pythondoc/index.html)
+- [Python Driver](https://doquedb.github.io/doquedb-pythondoc/index.html)
