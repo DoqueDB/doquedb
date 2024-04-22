@@ -19,16 +19,16 @@ make_exception.py -- 例外ファイルを自動生成するモジュール.
 Notes:
     このプログラムは必ずビルド前に実行する。
     実行ディレクトリ:
-        py-doquedb
+        sydney/Python
     実行方法：
         以下のコマンドを実行する
         > python tools/make_exception.py
     前提:
-        以下のファイルを py-doquedb/tools 下に配置する
+        以下のファイルを sydney/Python/tools 下に配置する
         ErrorDefinition.xml: DoqueDBのエラーが定義されたxmlファイル
         ErrorDefinition.xmlの文字コードはutf-8である(S-JISではない)
     出力:
-        以下のファイルが py-doquedb/src/doquedb/exception 配下に生成される
+        以下のファイルが sydney/Python/src/doquedb/exception 配下に生成される
         database_exceptions.py: エラークラス定義モジュール
         errorcode.py: エラーコード定義モジュール
         raise_error.py: 例外クラス生成モジュール
@@ -235,7 +235,7 @@ raise_error_file = open(raise_error_path, mode='w', encoding='utf-8')
 raise_error_file.write('''"""
 raise_error.py -- 自動生成された例外をスローするためのモジュール
 """
-import src.doquedb.exception.database_exceptions as db_ex
+from ..exception import database_exceptions as db_ex
 from ..common.serialdata import ExceptionData
 from .exceptions import UnexpectedError
 
