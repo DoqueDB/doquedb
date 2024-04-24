@@ -1,0 +1,4756 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+  ExceptionMaster.xml : 例外クラスのもとになるエラー定義ファイル
+
+  Copyright (c) 2000, 2014, 2023 Ricoh Company, Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+   
+      http://www.apache.org/licenses/LICENSE-2.0
+   
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE ErrorDefine [
+  <!ELEMENT ErrorDefine (Error)*>
+
+  <!ELEMENT Error (Name, Number, StateCode, Message, MessageArgument*, Description, Solution, Alias*, Convert)>
+  <!ELEMENT Name (#PCDATA)>
+  <!ELEMENT Number (#PCDATA)>
+  <!ELEMENT StateCode (#PCDATA)>
+
+  <!ELEMENT Message (English, Japanese)>
+  <!ELEMENT MessageArgument (#PCDATA)>
+  <!ELEMENT Description (English?, Japanese)>
+  <!ELEMENT Solution (English?, Japanese)>
+  <!ELEMENT Alias (#PCDATA)>
+  <!ELEMENT Convert (#PCDATA)>
+
+  <!ELEMENT English (#PCDATA)>
+  <!ELEMENT Japanese (#PCDATA)>
+]>
+
+<!--
+★エラー定義に関する注意★
+
+	【エラー定義ファイル自体について】
+		・ファイルの文字コードをSJISから変更してはいけない
+		・定義は共通のものとCommon、セッションなどモジュールごとの
+		  セクションに分かれる
+		・セクションわけはNumberの衝突を防ぐことが目的であり、
+		  ほかのモジュールに対応するセクションの例外は使えないなどの制限はない
+
+	【例外作成の方針について】
+		・例外の種類はなるべく増やさない、必要なら詳細をログに出す
+
+	【エラー番号について】
+		・0番のエラーは作ってはいけない
+		・Numberは16進8桁で定義し、上位4桁はセクションごとに決まる値を使う
+
+	【エラーレベルについて】
+		・エラーレベルはUserとSystemの2種類
+		・Userレベルの例外はユーザのオペミス等、ユーザの操作に起因するエラー
+		・Systemレベルの例外はシステムの状態に起因する例外
+		・Userレベルの例外が発生しても使用していたコネクションは破棄しない
+
+	【エラーメッセージについて】
+		・Messageに%1などで挿入されるものが文字列である場合、
+		  言語に左右されない文字列(SQL文、表名など)のみがあてはまるようにする
+		  補足説明などの「文」を挿入するようにしてはいけない
+		・ユーザーエラーと非ユーザーエラーを完全に区別することはできないが、
+		  あきらかに非ユーザーエラーであるばあいは日本語メッセージの先頭に
+		  「内部エラー:」をつける
+
+-->
+
+<ErrorDefine>
+
+<!--
+SQLSTATEに対応したクラス(0x1000)
+-->
+
+<!-- 00 S successful completion(0x10000000) -->
+<!-- 01 W warning(0x10000100) -->
+<!-- 02 N no data(0x10000200) -->
+<!-- 03 X SQL statement not yet complete(0x10000300) -->
+
+<!-- 07 X dynamic SQL error(0x10000400) -->
+<!-- 07001 using clause does not match dynamic parameter specifications(0401) -->
+
+  <Error>
+    <Name>DynamicParameterNotMatch</Name>
+    <Number>0x10000401</Number>
+    <StateCode>07001</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>The number of parameter values(%1) does not match parameters(%2).</English>
+      <Japanese>パラメーター値の数(%1)が必要な数(%2)と一致しません。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+      	?を用いたSQL文に対して必要な数のパラメーターが指定されていない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+      	必要な数のパラメーターを指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 07002 using clause does not match target specifications -->
+<!-- 07003 cursor specification cannot be executed -->
+<!-- 07004 using clause required for dynamic parameters -->
+<!-- 07005 prepared statement not a cursor specification -->
+<!-- 07006 restricted data type attribute violation -->
+<!-- 07007 using clause required for result fields -->
+<!-- 07008 invalid descriptor count -->
+<!-- 07009 invalid descriptor index -->
+<!-- 0700B data type transform function violation -->
+<!-- 0700C undefined DATA value -->
+<!-- 0700D invalid DATA target -->
+<!-- 0700F invalid DATETIME_INTERVAL_CODE -->
+<!-- 0700E invalid LEVEL value -->
+
+<!-- 08 X connection exception(0x10000500) -->
+<!-- 08000 (no subclass) -->
+<!-- 08001 SQL-client unable to establish SQL-connection(0501) -->
+<!-- 08002 connection name in use(0502) -->
+<!-- 08003 connection does not exist(0503) -->
+  <Error>
+    <Name>ConnectionNotExist</Name>
+    <Number>0x10000503</Number>
+    <StateCode>08003</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Connection exception - connection does not exist.</English>
+      <Japanese>指定されたセッションが存在しません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+      	存在しないセッションIDが渡された
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいセッションIDを使用する
+      </Japanese>
+    </Solution>
+  </Error>
+<!-- 08003 client not exist(0508) -->
+  <Error>
+    <Name>ClientNotExist</Name>
+    <Number>0x10000508</Number>
+    <StateCode>08003</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Connection exception - client(ID=%1) does not exist.</English>
+      <Japanese>指定されたクライアント(ID=%1)が存在しません。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+      	存在しないクライアントIDが渡された
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいクライアントIDを使用する
+      </Japanese>
+    </Solution>
+  </Error>
+<!-- 08003 client not exist(0509) -->
+  <Error>
+    <Name>SessionNotExist</Name>
+    <Number>0x10000509</Number>
+    <StateCode>08003</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Connection exception - session(ID=%1) does not exist.</English>
+      <Japanese>指定されたセッション(ID=%1)が存在しません。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+      	存在しないセッションIDが渡された
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいセッションIDを使用する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 08004 SQL-server rejected establishment of SQL-connection(0504) -->
+<!-- 08006 connection failure(0506) -->
+<!-- 08007 transaction resolution unknown(0507) -->
+
+<!-- *************** SYSTEM DEFINED ****************** -->
+<!-- 08501 authorization failed(0551) -->
+  <Error>
+    <Name>AuthorizationFailed</Name>
+    <Number>0x10000551</Number>
+    <StateCode>08501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Connection exception - authorization failed.</English>
+      <Japanese>認証に失敗しました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	正しくないパスワードが指定された
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいパスワードを指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 09 X triggered action exception(0x10000600) -->
+
+<!-- 0A X feature not supported(0x10000700) -->
+  <Error>
+    <Name>NotSupported</Name>
+    <!-- not supportedはv14以前からあるので番号は昔のものを使う -->
+    <Number>0x00000005</Number>
+    <StateCode>0A000</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Feature not supported.</English>
+      <Japanese>サポートされていない機能を使用しました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>実装されていない機能を使用しようとした</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	その機能を使用しないようにする
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>FullTextIndexNeeded</Name>
+    <Number>0x10000751</Number>
+    <StateCode>0A501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Fulltext index is needed.</English>
+      <Japanese>全文索引が定義されている必要があります。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>全文索引が定義されていないのに全文索引が必要な機能を使用しようとした</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	全文索引を定義するか、その機能を使用しないようにする
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>SpatialIndexNeeded</Name>
+    <Number>0x10000752</Number>
+    <StateCode>0A502</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Spatial index is needed.</English>
+      <Japanese>空間索引が定義されている必要があります。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>空間索引が定義されていないのに空間索引が必要な機能を使用しようとした</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	空間索引を定義するか、その機能を使用しないようにする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 0B X invalid transaction initiation(0x10000800) -->
+<!-- 0D X invalid target type specification(0x10000900) -->
+<!-- 0E X invalid schema name list specification(0x10000a00) -->
+<!-- 0F X locator exception(0x10000b00) -->
+<!-- 0L X invalid grantor(0x10000c00) -->
+<!-- 0M X invalid SQL-invoked procedure reference(0x10000d00) -->
+<!-- 0P X invalid role specification(0x10000e00) -->
+
+<!-- *************** SYSTEM DEFINED ****************** -->
+<!-- 0P501 no such role -->
+  <Error>
+    <Name>RoleNotFound</Name>
+    <Number>0x10000e51</Number>
+    <StateCode>0P501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid role specification - role '%1' is not found.</English>
+      <Japanese>ロール'%1'は登録されていません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	指定されたロールが登録されていない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	登録されているロールを指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 0S X invalid transform group name specification(0x10000f00) -->
+<!-- 0T X target table diagrees with cursor specification(0x10001000) -->
+<!-- 0T X target table diagrees with cursor specification(0x10001100) -->
+<!-- 0U X attempt to assign to non-updatable column(0x10001200) -->
+<!-- 0U X attempt to assign to ordering column(0x10001300) -->
+<!-- 0W X attempt to assign to ordering column(0x10001400) -->
+<!-- 0Z X diagnostics exception(0x10001500) -->
+
+<!-- 21 X cardinality violation(0x10001600) -->
+  <Error>
+    <Name>CardinalityViolation</Name>
+    <Number>0x10001601</Number>
+    <StateCode>21000</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Cardinality violation.</English>
+      <Japanese>単一行のみ許される問い合わせが2行以上返しています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>row subqueryにあたる場所で結果が2行以上だった</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        問い合わせを確認する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 22 X data exception(0x10001700) -->
+
+<!-- 22000 (no subclass)(1701) -->
+<!-- 22001 string data, right truncation(1702) -->
+  <Error>
+    <Name>StringRightTruncation</Name>
+    <Number>0x10001702</Number>
+    <StateCode>22001</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - string data, right truncation.</English>
+      <Japanese>文字列型へのキャストで制限長を超える部分があります。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>制限長のある文字列型へのキャストで制限長を超える部分があった。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        制限長が十分か確認する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 22002 null value, no indicator parameter(1703) -->
+
+<!-- 22003 numeric value out of range(1704) -->
+  <Error>
+    <Name>NumericValueOutOfRange</Name>
+    <Number>0x10001704</Number>
+    <StateCode>22003</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - numeric value out of range.</English>
+      <Japanese>数値型の演算で範囲を超える操作をしようとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>四則演算などの結果数値型で表現できる範囲を超える操作があった。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        超えないようにする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 22004 null value not allowed(1705) -->
+  <Error>
+    <Name>NullNotAllowed</Name>
+    <Number>0x10001705</Number>
+    <StateCode>22004</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - null value not allowed.</English>
+      <Japanese>ナル値が許されない操作をしようとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>ナル値が許されない操作をした。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        ナル値になった操作を確認する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 22005 error in assignment(1706) -->
+<!-- 22006 invalid interval format(1707) -->
+
+<!-- 22007 invalid datetime format(1708) -->
+  <Error>
+    <Name>InvalidDatetimeFormat</Name>
+    <Number>0x10001708</Number>
+    <StateCode>22007</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - invalid datetime format.</English>
+      <Japanese>日時型に変換できません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>日時型へのキャストで日時型に変換できない文字列が渡された。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        キャストしようとした値を確認する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 22008 datetime field overflow(1709) -->
+<!-- 22009 invalid time zone displacement value(170a) -->
+<!-- 2200B escape character conflict(170b) -->
+<!-- 2200C invalid use of escape character(170c) -->
+<!-- 2200D invalid escape octet(170d) -->
+
+<!-- 2200E null value in array target(170E) -->
+<!-- 配列への代入はサポートしていない
+  <Error>
+    <Name>NullInArray</Name>
+    <Number>0x1000170E</Number>
+    <StateCode>2200E</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - null value in array target.</English>
+      <Japanese>nullの配列要素には代入できません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>配列型の要素への代入が指示されたが対象がnullだった。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        代入対象がnullでないようにする
+      </Japanese>
+    </Solution>
+  </Error>
+-->
+
+<!-- 2200F zero-length character string(170f) - Sydneyではエラーにしない -->
+<!-- 2200G most specific type mismatch(1710) -->
+
+<!-- 2200H sequence generator limit exceeded(1711) -->
+  <Error>
+    <Name>SequenceLimitExceeded</Name>
+    <Number>0x10001711</Number>
+    <StateCode>2200H</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Data exception - sequence generator limit exceeded.</English>
+      <Japanese>シーケンスの値が最大値に到達しました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>シーケンスの値が最大値になった。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        これ以上挿入できない。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 2200P interval value out of range(1712) -->
+<!-- 2200Q multiset value overflow(1713) -->
+<!-- 22010 invalid indicator parameter value(1714) -->
+
+<!-- 22011 substring error(1715) -->
+  <Error>
+    <Name>SubStringError</Name>
+    <Number>0x10001715</Number>
+    <StateCode>22011</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - substring error.</English>
+      <Japanese>SUBSTRINGの引数が不正です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>SUBSTRINGでstart positionが長さを超えていた。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        SUBSTRINGの引数を確認する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 22012 division by zero(1716) -->
+  <Error>
+    <Name>DivisionByZero</Name>
+    <Number>0x10001716</Number>
+    <StateCode>22012</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - division by zero.</English>
+      <Japanese>0による除算をしようとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>割り算のdivisorが0だった。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        0で割らないようにする。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 22013 invalid preceding or following size in window function(1717) -->
+<!-- 22015 interval field overflow(1718) -->
+
+<!-- 22018 invalid character value for cast(1719) -->
+  <Error>
+    <Name>InvalidCharacter</Name>
+    <Number>0x10001719</Number>
+    <StateCode>22018</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - invalid character value for cast.</English>
+      <Japanese>文字列の中にキャストできない文字が含まれています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>文字列型をキャストするときにターゲットの型に対して不正な文字が含まれていた。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        キャストしようとした文字列を確認する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 22019 invalid escape character(171a) -->
+  <Error>
+    <Name>InvalidEscape</Name>
+    <Number>0x1000171a</Number>
+    <StateCode>22019</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - invalid escape character.</English>
+      <Japanese>エスケープ文字は1文字でなければなりません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>LikeやSimilarに指定したエスケープ文字の長さが1でなかった。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        エスケープ文字の内容を確認する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 2201B invalid regular expression(171b) -->
+  <Error>
+    <Name>InvalidRegularExpression</Name>
+    <Number>0x1000171b</Number>
+    <StateCode>2201B</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - invalid regular expression.</English>
+      <Japanese>正規表現が正しくありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>Similarに指定した正規表現が正しくない。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        正規表現を正しくする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 2201C null row not permitted in table(171c) -->
+<!--
+  <Error>
+    <Name>NullRowNotPermitted</Name>
+    <Number>0x1000171c</Number>
+    <StateCode>2201c</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - null row not permitted in table.</English>
+      <Japanese>VALUESを構成する行にnullが含まれています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>table value constructorを構成する行にnullがあった。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        table value constructorを構成する行にnullを書かない
+      </Japanese>
+    </Solution>
+  </Error>
+-->
+
+<!-- 2201E invalid argument for natural logarithm(171d) -->
+<!-- 2201F invalid argument for power function(171e) -->
+<!-- 2201G invalid argument for width bucket function(171f) -->
+
+  <Error>
+  <!-- 22021 character not in repertoire(1720) -->
+    <Name>CharacterNotInRepertoire</Name>
+    <Number>0x10001720</Number>
+    <StateCode>22021</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - character not in repertoire.</English>
+      <Japanese>型が対応していない文字を指定しています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>char型の列にASCII以外の文字を渡した。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        ASCIIしか渡さないようにするか、列の型をncharにする。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 22022 indicator overflow(1721) -->
+<!-- 22023 invalid parameter value(1722) -->
+<!-- 22024 unterminated C string(1723) -->
+
+<!-- 22025 invalid escape sequence(1724) -->
+  <Error>
+    <Name>InvalidEscapeSequence</Name>
+    <Number>0x10001724</Number>
+    <StateCode>22025</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - invalid escape sequence.</English>
+      <Japanese>LIKEのパターンにおけるエスケープ文字の使い方に誤りがあります。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>以下の条件を満たさなかった: likeのパターンが1文字か2文字の部分に分解できて、1文字の部分はエスケープ文字以外からなり、2文字の部分はエスケープ文字とエスケープ文字かアンダースコアかパーセント記号の連結である。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        エスケープ文字を正しく使う。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 22027 trim error(1725) -->
+
+<!-- 22029 noncharacter in UCS string(1726) -->
+  <Error>
+    <Name>NonCharacterInString</Name>
+    <Number>0x10001726</Number>
+    <StateCode>22029</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - noncharacter in UCS string.</English>
+      <Japanese>文字列中にUCSの文字でないデータが含まれます。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>文字列中にUCSではないデータが含まれている。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        文字列の内容を確認する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 2202D null value substituted for mutator subject parameter(1727) -->
+
+<!-- 2202E array element error(1728) -->
+  <Error>
+    <Name>BadArrayElement</Name>
+    <Number>0x10001728</Number>
+    <StateCode>2202E</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - array element error.</English>
+      <Japanese>ARRAYの要素指定が不正です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>ARRAYの要素指定が範囲外だった。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        要素指定を確認する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 2202F array data, right truncation(1729) -->
+  <Error>
+    <Name>ArrayRightTruncation</Name>
+    <Number>0x10001729</Number>
+    <StateCode>2202F</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Data exception - array data, right truncation.</English>
+      <Japanese>ARRAYの代入で最大長を超える部分があります。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>ARRAYの代入で代入もとの要素数が代入先の最大長を超えていた。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        代入もとの要素数が超えないように確認する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 2202G invalid repeat argument in a sample clause(172a) -->
+<!-- 2202H invalid sample size(172b) -->
+
+<!-- *************** SYSTEM DEFINED ****************** -->
+<!-- 22501 can't cast class(1751) -->
+  <Error>
+    <Name>ClassCast</Name>
+    <!-- v14以前からあるので番号は昔のものを使う -->
+    <Number>0x00010002</Number>
+    <StateCode>22501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Can't cast class.</English>
+      <Japanese>クラスのキャストに失敗しました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	オブジェクトの内容を別のクラスにキャストしようとして失敗した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	キャストが可能なクラスか確認し、
+	データがキャスト可能でなければ正しいデータを与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 22502 invalid section data(1752) -->
+  <Error>
+    <Name>InvalidSectionData</Name>
+    <Number>0x10001752</Number>
+    <StateCode>22502</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid section data.</English>
+      <Japanese>セクションデータが異常です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	全文索引に使うセクションデータと言語データの次数があっていない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	全文索引に使うセクションデータと言語データの次数を合わせる
+      </Japanese>
+    </Solution>
+  </Error>
+
+ <!-- 22510 invalid data file format(1760) -->
+  <Error>
+    <Name>InvalidDataFile</Name>
+    <Number>0x10001760</Number>
+    <StateCode>22510</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid data file format. (record #%1)</English>
+      <Japanese>データファイルのフォーマットが不正です。(%1レコード目)</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>INSERT INPUT FROM構文などで指定したデータファイルが規定のフォーマットに合わない</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        データファイルや構文に渡すHINTを見直す
+      </Japanese>
+    </Solution>
+  </Error>
+<!-- ************ END OF SYSTEM DEFINED ************** -->
+
+<!-- 23 X integrity constraint violation(0x10001800) -->
+<!-- 23000 (no subclass)(1801) -->
+
+  <Error>
+    <Name>IntegrityViolation</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x00070001</Number>
+    <StateCode>23000</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Integrity constraint violation.</English>
+      <Japanese>インテグリティに違反するデータ操作を行おうとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>それを実行するとインテグリティを破ってしまうようなデータ操作を行おうとした</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>インテグリティに違反するデータ操作を行わない</Japanese>
+    </Solution>
+  </Error>
+
+<!-- 23001 restrict violation(1802) -->
+
+<!-- *************** SYSTEM DEFINED ****************** -->
+<!-- 23501 nullablility violation(1851) -->
+  <Error>
+    <Name>NullabilityViolation</Name>
+    <Number>0x10001851</Number>
+    <StateCode>23501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>NOT NULL constraint violation on the column '%1'.</English>
+      <Japanese>NOT NULLの制約がついている列%1にNULLの値を設定しようとしました。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>挿入または更新でNOT NULLの制約がついている列にNULLの値を設定しようとした</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>NOT NULLの列にNULLを入れない</Japanese>
+    </Solution>
+  </Error>
+
+<!-- 23502 uniqueness violation(1852) -->
+  <Error>
+    <Name>UniquenessViolation</Name>
+    <Number>0x10001852</Number>
+    <StateCode>23502</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>UNIQUE constraint violation.</English>
+      <Japanese>UNIQUE制約に違反するデータ操作を行おうとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>UNIQUE制約に違反するデータ操作を行おうとした</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>UNIQUE制約に違反するデータ操作を行わない</Japanese>
+    </Solution>
+  </Error>
+
+<!-- 23503 refered key violation(1853) -->
+  <Error>
+    <Name>ForeignKeyViolation</Name>
+    <Number>0x10001853</Number>
+    <StateCode>23003</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Integrity constraint violation - no matching row in foreign key.</English>
+      <Japanese>外部キーに合致するレコードがありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>外部キーで参照しているレコードに存在しない値を設定しようとした</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>外部キーに存在する値を使用する</Japanese>
+    </Solution>
+  </Error>
+
+<!-- 23504 refered key violation(1854) -->
+  <Error>
+    <Name>ReferedKeyViolation</Name>
+    <Number>0x10001854</Number>
+    <StateCode>23004</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Integrity constraint violation - referenced by foreign key.</English>
+      <Japanese>外部キーで参照されている列を削除または更新しようとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>外部キーで参照されている列を削除または更新しようとした</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>外部キーで参照されている列は更新しない。または参照しているレコードから削除または更新する</Japanese>
+    </Solution>
+  </Error>
+
+<!-- ************ END OF SYSTEM DEFINED ************** -->
+		
+<!-- 24 X invalid cursor state(0x10001900) -->
+
+<!-- 25 X invalid transaction state(0x10001a00) -->
+
+<!-- 25000 (no subclass)(1a01) -->
+<!-- 25001 active SQL-transaction(1a02) -->
+  <Error>
+    <Name>AlreadyBeginTransaction</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x00090001</Number>
+    <StateCode>25001</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Active SQL-transaction.</English>
+      <Japanese>すでにトランザクションは開始されています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	トランザクション中にトランザクションを開始しようとした。または、トランザクションブランチを開始もしくは待機しようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	トランザクションを開始しない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 25002 branch transaction already active(1a03) -->
+  <Error>
+    <Name>XA_InsideActiveBranch</Name>
+    <Number>0x00001a03</Number>
+    <StateCode>25002</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Branch transaction already active.</English>
+      <Japanese>すでにトランザクションブランチは開始されています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	データ操作中のトランザクションブランチにおいて不可なトランザクション操作・トランザクションブランチ操作を行おうとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	不可な操作を行わない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 25003 inappropriate access mode for branch transaction(1a04) -->
+<!-- 25004 inappropriate isolation level for branch transaction(1a05) -->
+<!-- 25005 no active SQL-transaction for branch transaction(1a06) -->
+<!-- 25006 read-only SQL-transaction(1a07) -->
+  <Error>
+    <Name>ReadOnlyTransaction</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x00090003</Number>
+    <StateCode>25006</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Read-only SQL-transaction.</English>
+      <Japanese>読み取り専用トランザクションで許されない操作を行おうとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	読み取り専用トランザクションで許されない操作を行おうとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	更新トランザクションで行う。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 25007 schema and data statement mixing not supported(1a08) -->
+<!-- 25008 held cursor requires same isolation level(1a09) -->
+
+<!-- *************** SYSTEM DEFINED ****************** -->
+<!-- 25501 schema statement in explicit transaction(1a51) -->
+  <Error>
+    <Name>InvalidExplicitTransaction</Name>
+    <Number>0x10001a51</Number>
+    <StateCode>25501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Schema statement in explicit transaction.</English>
+      <Japanese>明示的に開始されたトランザクション中にスキーマ操作を行おうとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	明示的に開始されたトランザクション中にスキーマ操作を行おうとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	暗黙トランザクションで行う。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 25502 not in transaction(1a52) -->
+  <Error>
+    <Name>NotBeginTransaction</Name>
+    <Number>0x10001a52</Number>
+    <StateCode>25502</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Not in transaction.</English>
+      <Japanese>トランザクションが開始されていません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	トランザクション中に行うべき処理をトランザクションを
+	開始せずに行おうとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	トランザクションを開始する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 25503 badtransaction(1a53) -->
+  <Error>
+    <Name>BadTransaction</Name>
+    <!-- v14以前から昔の番号を使う -->
+    <Number>0x00090004</Number>
+    <StateCode>25503</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Transaction mode or isolation level is inconsistent with operation.</English>
+      <Japanese>トランザクションの読み書き属性かアイソレーションレベルが行おうとした操作と両立しません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	トランザクションの読み書き属性かアイソレーションレベルが行おうとした操作で許されていないものだった。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい読み書き属性およびアイソレーションレベルを持ったトランザクションで行う。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 25504 duplicate transaction branch identifier(1a54) -->
+  <Error>
+    <Name>XA_DuplicateIdentifier</Name>
+    <Number>0x00001a54</Number>
+    <StateCode>25504</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Duplicate transaction branch identifier.</English>
+      <Japanese>トランザクションブランチ識別子はすでに使用中です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	『データ操作中』・『中断中』・『待機中』のトランザクションブランチのトランザクションブランチ識別子を指定して新たにトランザクションブランチを開始した。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	トランザクションブランチ識別子が誤っていないか確認する。JOIN句またはRESUME句を指定してトランザクションブランチを合流または再開する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 25505 transaction branch statement protocol error(1a55) -->
+  <Error>
+    <Name>XA_ProtocolError</Name>
+    <Number>0x00001a55</Number>
+    <StateCode>25505</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Transaction branch statement protocol error.</English>
+      <Japanese>トランザクションブランチに対する不正な操作です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	ある状態のトランザクションブランチに対して許されない操作を行おうとした。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	行おうとした操作が正しいか確認する。トランザクションブランチ識別子が誤っていないか確認する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 25506 unknown transaction branch identifier(1a56) -->
+  <Error>
+    <Name>XA_UnknownIdentifier</Name>
+    <Number>0x00001a56</Number>
+    <StateCode>25506</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Unknown transaction branch identifier.</English>
+      <Japanese>指定されたトランザクションブランチ識別子は存在しません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	存在しないトランザクションブランチ識別子が指定された。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	トランザクションブランチ識別子が誤っていないか確認する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 25507 transaction branch committed due to heuristic decision(1a57) -->
+  <Error>
+    <Name>XA_HeurCommit</Name>
+    <Number>0x00001a57</Number>
+    <StateCode>25507</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>transaction branch committed due to heuristic decision.</English>
+      <Japanese>トランザクションブランチはコミットしてヒューリステックに解決済です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	トランザクションブランチはコミットしてヒューリスティックに解決済である。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	グローバルトランザクションがコミットされているかロールバックされているかを確認し、それと合致していなければ、トランザクションブランチで行われた操作を手動で取り消す。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 25508 transaction branch rolled back due to heuristic decision(1a58) -->
+  <Error>
+    <Name>XA_HeurRollback</Name>
+    <Number>0x00001a58</Number>
+    <StateCode>25508</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>transaction branch rolled back due to heuristic decision.</English>
+      <Japanese>トランザクションブランチはロールバックしてヒューリステックに解決済です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	トランザクションブランチはロールバックしてヒューリスティックに解決済である。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	グローバルトランザクションがコミットされているかロールバックされているかを確認し、それと合致していなければ、トランザクションブランチで行われた操作を手動で再実行する。また、その後の操作を確認し、問題がある部分に対処する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 25509 transaction branch partially committed and partially rolled back due to heuristic decision(1a59) -->
+  <Error>
+    <Name>XA_HeurMix</Name>
+    <Number>0x00001a59</Number>
+    <StateCode>25509</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>transaction branch partially committed and partially rolled back due to heuristic decision.</English>
+      <Japanese>トランザクションブランチは部分的にコミットされ、そして部分的にロールバックしてヒューリステックに解決済です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	トランザクションブランチは部分的にコミットされ、そして部分的にロールバックしてヒューリスティックに解決済である。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	グローバルトランザクションがコミットされているかロールバックされているかを確認し、トランザクションブランチで行われた操作を確認し、問題がある部分に対処する。また、その後の操作も確認し、問題がある部分に対処する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 2550A invalid transaction branch identifier(1a5A) -->
+  <Error>
+    <Name>XA_InvalidIdentifier</Name>
+    <Number>0x00001a5A</Number>
+    <StateCode>2550A</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid transaction branch identifier.</English>
+      <Japanese>不正なトランザクションブランチ識別子が指定されました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	不正なトランザクションブランチ識別子が指定された。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	指定したトランザクションブランチ識別子を確認する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 2550B other database already modified(1a5B) -->
+  <Error>
+    <Name>OtherDatabaseAlreadyModified</Name>
+    <Number>0x00001a5B</Number>
+    <StateCode>2550B</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Both Database '%1' and '%2' are not modified inside a transaction or a transaction branch.</English>
+      <Japanese>1つのトランザクションまたはトランザクションブランチの中でデータベース'%1'と'%2'の両方を更新できません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	1つのトランザクションまたはトランザクションブランチで2つのデータベースを更新しようとした。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	1つのトランザクションまたはトランザクションブランチでは1つのデータベースしか更新できないので、2つ目のデータベースに関する更新は別のトランザクションまたはトランザクションブランチで行うようにする。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- ************ END OF SYSTEM DEFINED ************** -->
+		
+<!-- 26 X invalid SQL statement name(0x10001b00) -->
+<!-- 26000 (no subclass) -->
+
+<!-- 27 X triggered data change violation(0x10001c00) -->
+<!-- 28 X invalid authorization specification(0x10001d00) -->
+
+<!-- *************** SYSTEM DEFINED ****************** -->
+<!-- 28501 no user -->
+  <Error>
+    <Name>UserNotFound</Name>
+    <Number>0x10001d51</Number>
+    <StateCode>28501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid authorization specification - user '%1' is not found.</English>
+      <Japanese>ユーザー'%1'は登録されていません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	指定されたユーザーが登録されていない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	登録されているユーザーを指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 28502 empty user -->
+  <Error>
+    <Name>UserRequired</Name>
+    <Number>0x10001d52</Number>
+    <StateCode>28502</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid authorization specification - user name is required.</English>
+      <Japanese>ユーザー名を指定してください。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	ユーザー名が指定されていない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	ユーザー名を指定する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 28503 duplicate user -->
+  <Error>
+    <Name>DuplicateUser</Name>
+    <Number>0x10001d53</Number>
+    <StateCode>28503</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid authorization specification - user '%1' is already appeared.</English>
+      <Japanese>ユーザー'%1'は登録済みです。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	すでに登録済みのユーザー名でユーザーを作成しようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	登録されていないユーザー名を指定する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 28504 too long user name -->
+  <Error>
+    <Name>TooLongUserName</Name>
+    <Number>0x10001d54</Number>
+    <StateCode>28504</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid authorization specification - user name is too long.</English>
+      <Japanese>ユーザー名が長すぎます。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	ユーザー名の長さが制限長を超えている
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+      	ユーザー名を制限長を超えない長さにする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 28505 invalid user name -->
+  <Error>
+    <Name>InvalidUserName</Name>
+    <Number>0x10001d55</Number>
+    <StateCode>28505</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid authorization specification - invalid character is used in user name.</English>
+      <Japanese>ユーザー名に不正な文字が含まれています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	ユーザー名にサポート外の文字が使用されている。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+      	サポートされている文字を使用する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 28506 duplicate user id -->
+  <Error>
+    <Name>DuplicateUserID</Name>
+    <Number>0x10001d56</Number>
+    <StateCode>28506</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid authorization specification - user ID '%1' is already used.</English>
+      <Japanese>ユーザーID'%1'は使用されています。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	すでに登録済みのユーザーIDを指定してユーザーを作成しようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	登録されていないユーザーIDを指定する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 28507 user ID overflow -->
+  <Error>
+    <Name>UserIDOutOfRange</Name>
+    <Number>0x10001d57</Number>
+    <StateCode>28507</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid authorization specification - user ID out of range.</English>
+      <Japanese>ユーザーIDが範囲を超えています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	ユーザーIDに使用できない数値が指定されている。
+	または自動割当のユーザーIDが範囲を超えた。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+      	使用できる数値を指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 2B X dependent privilege descriptors still exist(0x10001e00) -->
+<!-- 2C X invalid character set name(0x10001f00) -->
+<!-- 2D X invalid transaction termination(0x10002000) -->
+
+<!-- 2E X invalid connection name(0x10002100) -->
+<!-- 2F X SQL routine exception(0x10002200) -->
+<!-- 2H X invalid collation name(0x10002300) -->
+
+<!-- 30 X invalid SQL statement identifier(0x10002400) -->
+<!-- 30000 (no subclass) -->
+  <Error>
+    <Name>InvalidStatementIdentifier</Name>
+    <Number>0x10002401</Number>
+    <StateCode>30000</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid SQL statement identifier.</English>
+      <Japanese>指定された識別子に対応するSQLステートメントはありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	指定された識別子に対応するSQLステートメントがない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	識別子の内容を確認する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 33 X invalid SQL descriptor name(0x10002500) -->
+<!-- 34 X invalid cursor name(0x10002600) -->
+<!-- 35 X invalid condition number(0x10002700) -->
+<!-- 36 X cursor sensitivity exception(0x10002800) -->
+<!-- 38 X external routine exception(0x10002900) -->
+<!-- 39 X external routine invocation exception(0x10002a00) -->
+<!-- 3B X savepoint exception(0x10002b00) -->
+<!-- 3C X ambiguous cursor name(0x10002c00) -->
+<!-- 3D X invalid catalog name(0x10002d00) -->
+<!-- 3F X invalid schema name(0x10002e00) -->
+
+<!-- *************** SYSTEM DEFINED ****************** -->
+<!-- 3F501 area not found(2e51) -->
+  <Error>
+    <Name>AreaNotFound</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x00040001</Number>
+    <StateCode>3F501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Area '%1' not found in database '%2'.</English>
+      <Japanese>データベース'%2'にエリア'%1'はありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前のエリアは存在しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F502 database not found(2e52) -->
+  <Error>
+    <Name>DatabaseNotFound</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x00040002</Number>
+    <StateCode>3F502</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Database '%1' is not found.</English>
+      <Japanese>データベース'%1'はありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前のデータベースは存在しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F503 table not found(2e53) -->
+  <Error>
+    <Name>TableNotFound</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x00040003</Number>
+    <StateCode>3F503</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Table '%1' not found in database '%2'.</English>
+      <Japanese>データベース'%2'に表'%1'はありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の表は存在しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F504 column not found(2e54) -->
+  <Error>
+    <Name>ColumnNotFound</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x00040004</Number>
+    <StateCode>3F504</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Column '%1' not found.</English>
+      <Japanese>列'%1'はありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の列は存在しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F505 constraint not found(2e55) -->
+  <Error>
+    <Name>ConstraintNotFound</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x00040005</Number>
+    <StateCode>3F505</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Constraint '%1' not found in table '%2'.</English>
+      <Japanese>表'%2'に制約'%1'はありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の制約は存在しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F506 index not found(2e56) -->
+  <Error>
+    <Name>IndexNotFound</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x00040006</Number>
+    <StateCode>3F506</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Index '%1' not found in database '%2'.</English>
+      <Japanese>データベース'%2'に索引'%1'はありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の索引は存在しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F507 key not found(2e57) -->
+  <Error>
+    <Name>KeyNotFound</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x00040007</Number>
+    <StateCode>3F507</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Key '%1' not found in index '%2'.</English>
+      <Japanese>索引'%2'にキー'%1'はありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前のキーは存在しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F508 schema object not found(2e58) -->
+  <Error>
+    <Name>SchemaObjectNotFound</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x000400ff</Number>
+    <StateCode>3F508</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Schema object not found.</English>
+      <Japanese>スキーマ情報を取得できません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	IDなどによるスキーマ情報の取得に失敗した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいIDが与えられたか確認する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F509 stored function not found(2e59) -->
+  <Error>
+    <Name>StoredFunctionNotFound</Name>
+    <Number>0x10002e59</Number>
+    <StateCode>3F509</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Function '%1' not found in database '%2'.</English>
+      <Japanese>データベース'%2'に関数'%1'はありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の関数は存在しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F50A cascade not found(2e5a) -->
+  <Error>
+    <Name>CascadeNotFound</Name>
+    <Number>0x10002e5a</Number>
+    <StateCode>3F50A</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Cascade '%1' not found in database '%2'.</English>
+      <Japanese>データベース'%2'に子サーバー'%1'はありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の子サーバーは存在しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F50B partition not found(2e5b) -->
+  <Error>
+    <Name>PartitionNotFound</Name>
+    <Number>0x10002e5b</Number>
+    <StateCode>3F50B</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Partition on '%1' not found in database '%2'.</English>
+      <Japanese>データベース'%2'に表'%1'のルールは定義されていません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の表にルールは存在しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F511 area already defined(2e61) -->
+  <Error>
+    <Name>AreaAlreadyDefined</Name>
+    <Number>0x10002e61</Number>
+    <StateCode>3F511</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Area '%1' already defined in database '%2'.</English>
+      <Japanese>データベース'%2'にエリア'%1'はすでにあります。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前のエリアがある
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	使われていない名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F512 database already defined(2e62) -->
+  <Error>
+    <Name>DatabaseAlreadyDefined</Name>
+    <Number>0x10002e62</Number>
+    <StateCode>3F512</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Database '%1' is already defined.</English>
+      <Japanese>データベース'%1'はすでにあります。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前のデータベースがある
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	使われていない名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F513 table already defined(2e63) -->
+  <Error>
+    <Name>TableAlreadyDefined</Name>
+    <Number>0x10002e63</Number>
+    <StateCode>3F513</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Table '%1' already defined in database '%2'.</English>
+      <Japanese>データベース'%2'に表'%1'はすでにあります。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の表がある
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	使われていない名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F514 column already defined(2e64) -->
+  <Error>
+    <Name>ColumnAlreadyDefined</Name>
+    <Number>0x10002e64</Number>
+    <StateCode>3F514</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Column '%1' already defined in table '%2'.</English>
+      <Japanese>表'%2'に列'%1'はすでにあります。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の列がある
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	使われていない名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F515 constraint already defined(2e65) -->
+  <Error>
+    <Name>ConstraintAlreadyDefined</Name>
+    <Number>0x10002e65</Number>
+    <StateCode>3F515</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Constraint '%1' already defined in table '%2'.</English>
+      <Japanese>表'%2'に制約'%1'はすでにあります。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の制約がある
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	使われていない名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F516 index already defined(2e66) -->
+  <Error>
+    <Name>IndexAlreadyDefined</Name>
+    <Number>0x10002e66</Number>
+    <StateCode>3F516</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Index '%1' already defined in database '%2'.</English>
+      <Japanese>データベース'%2'に索引'%1'はすでにあります。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の索引がある
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	使われていない名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F517 key already defined(2e67) -->
+  <Error>
+    <Name>KeyAlreadyDefined</Name>
+    <Number>0x10002e67</Number>
+    <StateCode>3F517</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Key '%1' already defined in index '%2'.</English>
+      <Japanese>索引'%2'にキー'%1'はすでにあります。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前のキーがある
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	使われていない名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F518 cascade already defined(2e68) -->
+  <Error>
+    <Name>CascadeAlreadyDefined</Name>
+    <Number>0x10002e68</Number>
+    <StateCode>3F518</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Cascade '%1' already defined in database '%2'.</English>
+      <Japanese>データベース'%2'に子サーバー'%1'はすでにあります。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の子サーバーがある
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	使われていない名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F519 stored function already defined(2e69) -->
+  <Error>
+    <Name>StoredFunctionAlreadyDefined</Name>
+    <Number>0x10002e69</Number>
+    <StateCode>3F519</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Function '%1' already defined in database '%2'.</English>
+      <Japanese>データベース'%2'に関数'%1'はすでにあります。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の関数がある
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	使われていない名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F51a partition already defined(2e6a) -->
+  <Error>
+    <Name>PartitionAlreadyDefined</Name>
+    <Number>0x10002e6a</Number>
+    <StateCode>3F51a</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Partition on '%1' already defined in database '%2'.</English>
+      <Japanese>データベース'%2'に表'%1'のルールはすでに定義されています。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前の表にルール定義がある
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	ALTERを使う
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F51b invalid cascade specification(2e6b) -->
+  <Error>
+    <Name>InvalidCascade</Name>
+    <Number>0x10002e6b</Number>
+    <StateCode>3F51b</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid cascade specification.</English>
+      <Japanese>子サーバーの指定が不正です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	子サーバーの指定が正しくない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい子サーバーの指定をする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F51c invalid partition specification(2e6c) -->
+  <Error>
+    <Name>InvalidPartition</Name>
+    <Number>0x10002e6c</Number>
+    <StateCode>3F51c</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid partition specification.</English>
+      <Japanese>ルールの指定が不正です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	ルールの指定が正しくない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいルールの指定をする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F51d not empty table(2e6d) -->
+  <Error>
+    <Name>TableNotEmpty</Name>
+    <Number>0x10002e6d</Number>
+    <StateCode>3F51d</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Table '%1' is not empty.</English>
+      <Japanese>表'%1'が空ではありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	表が空でないとできない操作をした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	表を空にする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F51e stored function is used(2e6e) -->
+  <Error>
+    <Name>StoredFunctionUsed</Name>
+    <Number>0x10002e6e</Number>
+    <StateCode>3F51e</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Function '%1' is used in table '%2'.</English>
+      <Japanese>関数'%1'は表'%2'で使用中です。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	使用中の関数をDROPしようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	関数を使用している表のルール定義を変更する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 3F51f read only partition(2e6f) -->
+  <Error>
+    <Name>ReadOnlyPartition</Name>
+    <Number>0x10002e6f</Number>
+    <StateCode>3F51f</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Partition on '%1' is read only partition.</English>
+      <Japanese>表'%1'に定義されているルールは参照専用です。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	参照専用ルールの定義されている表に更新操作を行おうとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	子サーバーに直接更新操作を実施する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- ************ END OF SYSTEM DEFINED ************** -->
+
+<!-- 40 X transaction rollback(0x10002f00) -->
+<!-- 40000 (no subclass) -->
+
+<!-- 40001 serialization failure -->
+
+<!-- 40002 integrity constraint violation -->
+
+<!-- 40003 statement completion unknown -->
+
+<!-- 40004 triggered action exception -->
+
+<!-- 42 X syntax error or access rule violation(0x10003000) -->
+<!-- 42000 (no subclass) -->
+<!-- Syntax Errorの種類に応じて切り替える？ -->
+
+  <Error>
+    <Name>SQLSyntaxError</Name>
+    <!-- v14以前からあるので昔の番号を使う -->
+    <Number>0x00030001</Number>
+    <StateCode>42000</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error '%1'.</English>
+      <Japanese>SQL文の構文エラー: '%1'</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	構文が正しくないSQL文が与えられた
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいSQL文を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- *************** SYSTEM DEFINED ****************** -->
+<!-- **** 4250X: errors occurred in schema definition **** -->
+<!-- 42501 column length out of range (3051) -->
+  <Error>
+    <Name>ColumnLengthOutOfRange</Name>
+    <Number>0x10003051</Number>
+    <StateCode>42501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid column definition - length(%2) specified to column '%1' exceeds the limit value(%3).</English>
+      <Japanese>列'%1'に指定された長さ(%2)が制限値(%3)を超えました。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	列に渡された長さが制限値を超えていた
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	制限値以内の値を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42502 too long object name (3052) -->
+  <Error>
+    <Name>TooLongObjectName</Name>
+    <Number>0x10003052</Number>
+    <StateCode>42502</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid schema definition - length(%1) of name exceeds the limit value(%2).</English>
+      <Japanese>スキーマオブジェクト名の長さ(%1)は制限値(%2)以下でなければなりません。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	スキーマオブジェクト名の長さが制限値を超えていた
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	制限値以内の長さにする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42503 invalid reference specification (3053) -->
+  <Error>
+    <Name>InvalidReference</Name>
+    <Number>0x10003053</Number>
+    <StateCode>42503</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid foreign key definition - no proper referenced keys.</English>
+      <Japanese>外部キーの参照列が適切ではありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	外部キーで参照している列がUniqueではないなど正しく設定されていない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい列を参照する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42504 invalid path specification (3054) -->
+  <Error>
+    <Name>InvalidPath</Name>
+    <Number>0x10003054</Number>
+    <StateCode>42504</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid schema operation - invalid path is specified for the object '%1'.</English>
+      <Japanese>スキーマオブジェクト'%1'のパス指定が正しくありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	create databaseで指定されたパスがすでにあったり、mountで指定されたパスが存在しないなど
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいパスを指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42505 not allowed to temporary table (3055) -->
+  <Error>
+    <Name>TemporaryTable</Name>
+    <Number>0x10003055</Number>
+    <StateCode>42505</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid schema operation - the operation is not allowed on a temporary table.</English>
+      <Japanese>一時表に対して許されていない再構成処理を行おうとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	一時表に対して許されていない操作を行おうとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	その操作をしない、または一時表にしない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42506 default specification needed (3056) -->
+  <Error>
+    <Name>DefaultNeeded</Name>
+    <Number>0x10003056</Number>
+    <StateCode>42506</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid schema operation - DEFAULT specification is needed for column '%1'.</English>
+      <Japanese>列'%1'にはDEFAULT指定が必要です。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	add columnでNOT NULL制約のついている列にはDEFAULT指定が必要である
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	DEFAULT指定を追加する、またはNOT NULL制約を外す
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42507 invalid default specification (3057) -->
+  <Error>
+    <Name>InvalidDefault</Name>
+    <Number>0x10003057</Number>
+    <StateCode>42507</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid schema definition - DEFAULT value is not compatible with the column '%1'.</English>
+      <Japanese>列'%1'の型とDEFAULT指定の値に互換性がありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	列の型に代入可能でない型がDEFAULT指定で用いられている
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	列の型と互換性のある値をDEFAULTで指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42508 duplicate identity column (3058) -->
+  <Error>
+    <Name>DuplicateIdentity</Name>
+    <Number>0x10003058</Number>
+    <StateCode>42508</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid schema operation - table '%1' already has an IDENTITY column '%2'.</English>
+      <Japanese>表'%1'にはIDENTITY列'%2'がすでに定義されています。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	IDENTITY列は1つの表に1つしか定義できない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	IDENTITY列を1つの表に2つ以上定義しない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42509 invalid key type for index (3059) -->
+  <Error>
+    <Name>InvalidIndexKey</Name>
+    <Number>0x10003059</Number>
+    <StateCode>42509</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid schema operation - invalid column '%2' is specified for the index '%1'.</English>
+      <Japanese>索引'%1'のキーに列'%2'を使用できません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	索引のキーとしてサポートしていない型の列を指定した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	サポートしている型を列をキーに指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42510 column precision out of range (305a) -->
+  <Error>
+    <Name>ColumnPrecisionOutOfRange</Name>
+    <Number>0x1000305a</Number>
+    <StateCode>42510</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid column definition - precision(%2) specified to column '%1' exceeds the limit value(%3).</English>
+      <Japanese>列'%1'に指定された精度(%2)が制限値(%3)を超えました。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	列に渡された精度が制限値を超えていた
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	制限値以内の値を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42511 column scale out of range (305b) -->
+  <Error>
+    <Name>ColumnScaleOutOfRange</Name>
+    <Number>0x1000305b</Number>
+    <StateCode>42511</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid column definition - scale(%2) specified to column '%1' exceeds the limit value(%3).</English>
+      <Japanese>列'%1'に指定された桁(%2)が制限値(%3)を超えました。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	列に渡された桁が制限値を超えていた
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	制限値以内の値を与える
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42512 invalid character for identifier (305c) -->
+  <Error>
+    <Name>InvalidIdentifier</Name>
+    <Number>0x1000305c</Number>
+    <StateCode>42512</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid identifier - character:%1 is not allowed for identifier.</English>
+      <Japanese>識別子に使用できない文字(%1)があります。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	識別子に使えない文字が含まれている
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	使えない文字は使用しない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42513 invalid character for identifier (305d) -->
+  <Error>
+    <Name>InvalidAreaSpecification</Name>
+    <Number>0x1000305d</Number>
+    <StateCode>42513</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid schema operation - area specification is not allowed on replicated database '%1'.</English>
+      <Japanese>レプリケーション中のデータベース'%1'ではエリア指定が使用できません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	レプリケーションが開始されているデータベースにエリア指定のあるスキーマ操作をした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	レプリケーションを停止するかエリア指定をしない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- **** 4260X: errors occurred in schema operation(drop, alter, ...) **** -->
+<!-- 42601 other objects depending on the object (30a1) -->
+  <Error>
+    <Name>OtherObjectDepending</Name>
+    <Number>0x100030a1</Number>
+    <StateCode>42601</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Invalid schema operation - other objects depending on the object '%1'.</English>
+      <Japanese>スキーマオブジェクト'%1'に依存したオブジェクトがあるため再構成処理に失敗しました。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	そのオブジェクトに依存している別のオブジェクトがあるのにdropなどの操作をしようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	依存しているほうのオブジェクトを先にdropする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- **** 4270X: errors occurred by access rule violation **** -->
+<!-- 42701 necessary privilege is not allowed (30b1) -->
+  <Error>
+    <Name>PrivilegeNotAllowed</Name>
+    <Number>0x100030b1</Number>
+    <StateCode>42701</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Access rule violation - necessary privilege is not allowed.</English>
+      <Japanese>必要な権限が与えられていません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	必要な権限が与えられていない操作をしようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	必要な権限を得る、または該当の操作をしない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- **** 4280X: detail syntax error (query expression) **** -->
+<!-- 42801 derived column has wrong number of elements(30c1) -->
+  <Error>
+    <Name>InvalidDerivedColumn</Name>
+    <Number>0x100030c1</Number>
+    <StateCode>42801</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - the number of column names in derived column list(%1) shall be same as the degree of the table(%2).</English>
+      <Japanese>SQL構文エラー - 導出列の数(%1)は表の列数(%2)と同じである必要があります。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	導出列の数が表の列数と異なっていた
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	同じ個数の導出列を渡す
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42802 derived name can't be set to multi element row value(30c2) -->
+  <Error>
+    <Name>InvalidDerivedName</Name>
+    <Number>0x100030c2</Number>
+    <StateCode>42802</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - derived name can't be set to row type value.</English>
+      <Japanese>SQL構文エラー - ROW型の値に別名をつけることはできません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	ROW型の値に別名をつけようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	ROW型の値に別名をつけない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42803 same name object is refered more than once(30c3) -->
+  <Error>
+    <Name>DuplicateQualifiedName</Name>
+    <Number>0x100030c3</Number>
+    <StateCode>42803</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - duplicate name %1 is used in same scope.</English>
+      <Japanese>SQL構文エラー - %1が同じスコープ中に重複して使用されています。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+      	同じスコープ中に表や列の別名を重複して使用している
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	同じスコープ中に表や列の別名を重複して使用しない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42804 row value constructor is wrongly used with value which has different degree(30c4) -->
+  <Error>
+    <Name>InvalidRowValue</Name>
+    <Number>0x100030c4</Number>
+    <StateCode>42804</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - row values shall have same degree.</English>
+      <Japanese>SQL構文エラー - ROW型値の次数が一致しません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+      	ROW型値の比較などで異なる次数のものを指定している
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	同じ次数のものにする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42805 comparison operands are not comparable each other(30c5) -->
+  <Error>
+    <Name>NotComparable</Name>
+    <Number>0x100030c5</Number>
+    <StateCode>42805</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - comparison operands are not comparable each other.</English>
+      <Japanese>SQL構文エラー - 比較可能でない型を比較しようとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+      	比較可能でない型同士を比較しようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	比較可能な型にする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42806 invalid usage of sub query (30c6) -->
+  <Error>
+    <Name>InvalidSubQuery</Name>
+    <Number>0x100030c6</Number>
+    <StateCode>42806</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Invalid sub query usage.</English>
+      <Japanese>SQL構文エラー - 副問合せが不適切な位置で使用されています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	副問合せの使用位置が不正だった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	副問合せの使い方を確認する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42807 exceeds the degree of relation (30c7) -->
+  <Error>
+    <Name>ExceedDegree</Name>
+    <Number>0x100030c7</Number>
+    <StateCode>42807</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Specified position (%1) exceeds the degree of relation(%2).</English>
+      <Japanese>SQL構文エラー - 指定された位置(%1)はリレーションの次数(%2)を超えています。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	列の位置を指定するのに次数を超えた値を指定した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	範囲内の値を指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42808 invalid degree of expand subquery (30c8) -->
+  <Error>
+    <Name>InvalidExpandDegree</Name>
+    <Number>0x100030c8</Number>
+    <StateCode>42808</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Degree of expand subquery(%1) is invalid.</English>
+      <Japanese>SQL構文エラー - EXPAND句の副問い合わせの次数(%1)が不正です。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	EXPAND句に1または2でない次数の副問い合わせを指定した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい副問い合わせを指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42809 invalid sort key for expand keywords (30c9) -->
+  <Error>
+    <Name>InvalidExpandOrder</Name>
+    <Number>0x100030c9</Number>
+    <StateCode>42809</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Order specification of expand subquery is invalid.</English>
+      <Japanese>SQL構文エラー - EXPAND句のORDER BY指定が不正です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	EXPAND句に不正なORDER BYを指定した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいORDER BYを指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42810 invalid limit specification for expand keywords (30ca) -->
+  <Error>
+    <Name>InvalidExpandLimit</Name>
+    <Number>0x100030ca</Number>
+    <StateCode>42810</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Limit specification of expand subquery is invalid.</English>
+      <Japanese>SQL構文エラー - EXPAND句のLIMIT指定が不正です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	EXPAND句に不正なLIMITを指定した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいLIMITを指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42811 invalid usage of fulltext functions (30cb) -->
+  <Error>
+    <Name>InvalidFullTextUsage</Name>
+    <Number>0x100030cb</Number>
+    <StateCode>42811</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Usage of fulltext functions is invalid.</English>
+      <Japanese>SQL構文エラー - 全文検索用関数の使用方法が正しくありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	SELECT句にWORDとSCOREなど同時に使用できないものを使用した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい使用法に変更する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42812 invalid usage of set functions (30cc) -->
+  <Error>
+    <Name>InvalidSetFunction</Name>
+    <Number>0x100030cc</Number>
+    <StateCode>42812</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Usage of set functions is invalid.</English>
+      <Japanese>SQL構文エラー - 集約関数の使用方法が正しくありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	集約関数をSELECT句、HAVING句、ORDER BY句以外に使用した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい使用法に変更する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42813 non-grouping columns is included in grouping operation (30cd) -->
+  <Error>
+    <Name>NonGroupingColumn</Name>
+    <Number>0x100030cd</Number>
+    <StateCode>42813</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Non-grouping column '%1' is used in grouping operation.</English>
+      <Japanese>SQL構文エラー - グルーピング列でない列'%1'がグルーピングで使用されています。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	GROUP BYで指定されていない列がグルーピングされたリレーションの中で単独で使用されている
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい使用法に変更する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42814 invalid specification of element reference (30ce) -->
+  <Error>
+    <Name>InvalidElementReference</Name>
+    <Number>0x100030ce</Number>
+    <StateCode>42814</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Usage of array element reference is invalid.</English>
+      <Japanese>SQL構文エラー - 配列要素参照の指定方法が正しくありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	配列でないものに要素参照したか要素指定が数値でない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい使用法に変更する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42815 arbitrary element specification is not allowed (30cf) -->
+  <Error>
+    <Name>ArbitraryElementNotAllowed</Name>
+    <Number>0x100030cf</Number>
+    <StateCode>42815</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Arbitrary element specification must be a left operand of a predicate.</English>
+      <Japanese>SQL構文エラー - 配列の任意要素指定の使い方が正しくありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	配列の任意要素指定を使用できない箇所で使用している
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい使用法に変更する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42816 common column not found (30d0) -->
+  <Error>
+    <Name>CommonColumnNotFound</Name>
+    <Number>0x100030d0</Number>
+    <StateCode>42816</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Common column '%1' not found.</English>
+      <Japanese>SQL構文エラー - 共通列'%1'がありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	COLUMN指定のJOINで指定した名前の共通列がなかった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を使用する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42817 duplicate common column (30d1) -->
+  <Error>
+    <Name>DuplicateCommonColumn</Name>
+    <Number>0x100030d1</Number>
+    <StateCode>42817</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Duplicate Common column '%1'.</English>
+      <Japanese>SQL構文エラー - 共通列'%1'が複数あります。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	COLUMN指定のJOINで指定した名前の列が複数あった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を使用する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42818 invalid kwic parameter (30d2) -->
+  <Error>
+    <Name>InvalidKwic</Name>
+    <Number>0x100030d2</Number>
+    <StateCode>42818</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Invalid Kwic Usage.</English>
+      <Japanese>SQL構文エラー - Kwicの使い方が正しくありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	KwicがSELECT句以外に現れているか、引数が文字列でない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しく使用する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42819 kwic without contains (30d3) -->
+  <Error>
+    <Name>KwicWithoutContains</Name>
+    <Number>0x100030d3</Number>
+    <StateCode>42819</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Kwic needs contains predicate.</English>
+      <Japanese>SQL構文エラー - KwicがContains述語なしに使用されています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	KwicがCONTAINSなしに使用されている
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	Containsとともに使用する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42820 outer reference is not allowed (30d4) -->
+  <Error>
+    <Name>OuterReferenceNotAllowed</Name>
+    <Number>0x100030d4</Number>
+    <StateCode>42820</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Outer reference is not allowed.</English>
+      <Japanese>SQL構文エラー - 外部参照が許されていない箇所で使用されています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	EXPAND句に外部参照がある
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	外部参照を使わない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42821 invalid specification of cardinality (30d5) -->
+  <Error>
+    <Name>InvalidCardinality</Name>
+    <Number>0x100030d5</Number>
+    <StateCode>42821</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Attempt to get cardinality of not collection type.</English>
+      <Japanese>SQL構文エラー - CARDINALITYの引数が配列でありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	配列でないものにCARDINALITYを適用しようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	配列に適用する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42822 invalid like parameter (30d6) -->
+  <Error>
+    <Name>InvalidLike</Name>
+    <Number>0x100030d6</Number>
+    <StateCode>42822</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Attempt to apply like predicate to not character string type.</English>
+      <Japanese>SQL構文エラー - LIKEの左辺が文字列でありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	文字列でないものにLIKEを適用しようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	文字列または文字列の配列に適用する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42823 invalid similar parameter (30d7) -->
+  <Error>
+    <Name>InvalidSimilar</Name>
+    <Number>0x100030d7</Number>
+    <StateCode>42823</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Attempt to apply similar predicate to not character string type.</English>
+      <Japanese>SQL構文エラー - SIMILARの左辺が文字列でありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	文字列でないものにSIMILARを適用しようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	文字列または文字列の配列に適用する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42824 function operands are not compatible each other(30d8) -->
+  <Error>
+    <Name>NotCompatible</Name>
+    <Number>0x100030d8</Number>
+    <StateCode>42824</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - function operands are not compatible each other.</English>
+      <Japanese>SQL構文エラー - 関数または演算子を互換性のない型に適用しようとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+      	キャスト可能でない型同士に関数または演算子を適用しようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	互換性のある型にする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42825 invalid function usage(30d9) -->
+  <Error>
+    <Name>InvalidFunction</Name>
+    <Number>0x100030d9</Number>
+    <StateCode>42825</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Invalid %1 usage.</English>
+      <Japanese>SQL構文エラー - %1の使い方が正しくありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+      	関数の使用方法が正しくない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい使い方にする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42826 variable not found(30da) -->
+  <Error>
+    <Name>VariableNotFound</Name>
+    <Number>0x100030da</Number>
+    <StateCode>42826</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Variable '%1' not found.</English>
+      <Japanese>SQL構文エラー - 変数'%1'が定義されていません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+      	定義されていない変数名を使用した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	DECLAREする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42827 duplicate variable(30db) -->
+  <Error>
+    <Name>DuplicateVariable</Name>
+    <Number>0x100030db</Number>
+    <StateCode>42827</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Variable '%1' is already declared.</English>
+      <Japanese>SQL構文エラー - 変数'%1'はすでに定義されています。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+      	定義されている変数名と同じ名前を使用した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	違う名前を使用する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42828 invalid rank from subquery (30de) -->
+  <Error>
+    <Name>InvalidRankFrom</Name>
+    <Number>0x100030de</Number>
+    <StateCode>42828</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Rank from subquery is invalid.</English>
+      <Japanese>SQL構文エラー - RANK FROM句の副問い合わせが不正です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	RANK FROM句に異なる表を含む副問い合わせが使用されている
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい副問い合わせを指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42829 invalid is substring of parameter (30df) -->
+  <Error>
+    <Name>InvalidSubstringOf</Name>
+    <Number>0x100030df</Number>
+    <StateCode>42829</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Operands of 'is substring of' should be array type.</English>
+      <Japanese>SQL構文エラー - IS SUBSTRING OFの引数が配列でありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	IS SUBSTRING OFの引数に配列でない値が指定されている
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	配列を使う
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- **** 4285X: detail syntax error (data operation) **** -->
+
+<!-- 42850 invalid column is specified for updating (30e0) -->
+  <Error>
+    <Name>InvalidUpdateColumn</Name>
+    <Number>0x100030e0</Number>
+    <StateCode>42850</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Column '%1' cannot be specified for insert or update.</English>
+      <Japanese>SQL構文エラー - 列'%1'は挿入または更新操作で指定できません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	ROWIDなど更新操作で指定できない列が指定されている。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	指定しない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42851 a column is specified for updating more than once (30e1) -->
+  <Error>
+    <Name>DuplicateUpdateColumn</Name>
+    <Number>0x100030e1</Number>
+    <StateCode>42851</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Column '%1' is specified more than once.</English>
+      <Japanese>SQL構文エラー - 列'%1'が重複して使用されています。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	挿入や更新で同じ列が2回以上あらわれている
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	2回以上指定しない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 42852 dgree of insert source and target table does not match (30e2) -->
+  <Error>
+    <Name>InvalidInsertSource</Name>
+    <Number>0x100030e2</Number>
+    <StateCode>42852</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - The number of the degree of the insert source(%1) shall be same as the number of the target columns(%2).</English>
+      <Japanese>SQL構文エラー - 挿入の入力データの次数(%1)が挿入対象列の数(%2)と一致しません。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	INSERT文の入力と列の数が一致しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	一致させる
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- **** 4290X: detail syntax error (bulk operation) **** -->
+
+<!-- 42900 invalid bulk parameter (30f0) -->
+  <Error>
+    <Name>InvalidBulkParameter</Name>
+    <Number>0x100030f0</Number>
+    <StateCode>42900</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL syntax error - Invalid bulk parameter.</English>
+      <Japanese>SQL構文エラー - バルクオプションの指定に誤りがあります。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	バルクオプションに誤りがある。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しく指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- 44 X with check option violation(0x10003100) -->
+
+<!-- Z0 システムの例外を表すstate -->
+
+<!--
+システムの例外(0x0000)
+-->
+  <Error>
+    <Name>Unexpected</Name>
+    <Number>0x00000001</Number>
+    <StateCode>Z0501</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Unexpected error occurred.</English>
+      <Japanese>内部エラー: 想定外のエラーが発生しました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>想定していないエラーが発生した</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	エラーが発生した個所を特定し、
+	そのエラーの発生原因を取り除くか、
+	それを想定するエラーに加えるかのどちらかをする
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>MemoryExhaust</Name>
+    <Number>0x00000002</Number>
+    <StateCode>Z0502</StateCode>
+    <Level>System</Level>
+    <Message>
+	<English>Can't allocate memory.</English>
+	<Japanese>メモリーが足りません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>新たにメモリーを確保しようとしたが失敗した</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	要求したメモリ量が正常な範囲かを確認し、
+	メモリーリークを解消する、不要なメモリーを早めに解放する、
+	などの対策を行う
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>BadArgument</Name>
+    <Number>0x00000003</Number>
+    <StateCode>Z0503</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Bad argument.</English>
+      <Japanese>内部エラー: 不正な引数が与えられた関数があります。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>関数に与えられた引数が必要条件を満たしていない</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	その関数を呼び出している個所を特定し、正しい引数を渡す
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>NotInitialized</Name>
+    <Number>0x00000004</Number>
+    <StateCode>Z0504</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Not initialized.</English>
+      <Japanese>内部エラー: 初期化されていないモジュールがあります。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	初期化が必要なモジュールを初期化せずに使用しようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	初期化してから使用するようにする
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>EntryNotFound</Name>
+    <Number>0x00000006</Number>
+    <StateCode>Z0505</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Entry '%1' not found.</English>
+      <Japanese>内部エラー: エントリー'%1'がありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	マップに登録されているオブジェクトを得ようとしたが
+	登録されていなかった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	得ようとしたキーが正しいものか確認し、マップに登録する
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>FileNotFound</Name>
+    <Number>0x00000007</Number>
+    <StateCode>Z0506</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>File or directory '%1' not found.</English>
+      <Japanese>ファイルまたはディレクトリ'%1'がありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>ファイルまたはディレクトリがない</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいファイル名を与えているか確認する
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>FileNotOpen</Name>
+    <Number>0x00000008</Number>
+    <StateCode>Z0507</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>File not opened.</English>
+      <Japanese>内部エラー: オープンされていないファイルにアクセスしようとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>オープンされていないファイルにオープンが必要な操作を行おうとした</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	オープンしてから操作を行う
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>FileAlreadyExisted</Name>
+    <Number>0x00000009</Number>
+    <StateCode>Z0508</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>File '%1' exists.</English>
+      <Japanese>ファイル'%1'は存在します。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>作成しようとしているファイルは存在する</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいファイル名を与えているか確認する
+      </Japanese>
+    </Solution>
+  </Error>
+<!--
+  <Error>
+    <Name>FileNotSpace</Name>
+    <Number>0x0000000a</Number>
+    <StateCode>Z0509</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>File has no more space.</English>
+      <Japanese>ファイルの容量を確保できません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	容量がいっぱいのファイルに追加書き込みを行おうとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	ファイルが格納されているディスクの容量をあける、
+	ファイルの格納場所を変える、
+	ファイルの容量制限を大きくする、
+	などの対策を行う
+      </Japanese>
+    </Solution>
+  </Error>
+-->
+  <Error>
+    <Name>IllegalFileAccess</Name>
+    <Number>0x0000000b</Number>
+    <StateCode>Z0510</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Illegal file access.</English>
+      <Japanese>ファイルに対して不正なアクセスを行おうとしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	読み取り専用でオープンしているファイルに書き込もうとするなど、
+	許されていない種類のアクセスを行おうとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいモードでオープンする、
+	許されていない種類のアクセスを行わない、
+	などの対策を行う
+      </Japanese>
+    </Solution>
+  </Error>
+<!--
+  <Error>
+    <Name>WrongFilePath</Name>
+    <Number>0x0000000c</Number>
+    <StateCode>Z0511</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Wrong file path '%1'.</English>
+      <Japanese>パス名'%1'は不正です。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	パス名として不正な値を与えた
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいパス名を与える
+      </Japanese>
+    </Solution>
+  </Error>
+-->
+
+  <Error>
+    <Name>PermissionDenied</Name>
+    <Number>0x0000000d</Number>
+    <StateCode>Z0512</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Permission denied : '%1'</English>
+      <Japanese>
+	権限がありません : '%1'
+      </Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	ある操作の権限がないにもかかわらず、その操作を行おうとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	権限のあるユーザーで操作を再度行う。または、操作対象のアクセス権を検討する
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>FileAlreadyOpened</Name>
+    <Number>0x0000000e</Number>
+    <StateCode>Z0513</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>File '%1' opens.</English>
+      <Japanese>ファイル'%1'はオープンされています。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>オープンしようとしているファイルはオープンされている</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいファイル名を与えているか確認する
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>DiskFull</Name>
+    <Number>0x0000000f</Number>
+    <StateCode>Z0514</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Not enough space on the disk : '%1'</English>
+      <Japanese>ファイル'%1'のあるディスクに空き領域がありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>書き込みを行おうとしたファイルのあるディスクに空き領域がない</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	ディスクの空き領域を確保し、再実行する
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>AssertionFailed</Name>
+    <Number>0x000000fe</Number>
+    <StateCode>Z0515</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Assertion failed.</English>
+      <Japanese>アサーションが満たされていません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>アサーションでチェックしている条件が満たされなかった</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	チェックしている条件を満たすように修正する
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>ModLibraryError</Name>
+    <Number>0x0000ffff</Number>
+    <StateCode>Z0516</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>MOD Library error occurred : '%1'</English>
+      <Japanese>MODライブラリのエラーが発生しました : '%1'</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>MODライブラリが例外を投げた</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	MODライブラリ内部の問題でないか確認し、MODライブラリの使い方を修正する
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>TooManyOpenFiles</Name>
+    <Number>0x00000010</Number>
+    <StateCode>Z0517</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Too many open files.</English>
+      <Japanese>オープンしたファイルが多すぎます。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>ファイルを上限までオープンしている</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	ファイルをクローズし、再実行する
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>CryptLibraryError</Name>
+    <Number>0x00000011</Number>
+    <StateCode>Z0518</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Crypt Library error.</English>
+      <Japanese>暗号ライブラリのエラーが発生しました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>暗号ライブラリがエラーを返した</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	設定を確認し、再実行する
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>BadPasswordFile</Name>
+    <Number>0x00000012</Number>
+    <StateCode>Z0519</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Bad password file.</English>
+      <Japanese>パスワードファイルの内容が正しくありません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>パスワードファイルを解析中にエラーが発生した</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	パスワードファイルの中身を確認し、再実行する
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>WrongParameter</Name>
+    <Number>0x00000013</Number>
+    <StateCode>Z0520</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>The parameter is wrong. (%1)</English>
+      <Japanese>パラメータが不正です。(%1)</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>内部パラメータ解析中にエラーが発生した</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいパラメータを渡す
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>DatabaseChanged</Name>
+    <Number>0x00000014</Number>
+    <StateCode>Z0521</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>The database was chaned.</English>
+      <Japanese>データベースが変更されました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>データベースが変更された</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	もう一度データベース情報を取得する
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>ReplicationAborted</Name>
+    <Number>0x00000015</Number>
+    <StateCode>Z0522</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>A replication process is aborted.</English>
+      <Japanese>レプリケーション処理が中断されました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>続行不可能なエラーが発生し、レプリケーション処理を続けることができない</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	レプリケーション対象のデータベースをリカバリする。
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>Fatal</Name>
+    <Number>0x000000ff</Number>
+    <StateCode>Z0ZZZ</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Fatal error occurred.</English>
+      <Japanese>致命的なエラーが発生しました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>致命的エラー</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	原因を取り除く
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>UnknownException</Name>
+    <Number>0x00000fff</Number>
+    <StateCode>Z0ZZY</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Unknown exception(%1).</English>
+      <Japanese>不明な例外(%1)が発生しました。</Japanese>
+    </Message>
+    <MessageArgument>%x</MessageArgument>
+    <Description>
+      <Japanese>古いバージョンのクライアントが新しいバージョンで追加された例外をキャッチした</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	例外の番号から発生した例外を調べる
+      </Japanese>
+    </Solution>
+    <Convert>1</Convert>
+  </Error>
+
+<!-- Z1 Commonの例外を表すstate -->
+
+<!--
+  Commonの例外(0x0001)
+-->
+  <Error>
+    <Name>ClassNotFound</Name>
+    <Number>0x00010001</Number>
+    <StateCode>Z1501</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Class not found. (id=%1)</English>
+      <Japanese>IDが%1のクラスがありません。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>指定したIDを持つクラスがない</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいIDを与える
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>LibraryNotFound</Name>
+    <Number>0x00010003</Number>
+    <StateCode>Z1502</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Library '%1' not found.</English>
+      <Japanese>ライブラリー'%1'はありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	与えられた名前のライブラリーは存在しない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい名前を与える
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>FunctionNotFound</Name>
+    <Number>0x00010004</Number>
+    <StateCode>Z1503</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Function '%1' not found in '%2' library.</English>
+      <Japanese>内部エラー: ライブラリー'%2'に関数'%1'はありません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>ライブラリーに存在しない関数を実行しようとした</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>ライブラリーが実装している関数を使う</Japanese>
+    </Solution>
+  </Error>
+
+<!-- Z2 セッションの例外を表すstate -->
+
+<!--
+  セッションの例外(0x0002)
+-->
+  <Error>
+    <Name>Cancel</Name>
+    <Number>0x00020001</Number>
+    <StateCode>Z2501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Caught cancel request.</English>
+      <Japanese>ユーザーからのリクエストによりキャンセルされました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	ユーザーからのキャンセル要求により実行が停止された
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	要求していないのにキャンセルされたのでない限り対策は不要
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>CannotConnect</Name>
+    <Number>0x00020002</Number>
+    <StateCode>Z2502</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Can't connect to server '%1', port number %2.</English>
+      <Japanese>サーバー'%1'に接続できません。ポート番号:%2</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	サーバーへの接続に失敗した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	サーバーが起動しているか確認する
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>UnknownRequest</Name>
+    <Number>0x00020003</Number>
+    <StateCode>Z2503</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Unknown request number %1.</English>
+      <Japanese>内部エラー: 不正なリクエスト番号%1が渡されました。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	リクエスト番号が不正な値であった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しいリクエスト番号を渡す
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>SessionBusy</Name>
+    <Number>0x00020004</Number>
+    <StateCode>Z2504</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Session is busy.</English>
+      <Japanese>セッションは処理中です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	セッションが返答できない状況で新たなリクエストを要求した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	以前の要求の完了を待つ必要があるなら待つ
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>GoingShutdown</Name>
+    <Number>0x00020005</Number>
+    <StateCode>Z2505</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Going shutdown.</English>
+      <Japanese>シャットダウン処理中です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	シャットダウン中にリクエストを要求した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	再び起動してから処理を行う
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>ConnectionRanOut</Name>
+    <Number>0x00020006</Number>
+    <StateCode>Z2506</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Connection ran out.</English>
+      <Japanese>処理の途中で接続が切れました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	処理中に接続が切れた
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	再び接続してから処理を行う
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>ServerNotAvailable</Name>
+    <Number>0x00020007</Number>
+    <StateCode>Z2507</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Server is not available.</English>
+      <Japanese>サーバが利用できない状態です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	サーバが利用できない状態である
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	原因を取り除いてから処理を行う
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>SessionNotAvailable</Name>
+    <Number>0x00020008</Number>
+    <StateCode>Z2508</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Session is not available.</English>
+      <Japanese>セッションが利用できない状態です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	セッションが利用できない状態である
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	原因を取り除いてから処理を行う
+      </Japanese>
+    </Solution>
+  </Error>
+<!-- InvalidStatementIdentifierを使うように変更
+  <Error>
+    <Name>OptimumResultNotFound</Name>
+    <Number>0x00020009</Number>
+    <StateCode>Z2509</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Optimum result is not found. (id=%1)</English>
+      <Japanese>IDが%1の最適化結果がありません。</Japanese>
+    </Message>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+	最適化結果がない
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	正しい最適化結果IDを与えているか確認する。
+      </Japanese>
+    </Solution>
+  </Error>
+-->
+  <Error>
+    <Name>DuplicateServer</Name>
+    <Number>0x0002000a</Number>
+    <StateCode>Z2510</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Server already started.</English>
+      <Japanese>他のサーバが既に起動しています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	サーバが二重に立ち上げられた
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	他のサーバが上がっていないか確認する。
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>ConnectionClosed</Name>
+    <Number>0x0002000b</Number>
+    <StateCode>Z2511</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Client connection is closed.</English>
+      <Japanese>クライアントが接続をクローズしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	クライアントがサーバとの接続をクローズした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	再び接続してから処理を行う
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>DatabaseNotAvailable</Name>
+    <Number>0x0002000c</Number>
+    <StateCode>Z2512</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Database '%1' is not available.</English>
+      <Japanese>データベース'%1'が利用できない状態です。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	データベースが利用できない状態である
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	原因を取り除いてから処理を行う
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>CanceledBySuperUser</Name>
+    <Number>0x0002000d</Number>
+    <StateCode>Z2513</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Canceled by super user.</English>
+      <Japanese>スーパーユーザーによりキャンセルされました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+      スーパーユーザーがセッションをキャンセルした。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+      システム管理者の作業完了後に行う
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- Z3 ステートメントのためのstate -->
+
+<!--
+  ステートメントの例外(0x0003)
+-->
+
+<!-- Z4 スキーマのためのstate -->
+
+<!--
+  スキーマの例外(0x0004)
+-->
+
+<!--
+  下位互換性のため
+-->
+  <Error>
+    <Name>ReorganizeFailed</Name>
+    <Number>0x00040008</Number>
+    <StateCode>Z4501</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Reorganize failed '%1'.</English>
+      <Japanese>再構成処理に失敗しました: '%1'</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	再構成処理を正しく終了することができなかった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	ログに詳細が出力されるのでそれを見て原因を取り除く
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>MetaDatabaseCorrupted</Name>
+    <Number>0x00040009</Number>
+    <StateCode>Z4502</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Meta database corrupted.</English>
+      <Japanese>メタデータベースの内容が不正です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	メタデータベースの内容を正しく読み込むことができなかった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	リストアを行う
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>DatabaseCorrupted</Name>
+    <Number>0x0004000a</Number>
+    <StateCode>Z4503</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Database '%1' corrupted.</English>
+      <Japanese>データベース'%1'の内容が不正です。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+	<Description>
+      <Japanese>
+	データベースの内容を正しく読み込むことができなかった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	リストアを行う
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>ReadOnlyDatabase</Name>
+    <Number>0x0004000b</Number>
+    <StateCode>Z4504</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Database '%1' is READ ONLY.</English>
+      <Japanese>データベース'%1'は読み取り専用です。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	読み取り専用のデータベースを書き換えようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	不適切な操作をやめるか、その操作がどうしても必要ならば
+	データベースを書き込み可能(READ WRITE)にする
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>OfflineDatabase</Name>
+    <Number>0x0004000c</Number>
+    <StateCode>Z4505</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Database '%1' is OFFLINE.</English>
+      <Japanese>データベース'%1'はオフラインです。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	操作不能のデータベースを操作しようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	不適切な操作をやめるか、その操作がどうしても必要ならば
+	データベースを操作可能(ONLINE)にする
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>TemporaryDatabase</Name>
+    <Number>0x0004000d</Number>
+    <StateCode>Z4506</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Database '%1' is TEMPORARY.</English>
+      <Japanese>データベース'%1'は一時データベースです。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	一時データベースに対して禁止されている操作を行おうとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	不適切な操作をやめる
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>SystemTable</Name>
+    <Number>0x0004000e</Number>
+    <StateCode>Z4507</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Table '%1' is a SYSTEM TABLE.</English>
+      <Japanese>表'%1'はシステム表です。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	システム表に許されない操作をしようとした
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	不適切な操作をやめる
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- Z5 オプティマイザーの例外を表すstate -->
+
+<!--
+  オプティマイザーの例外(0x0005)
+-->
+
+  <Error>
+    <Name>TooLongStatement</Name>
+    <Number>0x00050001</Number>
+    <StateCode>Z5501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL statement is too long.</English>
+      <Japanese>SQL文が長すぎるので実行できません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	SQL文が長すぎてTreeNode数の上限に達した
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	SQL文を短くする
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>PrepareFailed</Name>
+    <Number>0x00050002</Number>
+    <StateCode>Z5502</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>SQL statement was not prepared.</English>
+      <Japanese>SQL文はprepareされませんでした。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	SQL文の可変パラメーターによりprepare時に最適化が完了できなかった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	内部で処理されるので対処の必要はない
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- Z6 エグゼキューターのための例外を表すstate -->
+
+<!--
+  エグゼキューターの例外(0x0006)
+-->
+
+<!-- Z7 論理ファイル以下の例外を表すstate -->
+
+<!--
+  論理ファイル以下の例外(0x0007)
+  なるべく「内部エラー」として定義すべきものが多いはずである
+-->
+
+  <Error>
+    <Name>FileManipulateError</Name>
+    <Number>0x00070002</Number>
+    <StateCode>Z7501</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Physical File Manipulation Error.</English>
+      <Japanese>内部エラー：ファイル操作に失敗しました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>物理的なファイル操作に失敗した</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>ログを参照する。</Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>ListFormatOverflow</Name>
+    <Number>0x00070003</Number>
+    <StateCode>Z7502</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Inverted List Overflow Error.</English>
+      <Japanese>内部エラー：リストがオーバーフローしました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>転置リストの領域がオーバーフローしたのでこれ以上登録できない</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>ページサイズを増やす。</Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>TooLongConditionalPattern</Name>
+    <Number>0x00070004</Number>
+    <StateCode>Z7503</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Conditional pattern is too long.</English>
+      <Japanese>条件パターンが長すぎます。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>条件パターンが長いので検索することができない</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>条件パターンを短くする。</Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>VerifyAborted</Name>
+    <Number>0x00070005</Number>
+    <StateCode>Z7504</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>A verification process is aborted.</English>
+      <Japanese>整合性検査が中断されました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>ファイルに不整合があり、整合性検査を続けることができない</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>ファイルの不整合を取り除く。</Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>TooManyExpandedPattern</Name>
+    <Number>0x00070006</Number>
+    <StateCode>Z7505</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Too many expanded patterns.</English>
+      <Japanese>展開パターンが多すぎます。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>展開パターンが多いので検索することができない</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>条件を短くする。</Japanese>
+    </Solution>
+  </Error>
+
+<!-- Z8 ロックの例外を表すstate -->
+
+<!--
+	ロックの例外(0x0008)
+-->
+
+  <Error>
+    <Name>LockTimeout</Name>
+    <Number>0x0008001</Number>
+    <StateCode>Z8501</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>While waiting to lock a object, a timeout is occurred.</English>
+      <Japanese>ロック待ち中にタイムアウトが発生した。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>時間切れが起きた</Japanese>
+    </Description>
+    <Solution><Japanese>−</Japanese></Solution>
+  </Error>
+
+  <Error>
+    <Name>Deadlock</Name>
+    <Number>0x0008002</Number>
+    <StateCode>Z8502</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Deadlock occurred.</English>
+      <Japanese>デッドロックが起きました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>デッドロックが起きた</Japanese>
+    </Description>
+    <Solution><Japanese>−</Japanese></Solution>
+  </Error>
+
+  <Error>
+    <Name>LackOfParent</Name>
+    <Number>0x0008003</Number>
+    <StateCode>Z8503</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Lack of parent.</English>
+      <Japanese>
+内部エラー：親ロック項目に十分なロックが掛けられていないため、ロックできませんでした。
+			</Japanese>
+    </Message>
+    <Description>
+      <Japanese>親ロック項目に十分なロックが掛けられていない</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>親ロック項目に十分なロックを掛ける</Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>LackForChild</Name>
+    <Number>0x0008004</Number>
+    <StateCode>Z8504</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Lack for child.</English>
+      <Japanese>
+内部エラー：子ロック項目に十分なロックでなくなるため、ロックを外すことができませんでした。
+			</Japanese>
+    </Message>
+    <Description>
+      <Japanese>子ロック項目に十分なロックでなくなる</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>子ロック項目へのロックを先に外す</Japanese>
+    </Solution>
+  </Error>
+
+<!-- Z9 トランザクションの例外を表すstate -->
+
+<!--
+トランザクションの例外(0x0009)
+-->
+  <Error>
+    <Name>TimeStampFileCorrupted</Name>
+    <Number>0x00090005</Number>
+    <StateCode>Z9501</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Time stamp file '%1' is corrupted.</English>
+      <Japanese>タイムスタンプファイル'%1'が壊れています。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+        タイムスタンプファイルの内容を正しく読み込むことができなかった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	リストアを行う
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- ZA 論理ログの例外を表すstate -->
+
+<!--
+論理ログの例外(0x000A)
+-->
+  <Error>
+    <Name>LogFileCorrupted</Name>
+    <Number>0x000A0001</Number>
+    <StateCode>ZA501</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Log file is corrupted.</English>
+      <Japanese>ログファイルが壊れています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+      	ログファイルの内容を正しく読み込むことができなかった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	リストアを行う
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>LogItemCorrupted</Name>
+    <Number>0x000A0002</Number>
+    <StateCode>ZA502</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Log item is corrupted.</English>
+      <Japanese>ログ情報が壊れています。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+      	ログファイルの内容を正しく読み込むことができなかった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	リストアを行う
+      </Japanese>
+    </Solution>
+  </Error>
+  <Error>
+    <Name>LogItemNotFound</Name>
+    <Number>0x000A0003</Number>
+    <StateCode>ZA503</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Log item is not found.</English>
+      <Japanese>ログ情報が見つかりません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+      	指定されたログ情報が存在しなかった
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	存在するログ情報を指定する
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- ZB リカバリの例外を表すstate -->
+
+<!--
+リカバリーの例外(0x000B)
+-->
+
+  <Error>
+    <Name>RecoveryFailed</Name>
+    <Number>0x000B0001</Number>
+    <StateCode>ZB501</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Recovery failed.</English>
+      <Japanese>リカバリーに失敗しました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	リカバリー中に回復不能なエラーが発生した。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	データベースをリストアする
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- ZC マウントの例外を表すstate -->
+
+<!--
+マウントの例外(0x000C)
+-->
+
+  <Error>
+    <Name>DatabaseNotMountable</Name>
+    <Number>0x000C0001</Number>
+    <StateCode>ZC501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Database '%1' is not mountable.</English>
+      <Japanese>データベース'%1'はマウントできません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+	WITH RECOVERを指定していないにもかかわらず、アンマウントやバックアップされていないデータベースをマウントしようとした。アンマウントされていないデータベースをREAD ONLYでマウントしようとした。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+        マウントしようとしたデータベースが正しいか確認する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>SnapshotDiscarded</Name>
+    <Number>0x000C0002</Number>
+    <StateCode>ZC502</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Snapshot is discarded.</English>
+      <Japanese>バックアップ開始時のスナップショットが存在しません。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+	バックアップを行ったトランザクションの開始時の
+	スナップショットが破棄されているにもかかわらず、
+	そのトランザクションの開始時点の状態に
+	バックアップされたデータベースをマウントしようとした。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	マウントしようとしたデータベースが正しいか確認する。
+	正しければ、バックアップ開始時点の状態にマウントする。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- ZD バッファとバージョンの例外を表すstate -->
+
+<!--
+バッファとバージョンの例外 (0x000D)
+-->
+
+  <Error>
+    <Name>FlushPrevented</Name>
+    <Number>0x000D0001</Number>
+    <StateCode>ZD501</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Flush is prevented.</English>
+      <Japanese>バッファのフラッシュは差し止められました。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+        バッファのフラッシュを差し止める操作を実行中に、
+	バッファをフラッシュしようとした。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	バッファのフラッシュを差し止める操作が終わるまで待ち、再び、試みる。
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>BadDataPage</Name>
+    <Number>0x000D0002</Number>
+    <StateCode>ZD502</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>Data in bad page %1 of file '%2'.</English>
+      <Japanese>ファイル'%2'の読み出したページ%1が不正です。</Japanese>
+    </Message>
+    <MessageArgument>%lld</MessageArgument>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>
+      ファイルから読み出したページのチェックサムを計算したところ、
+      書き込み時に計算したものと異なっている。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>バックアップからリストアする。</Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>PreservedDifferentPage</Name>
+    <Number>0x000D0003</Number>
+    <StateCode>ZD503</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>a different version page is preserved in file '%1'. (searchid=%2, savedid=%3)</English>
+      <Japanese>ファイル'%1'に違うバージョンページが保持されています。(searchid=%2, saveid=%3)</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>
+      ファイルから読み出したページのページIDを参照したところ、本来格納されるべきページIDとは違うページIDが格納されていた。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>バックアップからリストアする。</Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>RunningCheckpointProcessing</Name>
+    <Number>0x000D0004</Number>
+    <StateCode>ZD504</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>The checkpoint processing is executing.</English>
+      <Japanese>チェックポイント処理が実行中です。</Japanese>
+    </Message>
+    <Description>
+      <Japanese>
+      チェックポイントが実行中なのに、チェックポイントと排他するような処理を開始しようとした。チェックポイントの終了を待たずにエラーにする場合に利用する。
+      </Japanese>
+    </Description>
+    <Solution>
+      <Japanese>チェックポイントの終了を待ってから開始する</Japanese>
+    </Solution>
+  </Error>
+
+<!-- ZE バックアップの例外を表すstate -->
+
+<!--
+バックアップの例外(0x000E)
+-->
+  <Error>
+    <Name>NotStartBackup</Name>
+    <Number>0x000E0001</Number>
+    <StateCode>ZE501</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Backup '%1' not started.</English>
+      <Japanese>データベース'%1'のバックアップは開始されていません。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>バックアップを開始していないデータベースのバックアップを終了しようとした。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	バックアップを開始してから、終了する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+  <Error>
+    <Name>AlreadyStartBackup</Name>
+    <Number>0x000E0002</Number>
+    <StateCode>ZE502</StateCode>
+    <Level>User</Level>
+    <Message>
+      <English>Already start backup '%1'.</English>
+      <Japanese>データベース'%1'のバックアップはすでに開始されています。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <Description>
+      <Japanese>他のトランザクションがバックアップ中のデータベースのバックアップを開始しようとした。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+	他のトランザクションのバックアップが終了してから、再実行する。
+      </Japanese>
+    </Solution>
+  </Error>
+
+<!-- ZF OSの例外を表すstate -->
+
+<!--
+OS の例外(0x000F)
+-->
+  <Error>
+    <Name>SystemCall</Name>
+    <Number>0x000F0001</Number>
+    <StateCode>ZF501</StateCode>
+    <Level>System</Level>
+    <Message>
+      <English>System Call '%1' error %2 occurred.</English>
+      <Japanese>システムコール'%1'でエラー%2が発生しました。</Japanese>
+    </Message>
+    <MessageArgument>%s</MessageArgument>
+    <MessageArgument>%d</MessageArgument>
+    <Description>
+      <Japanese>システムコールでエラーが発生した。</Japanese>
+    </Description>
+    <Solution>
+      <Japanese>
+      エラー原因を取り除き、再度実行するか、他の呼び出しを行う。
+      </Japanese>
+    </Solution>
+  </Error>
+
+</ErrorDefine>
+
+<!--
+  Copyright (c) 2000, 2014, 2023 Ricoh Company, Ltd.
+  All rights reserved.
+-->
