@@ -46,7 +46,6 @@ sydney/Python
 ├── tools           // place for tools such as script for auto-generating error files
 ├── .gitigonre      // standard gitignore file
 ├── Pipfile         // file for managing install package and script used in pipenv
-├── Pipfile.lock    // file for managing dependencies installed by pipenv
 ├── pytest.ini      // file for setting pytest
 ├── README_ja.md    // japanese README file
 ├── README.md       // english README file

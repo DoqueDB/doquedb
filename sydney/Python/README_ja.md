@@ -46,7 +46,6 @@ sydney/Python
 ├── tools           // エラーファイルの自動生成コードなどを配置
 ├── .gitigonre      // 標準的な gitignore
 ├── Pipfile         // pipenv で利用するインストールパッケージおよびスクリプトの管理ファイル
-├── Pipfile.lock    // pipenv で利用するインストールパッケージの依存関係などを保存したファイル
 ├── pytest.ini      // test に用いる pytest の設定ファイル
 ├── README_ja.md    // 日本語のREADMEファイル
 ├── README.md       // READMEファイル
