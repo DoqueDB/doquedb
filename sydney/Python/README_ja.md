@@ -21,7 +21,7 @@ $ pip install py_doquedb-<バージョン>-py3-none-any.whl
 
 # サンプルコードの実行
 
-py-doquedb の基本的な実装方法はサンプルコード`sample.py`で確認できます。
+py-doquedb の基本的な実行方法はサンプルコード`sample.py`で確認できます。
 以下のコマンドを実行して動作確認ができます。
 
 ```
