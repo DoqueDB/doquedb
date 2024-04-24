@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+autopep8 = "*"
+flake8 = "*"
+mypy = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+pytest = "*"
+numpy = "*"
+
+[scripts]
+test = "pytest"
+format = "autopep8 -ivr ."
+lint = "flake8 --show-source ."
+make_package = "python ./setup.py bdist_wheel"
+make_exception = "python ./tools/make_exception.py"
+
+[requires]
+python_version = "3"
