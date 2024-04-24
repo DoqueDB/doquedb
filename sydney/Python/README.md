@@ -8,7 +8,7 @@ py-doquedb is python client library for DoqueDB. Its implementation is based on 
 
 # Download
 
-Download latest wheel file from [Release](https://github.com/DoqueDB/doquedb/releases). The file name is py_doquedb-<version>-py3-none-any.whl.
+Download latest wheel file from [Release](https://github.com/DoqueDB/doquedb/releases). The file name is py_doquedb-\<version\>-py3-none-any.whl.
 
 # Installation
 
