@@ -139,6 +139,7 @@ pipenv run make_package
 ```
 $ cd sydney/Python
 $ pipenv shell
+$ export LC_ALL=C # locale エラーを回避するため、サポートされているlocaleを設定
 $ pip install -e . # module import エラーを回避するため実行
 $ sphinx-apidoc -f -o ./docs/source/ ./src # source配下にreSTファイルを生成
 $ sphinx-build -b html docs/source docs/build # build配下にHTMLを生成

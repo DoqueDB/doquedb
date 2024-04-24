@@ -139,6 +139,7 @@ You can create documents by executing scripts shown below. Sphinx is used for cr
 ```
 $ cd sydney/Python
 $ pipenv shell
+$ export LC_ALL=C # avoid locale error
 $ pip install -e . # avoid module import error
 $ sphinx-apidoc -f -o ./docs/source/ ./src # generate reST files under source
 $ sphinx-build -b html docs/source docs/build # generate HTML under build
