@@ -1,0 +1,132 @@
+# 
+# Copyright (c) 2024 Ricoh Company, Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+# 各種設定
+
+# パスの設定
+TOOLS            = ../tools
+TOOLS_BIN        = $(TOOLS)/bin
+TOOLS_PERL       = $(TOOLS)/perl
+
+# 辞書ビルドツール
+MKDIC            = $(TOOLS_BIN)/mkunadic
+ADDREC           = $(TOOLS_BIN)/addrecno
+UNASORT          = $(TOOLS_BIN)/unasort
+SORTU            = perl $(TOOLS_PERL)/sortu.pl
+GROUP            = perl $(TOOLS_PERL)/group.pl
+UNGROUP          = perl $(TOOLS_PERL)/ungroup.pl
+
+# ツールの設定
+INSTALL          = cp
+CP               = cp
+MKDIR            = /bin/mkdir -p
+RM               = /bin/rm -f
+RMDIR            = /bin/rm -fr
+ICONV_8TO2       = iconv -f UTF8 -t UCS2
+
+# 出力先ディレクトリ
+OUT_DIR          = ./unadic
+
+# データディレクトリ
+NORM_SRC_DIR     = ../src-data/norm
+
+# 作業用ディレクトリ
+WORK_DIR         = ./nwork
+
+# 実行データ
+DATA             = $(BIN_EXPSTRDICS)
+
+# 実行用異表記展開辞書
+BIN_EXPSTRDICS   = $(WORK_DIR)/expStrStrWrd-sudachi.dic \
+                   $(WORK_DIR)/expStrStrApp-sudachi.dic
+
+# 異表記展開用Sudachi同義語辞書ソース
+SRC_SUDACHI_SYN  = $(NORM_SRC_DIR)/synonyms.txt
+
+# 正規化辞書UNAソース
+SRC_CMAX         = $(NORM_SRC_DIR)/una/costmax.log
+SRC_HINLST       = $(NORM_SRC_DIR)/una/unahin.utf8
+
+# 正規化辞書作業用データ
+WRK_CMAX         = $(WORK_DIR)/costmax.log
+WRK_HINLST       = $(WORK_DIR)/unahin.ucs2
+
+all: $(BIN_EXPSTRDICS)
+
+$(WORK_DIR):
+	$(MKDIR) $(WORK_DIR)
+
+$(BIN_EXPSTRDICS): $(SRC_SUDACHI_SYN) $(WRK_CMAX) $(WRK_HINLST)
+	sed -r -e '1d' \
+		-e '/^[0-9]+,[0-9],2,/d' \
+		-e 's/^[0-9]+,[0-9],0,([0-9/]+,){4}[^,]+,([^,]+)(,[^,]*){2}$$/\2/' \
+		-e 's/^[0-9]+,[0-9],1,([0-9/]+,){4}[^,]+,([^,]+)(,[^,]*){2}$$/*\2/' \
+		-e 's/ /\\u0020/g' $(SRC_SUDACHI_SYN) | \
+		perl $(TOOLS_PERL)/exp1.pl > $(WORK_DIR)/sudachi.tmp1
+	perl $(TOOLS_PERL)/exp3pre.pl < $(WORK_DIR)/sudachi.tmp1 | \
+		perl $(TOOLS_PERL)/exp3.pl | $(SORTU) | $(GROUP) | \
+		$(UNGROUP) | $(SORTU) | $(GROUP) | perl -pe "s/[01]://g" | \
+		sed -r -e '/^\*/d' -e 's/\*//g' \
+			-e 's/\\u0020/　/g' \
+			-e 's/\\u0022/”/g' \
+			-e 's/\\u002C/，/g' \
+			-e 's/\\u002F/／/g' \
+			-e 'y/abcdefghijklm/ＡＢＣＤＥＦＧＨＩＪＫＬＭ/' \
+			-e 'y/nopqrstuvwxyz/ＮＯＰＱＲＳＴＵＶＷＸＹＺ/' \
+			-e 'y/ABCDEFGHIJKLM/ＡＢＣＤＥＦＧＨＩＪＫＬＭ/' \
+			-e 'y/NOPQRSTUVWXYZ/ＮＯＰＱＲＳＴＵＶＷＸＹＺ/' \
+			-e 'y/ａｂｃｄｅｆｇｈｉｊｋｌｍ/ＡＢＣＤＥＦＧＨＩＪＫＬＭ/' \
+			-e 'y/ｎｏｐｑｒｓｔｕｖｗｘｙｚ/ＮＯＰＱＲＳＴＵＶＷＸＹＺ/' \
+			-e "s/'/’/g" \
+			-e 'y/!"#$$%&@()*+-.\//！”＃＄％＆＠（）＊＋－．／/' \
+			-e 'y/0123456789:;<=>?/０１２３４５６７８９：；＜＝＞？/' \
+				> $(WORK_DIR)/sudachi.tmp2
+	perl $(TOOLS_PERL)/tmp_exp3.pl < $(WORK_DIR)/sudachi.tmp2 | \
+		$(ICONV_8TO2) -o $(WORK_DIR)/sudachi.tmp3
+	$(ADDREC) $(WORK_DIR)/sudachi.tmp3 $(WORK_DIR)/sudachi.tmp4
+	$(UNASORT) $(WORK_DIR)/sudachi.tmp4 $(WORK_DIR)/sudachi.tmp5
+	$(MKDIC) -c -a dougigo0.1 $(WRK_CMAX) $(WRK_HINLST) \
+		$(WORK_DIR)/sudachi.tmp5 $(BIN_EXPSTRDICS)
+
+$(WRK_CMAX): $(SRC_CMAX) $(WORK_DIR)
+	$(CP) $(NORM_SRC_DIR)/una/costmax.log $(WRK_CMAX)
+
+$(WRK_HINLST): $(SRC_HINLST) $(WORK_DIR)
+	$(ICONV_8TO2) $(SRC_HINLST) -o $(WRK_HINLST)
+
+clean: clean-all
+
+clean-all: clean-data clean-install
+
+clean-data:
+	$(RM) $(BIN_EXPSTRDICS)
+	$(RM) $(WORK_DIR)/sudachi.tmp*
+
+clean-install:
+	$(RM) $(OUT_DIR)/norm/expStrStrWrd-sudachi.dic
+	$(RM) $(OUT_DIR)/norm/expStrStrApp-sudachi.dic
+
+install: install-all
+
+install-all: $(DATA) install-data
+
+install-data: make-dir
+	$(INSTALL) $(WORK_DIR)/expStrStrWrd-sudachi.dic \
+		$(OUT_DIR)/norm/expStrStrWrd-sudachi.dic
+	$(INSTALL) $(WORK_DIR)/expStrStrApp-sudachi.dic \
+		$(OUT_DIR)/norm/expStrStrApp-sudachi.dic
+
+make-dir: $(OUT_DIR)/norm
+	$(MKDIR) $(OUT_DIR)/norm
