@@ -76,7 +76,7 @@ $(BIN_EXPSTRDICS): $(SRC_SUDACHI_SYN) $(WRK_CMAX) $(WRK_HINLST)
 		-e 's/ /\\u0020/g' $(SRC_SUDACHI_SYN) | \
 		perl $(TOOLS_PERL)/exp1.pl > $(WORK_DIR)/sudachi.tmp1
 	perl $(TOOLS_PERL)/exp3pre.pl < $(WORK_DIR)/sudachi.tmp1 | \
-		perl $(TOOLS_PERL)/exp3.pl | $(SORTU) | $(GROUP) | \
+		perl $(TOOLS_PERL)/exp3.pl | sed -e '/^\*/d' | $(SORTU) | $(GROUP) | \
 		$(UNGROUP) | $(SORTU) | $(GROUP) | perl -pe "s/[01]://g" | \
 		sed -r -e '/^\*/d' -e 's/\*//g' \
 			-e 's/\\u0020/　/g' \
