@@ -83,10 +83,10 @@ void USAGE()
 	cout << "   /version                        print server version."	<< endl;
 	cout << "   /ipv4 or /ipv6                  set address family."	<< endl;
 	cout << "   /time                           print execution time."	<< endl;
-	cout << "   /help                           print this message." << endl;
+	cout << "   /help                           print this message."	<< endl;
 	cout << "   /code codename                  input and ouput character encoding." << endl;
-	cout << "                                   codename is 'utf-8' or ''" << endl;
-	cout << "                                   (defalt:''. '' is os default.)" << endl;
+	cout << "                                   codename is 'utf-8' or ''"	<< endl;
+	cout << "                                   (default is os default.)"	<< endl;
 	cout << ""														<< endl;
 #else
 	cout << "Usage: sqli -remote hostname portnumber [options]"		<< endl;
@@ -101,9 +101,9 @@ void USAGE()
 	cout << "   -ipv4 or -ipv6                  set address family."	<< endl;
 	cout << "   -time                           print execution time."	<< endl;
 	cout << "   -help                           print this message." << endl;
-	cout << "   -code codename                  input and ouput character encoding." << endl;
-	cout << "                                   codename is 'utf-8' or ''" << endl;
-	cout << "                                   (defalt:''. '' is euc-jp.)" << endl;
+	cout << "   -code encoding                  input and ouput character encoding." << endl;
+	cout << "                                   codename is 'utf-8' or 'euc-jp'"	<< endl;
+	cout << "                                   (default is utf-8.)"	<< endl;
 	cout << ""														<< endl;
 #endif
 }

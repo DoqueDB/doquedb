@@ -501,6 +501,9 @@ Exec::setCode(const ModCharString& cstrCode_)
 	} else if (ModCharTrait::compare(cstrCode_, "utf-8", ModFalse) == 0) {
 		_encodingType = ModKanjiCode::utf8;
 		return true;
+	} else if (ModCharTrait::compare(cstrCode_, "euc-jp", ModFalse) == 0) {
+		_encodingType = ModKanjiCode::euc;
+		return true;
 	}
 #endif
 	return false;
