@@ -80,4 +80,4 @@ DoqueDBは以下の環境でご利用いただけます。
 ■ライセンス
 
 DoqueDBのソースコードはApache License 2.0に基づいて公開されています。
-第三者ソフトウェアのライセンスについてはLICENSE/NOTICE.txtをご覧ください。
+第三者ソフトウェアのライセンスについてはLICENSES/NOTICE.txtをご覧ください。

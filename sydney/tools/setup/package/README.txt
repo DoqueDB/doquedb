@@ -80,4 +80,4 @@ Use GitHub Issues and Pull Request for any requests and bug reports.
 6. Licenses
 
 The source code of DooqueDB is released under the Apache License 2.0.
-Please see LICENSE/NOTICE.txt for third-party software licenses.
+Please see LICENSES/NOTICE.txt for third-party software licenses.
