@@ -414,7 +414,7 @@ Kwic::getRoughSize(int fieldNumber_) const
 //
 //	EXCEPTIONS
 //
-void
+bool
 Kwic::generate(const ModUnicodeString& cstrSrc_,
 			   ModSize uiRoughSize_,
 			   const ModLanguageSet& cLanguageSet_,
@@ -470,7 +470,7 @@ Kwic::generate(const ModUnicodeString& cstrSrc_,
 			  vecWordRange);
 
 	// Generate kwic
-	doGenerate(cstrSrc_, uiOffset, uiSize, uiRoughSize_,
+	return doGenerate(cstrSrc_, uiOffset, uiSize, uiRoughSize_,
 			   bHeadEllipsis, bTailEllipsis, vecWordRange,
 			   cstrDst_);
 }
@@ -1988,7 +1988,7 @@ Kwic::pushPatternTail(ModSize uiWordHead_,
 //
 //	EXCEPTIONS
 //
-void
+bool
 Kwic::doGenerate(const ModUnicodeString& cstrSrc_,
 				 ModSize uiOffset_,
 				 ModSize uiSize_,
@@ -2001,6 +2001,7 @@ Kwic::doGenerate(const ModUnicodeString& cstrSrc_,
 	; _TRMEISTER_ASSERT(vecWordRange_.getSize() % 2 == 0);
 	
 	ModUnicodeOstrStream cStream;
+	bool ret = false;
 
 	if (cstrSrc_.getLength() > 0)
 	{
@@ -2033,6 +2034,7 @@ Kwic::doGenerate(const ModUnicodeString& cstrSrc_,
 				uiTotal += *i - prev + 1;
 				prev = *i + 1;
 				bWordInside = false;
+				ret = true;
 			}
 			else
 			{
@@ -2062,6 +2064,7 @@ Kwic::doGenerate(const ModUnicodeString& cstrSrc_,
 
 	// Convert to string
 	cstrDst_ = ModUnicodeString(cStream.getString());
+	return ret;
 }
 
 //

@@ -188,6 +188,7 @@ namespace Impl
 					   int& iStart_,
 					   int& iSize_,
 					   ModUnicodeString& cstrResult_);
+		int getLength(const Common::Data* pData_);
 
 		// data type of source data is guaranteed by createDataType in plan
 		Action::DataHolder m_cSourceData;
@@ -462,12 +463,31 @@ execute(Interface::IProgram& cProgram_,
 						iRoughSize,
 						cstrSource);
 				if (cstrSource.getLength() > 0) {
-					m_cKwic.generate(cstrSource,
-									 iRoughSize,
-									 (m_cLanguage.isValid()
-									  ? m_cLanguage->getValue()
-									  : ModLanguageSet()),
-									 cstrResult);
+					if ((m_cKwic.generate(cstrSource,
+										  iRoughSize,
+										  (m_cLanguage.isValid()
+										   ? m_cLanguage->getValue()
+										   : ModLanguageSet()),
+										  cstrResult)) == false) {
+						// Retry. Find in wider range.
+						cutData(getSourceData(),
+								0,
+								getLength(getSourceData()),
+								cstrSource);
+						if (cstrSource.getLength() > 0) {
+							m_cKwic.generate(cstrSource,
+											 getSize()->getValue(),
+											 (m_cLanguage.isValid()
+											  ? m_cLanguage->getValue()
+											  : ModLanguageSet()),
+											 cstrResult);
+						} else {
+							cutData(getSourceData(),
+									0,
+									getSize()->getValue(),
+									cstrResult);
+						}
+					}
 				} else {
 					// position is outside of string -> use first <size> characters
 					cutData(getSourceData(),
@@ -681,6 +701,41 @@ cutString(const Common::Data* pData_,
 	iStart_ -= iLength;
 	return false;
 }
+
+int
+Impl::KwicImpl::
+getLength(const Common::Data* pData_)
+{
+	switch (pData_->getType()) {
+	case Common::DataType::String:
+		{
+			const Common::StringData* pString =
+				_SYDNEY_DYNAMIC_CAST(const Common::StringData*, pData_);
+			return pString->getLength();
+		}
+	case Common::DataType::Array:
+		{
+			if (pData_->getElementType() == Common::DataType::Data) {
+				const Common::DataArrayData* pArray =
+					_SYDNEY_DYNAMIC_CAST(const Common::DataArrayData*, pData_);
+				int n = pArray->getCount();
+				int len = 0;
+				for (int i = 0; i < n; ++i) {
+					const Common::StringData* tmpString =
+						_SYDNEY_DYNAMIC_CAST(const Common::StringData*, pArray->getElement(i).get());
+					len += tmpString->getLength();
+				}
+				return len;
+			}
+			; // thru.
+		}
+	default:
+		{
+			_SYDNEY_THROW0(Exception::Unexpected);
+		}
+	}
+}
+
 
 /////////////////////////////////
 // Function::Kwic::

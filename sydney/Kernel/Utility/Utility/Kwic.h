@@ -84,7 +84,7 @@ public:
 	
 	ModSize getRoughSize(int fieldNumber_) const;
 
-	void generate(const ModUnicodeString& cstrSrc_,
+	bool generate(const ModUnicodeString& cstrSrc_,
 				  ModSize uiRoughSize_,
 				  const ModLanguageSet& cLanguageSet_,
 				  ModUnicodeString& cstrDst_);
@@ -306,7 +306,7 @@ private:
 						 ModSize uiNormalizedPatternTail_,
 						 ModVector<ModSize>& vecWordRange_) const;
 	
-	void doGenerate(const ModUnicodeString& cstrSrc_,
+	bool doGenerate(const ModUnicodeString& cstrSrc_,
 					ModSize uiOffset_,
 					ModSize uiSize_,
 					ModSize uiRoughSize_,
