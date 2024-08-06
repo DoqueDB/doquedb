@@ -480,7 +480,7 @@ execute(Interface::IProgram& cProgram_,
 											 (m_cLanguage.isValid()
 											  ? m_cLanguage->getValue()
 											  : ModLanguageSet()),
-											 cstrResult);
+											 cstrResult, true);
 						} else {
 							cutData(getSourceData(),
 									0,

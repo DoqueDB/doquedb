@@ -418,7 +418,8 @@ bool
 Kwic::generate(const ModUnicodeString& cstrSrc_,
 			   ModSize uiRoughSize_,
 			   const ModLanguageSet& cLanguageSet_,
-			   ModUnicodeString& cstrDst_)
+			   ModUnicodeString& cstrDst_,
+			   const bool retry = false)
 {
 	; _TRMEISTER_ASSERT(cstrSrc_.getLength() > 0);
 
@@ -472,7 +473,7 @@ Kwic::generate(const ModUnicodeString& cstrSrc_,
 	// Generate kwic
 	return doGenerate(cstrSrc_, uiOffset, uiSize, uiRoughSize_,
 			   bHeadEllipsis, bTailEllipsis, vecWordRange,
-			   cstrDst_);
+			   cstrDst_, retry);
 }
 
 
@@ -1996,7 +1997,8 @@ Kwic::doGenerate(const ModUnicodeString& cstrSrc_,
 				 bool bHeadEllipsis_,
 				 bool bTailEllipsis_,
 				 const ModVector<ModSize>& vecWordRange_,
-				 ModUnicodeString& cstrDst_) const
+				 ModUnicodeString& cstrDst_,
+				 const bool retry) const
 {
 	; _TRMEISTER_ASSERT(vecWordRange_.getSize() % 2 == 0);
 	
@@ -2005,6 +2007,16 @@ Kwic::doGenerate(const ModUnicodeString& cstrSrc_,
 
 	if (cstrSrc_.getLength() > 0)
 	{
+		// first occurrence place
+		if (retry)
+		{
+			uiSize_ = uiRoughSize_;  
+			if (vecWordRange_.getSize() >= 1)
+			{
+				uiOffset_ = ModMax(static_cast<ModSize>(0), vecWordRange_[0] - 1);
+			}
+		}
+
 		// Write head ellipsis
 		if (bHeadEllipsis_ == true &&
 			(uiOffset_ > 0 || cstrSrc_.getLength() >= uiRoughSize_))

@@ -87,7 +87,8 @@ public:
 	bool generate(const ModUnicodeString& cstrSrc_,
 				  ModSize uiRoughSize_,
 				  const ModLanguageSet& cLanguageSet_,
-				  ModUnicodeString& cstrDst_);
+				  ModUnicodeString& cstrDst_,
+				  const bool retry = false);
 
 protected:
 private:
@@ -313,7 +314,8 @@ private:
 					bool bHeadEllipsis_,
 					bool bTailEllipsis_,
 					const ModVector<ModSize>& vecWordRange_,
-					ModUnicodeString& cstrDst_) const;
+					ModUnicodeString& cstrDst_,
+					const bool retry) const;
 	
 	void writeToStream(const ModUnicodeChar*& p_,
 					   const ModUnicodeChar* e_,
