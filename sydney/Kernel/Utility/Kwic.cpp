@@ -2013,7 +2013,7 @@ Kwic::doGenerate(const ModUnicodeString& cstrSrc_,
 			uiSize_ = uiRoughSize_;  
 			if (vecWordRange_.getSize() >= 1)
 			{
-				uiOffset_ = ModMax(static_cast<ModSize>(0), vecWordRange_[0] - 1);
+				uiOffset_ = ModMax(static_cast<ModSize>(0), vecWordRange_[0] - ((uiSize_ > 1) ? 1 : 0));
 			}
 		}
 
