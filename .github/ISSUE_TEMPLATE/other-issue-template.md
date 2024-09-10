@@ -8,5 +8,5 @@ assignees: ''
 ---
 <!-- 
 Please write your questions or enhancement request, anything other than bug report.
-You may write the description inEnglish orin Japanese.
+You may write the description in English or in Japanese.
 -->
