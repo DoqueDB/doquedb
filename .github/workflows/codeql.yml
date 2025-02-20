@@ -45,12 +45,12 @@ jobs:
         include:
         - language: c-cpp
           build-mode: manual # changed from autobuild
-        - language: java-kotlin
-          build-mode: none # This mode only analyzes Java. Set this to 'autobuild' or 'manual' to analyze Kotlin too.
-        - language: javascript-typescript
-          build-mode: none
-        - language: python
-          build-mode: none
+        # - language: java-kotlin
+        #   build-mode: none # This mode only analyzes Java. Set this to 'autobuild' or 'manual' to analyze Kotlin too.
+        # - language: javascript-typescript
+        #   build-mode: none
+        # - language: python
+        #   build-mode: none
         # CodeQL supports the following values keywords for 'language': 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
         # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
@@ -91,12 +91,7 @@ jobs:
     - if: matrix.build-mode == 'manual'
       shell: bash
       run: |
-        export OSTYPE=linux
-        cd sydney
-        ../common/tools/build/mkconfdir O114-64
-        cd c.O114-64
-        make conf-r
-        make buildall
+        (export OSTYPE=linux; cd sydney; ../common/tools/build/mkconfdir O114-64; cd c.O114-64; make conf-r; make buildall)
         exit 0
 
     - name: Perform CodeQL Analysis
