@@ -8,5 +8,5 @@ all: $(TARGET)
 
 sydbuild.jar: $(SRCS)
 	mkdir -p classes
-	javac -sourcepath src -d classes -source 1.5 $(SRCS)
+	javac -sourcepath src -d classes $(SRCS)
 	jar cvf sydbuild.jar -C classes .
