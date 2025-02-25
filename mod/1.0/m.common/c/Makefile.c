@@ -309,7 +309,7 @@ UNICODE_DATA = $(UNICODETOOL_DIR)$(S)..$(S)src$(S)UnicodeData-1.1.5.txt
 SL = /
 
 $(UNICODE_DATA):
-	(cd ../../tools/src; wget https://www.unicode.org/Public/1.1-Update/UnicodeData-1.1.5.txt)
+	(cd ../../tools/src; wget https:$(SL)/www.unicode.org/Public/1.1-Update/UnicodeData-1.1.5.txt)
 
 ModUnicodeCharTrait.tbl: $(UNICODE_DATA)
 	$(UNICODETOOL_DIR)$(S)maketable $(UNICODE_DATA) > ./ModUnicodeCharTrait.tbl
