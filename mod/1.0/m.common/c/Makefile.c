@@ -1,4 +1,4 @@
-/*
+	/*
  * Makefile.c --- m.library/m.common/c
  * 
  * Copyright (c) 1998, 2022, 2023, 2024 Ricoh Company, Ltd.
@@ -309,15 +309,7 @@ UNICODE_DATA = $(UNICODETOOL_DIR)$(S)..$(S)src$(S)UnicodeData-1.1.5.txt
 SL = /
 
 $(UNICODE_DATA):
-	#############################################################################
-	#
-	# Required Unicode data file is not found.  Get the file listed below
-	# from specified URL and place it into into tools/src/ directory.
-	#
-	#  https:$(SL)/www.unicode.org/Public/1.1-Update/UnicodeData-1.1.5.txt
-	#
-	#############################################################################
-	exit 1
+	(cd ../../tools/src; wget https://www.unicode.org/Public/1.1-Update/UnicodeData-1.1.5.txt)
 
 ModUnicodeCharTrait.tbl: $(UNICODE_DATA)
 	$(UNICODETOOL_DIR)$(S)maketable $(UNICODE_DATA) > ./ModUnicodeCharTrait.tbl
