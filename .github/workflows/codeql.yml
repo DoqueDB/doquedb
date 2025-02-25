@@ -91,7 +91,7 @@ jobs:
     - if: matrix.build-mode == 'manual'
       shell: bash
       run: |
-        (export OSTYPE=linux; cd mod/1.0; ../../common/tools/build/mkconfdir O114-64; cd c.O114-64; make conf-r; make buildall)
+        (export OSTYPE=linux; cd sydney; ../common/tools/build/mkconfdir O114-64; cd c.O114-64; make conf-r; make buildall)
         exit 0
 
     - name: Perform CodeQL Analysis
