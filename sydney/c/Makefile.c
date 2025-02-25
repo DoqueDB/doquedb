@@ -28,7 +28,6 @@ CLIENT_SUBDIRS = \
 	Kernel
 
 UTIL_SUBDIRS = \
-	Java \
 	Utility
 
 TEST_SUBDIRS = \
