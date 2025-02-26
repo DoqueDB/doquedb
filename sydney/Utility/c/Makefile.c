@@ -40,14 +40,18 @@ CLIENTSUBDIRS = \
 	UserAdd
 #endif
 
+/*
 ANTDIRS = \
 	SydAdmin
+*/
 
 utility: all-r
 clientutility: clientall-r
 
+/*
 AntTarget(all, dist, $(ANTDIRS))
 AntTarget(clean, clean, $(ANTDIRS))
+*/
 
 /* no makefile.h */
 MAKEFILE_H =
