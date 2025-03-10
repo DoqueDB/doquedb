@@ -13,9 +13,9 @@ name: "CodeQL Advanced"
 
 on:
   push:
-    branches: [ "code-scanning" ]
+    branches: [ "code-scanning-una" ]
   pull_request:
-    branches: [ "code-scanning" ]
+    branches: [ "code-scanning-una" ]
   schedule:
     - cron: '27 10 * * 1'
 
@@ -91,7 +91,7 @@ jobs:
     - if: matrix.build-mode == 'manual'
       shell: bash
       run: |
-        (export OSTYPE=linux; cd sydney; ../common/tools/build/mkconfdir O114-64; cd c.O114-64; make conf-r; make buildall)
+        (cd una/1.0; ../../common/tools/build/mkconfdir O114-64; cd c.O114-64; make conf-r; make buildall)
         exit 0
 
     - name: Perform CodeQL Analysis
